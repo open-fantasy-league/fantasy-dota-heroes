@@ -12,14 +12,10 @@ def main():
         thero_q = session.query(TeamHero).filter(and_(TeamHero.active == True, TeamHero.to_trade == True))
         for thero in thero_q.all():
             print "Deleting hero %s for user: %s" % (thero.hero, thero.user)
-            session.query(User).filter(User.username == thero.user). \
-                update({User.hero_count: User.hero_count - 1})
         thero_q.delete()
         thero_q_2 = session.query(TeamHero).filter(and_(TeamHero.active != True, TeamHero.to_trade == True))
         for thero in thero_q_2.all():
             print "Making active hero %s for user: %s" % (thero.hero, thero.user)
-            session.query(User).filter(User.username == thero.user). \
-                update({User.hero_count: User.hero_count + 1})
             thero.active = True
             thero.to_trade = False
 

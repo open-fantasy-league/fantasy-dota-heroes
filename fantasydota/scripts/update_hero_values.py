@@ -3,6 +3,7 @@ from sqlalchemy import and_
 from sqlalchemy import desc
 from fantasydota.lib.session_utils import make_session
 from fantasydota.models import Hero, Result, TeamHero, User, BattlecupUser, BattlecupUserPoints, Battlecup
+from sqlalchemy import func
 
 
 def set_user_rankings(session):
@@ -47,30 +48,34 @@ def update_hero_values(session):
             heroq.points += Result.result_to_value(res)
             '''
 
+            # TODO put this into loop below
             users_who_won = session.query(TeamHero.user).\
                 filter(and_(TeamHero.hero == result.hero, TeamHero.active == True)).all()
             for user_res in users_who_won:
                 userq = session.query(User).filter(User.username == user_res[0]).first()
-                '''
+                hero_count = session.query(func.count(TeamHero)).filter(TeamHero.active == True).\
+                    filter(TeamHero.user == userq.user_id)
                 if "p" in res:
                     userq.picks += 1
                 if "w" in res:
                     userq.wins += 1
                 if "b" in res:
                     userq.bans += 1
-                to_add = (0.5 ** (5 - userq.hero_count)) * Result.result_to_value(res)
+                to_add = (0.5 ** (5 - hero_count)) * Result.result_to_value(res)
                 print "addin %s points to %s" % (to_add, user_res[0])
                 userq.points += to_add
             result.applied = True
-            '''
+
 
             series_id = result.series_id
-            '''if not session.query(BattlecupUserPoints).filter(BattlecupUserPoints.series_id == series_id).first():
+            if not session.query(BattlecupUserPoints).filter(BattlecupUserPoints.series_id == series_id).first():
                 session.query(Battlecup).update({Battlecup.last_completed_round: Battlecup.last_completed_round + 1})
-            '''
+
             for user_ in session.query(User).all():
                 username = user_.username
                 # new series. so old series has finished
+                hero_count = session.query(func.count(TeamHero)).filter(TeamHero.active == True). \
+                    filter(TeamHero.user == user_.user_id)
 
                 has_hero = session.query(TeamHero).filter(TeamHero.user == user_.username). \
                     filter(and_(TeamHero.hero == result.hero, TeamHero.active == True)).first()
@@ -87,12 +92,12 @@ def update_hero_values(session):
                     bcq = BattlecupUserPoints(battlecup_id, username, user_.user_id,
                                               result.date,
                                               result.series_id, 0, 0, 0)
-                    #session.add(bcq)
+                    session.add(bcq)
                 if has_hero:
                     print "would update bcq"
-                    #bcq.points += (0.5 ** (5 - user_.hero_count)) * Result.result_to_value(res)
+                    bcq.points += (0.5 ** (5 - hero_count)) * Result.result_to_value(res)
 
-        #set_user_rankings(session)
+        set_user_rankings(session)
 
         transaction.commit()
 

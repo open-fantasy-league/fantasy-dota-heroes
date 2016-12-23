@@ -64,7 +64,6 @@ class User(Base):
     wins_rank = Column('wins_rank', Integer, default="None")
     picks_rank = Column('picks_rank', Integer, default="None")
     bans_rank = Column('bans_rank', Integer, default="None")
-    hero_count = Column('hero_count', Integer, default=0)
 
     def __init__(self, username, password, email=""):
         self.username = username

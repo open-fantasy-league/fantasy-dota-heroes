@@ -4,6 +4,7 @@ from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.config import Configurator
 from sqlalchemy import create_engine
+from sqlalchemy import event
 from sqlalchemy.exc import DisconnectionError
 from fantasydota.scripts.init_tables import create_tables
 from fantasydota.util.jsonhelpers import custom_json_renderer
@@ -33,7 +34,7 @@ def main(global_config, **settings):
     settings["transfers"] = True  # why wont config file properly set this?
     sqlalchemy_url = os.path.expandvars(settings.get('sqlalchemy.url'))
     engine = create_engine(sqlalchemy_url, echo=False, pool_size=100, pool_recycle=3600)
-    #event.listen(engine, 'checkout', checkout_listener)
+    event.listen(engine, 'checkout', checkout_listener)
     DBSession.configure(bind=engine)
     Base.metadata.bind = engine
     Base.metadata.create_all(engine)

@@ -423,9 +423,9 @@ def sell_hero(request):
         if check_hero.first():
             check_hero.delete()
             session.query(User).filter(User.username == user). \
-                update({User.money: new_credits, User.hero_count: User.hero_count - 1})
+                update({User.money: new_credits})
         else:
-            return {"success": False, "message": "ERROR: Hero is not in your team to sell"}
+            return verifyHeroCount({"success": False, "message": "ERROR: Hero is not in your team to sell"})
     else:
         thero_q.update({TeamHero.to_trade: True})
         session.query(User).filter(User.username == user). \
@@ -472,7 +472,7 @@ def buy_hero(request):
     elif transfer_actually_open:
         session.add(TeamHero(user, hero_id, active=True, to_trade=False))
         session.query(User).filter(User.username == user).\
-            update({User.money: new_credits, User.hero_count: User.hero_count + 1})
+            update({User.money: new_credits})
     else:
         session.add(TeamHero(user, hero_id, active=False, to_trade=True))
         session.query(User).filter(User.username == user). \
