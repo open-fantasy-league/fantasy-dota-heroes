@@ -26,9 +26,9 @@ requires = [
     'passlib'
     ]
 
-setup(name='tutorial',
-      version='0.0',
-      description='tutorial',
+setup(name='fantasydota',
+      version='1.0',
+      description='fantasydota',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
         "Programming Language :: Python",
@@ -43,12 +43,12 @@ setup(name='tutorial',
       packages=find_packages(),
       include_package_data=True,
       zip_safe=False,
-      test_suite='tutorial',
+      test_suite='fantasydota',
       install_requires=requires,
       entry_points="""\
       [paste.app_factory]
-      main = tutorial:main
+      main = fantasydota:main
       [console_scripts]
-      initialize_tutorial_db = tutorial.scripts.initializedb:main
+      initialize_fantasydota_db = fantasydota.scripts.initializedb:main
       """,
       )
