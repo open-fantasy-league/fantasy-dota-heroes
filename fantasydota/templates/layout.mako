@@ -18,8 +18,8 @@
     <script type='text/javascript' src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
 
     <!-- Custom styles for this scaffold -->
-    <link href="${request.static_url('tutorial:static/theme.css')}" rel="stylesheet">
-    <link href="${request.static_url('tutorial:static/favicon.ico')}" rel="icon" type="image/x-icon" />
+    <link href="${request.static_url('fantasydota:static/theme.css')}" rel="stylesheet">
+    <link href="${request.static_url('fantasydota:static/favicon.ico')}" rel="icon" type="image/x-icon" />
 
     <!-- Should move these links just to the pages where they belong -->
     <script src="/static/sorttable.js"></script>

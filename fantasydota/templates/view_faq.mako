@@ -1,4 +1,4 @@
-<%inherit file="tutorial:templates/layout.mako"/>
+<%inherit file="fantasydota:templates/layout.mako"/>
 
 <%def name="title()">
     Nobody has ever asked me a question about this site...but let's pretend I'm not a social piranha and that someone did once

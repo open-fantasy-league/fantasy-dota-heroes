@@ -1,5 +1,5 @@
 ## -*- coding: utf-8 -*-
-<%inherit file="tutorial:templates/layout.mako"/>
+<%inherit file="fantasydota:templates/layout.mako"/>
 
 <%def name="title()">
     SEO Rank - ${search_info.search} - ${location}

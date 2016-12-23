@@ -1,4 +1,4 @@
-<%inherit file="tutorial:templates/layout.mako"/>
+<%inherit file="fantasydota:templates/layout.mako"/>
 
 <%def name="title()">
      Rules / Scoring
