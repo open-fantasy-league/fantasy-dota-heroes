@@ -3,17 +3,17 @@ from operator import and_
 
 import transaction
 from fantasydota.lib.session_utils import make_session
-from fantasydota.models import TeamHero, User
+from fantasydota.models import TeamHeroLeague, User
 
 
 def main():
     session = make_session()
     with transaction.manager:
-        thero_q = session.query(TeamHero).filter(and_(TeamHero.active == True, TeamHero.to_trade == True))
+        thero_q = session.query(TeamHeroLeague).filter(and_(TeamHeroLeague.active == True, TeamHeroLeague.to_trade == True))
         for thero in thero_q.all():
             print "Deleting hero %s for user: %s" % (thero.hero, thero.user)
         thero_q.delete()
-        thero_q_2 = session.query(TeamHero).filter(and_(TeamHero.active != True, TeamHero.to_trade == True))
+        thero_q_2 = session.query(TeamHeroLeague).filter(and_(TeamHeroLeague.active != True, TeamHeroLeague.to_trade == True))
         for thero in thero_q_2.all():
             print "Making active hero %s for user: %s" % (thero.hero, thero.user)
             thero.active = True

@@ -15,6 +15,7 @@ fantasydota.egg-info/entry_points.txt
 fantasydota.egg-info/not-zip-safe
 fantasydota.egg-info/requires.txt
 fantasydota.egg-info/top_level.txt
+fantasydota/lib/session_utils.py
 fantasydota/scripts/__init__.py
 fantasydota/scripts/initializedb.py
 fantasydota/static/favicon.ico

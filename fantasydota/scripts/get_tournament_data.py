@@ -1,16 +1,11 @@
 import json
 import os
-import time
 import urllib2
 
 import transaction
-from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session
-from sqlalchemy.orm import sessionmaker
-from fantasydota import Base
+
 from fantasydota.lib.session_utils import make_session
 from fantasydota.models import Result
-from zope.sqlalchemy import ZopeTransactionExtension
 
 APIKEY = os.environ.get("APIKEY")
 if not APIKEY:
@@ -45,12 +40,11 @@ def get_match_details(match_id):
         "key=%s&match_id=%s" % (APIKEY, match_id))
 
 
-def add_matches(session):
-    tournament_id = 4874  # Boston major
+def add_matches(session, tournament_id):
     match_list_json = get_league_match_list(tournament_id)
 
     matches = [(match["match_id"], match["series_id"]) for match in match_list_json["result"]["matches"]
-               if match["start_time"] > 1481193665]
+               if match["start_time"] > 0]
     print "matches", matches
     for match, series_id in matches:
         with transaction.manager:
@@ -105,7 +99,8 @@ def add_matches(session):
 
 def main():
     session = make_session()
-    add_matches(session)
+    add_matches(session, 4874)
+    add_matches(session, 4979)
 
 if __name__ == "__main__":
     main()

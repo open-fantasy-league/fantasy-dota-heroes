@@ -29,7 +29,7 @@ Functionality to update password. Also to remove account
 
     <div>
     <h5>Update password</h5>
-        <form id="updatePassword" action='/change_password'>
+        <form id="updatePassword" action='/changePassword'>
             <input type="password" name="old_password" placeholder="Current password" class="pwd">
             <input type="password" name="new_password" placeholder="New password" class="pwd">
             <input type="password" name="confirm_new_password" placeholder="Confirm new password">

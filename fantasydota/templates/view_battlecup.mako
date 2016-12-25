@@ -67,7 +67,7 @@
 };
 console.log(singleElimination1);
     $.ajax({
-            url: "/battlecup_json?battlecup_id=${battlecup_id}",
+            url: "/battlecupJson?battlecup_id=${battlecup_id}",
             type: "GET",
             //contentType: 'application/json',
             success: function(data){

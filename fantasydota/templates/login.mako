@@ -5,11 +5,11 @@
 </%def>
 
 <%def name="meta_keywords()">
-    Login, Dota, stock market
+    Login, Dota, Fantasy DOTA (heroes)
 </%def>
 
 <%def name="meta_description()">
-    Login to dota stock-market
+    Login to fantasy dota heroes
 </%def>
 
 <div id="message">

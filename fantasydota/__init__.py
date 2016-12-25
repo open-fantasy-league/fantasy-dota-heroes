@@ -11,7 +11,7 @@ from fantasydota.util.jsonhelpers import custom_json_renderer
 
 from .models import (
     Base,
-    Root, DBSession)
+    DBSession)
 
 
 # I was getting 2006 mysql gone away if website left for few hours. didnt know why
@@ -31,7 +31,7 @@ def checkout_listener(dbapi_con, con_record, con_proxy):
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
-    settings["transfers"] = True  # why wont config file properly set this?
+    settings["league_transfers"] = True  # why wont config file properly set this?
     sqlalchemy_url = os.path.expandvars(settings.get('sqlalchemy.url'))
     engine = create_engine(sqlalchemy_url, echo=False, pool_size=100, pool_recycle=3600)
     event.listen(engine, 'checkout', checkout_listener)
@@ -55,19 +55,22 @@ def main(global_config, **settings):
     config.add_route('logout', '/logout')
     config.add_route('view_faq', '/faq')
     config.add_route('view_rules', '/rules')
-    config.add_route('view_account', '/view_account')
+    config.add_route('view_account', '/viewAccount')
+    config.add_route('view_league', '/viewLeague')
     config.add_route('register', '/register')
-    config.add_route('change_password', '/change_password')
+    config.add_route('change_password', '/changePassword')
 
     config.add_route("add_friend", '/addFriend')
     config.add_route('trade_shares', '/tradeShares')
-    config.add_route('buy_hero', '/buyHero')
-    config.add_route('sell_hero', '/sellHero')
+    config.add_route('buy_hero_battlecup', '/buyHeroBattlecup')
+    config.add_route('sell_hero_battlecup', '/sellHeroBattlecup')
+    config.add_route('buy_hero_league', '/buyHeroLeague')
+    config.add_route('sell_hero_league', '/sellHeroLeague')
     config.add_route('leaderboard', '/leaderboard')
     config.add_route('switch_transfers', '/tran012345678901234567890looptheloop')
     config.add_route('account_settings', '/accountSettings')
     config.add_route('news', '/news')
     config.add_route('battlecup', '/battlecup')
-    config.add_route('battlecup_json', '/battlecup_json')
+    config.add_route('battlecup_json', '/battlecupJson')
     config.scan()
     return config.make_wsgi_app()

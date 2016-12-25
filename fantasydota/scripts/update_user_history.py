@@ -2,7 +2,7 @@ import transaction
 from sqlalchemy import and_
 from sqlalchemy.sql import func
 from fantasydota.lib.session_utils import make_session
-from fantasydota.models import TeamHero, User, HistoryUser
+from fantasydota.models import TeamHeroLeague, User
 
 
 def main():

@@ -145,7 +145,7 @@ $(".tradeForm").each(function (){
     function tradeOnclick(){
         $("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).attr("disabled","true");});
         var action = $(this).attr('name'),
-        tradeUrl = (action == "buyHero") ? "/buyHero" : "/sellHero",
+        tradeUrl = (action == "buyHero") ? "/buyHeroLeague" : "/sellHeroLeague",
         formData = {
             "hero": form.find('input[name=tradeHero]').val(),
             "transfer": transfers

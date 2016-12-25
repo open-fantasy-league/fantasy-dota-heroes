@@ -4,8 +4,8 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
-from fantasydota import Base
 from zope.sqlalchemy import ZopeTransactionExtension
+from fantasydota import Base
 
 
 def make_session():
