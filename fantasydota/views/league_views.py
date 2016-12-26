@@ -6,10 +6,10 @@ from sqlalchemy import and_
 from sqlalchemy import or_
 
 from fantasydota import DBSession
-from fantasydota.models import User, TeamHeroLeague, HeroLeague, League, UserLeague
+from fantasydota.models import User, TeamHeroLeague, HeroLeague, League, UserLeague, Hero
 
 
-@view_config(route_name='view_league', renderer='templates/view_account.mako')
+@view_config(route_name='view_league', renderer='../templates/view_league.mako')
 def view_league(request):
     session = DBSession()
     user = authenticated_userid(request)
@@ -17,24 +17,23 @@ def view_league(request):
         return HTTPFound('/login')
     message_type = request.params.get('message_type')
     message = request.params.get('message')
-    league_id = request.params.get('league')
+    league_id = int(request.params.get('league'))
 
     userq = session.query(UserLeague).filter(User.username == user).first()
-    transfer_open = session.query(League).filter(League.id == league_id).first().transfer_open
+    league = session.query(League).filter(League.id == league_id).first()
 
     print "user:", user
-    team_ids = session.query(TeamHeroLeague.hero, TeamHeroLeague.active, TeamHeroLeague.to_trade).\
+    team = session.query(TeamHeroLeague).\
         filter(and_(TeamHeroLeague.user == user, TeamHeroLeague.league == league_id)).all()
-    team = [{'hero_': session.query(HeroLeague).filter(and_(HeroLeague.hero == my_hero[0],
-                                                            TeamHeroLeague.league == league_id)).first(),
-             'active': my_hero[1],
-             'to_trade': my_hero[2]}
-            for my_hero in team_ids]
+    team_ids = [res[0]for res in session.query(TeamHeroLeague.hero_id).\
+        filter(and_(TeamHeroLeague.user == user, TeamHeroLeague.league == league_id)).all()]
+    team = session.query(HeroLeague).filter(and_(HeroLeague.hero_id.in_(team_ids),
+                                                 HeroLeague.league == league_id)).all()
+    heroes = session.query(HeroLeague).filter(HeroLeague.league == league_id).all()
 
-    heroes = session.query(HeroLeague).filter(TeamHeroLeague.league == league_id).all()
     #transfer_open = True if request.registry.settings["transfers"] else False
-    return {'user': userq, 'team': team, 'heroes': heroes, 'message': message,
-            'message_type': message_type, 'transfer_open': transfer_open}
+    return {'user': user, 'userq': userq, 'team': team, 'heroes': heroes, 'message': message,
+            'message_type': message_type, 'league': league}
 
 
 @view_config(route_name="sell_hero_league", renderer="json")
@@ -45,39 +44,33 @@ def sell_hero_league(request):
         raise HTTPForbidden()
 
     hero_id = request.POST["hero"]
-    transfer_think_open = request.POST["transfer"]
-    league_id = request.POST["league_id"]
+    # transfer_think_open = request.POST["transfer"] really doesnt matter what the user thinks! :D
+    league_id = request.POST["league"]
     transfer_actually_open = session.query(League.transfer_open).filter(League.id == league_id).first()[0]
-    if transfer_think_open == "true" and not transfer_actually_open or \
-                            transfer_think_open == "false" and transfer_actually_open:
+    if not transfer_actually_open:
         return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
 
-    hero_value = session.query(HeroLeague.value).filter(and_(HeroLeague.hero == hero_id,
+    hero_value = session.query(HeroLeague.value).filter(and_(HeroLeague.hero_id == hero_id,
                                                              HeroLeague.league == league_id)).first()[0]
-    user_money = session.query(UserLeague.money).filter(and_(UserLeague.username == user,
-                                                             HeroLeague.league == league_id)).first()
-    new_credits = round(user_money[0] + hero_value, 1)
+    user_money_q = session.query(UserLeague.money).filter(and_(UserLeague.username == user,
+                                                               UserLeague.league == league_id))
+    new_credits = round(user_money_q.first()[0] + hero_value, 1)
 
-    thero_q = session.query(TeamHeroLeague).filter(and_(TeamHeroLeague.user == user,
-                                                        HeroLeague.league == league_id)).filter(TeamHeroLeague.hero == hero_id)
-    if transfer_actually_open or not thero_q.first().active:
-        check_hero = session.query(TeamHeroLeague).filter(and_(TeamHeroLeague.user == user,
-                                                               TeamHeroLeague.hero == hero_id,
-                                                               TeamHeroLeague.league == league_id,
-                                                               )
-                                                          )
+    teamq_hero = session.query(TeamHeroLeague).filter(and_(TeamHeroLeague.user == user,
+                                                           TeamHeroLeague.league == league_id))
+    if teamq_hero.first():
+        check_hero = teamq_hero.filter(TeamHeroLeague.hero_id == hero_id)
+
         if check_hero.first():
             check_hero.delete()
-            user_money = new_credits
+            user_money_q.update({UserLeague.money: new_credits})
             # do I need to commit?
+            return {"success": True, "message": "Hero successfully sold", "action": "sell", "hero": hero_id,
+                    "new_credits": new_credits}
         else:
-            return verifyHeroCount({"success": False, "message": "ERROR: Hero is not in your team to sell"})
-    else:
-        thero_q.update({TeamHeroLeague.to_trade: True})
-        user_money = new_credits
+            return {"success": False, "message": "ERROR: Hero is not in your team to sell"}
 
-    return {"success": True, "message": "Hero successfully sold", "action": "sell", "hero": hero_id,
-            "new_credits": new_credits}
+    return {"success": False, "message": "Erm....you don't appear to be in this league. This is awkward"}
 
 
 @view_config(route_name="buy_hero_league", renderer="json")
@@ -87,42 +80,32 @@ def buy_hero_league(request):
     if user is None:
         raise HTTPForbidden()
 
-    hero_id = request.POST["hero"]
-    league_id = request.POST["league_id"]
-    transfer_think_open = request.POST["transfer"]
+    hero_id = int(request.POST["hero"])
+    league_id = request.POST["league"]
+    # transfer_think_open = request.POST["transfer"] really doesnt matter what the user thinks! :D
     transfer_actually_open = session.query(League.transfer_open).filter(League.id == league_id).first()[0]
-    if transfer_think_open == "true" and not transfer_actually_open or \
-        transfer_think_open == "false" and transfer_actually_open:
-            return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
+    if not transfer_actually_open:
+        return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
+
     hero_value = session.query(HeroLeague.value).filter(HeroLeague.hero_id == hero_id).first()[0]
-    user_money = float(session.query(User.money).filter(User.username == user).first()[0])
+    user_money_q = session.query(UserLeague.money).filter(and_(UserLeague.username == user,
+                                                               UserLeague.league == league_id))
+    user_money = user_money_q.first()[0]
     if user_money < hero_value:
         return {"success": False, "message": "ERROR: Insufficient credits"}
 
     teamq = session.query(TeamHeroLeague).filter(and_(TeamHeroLeague.user == user,
-                                                      HeroLeague.league == league_id)).filter(TeamHeroLeague.league == league_id)
-    a = teamq.filter(or_(and_(TeamHeroLeague.to_trade == True, TeamHeroLeague.active == False),
-                            and_(TeamHeroLeague.active == True, TeamHeroLeague.to_trade == False))).\
-            count()
-    teamq2 = teamq.filter(and_(TeamHeroLeague.hero == hero_id, TeamHeroLeague.to_trade == True, TeamHeroLeague.active == True))
-    teamq3 = teamq.filter(and_(TeamHeroLeague.hero == hero_id, TeamHeroLeague.to_trade == True, TeamHeroLeague.active == False))
+                                                      TeamHeroLeague.league == league_id))
+    teamq_hero = teamq.filter(TeamHeroLeague.hero_id == hero_id)
 
     new_credits = round(user_money - hero_value, 1)
-    if a >= 5:
+
+    if teamq.count() >= 5:
         return {"success": False, "message": "ERROR: Team is currently full"}
-    if teamq2.first():
-        teamq2.update({TeamHeroLeague.to_trade: False})
-        session.query(User).filter(User.username == user). \
-            update({User.money: new_credits})
-    elif teamq.filter(and_(TeamHeroLeague.hero == hero_id, TeamHeroLeague.to_trade != True)).first() or teamq3.first():
+    if teamq_hero.first():
         return {"success": False, "message": "ERROR: Hero already in team"}
-    elif transfer_actually_open:
-        session.add(TeamHeroLeague(user, hero_id, active=True, to_trade=False, league=league_id))
-        session.query(User).filter(User.username == user).filter(TeamHeroLeague.league == league_id).\
-            update({User.money: new_credits})
     else:
-        session.add(TeamHeroLeague(user, hero_id, active=False, to_trade=True, league=league_id))
-        session.query(UserLeague).filter(User.username == user).filter(TeamHeroLeague.league == league_id). \
-            update({User.money: new_credits})
+        session.add(TeamHeroLeague(user, hero_id, league=league_id))
+        user_money_q.update({UserLeague.money: new_credits})
     return {"success": True, "message": "Hero successfully bought", "action": "buy", "hero": hero_id,
             "new_credits": new_credits}
