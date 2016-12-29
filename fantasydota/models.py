@@ -1,29 +1,19 @@
-from _socket import gethostname
-import datetime
+from fantasydota.lib.herolist import heroes
 from passlib.handlers.bcrypt import bcrypt
 from sqlalchemy import BigInteger
 from sqlalchemy import (
     Column,
-    Index,
     Integer,
-    Text,
     Sequence,
     String,
     Date,
     func, Boolean,
-    create_engine, UniqueConstraint, ForeignKey)
+    ForeignKey)
+from sqlalchemy import DateTime
 from sqlalchemy import Float
-from sqlalchemy.orm import sessionmaker, scoped_session
-
 from sqlalchemy.ext.declarative import declarative_base
-from pyramid.security import (
-    Allow,
-    Everyone,
-    Authenticated, ALL_PERMISSIONS)
+from sqlalchemy.orm import sessionmaker, scoped_session
 from zope.sqlalchemy import ZopeTransactionExtension
-from sqlalchemy.pool import NullPool
-
-from fantasydota.lib.herolist import heroes
 
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 
@@ -48,6 +38,7 @@ class User(Base):
     email = Column(String(300))
     registered_on = Column(Date, default=func.now())
     last_login = Column(Date, default=func.now())
+    contactable = Column(Boolean, default=False)
 
     def __init__(self, username, password, email=""):
         self.username = username
@@ -58,20 +49,37 @@ class User(Base):
         return bcrypt.verify(password, self.password)
 
 
+class PasswordReset(Base):
+    __tablename__ = "password_reset"
+    id = Column(Integer, Sequence('id'), primary_key=True)
+    user_id = Column(Integer, ForeignKey(User.id))
+    guid = Column(String(300), nullable=False)
+    time = Column(DateTime, default=func.now())
+
+    def __init__(self, user_id, guid):
+        self.user_id = user_id
+        self.guid = guid
+
+    def validate_guid(self, guid):
+        return bcrypt.verify(str(self.user_id), guid)
+
+
 class League(Base):
     __tablename__ = "league"
     id = Column(Integer, primary_key=True)  # use id that matches dota2 api
     name = Column(String(100), nullable=False)
     status = Column(Integer, default=0)  # 0 not started. 1 is running. 2 is ended
     transfer_open = Column(Boolean, default=True)
+    current_day = Column(Integer, default=0)
+    battlecup_status = Column(Integer, default=0)  # Dont just do boolean. gives scope for not just on/off
 
     def __init__(self, id, name):
         self.id = id
         self.name = name
     
 
-class UserLeague(Base):
-    __tablename__ = "user_league"
+class LeagueUser(Base):
+    __tablename__ = "league_user"
     id = Column(Integer, Sequence('id'), primary_key=True)
     username = Column(String(50), ForeignKey(User.username), index=True, nullable=False)
     league = Column(Integer, ForeignKey(League.id), index=True)
@@ -80,10 +88,10 @@ class UserLeague(Base):
     picks = Column(Integer, default=0)
     bans = Column(Integer, default=0)
     wins = Column(Integer, default=0)
-    points_rank = Column(Integer, default="None")
-    wins_rank = Column(Integer, default="None")
-    picks_rank = Column(Integer, default="None")
-    bans_rank = Column(Integer, default="None")
+    points_rank = Column(Integer)
+    wins_rank = Column(Integer)
+    picks_rank = Column(Integer)
+    bans_rank = Column(Integer)
 
     def __init__(self, username, league):
         self.username = username
@@ -91,49 +99,29 @@ class UserLeague(Base):
 
 
 # # check if I should use polymorphic mapping for this with userLeague
-# class UserLeagueDay(UserLeague):
-#     __tablename__ = "user_league_day"
-#     user_league = Column(Integer, ForeignKey(UserLeague.id), index=True)
-#     day = Column(Integer, index=True)
-#     stage = Column(Integer)  # 0 qualifiers, 1 group stage, 2 main event
-#
-#     def __init__(self, user_league, day, stage, *args, **kwargs):
-#         super(UserLeagueDay, self).__init__(*args, **kwargs)
-#         self.user_league = user_league
-#         self.day = day
-#         self.stage = stage
+class LeagueUserDay(Base):
+    __tablename__ = "league_user_day"
+    id = Column(Integer, Sequence('id'), primary_key=True)
+    username = Column(String(50), ForeignKey(User.username), index=True, nullable=False)
+    league = Column(Integer, ForeignKey(League.id), index=True)
+    day = Column(Integer, index=True)
+    stage = Column(Integer)  # 0 qualifiers, 1 group stage, 2 main event
+    money = Column(Float, default=50.0)
+    points = Column(Float, default=0.0)
+    picks = Column(Integer, default=0)
+    bans = Column(Integer, default=0)
+    wins = Column(Integer, default=0)
+    points_rank = Column(Integer)
+    wins_rank = Column(Integer)
+    picks_rank = Column(Integer)
+    bans_rank = Column(Integer)
 
+    def __init__(self, username, league, day, stage):
+        self.username = username
+        self.league = league
+        self.day = day
+        self.stage = stage
 
-#class HistoryUser(Base):
-#    __tablename__ = "history_user"
-#    id = Column(Integer, Sequence('id'), primary_key=True)
-#    username = Column(String(50), nullable=False)
-#    date = Column(Date, default=func.now())  # hmm how can I fix this typo.without break stuff?
-#
-#    money = Column(Float)
-#    points = Column(Integer)
-#    picks = Column(Integer)
-#    bans = Column(Integer)
-#    wins = Column(Integer)
-#    hero_one = Column(Integer)
-#    hero_two = Column(Integer)
-#    hero_three = Column(Integer)
-#    hero_four = Column(Integer)
-#    hero_five = Column(Integer)
-#
-#    def __init__(self, username, money, points, picks, bans, wins, h1, h2, h3, h4, h5):
-#        self.username = username
-#        self.money = money
-#        self.points = points
-#        self.picks = picks
-#        self.bans = bans
-#        self.wins = wins
-#        self.hero_one = h1
-#        self.hero_two = h2
-#        self.hero_three = h3
-#        self.hero_four = h4
-#        self.hero_five = h5
-#
 
 class Battlecup(Base):
     __tablename__ = "battlecup"
@@ -141,65 +129,74 @@ class Battlecup(Base):
     league = Column(Integer, ForeignKey(League.id), index=True)
     day = Column(Integer, index=True)
     total_rounds = Column(Integer)
-    last_completed_round = Column(Integer, default=0)
+    current_round = Column(Integer, default=0)
+    series_per_round = Column(String(50))  # String? Yes string. sounds stupid. I think it'll play out well though
+    # Format will be 2,1,1,1  . split based on current round
     transfer_open = Column(Boolean, default=True)
+    winner = Column(String(50), ForeignKey(User.username), index=True)
 
-    def __init__(self, league, day, total_rounds):
+    def __init__(self, league, day, total_rounds, series_per_round):
         self.league = league
         self.total_rounds = total_rounds
         self.day = day
+        self.series_per_round = series_per_round
+
+    @staticmethod
+    def num_series_this_round(current_round, series_per_round):
+        return int(series_per_round.split(",")[current_round])
+
 
 class BattlecupUser(Base):
     __tablename__ = "battlecup_user"
     id = Column(Integer, Sequence('id'), primary_key=True)
-    battlecup = Column(Integer, ForeignKey(Battlecup.id), index=True) # should index be here?
+    battlecup = Column(Integer, ForeignKey(Battlecup.id), index=True, nullable=False) # should index be here?
     username = Column(String(50), ForeignKey(User.username), index=True, nullable=False)
+    league = Column(Integer, ForeignKey(League.id), index=True)
     #user_id = Column(Integer, ForeignKey(User.user_id), index=True)  # should index be here?
     round_out = Column(Integer)
+    money = Column(Float, default=50.0)
 
-    def __init__(self, battlecup, username):
-        self.battlecup = battlecup
+    def __init__(self, username, league, battlecup=None):
         self.username = username
+        self.league = league
+        self.battlecup = battlecup
+
 
 class BattlecupRound(Base):
     __tablename__ = "battlecup_round"
     id = Column(Integer, Sequence('id'), primary_key=True)
-    battlecup = Column(Integer, ForeignKey(BattlecupUser.id), index=True)
-    round_ = Column(Integer, index=True)
+    battlecup = Column(Integer, ForeignKey(Battlecup.id), index=True, nullable=False)
+    round_ = Column(Integer, index=True, nullable=False)
     series_id = Column(BigInteger)
+    player_one = Column(String(50), ForeignKey(User.username), index=True)
+    player_two = Column(String(50), ForeignKey(User.username), index=True)
+    winner = Column(Integer, default=0)  # 1 for player 1. 2 for p2. 0 it's not over!!!
     
-    def __init__(self, battlecup, round_, series_id):
+    def __init__(self, battlecup, round_, series_id, player_one, player_two):
         self.battlecup = battlecup
         self.round_ = round_
         self.series_id = series_id
+        self.player_one = player_one
+        self.player_two = player_two
+
 
 class BattlecupUserRound(Base):
-    __tablename__ = "battlecup_user_points"
+    __tablename__ = "battlecup_user_round"
     id = Column(Integer, Sequence('id'), primary_key=True)
     battlecupround = Column(Integer, ForeignKey(BattlecupRound.id), index=True)
-    points = Column(Float)
+    username = Column(String(50), ForeignKey(BattlecupUser.username), index=True)
+    points = Column(Float, default=0)
     picks = Column(Integer, default=0)
     bans = Column(Integer, default=0)
     wins = Column(Integer, default=0)
 
-    def __init__(self, battlecupround, points, picks, bans, wins):
+    def __init__(self, battlecupround, username, points, picks, bans, wins):
         self.battlecupround = battlecupround
+        self.username = username
         self.points = points
         self.picks = picks
         self.bans = bans
         self.wins = wins
-
-
-# class UserRank(Base):
-#     __tablename__ = "user_rank"
-#     user = Column(String(50), ForeignKey(User.username), unique=True, nullable=False, primary_key=True)
-#     points_rank = Column(Integer, default="None")
-#     wins_rank = Column(Integer, default="None")
-#     picks_rank = Column(Integer, default="None")
-#     bans_rank = Column(Integer, default="None")
-#
-#     def __init__(self, user):
-#         self.user = user
 
 
 class Friend(Base):
@@ -218,81 +215,58 @@ class Friend(Base):
 class Hero(Base):
     __tablename__ = "hero"
     id = Column(Integer, primary_key=True)  # api hero ids start at 1
-    name = Column(String(100), unique=True, nullable=False)  #index=true?
-
-    def __init__(self, id, name):
-        self.id = id
-        self.name = name
-
-
-class HeroLeague(Base):
-    __tablename__ = "hero_league"
-    id = Column(Integer, Sequence('id'), primary_key=True)
-    hero_id = Column(Integer, ForeignKey(Hero.id), index=True)
-    hero_name = Column(String(100), ForeignKey(Hero.name))
-    league = Column(Integer, ForeignKey(League.id), index=True)
+    name = Column(String(100), nullable=False, index=True)  #index=true?
+    league = Column(Integer, ForeignKey(League.id), primary_key=True)
     value = Column(Float, default=10.0)
     points = Column(Integer, default=0)
     picks = Column(Integer, default=0)
     bans = Column(Integer, default=0)
     wins = Column(Integer, default=0)
     active = Column(Boolean, default=True)  # this is for when valve release patch midway through tournament and add/remove from cm
+    is_battlecup = Column(Boolean, primary_key=True)
+    # maybe I want day here as well? somewhere to track day value fluctuations
 
-    def __init__(self, hero_id, hero_name, value, league):
-        self.hero_id = hero_id
-        self.hero_name = hero_name
+    def __init__(self, id, name, value, league, is_battlecup):
+        self.id = id
+        self.name = name
         self.value = value
         self.league = league
+        self.is_battlecup = is_battlecup
 
 
-class HeroBattlecup(Base):
-    __tablename__ = "hero_battlecup"
-    id = Column(Integer, Sequence('id'), primary_key=True)
-    hero_id = Column(Integer, ForeignKey(Hero.id), index=True)
-    hero_name = Column(String(100), ForeignKey(Hero.name))
-    battlecup = Column(Integer, ForeignKey(Battlecup.id), index=True)
-    value = Column(Float, default=10.0)
-    points = Column(Integer, default=0)
-    picks = Column(Integer, default=0)
-    bans = Column(Integer, default=0)
-    wins = Column(Integer, default=0)
-    active = Column(Boolean, default=True)
-
-    def __init__(self, hero_id, hero_name, value, battlecup):
-        self.hero_id = hero_id
-        self.hero_name = hero_name
-        self.value = value
-        self.battlecup = battlecup
-
-
-class TeamHeroLeague(Base):
-    __tablename__ = "team_hero_league"
+class TeamHero(Base):
+    __tablename__ = "team_hero"
     id = Column(Integer, Sequence('id'), primary_key=True)
     user = Column(String(50), ForeignKey(User.username), index=True)
     hero_id = Column(Integer, ForeignKey(Hero.id), index=True)
     hero_name = Column(String(100), ForeignKey(Hero.name))
     league = Column(Integer, ForeignKey(League.id), index=True)
+    is_battlecup = Column(Boolean, index=True)
 
-    def __init__(self, user, hero_id, league, **kwargs):
+    def __init__(self, user, hero_id, league, is_battlecup, **kwargs):
         self.user = user
         self.hero_id = hero_id
         self.hero_name = kwargs.get("hero_name") or (item for item in heroes if item["id"] == hero_id).next()["name"]
         self.league = league
+        self.is_battlecup = is_battlecup
 
 
-class TeamHeroBattlecup(Base):
-    __tablename__ = "team_hero_battlecup"
+class BattlecupTeamHeroHistory(Base):
+    __tablename__ = "battlecup_team_hero_history"
     id = Column(Integer, Sequence('id'), primary_key=True)
     user = Column(String(50), ForeignKey(User.username), index=True)
     hero_id = Column(Integer, ForeignKey(Hero.id), index=True)
     hero_name = Column(String(100), ForeignKey(Hero.name))
-    battlecup = Column(Integer, ForeignKey(Battlecup.id), index=True)
+    league = Column(Integer, ForeignKey(League.id), index=True)
+    day = Column(Integer, default=0)
 
-    def __init__(self, user, hero_id, battlecup, **kwargs):
+    def __init__(self, user, hero_id, league, day, **kwargs):
         self.user = user
         self.hero_id = hero_id
-        self.hero_name = kwargs.get("hero_name") or (item for item in heroes if item["id"] == hero_id).next()["name"]
-        self.battlecup = battlecup
+        self.hero_name = kwargs.get("hero_name") or (item for item in heroes if item["id"] == hero_id).next()[
+            "name"]
+        self.league = league
+        self.day = day
 
 
 # class Sale(Base):

@@ -17,7 +17,7 @@
         % if for_user:
             ${player.points_rank}
         % else:
-            ${player.points}
+            ${round(player.points, 1)}
         % endif
     % elif x == "wins":
         % if for_user:
@@ -101,9 +101,6 @@ ${"period=%s" % period}
             % for i, player in enumerate(players):
                 <tr class=${"playerRow" if not user or player.username != user.username else "userRow"}>
                     <td class="positionEntry">${i+1}
-                    % if player.username == "liquid92":
-                        <img src="/static/images/trophy.png"/>
-                    % endif
                     </td>
                     <td class="heroEntry">${player.username}
                     %if len(player_heroes) > i:
@@ -118,19 +115,11 @@ ${"period=%s" % period}
                 </tr>
             % endfor
             % if user:
-		% if period == "tournament":
-		<tr class="userRow outsideRanks">
-                    <td class="userRank">${rank_by_fn(rank_by, user, True)}</td>
-                    <td class="heroEntry">${user.username}</td>
-                    <td class="rankingEntry">${rank_by_fn(rank_by, user, False)}</td>
-                </tr>
-		% else:
-                <tr class="userRow outsideRanks">
-                    <td class="userRank">-</td>
-                    <td class="heroEntry">${user.username}</td>
-                    <td class="rankingEntry">${rank_by_fn(rank_by, user, False)}</td>
-                </tr>
-		% endif
+            <tr class="userRow outsideRanks">
+                <td class="userRank">${rank_by_fn(rank_by, user, True)}</td>
+                <td class="heroEntry">${user.username}</td>
+                <td class="rankingEntry">${rank_by_fn(rank_by, user, False)}</td>
+            </tr>
             % endif
         </table>
     </div>

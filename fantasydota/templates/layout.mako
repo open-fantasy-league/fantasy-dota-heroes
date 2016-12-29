@@ -38,7 +38,7 @@
             % if request.authenticated_userid is None:
                     <a href="${request.route_path('login')}">Login/Create Profile</a>
             % else:
-                    <a href="${request.route_path('view_account')}">League /</a>
+                    <a href="${request.route_path('view_league')}">League /</a>
                     <a href="${request.route_path('logout')}">Logout</a>
             % endif
           </%block>

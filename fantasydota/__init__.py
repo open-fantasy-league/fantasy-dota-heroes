@@ -32,6 +32,7 @@ def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
     settings["league_transfers"] = True  # why wont config file properly set this?
+    settings["default_league"] = 4979
     sqlalchemy_url = os.path.expandvars(settings.get('sqlalchemy.url'))
     engine = create_engine(sqlalchemy_url, echo=False, pool_size=100, pool_recycle=3600)
     event.listen(engine, 'checkout', checkout_listener)
@@ -59,11 +60,15 @@ def main(global_config, **settings):
     config.add_route('view_league', '/viewLeague')
     config.add_route('register', '/register')
     config.add_route('change_password', '/changePassword')
+    config.add_route('forgot_password', '/forgotPassword')
+    config.add_route('reset_password', '/resetPassword')
+    config.add_route('reset_password_page', '/resetPasswordPage')
+    config.add_route('update_email_settings', '/updateEmailSettings')
 
     config.add_route("add_friend", '/addFriend')
     config.add_route('trade_shares', '/tradeShares')
-    config.add_route('buy_hero_battlecup', '/buyHeroBattlecup')
-    config.add_route('sell_hero_battlecup', '/sellHeroBattlecup')
+    config.add_route('buy_hero_battlecup', '/buyHeroBcup')
+    config.add_route('sell_hero_battlecup', '/sellHeroBcup')
     config.add_route('buy_hero_league', '/buyHeroLeague')
     config.add_route('sell_hero_league', '/sellHeroLeague')
     config.add_route('leaderboard', '/leaderboard')
@@ -71,6 +76,9 @@ def main(global_config, **settings):
     config.add_route('account_settings', '/accountSettings')
     config.add_route('news', '/news')
     config.add_route('battlecup', '/battlecup')
+    config.add_route('battlecup_team', '/battlecupTeam')
     config.add_route('battlecup_json', '/battlecupJson')
+    config.add_route('battlecup_add_league_team', '/bcupTeamAddLeague')
+    config.add_route('battlecup_add_yesterday_team', '/bcupTeamAddYesterday')
     config.scan()
     return config.make_wsgi_app()

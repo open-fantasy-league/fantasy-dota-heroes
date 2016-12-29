@@ -24,6 +24,7 @@
         <input type="password" name="password" placeholder="Password">
         <button type="submit">Submit</button>
     </form>
+    <a onclick="forgotPassword()">Forgotten password?</a>
 </div>
 
 <div>
@@ -38,9 +39,13 @@
         <button type="submit">Submit</button>
     </form>
     <ul>
-        <li> Please do not forget your password. I have no decent reset system</li>
+        <li> Email is optional, however necessary to use password reset if you have forgotten yours</li>
         <li> Passwords are encrypted and stored securely </li>
-        <li> Email is optional, it's not necessary for game. I don't trust small companies/random people with my personal email. Shouldn't expect any difference in reverse.</li>
-        <li> Please choose a unique password. The people who get 'hacked' badly usually do so because they have one password across all sites</li>
     </ul>
 </div>
+
+<script>
+function forgotPassword(){
+    window.location.href = "/forgotPassword?username=" + $("input[name=username]").val();
+}
+</script>

@@ -41,7 +41,7 @@ def view_index(request):
     return HTTPFound('/viewAccount')
 
 
-@view_config(route_name='view_account', renderer='templates/view_account.mako')
+@view_config(route_name='view_account', renderer='templates/account.mako')
 def view_account(request):
     session = DBSession()
     user = authenticated_userid(request)
@@ -348,7 +348,7 @@ def change_password(request):
     return HTTPFound(location=request.route_url('viewAccount', _query=params))
 
 
-@view_config(route_name='account_settings', renderer="templates/view_account_settings.mako")
+@view_config(route_name='account_settings', renderer="templates/account_settings.mako")
 def account_settings(request):
     return {}
 
