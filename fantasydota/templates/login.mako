@@ -23,8 +23,8 @@
         <input type="text" name="username" placeholder="Username">
         <input type="password" name="password" placeholder="Password">
         <button type="submit">Submit</button>
+        <a onclick="forgotPassword()">Forgotten password?</a>
     </form>
-    <a onclick="forgotPassword()">Forgotten password?</a>
 </div>
 
 <div>

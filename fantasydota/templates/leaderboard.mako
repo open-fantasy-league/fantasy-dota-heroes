@@ -1,7 +1,7 @@
 <%inherit file="layout.mako"/>
 
 <%def name="title()">
-    Leaderboards
+    Leaderboard: ${league.name}
 </%def>
 
 <%def name="meta_keywords()">
@@ -49,6 +49,14 @@ ${"period=%s" % period}
 </%def>
 
 <div id="leaderboardBlock" class="col-md-7">
+    <ul class="w3-navbar w3-border-bottom w3-light-grey intronav">
+        <li>
+            <a href="/viewLeague?league=${league.id}"><b>Team</b></a>
+        </li>
+        <li>
+            <a href="/leaderboard?league=${league.id}" class="w3-dark-grey"><b>Leaderboard</b></a>
+        </li>
+    </ul>
     Points updated hourly
     <h2>${rank_by.title()}</h2>
     <div>

@@ -180,6 +180,11 @@ def switch_transfers(request):
 def news(request):
     return {}
 
+
+@view_config(route_name="hall_of_fame", renderer="../templates/hall_of_fame.mako")
+def hall_of_fame(request):
+    return {}
+
 def get_time_range(time_range):
     if time_range == 'week':
         date_start = datetime.datetime.now() - datetime.timedelta(days=7)

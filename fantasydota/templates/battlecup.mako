@@ -1,7 +1,11 @@
 <%inherit file="layout.mako"/>
 
 <%def name="title()">
-    Battlecup #${league.current_day + 1} Team: ${league.name}
+    % if transfer_open:
+        Battlecup Day #${league.current_day + 1} Team: ${league.name}
+    % else:
+        Battlecup Day #${battlecup.day + 1} Results: ${league.name}
+    % endif
 </%def>
 
 <%def name="meta_keywords()">

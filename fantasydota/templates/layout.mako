@@ -40,17 +40,11 @@
             % endif
           </%block>
       </div>
-      <div id="loginStuff" class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+      <div id="leagueBtn" class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
         <a href="${request.route_path('view_league')}">League</a>
-      </div>
-      <div id="leaderboardBtn" class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-        <a href="/leaderboard?rank_by=points">Leaderboards</a>
       </div>
       <div id="battlecupBtn" class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
         <a href="/battlecup">Battlecup</a>
-      </div>
-      <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-        <a href="/news">News</a>
       </div>
       <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
         <a href="/rules">Rules</a>
@@ -58,7 +52,9 @@
       <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
         <a href="/faq">FAQ</a>
       </div>
-
+      <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+        <a href="/hallOfFame">Hall of Fame</a>
+      </div>
       <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1">
         <a href="/accountSettings">Account Settings</a>
       </div>

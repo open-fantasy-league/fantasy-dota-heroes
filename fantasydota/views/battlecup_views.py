@@ -14,13 +14,11 @@ from sqlalchemy import func
 def battlecup(request):
     session = DBSession()
     user = authenticated_userid(request)
-    transfer_open = False
 
     league_id = int(request.params.get("league")) if request.params.get("league") else None \
         or request.registry.settings["default_league"]
     battlecup_id = int(request.params.get("battlecup_id")) if request.params.get("battlecup_id") else None \
                                                                                        or -1
-    print "b IDIDIDID", battlecup_id
     league = session.query(League).filter(League.id == league_id).first()
     is_playing = True
 
@@ -38,6 +36,9 @@ def battlecup(request):
     transfer_open = True if battlecup_id == -1 and league.battlecup_status == 0 else False
     return_dict = {"league": league, "is_playing": is_playing, "battlecup_id": battlecup_id,
                    "transfer_open": transfer_open, "all_bcups": all_bcups}
+
+    if battlecup_id != -1:
+        return_dict["battlecup"] = session.query(Battlecup).filter(Battlecup.id == battlecup_id).first()
 
     heroes = session.query(Hero).filter(and_(Hero.league == league_id, Hero.is_battlecup.is_(True))).all()
     return_dict["heroes"] = heroes

@@ -38,9 +38,10 @@
     <p>
     Your team can consist of up to 5 dota heroes (you are not required to use all 5, but will incur a penalty).
     </br>
-    There are unlimited transfers, however transfer window will close each day, whilst games are taking place.
+    League team and Battlecup teams are separate. You will need to pick both.
     </br>
-    Transfer window closes ~30minutes before 1st game of the day, opens after the last one.</br>
-Transfers can still take place during window closure, however no points are earned on new heroes until next day.
+    Once tournament has started no transfers for league team are allowed throughout the tournament
+    </br>
+    Battlecup teams must be picked every-day (Hero values in battlecup mode will change throughout the tournament depending on their performance).
     </p>
 </div>

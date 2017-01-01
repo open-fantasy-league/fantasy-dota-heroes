@@ -75,6 +75,7 @@ def main(global_config, **settings):
     config.add_route('switch_transfers', '/tran012345678901234567890looptheloop')
     config.add_route('account_settings', '/accountSettings')
     config.add_route('news', '/news')
+    config.add_route('hall_of_fame', '/hallOfFame')
     config.add_route('battlecup', '/battlecup')
     config.add_route('battlecup_team', '/battlecupTeam')
     config.add_route('battlecup_json', '/battlecupJson')

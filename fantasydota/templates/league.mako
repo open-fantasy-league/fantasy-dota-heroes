@@ -1,19 +1,26 @@
 <%inherit file="layout.mako"/>
 
 <%def name="title()">
-    My Profile
+    League Team: ${league.name}
 </%def>
 
 <%def name="meta_keywords()">
-    Profile, Dota, fantasy, points, game
+    League, Dota, fantasy, points, game
 </%def>
 
 <%def name="meta_description()">
-    Profile page for fantasy dota game.
+    League page for fantasy dota game.
 </%def>
 
 <div>
-    <h1>League: ${league.name}</h1>
+    <ul class="w3-navbar w3-border-bottom w3-light-grey intronav">
+        <li>
+            <a href="/viewLeague?league=${league.id}" class="w3-dark-grey"><b>Team</b></a>
+        </li>
+        <li>
+            <a href="/leaderboard?league=${league.id}"><b>Leaderboard</b></a>
+        </li>
+    </ul>
     <p>Hi ${user}</p>
     <span class=${"messageTransOpen" if league.transfer_open else "messageTransClosed"}>
         <p>${"Transfer window currently open. Closes when games start." if league.transfer_open else """Transfer window now closed for tournament. You can still change your battlecup team daily though."""}
