@@ -129,7 +129,7 @@ class Battlecup(Base):
     league = Column(Integer, ForeignKey(League.id), index=True)
     day = Column(Integer, index=True)
     total_rounds = Column(Integer)
-    current_round = Column(Integer, default=0)
+    current_round = Column(Integer, default=1)
     series_per_round = Column(String(50))  # String? Yes string. sounds stupid. I think it'll play out well though
     # Format will be 2,1,1,1  . split based on current round
     transfer_open = Column(Boolean, default=True)

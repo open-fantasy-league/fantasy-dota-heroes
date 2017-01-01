@@ -16,15 +16,35 @@
 <link rel="stylesheet" type="text/css" href="/static/jquery.bracket.min.css" />
 
 <div id="infoBlock" class="row">
-    <a href="/previousBattlecups">Previous battlecups</a>
+    <ul class="w3-navbar w3-border-bottom w3-light-grey intronav">
+        % for pbcup in reversed(all_bcups):
+            <li>
+                % if pbcup.id == battlecup_id:
+                    <a href="/battlecup?battlecup_id=${pbcup.id}" "w3-dark-grey">
+                % else:
+                    <a href="/battlecup?battlecup_id=${pbcup.id}">
+                % endif
+                    % if pbcup.day == league.current_day:
+                        Today
+                    % elif pbcup.day == league.current_day - 1:
+                        Yesterday
+                    % else:
+                        Day ${pbcup.day}
+                    % endif
+                </a>
+            </li>
+        % endfor
+    </ul>
     <p id="message">${"You are not signed up to play in a battlecup. Must have a valid account by the start of the days games" if not is_playing else ""}</p>
-    % if len(team) == 0 and transfer_open:
-        <p id="message">${"You are not entered in todays battlecup. To do so simply add heroes below"}</p>
-    % elif not transfer_open:
-        <p id="message">${"Today's battlecup already started. To play tomorrow, add heroes to your battlecup team, between end of matches today, and start of matches tomorrow"}</p>
-    %endif
+    % if len(team) == 0:
+        % if transfer_open:
+            <p id="message">${"You are not entered in todays battlecup. To do so simply add heroes below"}</p>
+        % else:
+            <p id="message">${"Today's battlecup already started. To play tomorrow, add heroes to your battlecup team, between end of matches today, and start of matches tomorrow"}</p>
+        %endif
+    % endif
     <p>
-    For tied points, winner based on wins, picks, bans in that order (will add 0.1 points to score). </br>
+    If points are tied, winner based on wins, picks, bans in that order (will add 0.1 points to score). </br>
     Hero values in battlecups change each day based on their tournament performance.
     </p>
 </div>

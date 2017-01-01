@@ -30,18 +30,18 @@
   <body id="mySexyBody">
   <div class="container">
     <div id="topBar" class="row">
-      <div id="homeLink" class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-        <a href="/">Home</a>
-      </div>
-      <div id="loginStuff" class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-          <%block name="content">
+      <div id="homeLink" class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        <%block name="content">
             % if request.authenticated_userid is None:
                     <a href="${request.route_path('login')}">Login/Create Profile</a>
             % else:
-                    <a href="${request.route_path('view_league')}">League /</a>
+                    <a href="${request.route_path('view_index')}">Home /</a>
                     <a href="${request.route_path('logout')}">Logout</a>
             % endif
           </%block>
+      </div>
+      <div id="loginStuff" class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+        <a href="${request.route_path('view_league')}">League</a>
       </div>
       <div id="leaderboardBtn" class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
         <a href="/leaderboard?rank_by=points">Leaderboards</a>

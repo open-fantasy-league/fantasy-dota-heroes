@@ -6,7 +6,7 @@ from sqlalchemy import and_
 
 
 def start_of_day():
-    session = make_session()
+    session = make_session(transaction=False, autoflush=False)
     for league in session.query(League).filter(League.status == 1).all():
         rounds = 4  # temp
         series_per_round = "2,1,1,1"
@@ -15,7 +15,12 @@ def start_of_day():
                         TeamHero.league == league.id)).group_by(TeamHero.user).all()
         print len(players)
         make_battlecups(session, league.id, rounds, players, series_per_round)
-        league.battlecup_status = 1  # switch bcup view to bracket
+        session.query(League).filter(League.id == league.id).update({
+            League.battlecup_status: 1, League.transfer_open: 0
+        })
+            # league.battlecup_status = 1  # switch bcup view to bracket
+            # league.transfer_open = 1 # close league window if not already closed
+    session.commit()
 
 
 def main():

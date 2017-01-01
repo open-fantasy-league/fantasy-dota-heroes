@@ -16,9 +16,7 @@
     <h1>League: ${league.name}</h1>
     <p>Hi ${user}</p>
     <span class=${"messageTransOpen" if league.transfer_open else "messageTransClosed"}>
-        <p>${"Transfer window currently open. Closes when games start." if league.transfer_open else """Transfer window currently closed.
-        Any transfers made will take place when it re-opens after today's games.
-        Heroes that will count towards today's points, but will leave team at end of day are translucent"""}
+        <p>${"Transfer window currently open. Closes when games start." if league.transfer_open else """Transfer window now closed for tournament. You can still change your battlecup team daily though."""}
         </p>
     </span>
     <span>

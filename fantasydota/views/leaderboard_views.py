@@ -1,5 +1,5 @@
 from fantasydota import DBSession
-from fantasydota.models import Friend, LeagueUser, LeagueUserDay, TeamHero
+from fantasydota.models import Friend, LeagueUser, LeagueUserDay, TeamHero, League
 from pyramid.security import authenticated_userid
 from pyramid.view import view_config
 from sqlalchemy import and_
@@ -39,7 +39,7 @@ def leaderboard(request):
 
     def period_filter(period):
         try:
-            return int(period[-1]) - 1
+            return int(period)
         except:
             return "tournament"
 
@@ -47,6 +47,7 @@ def leaderboard(request):
     period_ = period_filter(period)
 
     player_heroes = []
+    league = session.query(League).filter(League.id == league_id).first()
     leagueq = session.query(LeagueUser).filter(LeagueUser.league == league_id)
     if period == "tournament":
         user = leagueq.filter(LeagueUser.username == user).first()
@@ -74,4 +75,4 @@ def leaderboard(request):
         player_heroes.append(heroes)
 
     return {'user': user, 'players': players, 'rank_by': rank_by, 'switch_to': switch_to, 'period': period,
-            'player_heroes': player_heroes}
+            'player_heroes': player_heroes, 'league': league}

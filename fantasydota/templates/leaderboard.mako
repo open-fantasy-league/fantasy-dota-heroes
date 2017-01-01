@@ -49,7 +49,7 @@ ${"period=%s" % period}
 </%def>
 
 <div id="leaderboardBlock" class="col-md-7">
-    Players chosen heroes will be shown only whilst transfer window closed. Points updated hourly.
+    Points updated hourly
     <h2>${rank_by.title()}</h2>
     <div>
         <ul class="w3-navbar w3-border-bottom w3-light-grey intronav">
@@ -81,13 +81,10 @@ ${"period=%s" % period}
                 <a>Period</a>
                 <div class="w3-dropdown-content w3-border">
                     <a href="/leaderboard?rank_by=${rank_by}&${friendOrGlobal(switch_to)}&period=tournament">Tournament</a>
-                    <a href="/leaderboard?rank_by=${rank_by}&${friendOrGlobal(switch_to)}&period=day1">Day 1</a>
-                    <a href="/leaderboard?rank_by=${rank_by}&${friendOrGlobal(switch_to)}&period=day2">Day 2</a>
-                    <a href="/leaderboard?rank_by=${rank_by}&${friendOrGlobal(switch_to)}&period=day3">Day 3</a>
-		            <a href="/leaderboard?rank_by=${rank_by}&${friendOrGlobal(switch_to)}&period=day4">Day 4</a>
-		            <a href="/leaderboard?rank_by=${rank_by}&${friendOrGlobal(switch_to)}&period=day5">Day 5</a>
-		            <a href="/leaderboard?rank_by=${rank_by}&${friendOrGlobal(switch_to)}&period=day6">Finals</a>
-	</div>
+                    % for i in range(league.current_day + 1):
+                        <a href="/leaderboard?rank_by=${rank_by}&${friendOrGlobal(switch_to)}&period=${i}">Day ${i+1}</a>
+	                % endfor
+	            </div>
             </li>
         </ul>
     </div>

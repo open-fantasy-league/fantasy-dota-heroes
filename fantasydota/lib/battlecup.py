@@ -1,8 +1,16 @@
 import random
 
-import transaction
-from fantasydota.models import User, League, Battlecup, BattlecupUser, BattlecupRound
+#import transaction
+from fantasydota.models import User, League, Battlecup, BattlecupUser, BattlecupRound, BattlecupUserRound
+from sqlalchemy import and_
 from sqlalchemy import func
+from sqlalchemy import or_
+
+
+class FakePlayer(object):
+    def __init__(self):
+        self.username = "FAKE_USER_FOR_BATTLECUP_BYES"
+        self.points = -9000
 
 
 def fight(players, round):
@@ -41,30 +49,78 @@ def make_battlecups(session, league_id, rounds, players, series_per_round):
     cup_counter = 1
     random.shuffle(players)
     new_bcups = 0
+    league = session.query(League).filter(League.id == league_id).first()
 
     # This is kind of susceptible to breaking if I have to remove bcups from database as id not reset
     highest_id = session.query(func.max(Battlecup.id)).scalar() or 0
+    # cups = (users_num / 8)
+    # if users_num % 8 != 0:
+    #     cups += 1
+    # for i in range(cups):
+    #     with transaction.manager:
+    #         session.add(Battlecup(3, 0))
+    #         transaction.commit()
+    # cup_counter = 1
+    # with transaction.manager:
+    #     for user in users:
+    #         if cup_counter > cups:
+    #             cup_counter = 1
+    #         session.add(BattlecupUser(cup_counter, user.username, user.user_id))
+    #         cup_counter += 1
+    #     transaction.commit()
+    print "cups", cups
+    for i in range(cups):
+        new_bc = Battlecup(league.id, league.current_day, rounds, series_per_round)
+        session.add(new_bc)
+        session.commit()
+
+    cup_counter = 0
+    queues = [[] for _ in xrange(cups)]
+    print len(players)
     for i, player in enumerate(players):
-        if cup_counter == 1:
-            league = session.query(League).filter(League.id == league_id).first()
-            new_bc = Battlecup(league.id, league.current_day, rounds, series_per_round)
-            with transaction.manager:
-                session.add(new_bc)
-                transaction.commit()
-            new_bcups += 1
-        with transaction.manager:
-            session.add(BattlecupUser(player.user, league_id, highest_id + new_bcups))
-            transaction.commit()
-
-        if i % 2 != 0:
-            # -1 is temporary. gets overwritten when we parse 1st game of the day
-            # when made at start day always going to be 0 for round right?
-            with transaction.manager:
-                session.add(BattlecupRound(highest_id + new_bcups, 0, -1, last_player.user, player.user))
-                transaction.commit()
-        else:
-            last_player = player
-
+        if cup_counter >= cups:
+            cup_counter = 0
+        session.add(BattlecupUser(player.user, league_id, highest_id + cup_counter + 1))
+        print "cup_counter: ", cup_counter
+        queues[cup_counter].append(player.user)
+        print len(queues[cup_counter])
         cup_counter += 1
-        if cup_counter > per_cup:
-            cup_counter = 1
+    print queues
+
+    for i, cup in enumerate(queues):
+        print len(cup)
+        byes = per_cup - len(cup)
+        b_id = highest_id + i + 1
+        for _ in range(byes):
+            mr_lucky = cup.pop()
+            session.add(BattlecupRound(b_id, 1, -1, mr_lucky,
+                                       None))
+            session.commit()
+            new_bcup_id = session.query(BattlecupRound.id). \
+                filter(and_(BattlecupRound.battlecup == b_id,
+                            or_(BattlecupRound.player_one == mr_lucky))).first()[0]
+            session.add(BattlecupUserRound(new_bcup_id, mr_lucky, 0, 0, 0, 0))
+            session.commit()
+        for j, player in enumerate(cup):
+            if j % 2 != 0:
+                print "highest_id + i + 1", highest_id + i + 1
+                print "bid: ", b_id
+                session.add(BattlecupRound(b_id, 1, -1, last_player, player))
+                session.commit()
+                new_bcup_id = session.query(BattlecupRound.id). \
+                    filter(and_(BattlecupRound.battlecup == b_id,
+                                or_(BattlecupRound.player_one == last_player))).first()[0]
+                session.add(BattlecupUserRound(new_bcup_id, last_player, 0, 0, 0, 0))
+                session.add(BattlecupUserRound(new_bcup_id, player, 0, 0, 0, 0))
+                session.commit()
+            else:
+                last_player = player
+                if j == len(cup) - 1:
+                    session.add(BattlecupRound(b_id, 1, -1, last_player,
+                                               None))
+                    session.commit()
+                    new_bcup_id = session.query(BattlecupRound.id). \
+                        filter(and_(BattlecupRound.battlecup == b_id,
+                                    or_(BattlecupRound.player_one == last_player))).first()[0]
+                    session.add(BattlecupUserRound(new_bcup_id, last_player, 0, 0, 0, 0))
+                    session.commit()
