@@ -1,0 +1,172 @@
+@import url(//fonts.googleapis.com/css?family=Roboto:300,400,600,700);
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5em;
+    padding-top: 30px;
+    padding-bottom: 80px;
+}
+h1,
+h2 {
+    font-size: 2.2em;
+    font-weight: 350;
+    border-style: none none solid none;
+    border-width: 0.04em;
+    border-color: #d3d3d3;
+    //font-variant: small-caps;
+}
+p {
+  font-weight: 300;
+}
+
+table { table-layout: fixed;
+        width: 100%;
+        float: left;
+
+        border-collapse: collapse;
+}
+
+.font-normal {
+  font-weight: 400;
+}
+.font-semi-bold {
+  font-weight: 600;
+}
+.font-bold {
+  font-weight: 700;
+}
+
+#mySexyBody form {
+                width:500px;
+                margin:10px auto;
+}
+
+/* Table css */
+
+tr > td
+{
+  padding-bottom: 2.5px;
+  padding-top: 2.5px;
+}
+
+.dateField input{
+width:80px;
+}
+
+#extraTableInfo div
+{padding-left:0px;
+padding-right:0px;}
+
+#tableDates form{
+    margin: 3px;
+    padding: 0px;
+}
+
+.domainTableHeader{width:400px;}
+.rankTableHeader{width:100px;}
+.weekTableHeader{width:100px;}
+/*.domainTableHeader{width:400px;}*/
+
+.tablePosition{font-size: 130%;}
+
+.topTenDomain{font-size: 120%;
+             width:400px;
+             overflow: hidden;
+             }
+
+.topTenDomain:hover {
+                     overflow: visible
+                     }
+
+.tableDomain{width:400px;
+             overflow: hidden;
+            }
+
+.tableDomain:hover {width:400px;
+                     overflow: visible
+                     }
+
+.fullUrlEntry {width:60px;
+               overflow: hidden;
+               }
+
+.fullUrlEntry:hover {width:60px;
+                     overflow: visible
+                     }
+
+[class*=MyArrow]{display:none;}
+
+.upMyArrow{color:lime;}
+.supMyArrow{color:green;}
+.sdownMyArrow{color:tomato;}
+.downMyArrow{color:red;}
+
+.search {
+                padding:8px 15px;
+                background:rgba(50, 50, 50, 0.2);
+                border:0px solid #dbdbdb;
+}
+.submit {
+                position:relative;
+                padding:6px 15px;
+                left:-8px;
+                border:2px solid #207cca;
+                background-color:#207cca;
+                color:#fafafa;
+}
+submit:hover  {
+                background-color:#fafafa;
+                color:#207cca;
+}
+
+/*Account css*/
+
+#addSearchForm div { display: inline-block;
+                    /*margin-top: 10px;*/
+                        }
+
+#message {color: red;}
+
+#successMessage {color: green;}  // this has been done kind of hackily
+
+#updatePassword > .pwd {display: block;}
+
+#change_pwd_but {display: inline-block;}
+
+#change_pwd_but ~ * {display: inline-block;}
+
+input {margin-right:5px;
+       margin-top: 5px;}
+#topBar input {margin-top: 0px;
+                margin-right: 0px;}
+#topBar form {margin:0px;}
+
+.userRow {font-weight: bold;
+}
+
+.outsideRanks {border-top: 2px solid black;}
+
+[class^=messageTrans] {font-weight: bold}
+.messageTransOpen {color: green}
+.messageTransClosed {color: red}
+
+.toSell {opacity: 0.5}
+
+.positionHeader {width: 60px}
+.rankingHeader {width: 60px}
+
+.hero_images {float:right;
+                            margin-right:6px;
+}
+
+.heroIcon {margin-bottom: 0px}
+img {margin-bottom: 0px}
+
+.bcupSeries {text-align: center;}
+
+.highlight {background-color: #3c0}
+[id^=heroTable] > tbody > tr:nth-child(odd) {background-color: #f2f2f2}
+
+// for battlecup page team table
+//#heroTable {width: 350px}
+
+[id^=heroTable] > .playerName{margin-top: 3px;}
