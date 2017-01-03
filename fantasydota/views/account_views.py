@@ -43,7 +43,7 @@ def login(request):
 @view_config(route_name='logout')
 def logout(request):
     headers = forget(request)
-    return HTTPFound(location='/', headers=headers)
+    return HTTPFound(location='/login', headers=headers)
 
 
 @view_config(route_name='register')
@@ -126,7 +126,7 @@ def forgot_password(request):
         return {"message": "You have already tried 2 password resets today. Please email directly if still having issues"}
     try:
         session.add(PasswordReset(userq.id, guid, request.remote_addr))
-        email_url = "localhost:6543/resetPasswordPage?u=" + str(userq.id) + "&guid="  # how not hardcode domain bit?
+        email_url = "https://www.fantasydota.eu/resetPasswordPage?u=" + str(userq.id) + "&guid="  # how not hardcode domain bit?
         email_url += quote_plus(guid)
         message = Message(subject="Fantasy Dota EU password reset",
                           sender="fantasydotaeu@gmail.com",

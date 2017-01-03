@@ -39,8 +39,8 @@
         <button type="submit">Submit</button>
     </form>
     <ul>
-        <li> Email is optional, however necessary to use password reset if you have forgotten yours</li>
-        <li> Passwords are encrypted and stored securely </li>
+        <li> Email is optional, however used for password reset</li>
+        <li> Passwords stored securely </li>
     </ul>
 </div>
 
