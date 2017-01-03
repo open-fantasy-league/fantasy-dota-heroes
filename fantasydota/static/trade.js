@@ -2,28 +2,24 @@ if (!transfers){
     $("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).attr("disabled","true");});
 }
 
-$(".tradeForm").each(function (){
-    var form = $(this);
-    var buyBtn = form.find('button[name=buyHero]');
-    var sellBtn = form.find('button[name=sellHero]');
-    var formID = form.attr('id');
-
-    function tradeOnclick(){
-        //$("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).attr("disabled","true");});
-        var action = $(this).attr('name'),
-        tradeUrl = (action == "buyHero") ? "/buyHeroLeague" : "/sellHeroLeague",
+var tradeOnclick = function tradeOnclick(event){
+        $("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).attr("disabled","true");});
+        var formID = event.data.form.attr('id'),
+        mode = event.data.mode,
+        action = event.data.form.find('button').attr('name'),
+        tradeUrlPre = (action == "buyHero") ? "/buyHero" : "/sellHero",
+        tradeUrlSuff = (mode == "league") ? "League" : "Bcup",
         formData = {
-            "hero": form.find('input[name=tradeHero]').val(),
-            "league": ${league.id}
+            "hero": event.data.form.find('input[name=tradeHero]').val(),
+            "league": league_id
         };
         if (transfers){
             $.ajax({
-                url: tradeUrl,
+                url: tradeUrlPre + tradeUrlSuff,
                 type: "POST",
                 data: formData,
-                //contentType: 'application/json',
                 success: function(data){
-                    //$("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).removeAttr("disabled");});
+                    $("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).removeAttr("disabled");});
                     var success = data.success,
                     message = data.message;
                     if (!success){
@@ -31,16 +27,11 @@ $(".tradeForm").each(function (){
                     }
                     else{
                         sweetAlert("Transaction completed");
-                        var heroRow = $("#" + data.hero + "TeamRow");
                         if (data.action == "sell"){
-                            heroRow.remove();
+                            $("#" + data.hero + "TeamRow").remove();
                         }
                         else{
-                            var new_row = $("#" + data.hero + "Row").clone();
-                            new_row.attr('id', data.hero + "TeamRow");
-                            new_row.find("button").replaceWith('<button type="submit" name="sellHero">Sell</button>');
-                            new_row.find("button").click(tradeOnclick);  // otherwise need reload page to resell
-                            $("#teamTable").append(new_row);
+                            addToTeam(data.hero);
                         }
                         $(".userCredits").text(data.new_credits);
                     }
@@ -52,16 +43,22 @@ $(".tradeForm").each(function (){
             });
         }
     }
-    buyBtn.click(tradeOnclick);
-    sellBtn.click(tradeOnclick);
+
+$(".tradeForm").each(function (){
+    var form = $(this);
+    var buyBtn = form.find('button[name=buyHero]');
+    var sellBtn = form.find('button[name=sellHero]');
+    buyBtn.click({form: form, mode: mode}, tradeOnclick);
+    sellBtn.click({form: form, mode: mode}, tradeOnclick);
 });
 
 function addToTeam(hero){
     var new_row = $("#" + hero + "Row").clone();
     new_row.attr('id', hero + "TeamRow");
     new_row.find("button").replaceWith('<button type="submit" name="sellHero">Sell</button>');
-    new_row.find("button").click(bcupTradeOnclick);  // otherwise need reload page to resell
+    var form = new_row.find(".tradeForm")
     $("#teamTable").append(new_row);
+    new_row.find("button").on("click", {form: form, mode: mode}, function(event){tradeOnclick(event)});  // otherwise need reload page to resell
 }
 
 function tryAddGroupHeroes(url){
@@ -70,6 +67,7 @@ function tryAddGroupHeroes(url){
             url: url,
             type: "POST",
             data: {"league": league_id},
+            dataType: "json",
             success: function(data){
                 var success = data.success,
                 message = data.message;
@@ -77,7 +75,8 @@ function tryAddGroupHeroes(url){
                     sweetAlert(message);
                 }
                 else{
-                    sweetAlert("Transaction completed");
+                    sweetAlert(data.message);
+                    $("[id*=TeamRow]").each(function(){$(this).remove()});
                     for (i=0; i<data.heroes.length; i++){
                         addToTeam(data.heroes[i]);
                     }
@@ -93,9 +92,12 @@ function tryAddGroupHeroes(url){
 }
 
 function tryAddYesterdayHeroes(){
-    tryAddGroupHeroes("/bcupTeamAddYesterday")
+    tryAddGroupHeroes("/bcupTeamAddYesterday");
 }
 
 function tryAddLeagueHeroes(){
-    tryAddGroupHeroes("/bcupTeamAddLeague")
+    tryAddGroupHeroes("/bcupTeamAddLeague");
 }
+
+$(".tryAddYesterdayHeroes").click(tryAddYesterdayHeroes);
+$(".tryAddLeagueHeroes").click(tryAddLeagueHeroes);

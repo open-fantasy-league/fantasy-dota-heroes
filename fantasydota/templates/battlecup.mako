@@ -133,119 +133,13 @@
 
 
 <script>
-//RARARARAGAGAGAH WHY DOES THIS BREAK WHEN MOVING TO EXTERNAL FILE!!!!
 var transfers = ${'true' if transfer_open else 'false'};
 var league_id = ${league.id};
+var mode = "bcup";
 
-if (!transfers){
-    $("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).attr("disabled","true");});
-}
-
-var tradeOnclick = function tradeOnclick(event){
-        //$("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).attr("disabled","true");});
-        console.log(event.data.form);
-        var formID = event.data.form.attr('id');
-        var action = event.data.form.find('button').attr('name');
-        tradeUrl = (action == "buyHero") ? "/buyHeroBcup" : "/sellHeroBcup",
-        formData = {
-            "hero": event.data.form.find('input[name=tradeHero]').val(),
-            "league": ${league.id}
-        };
-        if (transfers){
-            $.ajax({
-                url: tradeUrl,
-                type: "POST",
-                data: formData,
-                //contentType: 'application/json',
-                success: function(data){
-                    //$("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).removeAttr("disabled");});
-                    var success = data.success,
-                    message = data.message;
-                    if (!success){
-                        sweetAlert(message);
-                    }
-                    else{
-                        sweetAlert("Transaction completed");
-                        if (data.action == "sell"){
-                            $("#" + data.hero + "TeamRow").remove();
-                        }
-                        else{
-                            var new_row = $("#" + data.hero + "Row").clone();
-                            new_row.attr('id', data.hero + "TeamRow");
-                            new_row.find("button").replaceWith('<button type="submit" name="sellHero">Sell</button>');
-                            new_row.find("button").click(tradeOnclick);  // otherwise need reload page to resell
-                            $("#teamTable").append(new_row);
-                        }
-                        $(".userCredits").text(data.new_credits);
-                    }
-                },
-                failure: function(data){
-                    $("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).removeAttr("disabled");});
-                    sweetAlert("Something went wrong. oops!");
-                }
-            });
-        }
-    }
-
-$(".tradeForm").each(function (){
-    var form = $(this);
-    var buyBtn = form.find('button[name=buyHero]');
-    var sellBtn = form.find('button[name=sellHero]');
-    buyBtn.click({form: form}, tradeOnclick);
-    sellBtn.click({form: form}, tradeOnclick);
-});
-
-function addToTeam(hero){
-    var new_row = $("#" + hero + "Row").clone();
-    var form = new_row.find(".tradeForm");
-    new_row.attr('id', hero + "TeamRow");
-    new_row.find("button").replaceWith('<button type="submit" name="sellHero">Sell</button>');
-    new_row.find("button").click({form: form}, tradeOnclick);  // otherwise need reload page to resell
-    $("#teamTable").append(new_row);
-}
-
-function tryAddGroupHeroes(url){
-    if (transfers){
-        $.ajax({
-            url: url,
-            type: "POST",
-            data: {"league": league_id},
-            dataType: "json",
-            success: function(data){
-                var success = data.success,
-                message = data.message;
-                if (!success){
-                    sweetAlert(message);
-                }
-                else{
-                    sweetAlert(data.message);
-                    console.log(data.heroes);
-                    $("[id*=TeamRow]").each(function(){$(this).remove()});
-                    for (i=0; i<data.heroes.length; i++){
-                        addToTeam(data.heroes[i]);
-                    }
-                    $(".userCredits").text(data.new_credits);
-                }
-            },
-            failure: function(data){
-                $("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).removeAttr("disabled");});
-                sweetAlert("Something went wrong. oops!");
-            }
-        });
-    }
-}
-
-function tryAddYesterdayHeroes(){
-    tryAddGroupHeroes("/bcupTeamAddYesterday");
-}
-
-function tryAddLeagueHeroes(){
-    tryAddGroupHeroes("/bcupTeamAddLeague");
-}
-
-$(".tryAddYesterdayHeroes").click(tryAddYesterdayHeroes);
-$(".tryAddLeagueHeroes").click(tryAddLeagueHeroes);
 </script>
+
+<script src="/static/trade.js"/>
 %endif
 
 

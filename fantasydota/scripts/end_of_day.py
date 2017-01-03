@@ -22,7 +22,7 @@ def main():
             })
             session.query(TeamHero).filter(and_(TeamHero.league == league.id,
                                                 TeamHero.is_battlecup == True)).delete()
-            if league.id == 4979:
+            if league.id == 49795:
                 recalibrate_bcup_hero_values(session, league.id)
             league.current_day += 1
             league.battlecup_status = 0  # switch bcup view to pick team view
