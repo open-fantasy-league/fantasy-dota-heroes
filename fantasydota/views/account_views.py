@@ -11,6 +11,7 @@ from pyramid.security import remember, forget, authenticated_userid
 from pyramid.view import view_config
 from pyramid_mailer import get_mailer
 from pyramid_mailer.message import Message
+from sqlalchemy import func
 
 
 @view_config(route_name='login', renderer='../templates/login.mako')
@@ -27,7 +28,7 @@ def login(request):
                 if user.validate_password(request.params.get('password')):
                     headers = remember(request, user.username)
                     userq.update({User.last_login: datetime.datetime.now()})
-                    return HTTPFound('/viewLeague?league=4874', headers=headers)
+                    return HTTPFound('/viewLeague', headers=headers)
                 else:
                     headers = forget(request)
                     message = "Password did not match stored value for %s" % user.username
@@ -117,20 +118,25 @@ def forgot_password(request):
     if not username or not userq:
         return {"message": "Username for password reset did not match. Please check filled in correctly"}
     elif not userq.email:
-        return {"message": "Sorry you did not have an email address assosciated with this account. Please email fantasydotaeu@gmail.com directly"}
-    print "userq.id", userq.id
+        return {"message": "Sorry you did not have an email address associated with this account. Please email fantasydotaeu@gmail.com directly"}
+
     guid = bcrypt.encrypt(str(userq.id))
-    session.add(PasswordReset(userq.id, guid))
-    email_url = "localhost:6543/resetPasswordPage?u=" + str(userq.id) + "&guid="  # how not hardcode domain bit?
-    email_url += quote_plus(guid)
-    print email_url
-    message = Message(subject="Fantasy Dota EU password reset",
-                      sender="fantasydotaeu@gmail.com",
-                      recipients=["jbknight07@gmail.com"], # userq.email
-                      body="Hi %s. If you did not request a password reset, either ignore this email or report incident to me."
-                           "Otherwise please click this link to reset: %s" % (userq.username, email_url))
-    mailer = get_mailer(request)
-    mailer.send(message)
+    if session.query(func.count(PasswordReset)).filter(PasswordReset.time > datetime.datetime.now() - datetime.timedelta(days=1)).\
+        scalar() > 2:
+        return {"message": "You have already tried 2 password resets today. Please email directly if still having issues"}
+    try:
+        session.add(PasswordReset(userq.id, guid, request.remote_addr))
+        email_url = "localhost:6543/resetPasswordPage?u=" + str(userq.id) + "&guid="  # how not hardcode domain bit?
+        email_url += quote_plus(guid)
+        message = Message(subject="Fantasy Dota EU password reset",
+                          sender="fantasydotaeu@gmail.com",
+                          recipients=[userq.email],
+                          body="Hi %s.\n\nIf you did not request a password reset, either ignore this email or report incident to me.\n\n"
+                               "Otherwise please click this link to reset: %s\n\nThis link will expire in 24 hours" % (userq.username, email_url))
+        mailer = get_mailer(request)
+        mailer.send(message)
+    except:
+        return {"message": "Unexpected error occurred when sending reset email"}
     return {"message": "Instructions for password reset have been emailed to you"}
 
 
@@ -139,9 +145,13 @@ def reset_password_page(request):
     session = DBSession()
     guid = request.params.get('guid')
     user_id = request.params.get('u')
-    if not session.query(PasswordReset).filter(PasswordReset.user_id == user_id).first().validate_guid(guid):
+    reset = session.query(PasswordReset).filter(PasswordReset.user_id == user_id).first()
+    if not reset.validate_guid(guid):
         raise HTTPForbidden()
     else:
+        # Link is over 24 hours old
+        if reset.time + datetime.timedelta(days=1) < datetime.datetime.now():
+            raise HTTPForbidden()
         return {"guid": guid, "user_id": user_id}
 
 
@@ -171,7 +181,6 @@ def reset_password(request):
     return HTTPFound(location=request.route_url('login', _query=params))
 
 
-
 @view_config(route_name='account_settings', renderer="../templates/account_settings.mako")
 def account_settings(request):
     session = DBSession()
@@ -190,9 +199,23 @@ def update_email_settings(request):
         return HTTPFound('/login')
     new_email = request.params.get('email')
     contactable = True if request.params.get('emailContact') == "on" else False
-    print contactable
     session.query(User).filter(User.username == username).\
         update({User.contactable: contactable, User.email: new_email})
     params = {"message": "Congratulations! Email settings successfully updated",
               "message_type": "change_password_success"}
+    return HTTPFound(location=request.route_url('account_settings', _query=params))
+
+
+@view_config(route_name='update_game_settings')
+def update_game_settings(request):
+    session = DBSession()
+    username = authenticated_userid(request)
+    if not username:
+        return HTTPFound('/login')
+    new_email = request.params.get('email')
+    autofill = True if request.params.get('emailContact') == "on" else False
+    session.query(User).filter(User.username == username).\
+        update({User.autofill_team: autofill, User.email: new_email})
+    params = {"message": "Update successful",
+              "message_type": "success"}
     return HTTPFound(location=request.route_url('account_settings', _query=params))

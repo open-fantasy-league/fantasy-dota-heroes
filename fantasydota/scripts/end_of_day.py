@@ -1,5 +1,6 @@
 import transaction
 from fantasydota.lib.battlecup import make_battlecups
+from fantasydota.lib.hero import recalibrate_bcup_hero_values
 from fantasydota.lib.session_utils import make_session
 from fantasydota.models import League, TeamHero, BattlecupTeamHeroHistory, BattlecupRound, Battlecup
 from fantasydota.scripts.update_hero_values import declare_bcup_rounds_winners
@@ -21,6 +22,8 @@ def main():
             })
             session.query(TeamHero).filter(and_(TeamHero.league == league.id,
                                                 TeamHero.is_battlecup == True)).delete()
+            if league.id == 4979:
+                recalibrate_bcup_hero_values(session, league.id)
             league.current_day += 1
             league.battlecup_status = 0  # switch bcup view to pick team view
         transaction.commit()

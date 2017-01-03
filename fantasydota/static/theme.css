@@ -126,6 +126,8 @@ submit:hover  {
 
 #message {color: red;}
 
+#successMessage {color: green;}  // this has been done kind of hackily
+
 #updatePassword > .pwd {display: block;}
 
 #change_pwd_but {display: inline-block;}
@@ -152,18 +154,19 @@ input {margin-right:5px;
 .positionHeader {width: 60px}
 .rankingHeader {width: 60px}
 
-.hero_images_leaderboard {float:right;
+.hero_images {float:right;
                             margin-right:6px;
 }
 
 .heroIcon {margin-bottom: 0px}
 img {margin-bottom: 0px}
 
-#heroTable {width:100%;}
-#heroTable > .playerName{margin-top: 3px;}
-
 .bcupSeries {text-align: center;}
 
 .highlight {background-color: #3c0}
-.playerName{font-weight: bold}
-#heroTable > tbody > tr:nth-child(odd) {background-color: #f2f2f2}
+[id^=heroTable] > tbody > tr:nth-child(odd) {background-color: #f2f2f2}
+
+// for battlecup page team table
+//#heroTable {width: 350px}
+
+[id^=heroTable] > .playerName{margin-top: 3px;}

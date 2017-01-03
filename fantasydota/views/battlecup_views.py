@@ -1,5 +1,5 @@
 from fantasydota.lib.trade import sell, buy
-from pyramid.httpexceptions import HTTPForbidden
+from pyramid.httpexceptions import HTTPForbidden, HTTPFound
 from pyramid.security import authenticated_userid
 from pyramid.view import view_config
 
@@ -14,6 +14,9 @@ from sqlalchemy import func
 def battlecup(request):
     session = DBSession()
     user = authenticated_userid(request)
+
+    if not user:
+        return HTTPFound('/login')
 
     league_id = int(request.params.get("league")) if request.params.get("league") else None \
         or request.registry.settings["default_league"]
@@ -207,6 +210,10 @@ def battlecup_json(request):
     league_id = int(request.params.get("league"))
 
     battlecup = session.query(Battlecup).filter(Battlecup.id == battlecup_id).first()
+    if battlecup.day != session.query(League.current_day).filter(League.id == league_id).scalar():
+        old_hero = True
+    else:
+        old_hero = False
     print "Battlecup", battlecup.current_round
     match_count = 2**(battlecup.total_rounds - 1)
     player_names, hero_imgs, results = [(None, None) for _ in xrange(match_count)], [], []
@@ -231,20 +238,30 @@ def battlecup_json(request):
     for i, round_ in enumerate(bcup_round_one):
         player_names[i] = (round_.player_one, round_.player_two)
 
+        if old_hero:
+            hero_q = session.query(BattlecupTeamHeroHistory.hero_name).\
+                         filter(and_(BattlecupTeamHeroHistory.league == league_id,
+                                     BattlecupTeamHeroHistory.day == battlecup.day))
+            hero_q_1 = hero_q.filter(BattlecupTeamHeroHistory.user == round_.player_one)
+
+            hero_q_2 = hero_q.filter(BattlecupTeamHeroHistory.user == round_.player_two)
+        else:
+            hero_q = session.query(TeamHero.hero_name).\
+                         filter(and_(TeamHero.league == league_id,
+                                     TeamHero.is_battlecup.is_(True)
+                                     ))
+            hero_q_1 = hero_q.filter(TeamHero.user == round_.player_one)
+
+            hero_q_2 = hero_q.filter(TeamHero.user == round_.player_two)
+
         p1_heroes = {"pname": round_.player_one,
                      "heroes": [
-                         x[0] for x in session.query(TeamHero.hero_name).
-                         filter(and_(TeamHero.league == league_id,
-                                     TeamHero.is_battlecup.is_(True),
-                                     TeamHero.user == round_.player_one)).all()
+                         x[0] for x in hero_q_1.all()
                          ]}
 
         p2_heroes = {"pname": round_.player_two,
                      "heroes": [
-                         x[0] for x in session.query(TeamHero.hero_name).
-                         filter(and_(TeamHero.league == league_id,
-                                     TeamHero.is_battlecup.is_(True),
-                                     TeamHero.user == round_.player_two)).all()
+                         x[0] for x in hero_q_2.all()
                          ]}
 
         hero_imgs.extend([p1_heroes, p2_heroes])

@@ -41,7 +41,8 @@ def main(global_config, **settings):
     Base.metadata.create_all(engine)
     create_tables(DBSession)
 
-    authn_policy = AuthTktAuthenticationPolicy('sosecret', hashalg='sha512')
+    # Need https set up on local machine for secure True to work locally
+    authn_policy = AuthTktAuthenticationPolicy('sosecret', hashalg='sha512', http_only=True)#, secure=True, )
     authz_policy = ACLAuthorizationPolicy()
 
     config = Configurator(settings=settings, authentication_policy=authn_policy,
@@ -64,6 +65,7 @@ def main(global_config, **settings):
     config.add_route('reset_password', '/resetPassword')
     config.add_route('reset_password_page', '/resetPasswordPage')
     config.add_route('update_email_settings', '/updateEmailSettings')
+    config.add_route('update_game_settings', '/gameSettings')
 
     config.add_route("add_friend", '/addFriend')
     config.add_route('trade_shares', '/tradeShares')

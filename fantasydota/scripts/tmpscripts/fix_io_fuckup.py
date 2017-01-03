@@ -2,7 +2,7 @@ import transaction
 from sqlalchemy import and_
 from sqlalchemy import desc
 from fantasydota.lib.session_utils import make_session
-from fantasydota.models import Hero, Result, TeamHero, User, BattlecupUser, BattlecupUserPoints, Battlecup
+from fantasydota.models import Hero, Result, TeamHero, User, BattlecupUser, Battlecup
 
 
 

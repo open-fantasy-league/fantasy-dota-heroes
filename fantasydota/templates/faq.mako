@@ -21,8 +21,8 @@ Send feedback/hatemail to fantasydotaeu@gmail.com
 </p>
 <h2>Are there any prizes?</h2>
 <p>
-One "The King's New Journey" terrain for overall league winner
-(If points are tied, winner will be decided by wins, picks, bans in that order)
+"The King's New Journey" terrain for overall league winner
+(If points are tied, winner will be decided by wins, picks, bans in that order. For identical teams winner drawn from hat)
 </br>
 Another "The King's New Journey" terrain for best battlecup performer.
 (Ranked by most battlecup wins, most 2nd places, 3rd places...etc. In the event of a tie whoever earned most battlecup points throughout the whole tournament will be declared winner)

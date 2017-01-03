@@ -18,6 +18,8 @@ def leaderboard(request):
     if show_friend:
         switch_to = "global"
         friends = [kek[0] for kek in session.query(Friend.friend).filter(Friend.user == user).all()]
+        if user:
+            friends.append(user)
     else:
         switch_to = "friend"
     period = request.params.get("period") or "tournament"
@@ -52,7 +54,7 @@ def leaderboard(request):
     if period == "tournament":
         user = leagueq.filter(LeagueUser.username == user).first()
         if show_friend:
-            players = leagueq.filter(or_(LeagueUser.username.in_(friends), LeagueUser.username == user)).\
+            players = leagueq.filter(LeagueUser.username.in_(friends)).\
                 order_by(desc(rank_)).limit(100).all()
         else:
             players = leagueq.order_by(desc(rank_)).limit(100).all()

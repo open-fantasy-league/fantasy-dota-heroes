@@ -12,7 +12,7 @@
     Login to fantasy dota heroes
 </%def>
 
-<div id="message">
+<div id=${"successMessage" if message and 'have been emailed to you' in message else "message"}>
     % if message:
         ${message}
     % endif

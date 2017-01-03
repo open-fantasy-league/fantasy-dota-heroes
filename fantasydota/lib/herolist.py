@@ -299,10 +299,10 @@ heroes = [
       "id": 76,
       "name": "Outworld Devourer"
     },
-    {
-      "id": 77,
-      "name": "Lycan"
-    },
+    # {
+    #   "id": 77,
+    #   "name": "Lycan"
+    # },
     {
       "id": 78,
       "name": "Brewmaster"
@@ -323,10 +323,10 @@ heroes = [
       "id": 82,
       "name": "Meepo"
     },
-    {
-      "id": 83,
-      "name": "Treant Protector"
-    },
+    # {
+    #   "id": 83,
+    #   "name": "Treant Protector"
+    # },
     {
       "id": 84,
       "name": "Ogre Magi"
@@ -419,10 +419,10 @@ heroes = [
       "id": 107,
       "name": "Earth Spirit"
     },
-    # {
-    #   "id": 108,
-    #   "name": "Underlord"
-    # },
+    {
+      "id": 108,
+      "name": "Underlord"
+    },
     {
       "id": 109,
       "name": "Terrorblade"
@@ -431,10 +431,10 @@ heroes = [
       "id": 110,
       "name": "Phoenix"
     },
-    {
-      "id": 105,
-      "name": "Techies"
-    },
+    # {
+    #   "id": 105,
+    #   "name": "Techies"
+    # },
     {
       "id": 111,
       "name": "Oracle"
@@ -443,8 +443,8 @@ heroes = [
       "id": 112,
       "name": "Winter Wyvern"
     },
-    # {
-    #   "id": 113,
-    #   "name": "Arc Warden"
-    # }
+    {
+      "id": 113,
+      "name": "Arc Warden"
+    }
 ]

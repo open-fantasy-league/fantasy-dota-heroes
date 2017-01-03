@@ -10,6 +10,8 @@ def start_of_day():
     for league in session.query(League).filter(League.status == 1).all():
         rounds = 4  # temp
         series_per_round = "2,1,1,1"
+
+        auto_fill_teams(league)
         players = session.query(TeamHero.user).\
             filter(and_(TeamHero.is_battlecup.is_(True),
                         TeamHero.league == league.id)).group_by(TeamHero.user).all()

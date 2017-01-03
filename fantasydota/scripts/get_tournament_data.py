@@ -40,11 +40,11 @@ def get_match_details(match_id):
         "key=%s&match_id=%s" % (APIKEY, match_id))
 
 
-def add_matches(session, tournament_id):
+def add_matches(session, tournament_id, tstamp_from=0):
     match_list_json = get_league_match_list(tournament_id)
 
     matches = [(match["match_id"], match["series_id"]) for match in match_list_json["result"]["matches"]
-               if match["start_time"] > 0]
+               if match["start_time"] > tstamp_from]
     print "matches", matches
     for match, series_id in matches:
         with transaction.manager:
@@ -99,8 +99,17 @@ def add_matches(session, tournament_id):
 
 def main():
     session = make_session()
-    add_matches(session, 4874)
-    add_matches(session, 4979)
+    #add_matches(session, 4874)
+    #add_matches(session, 4979)
+
+    # for calibration for esl genting
+    t = 1482627282  # christmas!!!
+    # add_matches(session, 4958, t)  # royal arena
+    # add_matches(session, 5077, t)  # 5077 https://www.dotabuff.com/esports/leagues/5077
+    # add_matches(session, 4920, t)  # 4920 https://www.dotabuff.com/esports/leagues/4920
+    # add_matches(session, 4665, t)  # https://www.dotabuff.com/esports/leagues/4665
+    add_matches(session, 4177, t)  # https://www.dotabuff.com/esports/leagues/4177
+    add_matches(session, 4682, t)  # https://www.dotabuff.com/esports/leagues/4665
 
 if __name__ == "__main__":
     main()

@@ -39,6 +39,8 @@ class User(Base):
     registered_on = Column(Date, default=func.now())
     last_login = Column(Date, default=func.now())
     contactable = Column(Boolean, default=False)
+    autofill_team = Column(Boolean, default=False)
+    battlecup_wins = Column(Integer, default=0)
 
     def __init__(self, username, password, email=""):
         self.username = username
@@ -55,10 +57,13 @@ class PasswordReset(Base):
     user_id = Column(Integer, ForeignKey(User.id))
     guid = Column(String(300), nullable=False)
     time = Column(DateTime, default=func.now())
+    ip = Column(String(30))  # This is so can ip block anyone who spam resets passwords for someone
+    counter = Column(Integer, default=0)  # Don't let people get spammed
 
-    def __init__(self, user_id, guid):
+    def __init__(self, user_id, guid, ip):
         self.user_id = user_id
         self.guid = guid
+        self.ip = ip
 
     def validate_guid(self, guid):
         return bcrypt.verify(str(self.user_id), guid)

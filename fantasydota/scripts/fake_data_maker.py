@@ -8,7 +8,7 @@ from fantasydota.scripts.start_of_day import start_of_day
 
 def main():
     session = make_session(False)
-    for i in range(40):
+    for i in range(105):
         username = "tpain" + str(i)
         session.add(User(username, "aaaaaa"))
         session.flush()

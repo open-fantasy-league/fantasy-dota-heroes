@@ -33,7 +33,7 @@
                     % elif pbcup.day == league.current_day - 1:
                         Yesterday
                     % else:
-                        Day ${pbcup.day}
+                        Day ${pbcup.day + 1}
                     % endif
                 </a>
             </li>
@@ -68,6 +68,11 @@
             <tr>
                 <th class="heroHeader">Hero</th>
                 <th class="valueHeader">Value</th>
+                <th class="heroPointsHeader">Points</th>
+                <th class="picksHeader">Picks</th>
+                <th class="bansHeader">Bans</th>
+                <th class="winsHeader">Wins</th>
+                <th class="sellHeader">Sell</th>
             </tr>
             % for hero in team:
                 <tr class="teamRow" id="${hero.id}TeamRow">
@@ -75,6 +80,10 @@
                         ${hero.name}
                     </td>
                     <td class="valueEntry">${hero.value}</td>
+                    <td class="heroPointsEntry">${hero.points}</td>
+                    <td class="picksEntry">${hero.picks}</td>
+                    <td class="bansEntry">${hero.bans}</td>
+                    <td class="winsEntry">${hero.wins}</td>
                     <td class="tradeEntry">
                         <form name="tradeForm" id="${hero.id}TradeForm" class="tradeForm" onsubmit="return false;">
                             <input type="hidden" value="${hero.id}" name="tradeHero"/>
@@ -243,16 +252,59 @@ $(".tryAddLeagueHeroes").click(tryAddLeagueHeroes);
 
 % if not transfer_open:
 
-    <div id="battlecupBlock" class="col-md-9">
+    <div id="battlecupBlock" class="col-md-12">
+    % if battlecup.day == 0:
+        <div class="bcupSeries col-md-3" style="width: 230px; margin-right: 40px">
+            <a href="https://www.dotabuff.com/esports/leagues/5018" target="_blank">Group A 1st games</a>
+        </div>
+        <div class="bcupSeries col-md-3" style="width: 230px; margin-right: 40px">
+            <a href="https://www.dotabuff.com/esports/leagues/5018" target="_blank">Group B 1st games</a>
+        </div>
+        <div class="bcupSeries col-md-3" style="width: 230px; margin-right: 40px">
+            <a href="https://www.dotabuff.com/esports/leagues/5018" target="_blank">Group A winners series</a>
+        </div>
+        <div class="bcupSeries col-md-3" style="width: 230px; margin-right: 40px">
+            <a href="https://www.dotabuff.com/esports/leagues/5018" target="_blank">Group B winners series</a>
+        </div>
+    % elif battlecup.day == 1:
+        <div class="bcupSeries col-md-3" style="width: 230px; margin-right: 40px">
+            <a href="https://www.dotabuff.com/esports/leagues/5018" target="_blank">Group A losers series</a>
+        </div>
+        <div class="bcupSeries col-md-3" style="width: 230px; margin-right: 40px">
+            <a href="https://www.dotabuff.com/esports/leagues/5018" target="_blank">Group B losers series</a>
+        </div>
+        <div class="bcupSeries col-md-3" style="width: 230px; margin-right: 40px">
+            <a href="https://www.dotabuff.com/esports/leagues/5018" target="_blank">Group A final series</a>
+        </div>
+        <div class="bcupSeries col-md-3" style="width: 230px; margin-right: 40px">
+            <a href="https://www.dotabuff.com/esports/leagues/5018" target="_blank">Group B final series</a>
+        </div>
+    % endif
         <div id="battlecupBracket">
         </div>
     </div>
-    <div id="tableContainer" class="col-md-3">
-        <table class="sortable" id="heroTable">
+    <div id="tableContainer" class="row">
+    <div class="col-l-4 col-md-4">
+        <table id="heroTable1">
             <tr>
-                <th class="teamHeader"><h4>Teams</h4></th>
+                <th class="teamHeader"></th>
             </tr>
         </table>
+    </div>
+    <div class="col-l-4 col-md-4">
+        <table id="heroTable2">
+            <tr>
+                <th class="teamHeader"></th>
+            </tr>
+        </table>
+    </div>
+    <div class="col-l-4 col-md-4">
+        <table id="heroTable3">
+            <tr>
+                <th class="teamHeader"></th>
+            </tr>
+        </table>
+    </div>
     </div>
 
     <script>
@@ -277,7 +329,6 @@ $(".tryAddLeagueHeroes").click(tryAddLeagueHeroes);
         ]
       ]
     };
-    console.log(singleElimination1);
         $.ajax({
                 url: "/battlecupJson?battlecup_id=${battlecup_id}&league=${league.id}",
                 type: "GET",
@@ -288,32 +339,40 @@ $(".tryAddLeagueHeroes").click(tryAddLeagueHeroes);
                     console.log(singleElimination);
                     $('#battlecupBracket').bracket({
                         init: singleElimination,
-                        teamWidth: 200,
-                        matchMargin: 100});
+                        teamWidth: 150,
+                        matchMargin: 30,
+                        roundMargin: 80
+                        });
+                    var player_count = hero_imgs.length
                     hero_imgs.forEach(function(element, index){
                         var name = element["pname"],
                         h_imgs = element["heroes"];
                         console.log(index);
                         console.log(h_imgs);
                         if (name != null){
-                            var newRow = "<tr class='" + name + "PRow'><td class='playerName'>" + name + "</td><td></td><td></td><td></td></tr>"
-                                + "<tr class='listHeroes'>";
+                            var newRow = "<tr class='" + name + "PRow listHeroes'><td class='playerName'>" + name + "</td><td class='hero_images'>";
                             if (h_imgs.length > 0){
                             for (j=0; j < h_imgs.length; j++){
-                                newRow+= "<td class='teamHeroIcon'><img class='heroIcon' src='/static/images/" + h_imgs[j].replace(" ", "_") + "_icon.png' \></td>";
+                                newRow+= "<img class='heroIcon' src='/static/images/" + h_imgs[j].replace(/ /g, "_") + "_icon.png' \>";
                             }}
-                            newRow += "</tr>";
-                            $("#heroTable").append(newRow);
+                            newRow += "</td></tr>";
+                            if (player_count / 3 > index){
+                                $("#heroTable1").append(newRow);
+                            }
+                            else if (2 * player_count / 3 > index){
+                                $("#heroTable2").append(newRow);
+                            }
+                            else{
+                                $("#heroTable3").append(newRow);
+                            }
                         }
                         $(".blabel").filter(function(index) { return $(this).text() === name; }).hover(function(){
-                            var pRow = $("#heroTable").find("." +name + "PRow");
+                            var pRow = $("[id*=heroTable]").find("." +name + "PRow");
                             pRow.addClass('highlight');
-                            pRow.next().addClass('highlight');
                         },
                             function(){
-                                var pRow = $("#heroTable").find("." +name + "PRow");
+                                var pRow = $("[id*=heroTable]").find("." +name + "PRow");
                                 pRow.removeClass("highlight");
-                                pRow.next().removeClass('highlight');
                             }
                         );
                     })

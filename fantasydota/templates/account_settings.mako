@@ -33,4 +33,13 @@
             <button type="submit" id="change_pwd_but">Change my password</button>
         </form>
     </div>
+
+    <div>
+    <h5>Game settings</h5>
+        <form id="gameSettings" action='/gameSettings'>
+            <input type="checkbox" name="autofillTeam" ${"checked" if user.autofill_team else ""}>
+            Automatically pick random team to enter battlecups if none chosen
+            <button type="submit" id="change_pwd_but">Update game settings/button>
+        </form>
+    </div>
 </div>

@@ -44,7 +44,7 @@
         <a href="${request.route_path('view_league')}">League</a>
       </div>
       <div id="battlecupBtn" class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-        <a href="/battlecup">Battlecup</a>
+        <a href="/battlecup">Battlecups</a>
       </div>
       <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
         <a href="/rules">Rules</a>

@@ -1,7 +1,8 @@
 import random
 
 #import transaction
-from fantasydota.models import User, League, Battlecup, BattlecupUser, BattlecupRound, BattlecupUserRound
+from fantasydota.models import User, League, Battlecup, BattlecupUser, BattlecupRound, BattlecupUserRound, TeamHero, \
+    Hero
 from sqlalchemy import and_
 from sqlalchemy import func
 from sqlalchemy import or_
@@ -124,3 +125,26 @@ def make_battlecups(session, league_id, rounds, players, series_per_round):
                                     or_(BattlecupRound.player_one == last_player))).first()[0]
                     session.add(BattlecupUserRound(new_bcup_id, last_player, 0, 0, 0, 0))
                     session.commit()
+
+
+def auto_fill_teams(session, league):
+    autofill_users = session.query(User).filter(User.autofill_team.is_(True)).all()
+    for user in autofill_users:
+        if not session.query(TeamHero).filter(and_(TeamHero.league == league.id,
+                                               TeamHero.is_battlecup.is_(True),
+                                               TeamHero.user == user.username)).first():
+            generate_team(session, league.id, user.username)
+    session.commit()
+
+
+def generate_team(session, league, username):
+    heroes = session.query(Hero).filter(Hero.is_battlecup.is_(True)).filter(Hero.league == league).all()
+    value_counter = 0
+    for i in range(5):
+        if i == 0:
+            filtered_heroes = heroes
+        elif value_counter > (i+1) * 9.5:
+            filtered_heroes = [hero for hero in heroes if hero.value < 9.5 and hero.value + value_counter < 50.]
+        else:
+            filtered_heroes = [hero for hero in heroes if hero.value > 9.5 and hero.value + value_counter < 50.]
+        session.add(TeamHero(username, random.choice(filtered_heroes), league, True))

@@ -4,7 +4,7 @@ from operator import and_
 
 import transaction
 from fantasydota.lib.session_utils import make_session
-from fantasydota.models import TeamHero, User, Hero, Result, BattlecupUserPoints
+from fantasydota.models import TeamHero, User, Hero, Result
 from fantasydota.util.random_function import bprint
 
 

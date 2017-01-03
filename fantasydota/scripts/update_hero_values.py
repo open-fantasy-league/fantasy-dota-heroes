@@ -192,21 +192,22 @@ def update_hero_values(session, league):
     for result in new_results:
         res = result.result_str
         with transaction.manager:
-            heroq = session.query(Hero).filter(and_(Hero.id == result.hero,
-                                                    Hero.is_battlecup.is_(False),
-                                                    Hero.league == league_id)).first()
-            if not heroq: # temp for no underlord
-                continue  #TODO remove!!!
-            print result.match_id
-            print "Hero id: ", result.hero
-            if "p" in res:
-                heroq.picks += 1
-            if "w" in res:
-                heroq.wins += 1
-            if "b" in res:
-                heroq.bans += 1
-            print "Would add %s to hero points", Result.result_to_value(res)
-            heroq.points += Result.result_to_value(res)
+            # More than one because we have battlecup and league
+            heroq_all = session.query(Hero).filter(and_(Hero.id == result.hero,
+                                                    Hero.league == league_id)).all()
+            if not heroq_all:  # temp for no underlord
+                continue  # TODO remove!!!
+            for heroq in heroq_all:
+                print result.match_id
+                print "Hero id: ", result.hero
+                if "p" in res:
+                    heroq.picks += 1
+                if "w" in res:
+                    heroq.wins += 1
+                if "b" in res:
+                    heroq.bans += 1
+                print "Would add %s to hero points", Result.result_to_value(res)
+                heroq.points += Result.result_to_value(res)
 
             transaction.commit()
 
