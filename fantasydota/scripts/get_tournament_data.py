@@ -99,8 +99,8 @@ def add_matches(session, tournament_id, tstamp_from=0):
 
 def main():
     session = make_session()
-    add_matches(session, 4874)
-    add_matches(session, 4979)
+    #add_matches(session, 4874)  # boston
+    add_matches(session, 5018, 1483479256)  # esl genting
 
     # for calibration for esl genting
     t = 1482627282  # christmas!!!

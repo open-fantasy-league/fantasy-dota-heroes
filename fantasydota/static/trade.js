@@ -99,5 +99,7 @@ function tryAddLeagueHeroes(){
     tryAddGroupHeroes("/bcupTeamAddLeague");
 }
 
-$(".tryAddYesterdayHeroes").click(tryAddYesterdayHeroes);
-$(".tryAddLeagueHeroes").click(tryAddLeagueHeroes);
+if (mode != "league"){
+    $(".tryAddYesterdayHeroes").click(tryAddYesterdayHeroes);
+    $(".tryAddLeagueHeroes").click(tryAddLeagueHeroes);
+}

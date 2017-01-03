@@ -102,61 +102,10 @@
 
 <script>
 var transfers = ${'true' if league.transfer_open else 'false'};
-if (!transfers){
-    $("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).attr("disabled","true");});
-}
-$(".tradeForm").each(function (){
-    var form = $(this);
-    var buyBtn = form.find('button[name=buyHero]');
-    var sellBtn = form.find('button[name=sellHero]');
-    var formID = form.attr('id');
+var league_id = ${league.id};
+var mode = "league";
 
-    function tradeOnclick(){
-        //$("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).attr("disabled","true");});
-        var action = $(this).attr('name'),
-        tradeUrl = (action == "buyHero") ? "/buyHeroLeague" : "/sellHeroLeague",
-        formData = {
-            "hero": form.find('input[name=tradeHero]').val(),
-            "league": ${league.id}
-        };
-        if (transfers){
-            $.ajax({
-                url: tradeUrl,
-                type: "POST",
-                data: formData,
-                //contentType: 'application/json',
-                success: function(data){
-                    //$("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).removeAttr("disabled");});
-                    var success = data.success,
-                    message = data.message;
-                    if (!success){
-                        sweetAlert(message);
-                    }
-                    else{
-                        sweetAlert("Transaction completed");
-                        var heroRow = $("#" + data.hero + "TeamRow");
-                        if (data.action == "sell"){
-                            heroRow.remove();
-                        }
-                        else{
-                            var new_row = $("#" + data.hero + "Row").clone();
-                            new_row.attr('id', data.hero + "TeamRow");
-                            new_row.find("button").replaceWith('<button type="submit" name="sellHero">Sell</button>');
-                            new_row.find("button").click(tradeOnclick);  // otherwise need reload page to resell
-                            $("#teamTable").append(new_row);
-                        }
-                        $(".userCredits").text(data.new_credits);
-                    }
-                },
-                failure: function(data){
-                    $("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).removeAttr("disabled");});
-                    sweetAlert("Something went wrong. oops!");
-                }
-            });
-        }
-    }
-    buyBtn.click(tradeOnclick);
-    sellBtn.click(tradeOnclick);
-});
 </script>
+
+<script src="/static/trade.js"/>
 

@@ -280,8 +280,7 @@ def update_hero_values(session, league):
 def main():
     session = make_session()
     for league in session.query(League).all():
-        if league.id == 4979:
-            update_hero_values(session, league)
+        update_hero_values(session, league)
 
 if __name__ == "__main__":
     main()

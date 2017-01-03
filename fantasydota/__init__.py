@@ -32,7 +32,7 @@ def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
     settings["league_transfers"] = True  # why wont config file properly set this?
-    settings["default_league"] = 4979
+    settings["default_league"] = 5018
     sqlalchemy_url = os.path.expandvars(settings.get('sqlalchemy.url'))
     engine = create_engine(sqlalchemy_url, echo=False, pool_size=100, pool_recycle=3600)
     event.listen(engine, 'checkout', checkout_listener)
@@ -42,7 +42,7 @@ def main(global_config, **settings):
     create_tables(DBSession)
 
     # Need https set up on local machine for secure True to work locally
-    authn_policy = AuthTktAuthenticationPolicy('sosecret', hashalg='sha512', http_only=True)#, secure=True, )
+    authn_policy = AuthTktAuthenticationPolicy('sosecret', hashalg='sha512', http_only=True, secure=True)
     authz_policy = ACLAuthorizationPolicy()
 
     config = Configurator(settings=settings, authentication_policy=authn_policy,
