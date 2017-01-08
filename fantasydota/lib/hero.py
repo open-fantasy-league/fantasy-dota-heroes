@@ -45,7 +45,7 @@ def calibrate_value(average_points, our_points):
 
 
 def combine_calibrations(older_value, newer_value):
-    return (newer_value + older_value)/ 2.
+    return (newer_value + older_value) * 0.75/ 2.
 
 
 def recalibrate_bcup_hero_values(session, league_id):

@@ -98,12 +98,14 @@ def update_battlecup_points(session, result, series_id, bcup, league_id):
 
 def declare_bcup_rounds_winners(session, bcup_round):
     bur_q = session.query(BattlecupUserRound).filter(BattlecupUserRound.battlecupround == bcup_round.id)
-    res = bur_q.all()
+    res = bur_q.order_by(BattlecupUserRound.id).all()
     p1 = res[0]
     try:
         p2 = res[1]
     except IndexError:
         p2 = FakePlayer()# bye
+    print "usr: %s, points: %s" % (p1.username, p1.points)
+    print "usr: %s, points: %s" % (p2.username, p2.points)
     if p1.points > p2.points:
         session.query(BattlecupRound).\
             filter(BattlecupRound.id == bcup_round.id).update({BattlecupRound.winner: 1})
@@ -189,7 +191,7 @@ def update_hero_values(session, league):
     new_results = session.query(Result).filter(Result.applied.is_(False)).\
         filter(Result.tournament_id == league_id).all()
 
-    for result in new_results:
+    for i, result in enumerate(new_results):
         res = result.result_str
         with transaction.manager:
             # More than one because we have battlecup and league
@@ -210,7 +212,7 @@ def update_hero_values(session, league):
                 heroq.points += Result.result_to_value(res)
 
             transaction.commit()
-
+	
         # move this up to top. use queries already there
         series_id = result.series_id
 
@@ -218,22 +220,24 @@ def update_hero_values(session, league):
                                                      Battlecup.day == league.current_day)).all()
         for bcup in bcups:
             # -1 for 1st series day
-            other_series_count = session.query(func.count(BattlecupRound)).filter(
+            other_series_count = session.query(BattlecupRound).filter(
                 and_(BattlecupRound.series_id != series_id, BattlecupRound.round_ == bcup.current_round,
-                     BattlecupRound.series_id != -1)).group_by(BattlecupRound.series_id). \
-                scalar()
+                     BattlecupRound.series_id != -1)).group_by(BattlecupRound.series_id).all() or []
+	    other_series_count = len(other_series_count)
+	    #other_series_count = 2  # should replace 0's with timestamp. have to hack now
+	    print "other_ser_cout", other_series_count
 
             try:
                 num_series = Battlecup.num_series_this_round(bcup.current_round,
                                                 bcup.series_per_round)
-                do_new_cup = other_series_count > 0 and other_series_count + 1 >= num_series
+                do_new_cup = other_series_count > 0 and other_series_count >= num_series
             except:  # we are in the finals. no new cups
                 do_new_cup = False
-
+	    do_new_cup = True if i == 0 else False
             if do_new_cup:
                 print "DOING NEW CUP"
                 bcup_rounds = session.query(BattlecupRound).\
-                    filter(and_(BattlecupRound.battlecup == bcup.id, BattlecupRound.round_ == bcup.current_round)).all()
+                    filter(and_(BattlecupRound.battlecup == bcup.id, BattlecupRound.round_ == bcup.current_round)).order_by(BattlecupRound.id).all()
                 num_games_in_round = len(bcup_rounds)
                 if num_games_in_round > 1:
                     for i, bcup_round in enumerate(bcup_rounds):
@@ -241,6 +245,7 @@ def update_hero_values(session, league):
                             # This function has side-effect of updating winner field
                             # im not sure why the separate transactions mean winner hasnt updated by new_bcup_round
                             round_winner = declare_bcup_rounds_winners(session, bcup_round)
+			    print "winner: ", round_winner
                             transaction.commit()
                         with transaction.manager:
                             if i % 2 != 0:
@@ -255,22 +260,24 @@ def update_hero_values(session, league):
                                 last_round_winner = round_winner
                             transaction.commit()
                 with transaction.manager:
-                    update_battlecup_points(session, result, series_id, bcup, league_id)  # refactor this. dont call 2
-                    session.query(Battlecup).filter(Battlecup.id == bcup.id).\
+		    session.query(Battlecup).filter(Battlecup.id == bcup.id).\
                         update({Battlecup.current_round: Battlecup.current_round + 1})
+                    update_battlecup_points(session, result, series_id, bcup, league_id)  # refactor this. dont call 2
+                    #session.query(Battlecup).filter(Battlecup.id == bcup.id).\
+                    #    update({Battlecup.current_round: Battlecup.current_round + 1})
                     transaction.commit()
 
             else:
                 with transaction.manager:
                     update_battlecup_points(session, result, series_id, bcup, league_id)
                     transaction.commit()
-
-        with transaction.manager:
+	
+	with transaction.manager:
             update_league_points(session, result, league_id)  # update total league
             update_league_points(session, result, league_id, day=league.current_day)  # update current day
             session.query(Result).filter(Result.id == result.id).update({Result.applied: True})
             transaction.commit()
-
+	
     with transaction.manager:
         set_user_rankings(session, league_id)
         set_user_rankings(session, league_id, day=league.current_day)

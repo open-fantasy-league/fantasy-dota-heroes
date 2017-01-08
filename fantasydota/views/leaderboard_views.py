@@ -13,7 +13,7 @@ def leaderboard(request):
     user = authenticated_userid(request)
     league_id = int(request.params.get("league")) if request.params.get("league") else None \
         or request.registry.settings["default_league"]
-
+    users_playing = [x[0] for x in session.query(TeamHero.user).filter(TeamHero.league == league_id).filter(TeamHero.is_battlecup.is_(False)).group_by(TeamHero.user).all()]
     show_friend = True if request.params.get("showFriend") and user else False
     if show_friend:
         switch_to = "global"
@@ -50,7 +50,7 @@ def leaderboard(request):
 
     player_heroes = []
     league = session.query(League).filter(League.id == league_id).first()
-    leagueq = session.query(LeagueUser).filter(LeagueUser.league == league_id)
+    leagueq = session.query(LeagueUser).filter(LeagueUser.league == league_id).filter(LeagueUser.username.in_(users_playing))
     if period == "tournament":
         user = leagueq.filter(LeagueUser.username == user).first()
         if show_friend:

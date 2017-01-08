@@ -4,7 +4,7 @@ from urllib import quote_plus
 import transaction
 from fantasydota import DBSession
 from fantasydota.lib.account import check_invalid_password
-from fantasydota.models import User, LeagueUser, League, PasswordReset
+from fantasydota.models import User, LeagueUser, League, PasswordReset, LeagueUserDay
 from passlib.handlers.bcrypt import bcrypt
 from pyramid.httpexceptions import HTTPFound, HTTPForbidden
 from pyramid.security import remember, forget, authenticated_userid
@@ -78,6 +78,14 @@ def register(request):
     for l in leagues:
         user_league = LeagueUser(username, l.id)
         session.add(user_league)
+	for i in range(3): # need an l.days
+            if i >= 2:  # need an l.stage2
+                stage = 2
+            elif i >= 0:  # need an l.stage1
+                stage = 1
+            else:
+                stage = 0
+            session.add(LeagueUserDay(user.username, l.id, i, stage))
     headers = remember(request, user.username)
     return HTTPFound('/viewLeague', headers=headers)
 

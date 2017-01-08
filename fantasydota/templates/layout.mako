@@ -44,7 +44,7 @@
           </%block>
       </div>
       <div id="leagueBtn" class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-        <a href="${request.route_path('view_league')}">League</a>
+        <a href="${request.route_path('leaderboard')}">League</a>
       </div>
       <div id="battlecupBtn" class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
         <a href="/battlecup">Battlecups</a>

@@ -22,8 +22,8 @@
         </li>
     </ul>
     <p>Hi ${user}</p>
-    <span class=${"messageTransOpen" if league.transfer_open else "messageTransClosed"}>
-        <p>${"Transfer window currently open. Closes ~1 hour before games start." if league.transfer_open else """Transfer window now closed for tournament. You can still change your battlecup team daily though."""}
+    <span class=${"messageTransOpen" if league.transfer_open == 0 else "messageTransClosed"}>
+        <p>${"Transfer window currently open. Closes ~1 hour before games start." if league.transfer_open == 0 else """Transfer window now closed for tournament. You can still change your battlecup team daily though."""}
         </p>
     </span>
     <span>
@@ -66,7 +66,7 @@
             % endfor
         </table>
     </div>
-    <h2>Heroes (Credits Available: <span class="userCredits">${userq.money}</span>)</h2>
+    <h2>Heroes (Credits Available: <span class="userCredits">${round(50 - (sum([hero.value for hero in team])), 1)}</span>)</h2>
     <div id="tableContainer">
         <table class="sortable">
             <tr>
@@ -101,7 +101,7 @@
 
 
 <script>
-var transfers = ${'true' if league.transfer_open else 'false'};
+var transfers = ${'true' if league.transfer_open == 0 else 'false'};
 var league_id = ${league.id};
 var mode = "league";
 
