@@ -193,7 +193,7 @@ def update_hero_values(session, league):
 
     for i, result in enumerate(new_results):
         res = result.result_str
-        with transaction.manager:
+        """with transaction.manager:
             # More than one because we have battlecup and league
             heroq_all = session.query(Hero).filter(and_(Hero.id == result.hero,
                                                     Hero.league == league_id)).all()
@@ -212,11 +212,11 @@ def update_hero_values(session, league):
                 heroq.points += Result.result_to_value(res)
 
             transaction.commit()
-	
+	"""
         # move this up to top. use queries already there
         series_id = result.series_id
-
-        bcups = session.query(Battlecup).filter(and_(Battlecup.league == league_id,
+	
+        bcups = session.query(Battlecup).filter(and_(Battlecup.league == league_id, Battlecup.id == 3,
                                                      Battlecup.day == league.current_day)).all()
         for bcup in bcups:
             # -1 for 1st series day
@@ -272,12 +272,12 @@ def update_hero_values(session, league):
                     update_battlecup_points(session, result, series_id, bcup, league_id)
                     transaction.commit()
 	
-	with transaction.manager:
+	"""with transaction.manager:
             update_league_points(session, result, league_id)  # update total league
             update_league_points(session, result, league_id, day=league.current_day)  # update current day
             session.query(Result).filter(Result.id == result.id).update({Result.applied: True})
             transaction.commit()
-	
+	"""
     with transaction.manager:
         set_user_rankings(session, league_id)
         set_user_rankings(session, league_id, day=league.current_day)

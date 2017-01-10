@@ -295,7 +295,10 @@ def battlecup_json(request):
     results_full.append(round_three_results)
 
     if battlecup.current_round > 4:
+	last_round = 0
         for round_ in bcup_round_four:
+	    
+	    print "Round: ", round_.id
             p1_points = session.query(BattlecupUserRound.points).filter(and_(BattlecupUserRound.battlecupround == round_.id,
                                                                       BattlecupUserRound.username == round_.player_one))\
                 .first()[0]
@@ -303,8 +306,12 @@ def battlecup_json(request):
             p2_points = session.query(BattlecupUserRound.points).filter(and_(BattlecupUserRound.battlecupround == round_.id,
                                                                              BattlecupUserRound.username == round_.player_two)) \
                 .first()[0]
+	    if round_.id > last_round:
+            	round_four_results.insert(0, [p1_points, p2_points])
+	    else:
+            	round_four_results.append([p1_points, p2_points])
 
-            round_four_results.append([p1_points, p2_points])
+	    last_round = round_.id
     results_full.append(round_four_results)
 
     bracket_dict = {
