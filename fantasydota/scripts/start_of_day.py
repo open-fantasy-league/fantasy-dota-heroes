@@ -7,9 +7,9 @@ from sqlalchemy import and_
 
 def start_of_day():
     session = make_session(transaction=False, autoflush=False)
-    for league in session.query(League).filter(League.status == 1).all():
-        rounds = 3  # temp
-        series_per_round = "1,1,1"
+    for league in session.query(League).all():  # .filter(League.status == 1)
+        rounds = 4  # temp
+        series_per_round = "2,1,1,1"
 
         auto_fill_teams(session, league)
         players = session.query(TeamHero.user).\

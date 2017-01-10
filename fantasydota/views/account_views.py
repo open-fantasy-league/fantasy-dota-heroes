@@ -78,10 +78,10 @@ def register(request):
     for l in leagues:
         user_league = LeagueUser(username, l.id)
         session.add(user_league)
-	for i in range(3): # need an l.days
-            if i >= 2:  # need an l.stage2
+        for i in range(l.days):
+            if i >= l.stage2_start:
                 stage = 2
-            elif i >= 0:  # need an l.stage1
+            elif i >= l.stage1_start:
                 stage = 1
             else:
                 stage = 0

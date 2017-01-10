@@ -77,10 +77,16 @@ class League(Base):
     transfer_open = Column(Boolean, default=True)
     current_day = Column(Integer, default=0)
     battlecup_status = Column(Integer, default=0)  # Dont just do boolean. gives scope for not just on/off
+    days = Column(Integer)
+    stage1_start = Column(Integer)
+    stage2_start = Column(Integer)
 
-    def __init__(self, id, name):
+    def __init__(self, id, name, days, stage1_start, stage2_start):
         self.id = id
         self.name = name
+        self.days = days
+        self.stage1_start = stage1_start
+        self.stage2_start = stage2_start
     
 
 class LeagueUser(Base):

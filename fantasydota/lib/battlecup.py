@@ -2,7 +2,7 @@ import random
 
 #import transaction
 from fantasydota.models import User, League, Battlecup, BattlecupUser, BattlecupRound, BattlecupUserRound, TeamHero, \
-    Hero
+    Hero, BattlecupTeamHeroHistory
 from sqlalchemy import and_
 from sqlalchemy import func
 from sqlalchemy import or_
@@ -93,7 +93,12 @@ def make_battlecups(session, league_id, rounds, players, series_per_round):
         byes = per_cup - len(cup)
         b_id = highest_id + i + 1
         for _ in range(byes):
-            mr_lucky = cup.pop()
+            try:
+                mr_lucky = cup.pop()
+            except:
+                session.add(BattlecupRound(b_id, 1, -1, None,
+                                           None))
+                continue
             session.add(BattlecupRound(b_id, 1, -1, mr_lucky,
                                        None))
             session.commit()
@@ -148,3 +153,34 @@ def generate_team(session, league, username):
         else:
             filtered_heroes = [hero for hero in heroes if hero.value > 9.5 and hero.value + value_counter < 50.]
         session.add(TeamHero(username, random.choice(filtered_heroes).id, league, True))
+
+
+def player_hero_imgs(session, battlecup, round_, league_id, old_hero):
+
+    if old_hero:
+        hero_q = session.query(BattlecupTeamHeroHistory.hero_name). \
+            filter(and_(BattlecupTeamHeroHistory.league == league_id,
+                        BattlecupTeamHeroHistory.day == battlecup.day))
+        hero_q_1 = hero_q.filter(BattlecupTeamHeroHistory.user == round_.player_one)
+
+        hero_q_2 = hero_q.filter(BattlecupTeamHeroHistory.user == round_.player_two)
+    else:
+        hero_q = session.query(TeamHero.hero_name). \
+            filter(and_(TeamHero.league == league_id,
+                        TeamHero.is_battlecup.is_(True)
+                        ))
+        hero_q_1 = hero_q.filter(TeamHero.user == round_.player_one)
+
+        hero_q_2 = hero_q.filter(TeamHero.user == round_.player_two)
+
+    p1_heroes = {"pname": round_.player_one,
+                 "heroes": [
+                     x[0] for x in hero_q_1.all()
+                     ]}
+
+    p2_heroes = {"pname": round_.player_two,
+                 "heroes": [
+                     x[0] for x in hero_q_2.all()
+                     ]}
+
+    return p1_heroes, p2_heroes

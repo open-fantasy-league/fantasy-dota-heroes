@@ -1,3 +1,4 @@
+from fantasydota.lib.battlecup import player_hero_imgs
 from fantasydota.lib.trade import sell, buy
 from pyramid.httpexceptions import HTTPForbidden, HTTPFound
 from pyramid.security import authenticated_userid
@@ -223,7 +224,39 @@ def battlecup_json(request):
 
     results_full, round_one_results, round_two_results, round_three_results, round_four_results = \
         [], [], [], [], []
-    for i, round_ in enumerate(bcup_round_one):
+
+    for current_round in range(battlecup.total_rounds):
+        bcup_rounds = session.query(BattlecupRound).filter(and_(BattlecupRound.battlecup == battlecup_id,
+                                                               BattlecupRound.round_ == current_round + 1)).\
+            order_by(BattlecupRound.id).all()
+        round_results = []
+        for i, round_ in enumerate(bcup_rounds):
+            if current_round == 1:
+                player_names[i] = (round_.player_one, round_.player_two)
+                hero_imgs.extend(player_hero_imgs(session, battlecup, round_, league_id, old_hero))
+
+            if battlecup.current_round > current_round + 1: # if round has ended and we've started next round
+                p1_points = \
+                session.query(BattlecupUserRound.points).filter(and_(BattlecupUserRound.battlecupround == round_.id,
+                                                                     BattlecupUserRound.username == round_.player_one)) \
+                    .first()[0]
+
+                p2_points = session.query(BattlecupUserRound.points).filter(
+                    and_(BattlecupUserRound.battlecupround == round_.id,
+                         BattlecupUserRound.username == round_.player_two)) \
+                    .first()
+
+                if p2_points:  # If its none leave it as none, this is a bye
+                    p2_points = p2_points[0]
+
+                round_results.append([p1_points, p2_points])
+        results_full.append(round_results)
+
+
+
+
+
+    for i, round_ in enumerate(bcup_round_one): # TODO this round_ was a stupid name refactor
         player_names[i] = (round_.player_one, round_.player_two)
 
         if old_hero:

@@ -33,7 +33,7 @@ def main(global_config, **settings):
     """
     settings["league_transfers"] = True  # why wont config file properly set this?
     settings["default_league"] = 5018
-    sqlalchemy_url = os.path.expandvars(settings.get('sqlalchemy.url'))
+    sqlalchemy_url = os.path.expandvars(settings.get('sqlalchemy.url')) + "2"
     engine = create_engine(sqlalchemy_url, echo=False, pool_size=100, pool_recycle=3600)
     event.listen(engine, 'checkout', checkout_listener)
     DBSession.configure(bind=engine)
@@ -42,7 +42,7 @@ def main(global_config, **settings):
     create_tables(DBSession)
 
     # Need https set up on local machine for secure True to work locally
-    authn_policy = AuthTktAuthenticationPolicy('sosecret', hashalg='sha512', http_only=True, secure=True)
+    authn_policy = AuthTktAuthenticationPolicy('sosecret', hashalg='sha512', http_only=True)
     authz_policy = ACLAuthorizationPolicy()
 
     config = Configurator(settings=settings, authentication_policy=authn_policy,

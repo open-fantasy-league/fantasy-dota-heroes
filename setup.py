@@ -24,6 +24,7 @@ requires = [
     'zope.sqlalchemy==0.7.6',
     'bcrypt',
     'passlib'
+    # the sendmail.repoze thingy needs to be 4.1 not 4.2
     ]
 
 setup(name='fantasydota',
