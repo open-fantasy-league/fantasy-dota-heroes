@@ -21,8 +21,8 @@
             <a href="/leaderboard?league=${league.id}"><b>Leaderboard</b></a>
         </li>
     </ul>
-    <p>Hi ${user}</p>
-    <span class=${"messageTransOpen" if league.transfer_open == 0 else "messageTransClosed"}>
+    <p>Hi ${username}</p>
+    <span class=${"messageTransOpen" if league.transfer_open != 0 else "messageTransClosed"}>
         <p>${"Transfer window currently open. Closes ~1 hour before games start." if league.transfer_open == 0 else """Transfer window now closed for tournament. You can still change your battlecup team daily though."""}
         </p>
     </span>
@@ -101,7 +101,7 @@
 
 
 <script>
-var transfers = ${'true' if league.transfer_open == 0 else 'false'};
+var transfers = ${'true' if league.transfer_open != 0 else 'false'};
 var league_id = ${league.id};
 var mode = "league";
 

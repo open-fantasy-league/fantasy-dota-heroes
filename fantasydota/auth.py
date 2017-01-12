@@ -17,12 +17,24 @@ def login_required(request):
 
 
 def create_user_with_league(strategy, details, backend, user=None, *args, **kwargs):
+    '''
+    ran into issues with this
+    if want to use user_id in the league_user tables.
+    How does it know what the user_id is, if its trying to use the user before the commit has finished
+    decided to just make the league in the viewLeague request if needed
+    '''
     return_dict = create_user(strategy, details, backend, user, *args, **kwargs)
+    print "KWARGGGSS: ", kwargs
+    print dir(backend.strategy)
+    print details, dir(details)
+    print strategy, dir(strategy)
+    print strategy.session_get("user_id")
     username = kwargs.get("username", details.get("username"))
+    user_id = strategy.session_get("user_id")
     session = DBSession()
     leagues = session.query(League).all()
     for l in leagues:
-        user_league = LeagueUser(username, l.id)
+        user_league = LeagueUser(user_id, username, l.id)
         session.add(user_league)
         for i in range(l.days):
             if i >= l.stage2_start:
@@ -31,7 +43,7 @@ def create_user_with_league(strategy, details, backend, user=None, *args, **kwar
                 stage = 1
             else:
                 stage = 0
-            session.add(LeagueUserDay(username, l.id, i, stage))
+            session.add(LeagueUserDay(user_id,username, l.id, i, stage))
 
     return return_dict
 
@@ -48,8 +60,8 @@ def get_user(request):
         user = session.query(User) \
                         .filter(User.id == user_id) \
                         .first()
-        session.query(User) \
-            .filter(User.id == user_id).update({User.last_login: datetime.datetime.now()})
+        # session.query(User) \
+        #     .filter(User.id == user_id).update({User.last_login: datetime.datetime.now()})
     else:
         user = None
     return user

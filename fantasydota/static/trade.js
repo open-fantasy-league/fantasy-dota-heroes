@@ -1,5 +1,10 @@
+console.log(transfers)
 if (!transfers){
     $("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).attr("disabled","true");});
+}
+else{
+    // not sure why but when reloading page...disabled things stay disabled by default :/
+    $("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).removeAttr("disabled");})
 }
 
 var tradeOnclick = function tradeOnclick(event){

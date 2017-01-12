@@ -14,9 +14,9 @@ from sqlalchemy import func
 @view_config(route_name='battlecup', renderer='../templates/battlecup.mako')
 def battlecup(request):
     session = DBSession()
-    user = authenticated_userid(request)
+    user_id = authenticated_userid(request)
 
-    if not user:
+    if not user_id:
         return HTTPFound('/login')
 
     league_id = int(request.params.get("league")) if request.params.get("league") else None \
@@ -26,7 +26,7 @@ def battlecup(request):
     league = session.query(League).filter(League.id == league_id).first()
     is_playing = True
 
-    all_bcup_user = session.query(BattlecupUser).filter(BattlecupUser.username == user).all()
+    all_bcup_user = session.query(BattlecupUser).filter(BattlecupUser.user_id == user_id).all()
     all_bcups = session.query(Battlecup).filter(Battlecup.id.in_([x.battlecup for x in all_bcup_user])).all()
 
     if league.battlecup_status == 0:
@@ -53,7 +53,7 @@ def battlecup(request):
 
     # TODO if its not todays need to query historic bcup stuff
     team_ids = [res[0] for res in session.query(TeamHero.hero_id). \
-        filter(and_(TeamHero.user == user, TeamHero.league == league_id,
+        filter(and_(TeamHero.user_id == user_id, TeamHero.league == league_id,
                     TeamHero.is_battlecup.is_(True))).all()]
     team = session.query(Hero).filter(and_(Hero.id.in_(team_ids),
                                            Hero.is_battlecup.is_(True),
@@ -66,8 +66,8 @@ def battlecup(request):
 @view_config(route_name="sell_hero_battlecup", renderer="json")
 def sell_hero_battlecup(request):
     session = DBSession()
-    user = authenticated_userid(request)
-    if user is None:
+    user_id = authenticated_userid(request)
+    if user_id is None:
         raise HTTPForbidden()
 
     hero_id = request.POST["hero"]
@@ -79,14 +79,14 @@ def sell_hero_battlecup(request):
     if not transfer_open:
         return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
 
-    return sell(session, user, hero_id, league_id, True)
+    return sell(session, user_id, hero_id, league_id, True)
 
 
 @view_config(route_name="buy_hero_battlecup", renderer="json")
 def buy_hero_battlecup(request):
     session = DBSession()
-    user = authenticated_userid(request)
-    if user is None:
+    user_id = authenticated_userid(request)
+    if user_id is None:
         raise HTTPForbidden()
 
     hero_id = int(request.POST["hero"])
@@ -96,25 +96,25 @@ def buy_hero_battlecup(request):
     if not transfer_open:
         return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
 
-    return buy(session, user, hero_id, league_id, True)
+    return buy(session, user_id, hero_id, league_id, True)
 
 
 @view_config(route_name="battlecup_add_league_team", renderer="json")
 def battlecup_add_league_team(request):
     session = DBSession()
-    user = authenticated_userid(request)
-    if user is None:
+    user_id = authenticated_userid(request)
+    if user_id is None:
         raise HTTPForbidden()
     league_id = request.POST["league"]
 
     # first nuke current team
     session.query(TeamHero).filter(and_(TeamHero.league == league_id,
                                         TeamHero.is_battlecup.is_(True),
-                                        TeamHero.user == user)).delete()
+                                        TeamHero.user_id == user_id)).delete()
 
     league_team = session.query(TeamHero).filter(and_(TeamHero.league == league_id,
                                                       TeamHero.is_battlecup.is_(False),
-                                                      TeamHero.user == user)).all()
+                                                      TeamHero.user_id == user_id)).all()
     heroes_to_add = []
     money = 50
     message = "League team successfully chosen"
@@ -238,12 +238,12 @@ def battlecup_json(request):
             if battlecup.current_round > current_round + 1: # if round has ended and we've started next round
                 p1_points = \
                 session.query(BattlecupUserRound.points).filter(and_(BattlecupUserRound.battlecupround == round_.id,
-                                                                     BattlecupUserRound.username == round_.player_one)) \
+                                                                     BattlecupUserRound.user_id == round_.player_one)) \
                     .first()[0]
 
                 p2_points = session.query(BattlecupUserRound.points).filter(
                     and_(BattlecupUserRound.battlecupround == round_.id,
-                         BattlecupUserRound.username == round_.player_two)) \
+                         BattlecupUserRound.user_id == round_.player_two)) \
                     .first()
 
                 if p2_points:  # If its none leave it as none, this is a bye
@@ -271,9 +271,9 @@ def battlecup_json(request):
                          filter(and_(TeamHero.league == league_id,
                                      TeamHero.is_battlecup.is_(True)
                                      ))
-            hero_q_1 = hero_q.filter(TeamHero.user == round_.player_one)
+            hero_q_1 = hero_q.filter(TeamHero.user_id == round_.player_one)
 
-            hero_q_2 = hero_q.filter(TeamHero.user == round_.player_two)
+            hero_q_2 = hero_q.filter(TeamHero.user_id == round_.player_two)
 
         p1_heroes = {"pname": round_.player_one,
                      "heroes": [

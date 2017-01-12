@@ -110,11 +110,16 @@ def change_password(request):
                   "message_type": "change_password"}
         return HTTPFound(location=request.route_url('account_settings', _query=params))
 
+    if old_password == "":  # this is the case for steam accounts
+        params = {"message": "Change password does not apply to steam logins",
+                  "message_type": "failure"}
+        return HTTPFound(location=request.route_url('account_settings', _query=params))
+
     pword_invalid_check = check_invalid_password(new_password, confirm_new_password)
     if pword_invalid_check:
         return HTTPFound(location=request.route_url('account_settings', _query=pword_invalid_check))
 
-    session.query(User).filter(User.username == username).update({User.password: bcrypt.encrypt(new_password)})
+    session.query(User).filter(User.id == user_id).update({User.password: bcrypt.encrypt(new_password)})
     params = {"message": "Congratulations! Password successfully changed",
                   "message_type": "success"}
     return HTTPFound(location=request.route_url('account_settings', _query=params))
@@ -195,24 +200,24 @@ def reset_password(request):
 @view_config(route_name='account_settings', renderer="../templates/account_settings.mako")
 def account_settings(request):
     session = DBSession()
-    username = authenticated_userid(request)
-    if not username:
+    user_id = authenticated_userid(request)
+    if not user_id:
         return HTTPFound('/login')
     message = request.params.get("message")
     message_type = request.params.get("message_type")
-    user = session.query(User).filter(User.username == username).first()
+    user = session.query(User).filter(User.id == user_id).first()
     return {"user": user, "message": message, "message_type": message_type}
 
 
 @view_config(route_name='update_email_settings')
 def update_email_settings(request):
     session = DBSession()
-    username = authenticated_userid(request)
-    if not username:
+    user_id = authenticated_userid(request)
+    if not user_id:
         return HTTPFound('/login')
     new_email = request.params.get('email')
     contactable = True if request.params.get('emailContact') == "on" else False
-    session.query(User).filter(User.username == username).\
+    session.query(User).filter(User.id == user_id).\
         update({User.contactable: contactable, User.email: new_email})
     params = {"message": "Congratulations! Email settings successfully updated",
               "message_type": "success"}
@@ -222,11 +227,11 @@ def update_email_settings(request):
 @view_config(route_name='update_game_settings')
 def update_game_settings(request):
     session = DBSession()
-    username = authenticated_userid(request)
-    if not username:
+    user_id = authenticated_userid(request)
+    if not user_id:
         return HTTPFound('/login')
     autofill = True if request.params.get('autofillTeam') == "on" else False
-    session.query(User).filter(User.username == username).\
+    session.query(User).filter(User.id == user_id).\
         update({User.autofill_team: autofill})
     params = {"message": "Update successful",
               "message_type": "success"}

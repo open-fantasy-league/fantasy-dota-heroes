@@ -8,13 +8,13 @@ from sqlalchemy import and_
 from sqlalchemy import or_
 
 from fantasydota import DBSession
-from fantasydota.models import User, League, LeagueUser, Hero, TeamHero
+from fantasydota.models import User, League, LeagueUser, Hero, TeamHero, LeagueUserDay
 
 
 @view_config(route_name='view_league', renderer='../templates/league.mako')
 def view_league(request):
     session = DBSession()
-    user = authenticated_userid(request)
+    user_id = authenticated_userid(request)
     message_type = request.params.get('message_type')
     message = request.params.get('message')
 
@@ -23,48 +23,64 @@ def view_league(request):
 
     league = session.query(League).filter(League.id == league_id).first()
 
-    if user is None:
+    class FakeUser():  # hacky quick way so unlogged in users can see the page
+        username = ""
+        league = league_id
+        money = 50.0
+        points = 0
+        picks = 0
+        bans = 0
+        wins = 0
+        points_rank = None
+        wins_rank = None
+        picks_rank = None
+        bans_rank = None
+
+    if user_id is None:
         message = "You must login to pick team"
-        class FakeUser():  # hacky quick way so unlogged in users can see the page
-            username = ""
-            league = league_id
-            money = 50.0
-            points = 0
-            picks = 0
-            bans = 0
-            wins = 0
-            points_rank = None
-            wins_rank = None
-            picks_rank = None
-            bans_rank = None
 
         userq = FakeUser()
         team = []
+        username = ""
         #return HTTPFound('/login')
     else:
 
-        userq = session.query(LeagueUser).filter(User.username == user).first()
-        league = session.query(League).filter(League.id == league_id).first()
+        userq = session.query(LeagueUser).filter(User.id == user_id).first()
+        if not userq:
+            username = session.query(User.username).filter(User.id == user_id).first()[0]
+            user_league = LeagueUser(user_id, username, league.id)
+            session.add(user_league)
+            for i in range(league.days):
+                if i >= league.stage2_start:
+                    stage = 2
+                elif i >= league.stage1_start:
+                    stage = 1
+                else:
+                    stage = 0
+                session.add(LeagueUserDay(user_id, username, league.id, i, stage))
+
+            userq = FakeUser()  # so dont have to deal with a commit mid-request
 
         team_ids = [res[0]for res in session.query(TeamHero.hero_id).\
-            filter(and_(TeamHero.user == user, TeamHero.league == league_id,
+            filter(and_(TeamHero.user_id == user_id, TeamHero.league == league_id,
                         TeamHero.is_battlecup.is_(False))).all()]
         team = session.query(Hero).filter(and_(Hero.id.in_(team_ids),
                                                Hero.is_battlecup.is_(False),
                                                Hero.league == league_id)).all()
+        username = session.query(User.username).filter(User.id == user_id).first()[0]
     heroes = session.query(Hero).filter(and_(Hero.league == league_id,
                                              Hero.is_battlecup.is_(False))).all()
 
     #transfer_open = True if request.registry.settings["transfers"] else False
-    return {'user': user, 'userq': userq, 'team': team, 'heroes': heroes, 'message': message,
+    return {'username': username, 'userq': userq, 'team': team, 'heroes': heroes, 'message': message,
             'message_type': message_type, 'league': league}
 
 
 @view_config(route_name="sell_hero_league", renderer="json")
 def sell_hero_league(request):
     session = DBSession()
-    user = authenticated_userid(request)
-    if user is None:
+    user_id = authenticated_userid(request)
+    if user_id is None:
         return {"success": False, "message": "Please create an account to play! :)"}
 
     hero_id = request.POST["hero"]
@@ -74,14 +90,14 @@ def sell_hero_league(request):
     if not transfer_actually_open:
         return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
 
-    return sell(session, user, hero_id, league_id, False)
+    return sell(session, user_id, hero_id, league_id, False)
 
 
 @view_config(route_name="buy_hero_league", renderer="json")
 def buy_hero_league(request):
     session = DBSession()
-    user = authenticated_userid(request)
-    if user is None:
+    user_id = authenticated_userid(request)
+    if user_id is None:
         return {"success": False, "message": "Please login to play! :)"}
 
     hero_id = int(request.POST["hero"])
@@ -91,4 +107,4 @@ def buy_hero_league(request):
     if not transfer_actually_open:
         return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
 
-    return buy(session, user, hero_id, league_id, False)
+    return buy(session, user_id, hero_id, league_id, False)

@@ -2,7 +2,7 @@ from fantasydota.models import League, Hero, LeagueUser, TeamHero
 from sqlalchemy import and_
 
 
-def sell(session, user, hero_id, league_id, is_battlecup):
+def sell(session, user_id, hero_id, league_id, is_battlecup):
     transfer_actually_open = session.query(League.transfer_open).filter(League.id == league_id).first()[0]
     if not transfer_actually_open:
         return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
@@ -11,7 +11,7 @@ def sell(session, user, hero_id, league_id, is_battlecup):
                                                        Hero.is_battlecup.is_(is_battlecup),
                                                        Hero.league == league_id)).first()[0]
     if is_battlecup:
-        teamq = session.query(TeamHero.hero_id).filter(and_(TeamHero.user == user,
+        teamq = session.query(TeamHero.hero_id).filter(and_(TeamHero.user_id == user_id,
                                                     TeamHero.league == league_id,
                                                     TeamHero.is_battlecup.is_(is_battlecup)))
         user_money = 50.0 - sum([hero.value for hero in
@@ -20,13 +20,13 @@ def sell(session, user, hero_id, league_id, is_battlecup):
                                                                  Hero.id.in_([x[0] for x in teamq.all()])))
                                  ])
     else:
-        user_money_q = session.query(LeagueUser.money).filter(and_(LeagueUser.username == user,
+        user_money_q = session.query(LeagueUser.money).filter(and_(LeagueUser.user_id == user_id,
                                                                LeagueUser.league == league_id))
         user_money = user_money_q.first()[0]
 
     new_credits = round(user_money + hero_value, 1)
 
-    teamq_hero = session.query(TeamHero).filter(and_(TeamHero.user == user,
+    teamq_hero = session.query(TeamHero).filter(and_(TeamHero.user_id == user_id,
                                                      TeamHero.is_battlecup.is_(is_battlecup),
                                                      TeamHero.league == league_id))
     if teamq_hero.first():
@@ -44,14 +44,12 @@ def sell(session, user, hero_id, league_id, is_battlecup):
     return {"success": False, "message": "Erm....you don't appear to be in this league. This is awkward"}
 
 
-def buy(session, user, hero_id, league_id, is_battlecup):
-
-
+def buy(session, user_id, hero_id, league_id, is_battlecup):
     hero_value = session.query(Hero.value).filter(and_(Hero.id == hero_id,
                                                        Hero.league == league_id,
                                                        Hero.is_battlecup.is_(is_battlecup))).first()[0]
 
-    teamq = session.query(TeamHero).filter(TeamHero.user == user).filter(TeamHero.league == league_id).\
+    teamq = session.query(TeamHero).filter(TeamHero.user_id == user_id).filter(TeamHero.league == league_id).\
                                                 filter(TeamHero.is_battlecup.is_(is_battlecup))
     teamq_hero = teamq.filter(TeamHero.hero_id == hero_id)
 
@@ -63,7 +61,7 @@ def buy(session, user, hero_id, league_id, is_battlecup):
                                                                  Hero.id.in_([x.hero_id for x in teamq.all()])))
                                  ])
     else:
-        user_money_q = session.query(LeagueUser.money).filter(and_(LeagueUser.username == user,
+        user_money_q = session.query(LeagueUser.money).filter(and_(LeagueUser.user_id == user_id,
                                                                LeagueUser.league == league_id))
         user_money = user_money_q.first()[0]
     if user_money < hero_value:
@@ -78,7 +76,7 @@ def buy(session, user, hero_id, league_id, is_battlecup):
         print is_battlecup, "is btttccpo"
         return {"success": False, "message": "ERROR: Hero already in team"}
     else:
-        session.add(TeamHero(user, hero_id, league=league_id, is_battlecup=is_battlecup))
+        session.add(TeamHero(user_id, hero_id, league=league_id, is_battlecup=is_battlecup))
         if not is_battlecup:
             user_money_q.update({LeagueUser.money: new_credits})
     return {"success": True, "message": "Hero successfully bought", "action": "buy", "hero": hero_id,
