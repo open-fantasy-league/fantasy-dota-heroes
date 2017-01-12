@@ -12,7 +12,7 @@ def make_session(transaction=True, autoflush=False, autocommit=False):
     # Yeah the arguments and their naming is so terrible. sorry
     config = ConfigParser.ConfigParser()
     config.read('development.ini')
-    db_url = os.environ.get("FANTASYDOTA_DB") + "2"
+    db_url = os.environ.get("FANTASYDOTA_DB") + "3"
     engine = create_engine(db_url, echo=False)
     if transaction:
         DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))

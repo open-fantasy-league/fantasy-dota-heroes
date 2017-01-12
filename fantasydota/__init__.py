@@ -3,11 +3,17 @@ import os
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.config import Configurator
+from pyramid.session import UnencryptedCookieSessionFactoryConfig
+from social_pyramid.models import init_social
+from social_pyramid.utils import backends
 from sqlalchemy import create_engine
 from sqlalchemy import event
 from sqlalchemy.exc import DisconnectionError
 from fantasydota.scripts.init_tables import create_tables
 from fantasydota.util.jsonhelpers import custom_json_renderer
+
+import settings as app_settings
+import local_settings as app_local_settings
 
 from .models import (
     Base,
@@ -28,31 +34,66 @@ def checkout_listener(dbapi_con, con_record, con_proxy):
             raise
 
 
+def get_settings(module):
+    return { key: value for key, value in module.__dict__.items()
+              if key not in module.__builtins__ and
+                 key not in ['__builtins__', '__file__'] }
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
     settings["league_transfers"] = True  # why wont config file properly set this?
     settings["default_league"] = 5018
-    sqlalchemy_url = os.path.expandvars(settings.get('sqlalchemy.url')) + "2"
+    sqlalchemy_url = os.path.expandvars(settings.get('sqlalchemy.url')) + "3"
     engine = create_engine(sqlalchemy_url, echo=False, pool_size=100, pool_recycle=3600)
     event.listen(engine, 'checkout', checkout_listener)
     DBSession.configure(bind=engine)
-    Base.metadata.bind = engine
-    Base.metadata.create_all(engine)
-    create_tables(DBSession)
 
     # Need https set up on local machine for secure True to work locally
     authn_policy = AuthTktAuthenticationPolicy('sosecret', hashalg='sha512', http_only=True)
     authz_policy = ACLAuthorizationPolicy()
 
-    config = Configurator(settings=settings, authentication_policy=authn_policy,
+    my_session_factory = UnencryptedCookieSessionFactoryConfig('itsaseekreet')
+
+    config = Configurator(settings=settings, session_factory=my_session_factory, authentication_policy=authn_policy,
         authorization_policy=authz_policy,)
 
     config.include('pyramid_mako')
     config.include('pyramid_mailer')
+    # settings['jinja2.filters'] = {
+    #     'backend_name': filters.backend_name,
+    #     'backend_class': filters.backend_class,
+    #     'icon_name': filters.icon_name,
+    #     'social_backends': filters.social_backends,
+    #     'legacy_backends': filters.legacy_backends,
+    #     'oauth_backends': filters.oauth_backends,
+    #     'filter_backends': filters.filter_backends,
+    #     'slice_by': filters.slice_by
+    # }
+    config.add_route('home', '/')
+    config.add_route('done', '/done')
+    config.add_route('email_required', '/email')
+
+    config.registry.settings.update(get_settings(app_settings))
+    config.registry.settings.update(get_settings(app_local_settings))
+
+    init_social(config, Base, DBSession)  # is this the right place?
+    Base.metadata.bind = engine
+    Base.metadata.create_all(engine)
+    create_tables(DBSession)
+
+    config.include('social_pyramid')
+    config.scan('social_pyramid') # 2nd scan below. does this break?
+
+    # pyramid_social_auth.register_provider(settings, google.GoogleOAuth2)
+    # psa.register_provider(settings, facebook.FacebookOAuth2)
+
+    config.add_request_method('.auth.get_user', 'user', reify=True)  # user or username? should it start with .?
+
     config.add_renderer('json', custom_json_renderer())
     config.add_static_view('static', 'static', cache_max_age=3600)
-    config.add_route('view_index', '/')
+    config.add_route('view_index', '/fjweujfewijf')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
     config.add_route('view_faq', '/faq')

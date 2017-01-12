@@ -25,6 +25,14 @@
         <button type="submit">Submit</button>
         <a onclick="forgotPassword()">Forgotten password?</a>
     </form>
+
+     <a id="steam-button"
+                     class="col-md-2 btn btn-default"
+                     name="steam"
+                     href="/login/steam/">
+                    <i class="fa fa-steam"></i>
+                    Steam OpenId
+                  </a>
 </div>
 
 <div>

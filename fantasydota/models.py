@@ -42,7 +42,7 @@ class User(Base):
     autofill_team = Column(Boolean, default=False)
     battlecup_wins = Column(Integer, default=0)
 
-    def __init__(self, username, password, email=""):
+    def __init__(self, username, password="", email=""):
         self.username = username
         self.password = bcrypt.encrypt(password)
         self.email = email
@@ -92,7 +92,8 @@ class League(Base):
 class LeagueUser(Base):
     __tablename__ = "league_user"
     id = Column(Integer, Sequence('id'), primary_key=True)
-    username = Column(String(50), ForeignKey(User.username), index=True, nullable=False)
+    user_id = Column(Integer, ForeignKey(User.id), index=True, nullable=False)
+    #username = Column(String(50), ForeignKey(User.username), index=True, nullable=False)
     league = Column(Integer, ForeignKey(League.id), index=True)
     money = Column(Float, default=50.0)
     points = Column(Float, default=0.0)
@@ -113,7 +114,8 @@ class LeagueUser(Base):
 class LeagueUserDay(Base):
     __tablename__ = "league_user_day"
     id = Column(Integer, Sequence('id'), primary_key=True)
-    username = Column(String(50), ForeignKey(User.username), index=True, nullable=False)
+    user_id = Column(Integer, ForeignKey(User.id), index=True, nullable=False)
+    #username = Column(String(50), ForeignKey(User.username), index=True, nullable=False)
     league = Column(Integer, ForeignKey(League.id), index=True)
     day = Column(Integer, index=True)
     stage = Column(Integer)  # 0 qualifiers, 1 group stage, 2 main event
@@ -161,7 +163,8 @@ class BattlecupUser(Base):
     __tablename__ = "battlecup_user"
     id = Column(Integer, Sequence('id'), primary_key=True)
     battlecup = Column(Integer, ForeignKey(Battlecup.id), index=True, nullable=False) # should index be here?
-    username = Column(String(50), ForeignKey(User.username), index=True, nullable=False)
+    user_id = Column(Integer, ForeignKey(User.id), index=True, nullable=False)
+    #username = Column(String(50), ForeignKey(User.username), index=True, nullable=False)
     league = Column(Integer, ForeignKey(League.id), index=True)
     #user_id = Column(Integer, ForeignKey(User.user_id), index=True)  # should index be here?
     round_out = Column(Integer)
@@ -179,8 +182,8 @@ class BattlecupRound(Base):
     battlecup = Column(Integer, ForeignKey(Battlecup.id), index=True, nullable=False)
     round_ = Column(Integer, index=True, nullable=False)
     series_id = Column(BigInteger)
-    player_one = Column(String(50), ForeignKey(User.username), index=True)
-    player_two = Column(String(50), ForeignKey(User.username), index=True)
+    player_one = Column(Integer, ForeignKey(User.id), index=True)
+    player_two = Column(Integer, ForeignKey(User.id), index=True)
     winner = Column(Integer, default=0)  # 1 for player 1. 2 for p2. 0 it's not over!!!
     
     def __init__(self, battlecup, round_, series_id, player_one, player_two):
@@ -195,7 +198,7 @@ class BattlecupUserRound(Base):
     __tablename__ = "battlecup_user_round"
     id = Column(Integer, Sequence('id'), primary_key=True)
     battlecupround = Column(Integer, ForeignKey(BattlecupRound.id), index=True)
-    username = Column(String(50), ForeignKey(BattlecupUser.username), index=True)
+    user_id = Column(Integer, ForeignKey(BattlecupUser.user_id), index=True)
     points = Column(Float, default=0)
     picks = Column(Integer, default=0)
     bans = Column(Integer, default=0)
@@ -248,7 +251,7 @@ class Hero(Base):
 class TeamHero(Base):
     __tablename__ = "team_hero"
     id = Column(Integer, Sequence('id'), primary_key=True)
-    user = Column(String(50), ForeignKey(User.username), index=True)
+    user_id = Column(Integer, ForeignKey(User.id), index=True)
     hero_id = Column(Integer, ForeignKey(Hero.id), index=True)
     hero_name = Column(String(100), ForeignKey(Hero.name))
     league = Column(Integer, ForeignKey(League.id), index=True)
@@ -265,7 +268,7 @@ class TeamHero(Base):
 class BattlecupTeamHeroHistory(Base):
     __tablename__ = "battlecup_team_hero_history"
     id = Column(Integer, Sequence('id'), primary_key=True)
-    user = Column(String(50), ForeignKey(User.username), index=True)
+    user_id = Column(Integer, ForeignKey(User.id), index=True)
     hero_id = Column(Integer, ForeignKey(Hero.id), index=True)
     hero_name = Column(String(100), ForeignKey(Hero.name))
     league = Column(Integer, ForeignKey(League.id), index=True)
@@ -302,7 +305,7 @@ class Result(Base):
     hero = Column(Integer, nullable=False)
     result_str = Column(String(20), nullable=False)
     timestamp = Column(Integer)
-    applied = Column(Boolean, default=False)
+    applied = Column(Integer, default=0)  # 1 is applied to heroes. 2 for leagues. 3 for battlecups
     series_id = Column(BigInteger)
 
     def __init__(self, tournament, hero, match, result_str, timestamp, series_id):
@@ -316,12 +319,12 @@ class Result(Base):
     @staticmethod
     def result_to_value(result_str):
         points_dict = {
-            "b1": 2,
-            "b2": 3,
-            "b3": 4,
-            "p1l": -2,
-            "p2l": -1,
-            "p3l": 0,
+            "b1": 1,
+            "b2": 2,
+            "b3": 3,
+            "p1l": -5,
+            "p2l": -4,
+            "p3l": -3,
             "p1w": 10,
             "p2w": 12,
             "p3w": 14,

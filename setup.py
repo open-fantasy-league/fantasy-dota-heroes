@@ -23,7 +23,8 @@ requires = [
     'zope.interface==4.1.3',
     'zope.sqlalchemy==0.7.6',
     'bcrypt',
-    'passlib'
+    'passlib',
+    'social-auth-app-pyramid'
     # the sendmail.repoze thingy needs to be 4.1 not 4.2
     ]
 

@@ -16,7 +16,7 @@ def main():
 
     session = make_session()
     with transaction.manager:
-        session.add(League(args.id, args.name))
+        session.add(League(args.id, args.name, args.days, args.stage1, args.stage2))
         for user in session.query(User).all():
             session.add(LeagueUser(user.username, args.id))
             for i in range(args.days):

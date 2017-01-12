@@ -3,6 +3,7 @@ from urllib import quote_plus
 
 import transaction
 from fantasydota import DBSession
+from fantasydota.auth import get_user
 from fantasydota.lib.account import check_invalid_password
 from fantasydota.models import User, LeagueUser, League, PasswordReset, LeagueUserDay
 from passlib.handlers.bcrypt import bcrypt
@@ -11,6 +12,7 @@ from pyramid.security import remember, forget, authenticated_userid
 from pyramid.view import view_config
 from pyramid_mailer import get_mailer
 from pyramid_mailer.message import Message
+from social_pyramid.utils import load_strategy
 from sqlalchemy import func
 
 
@@ -22,17 +24,17 @@ def login(request):
     if request.method == 'POST':
         if username:
             username = username.lower()
-            userq = session.query(User).filter(User.username == username)
-            user = userq.first()
-            if user:
+            # Think now have steam accounts. can have different accounts but same name
+            userq = session.query(User).filter(User.username == username).all()
+            for user in userq:
                 if user.validate_password(request.params.get('password')):
-                    headers = remember(request, user.username)
+                    headers = remember(request, user.id)
                     userq.update({User.last_login: datetime.datetime.now()})
                     return HTTPFound('/viewLeague', headers=headers)
                 else:
                     headers = forget(request)
                     message = "Password did not match stored value for %s" % user.username
-            else:
+            if not userq:
                 message = "Username not recognised"
         else:
             message = 'Oops! SOmething went wrong'
@@ -76,7 +78,7 @@ def register(request):
     session.add(user)
     leagues = session.query(League).all()
     for l in leagues:
-        user_league = LeagueUser(username, l.id)
+        user_league = LeagueUser(user.id, l.id)
         session.add(user_league)
         for i in range(l.days):
             if i >= l.stage2_start:
@@ -85,19 +87,19 @@ def register(request):
                 stage = 1
             else:
                 stage = 0
-            session.add(LeagueUserDay(user.username, l.id, i, stage))
-    headers = remember(request, user.username)
+            session.add(LeagueUserDay(user.id, l.id, i, stage))
+    headers = remember(request, user.id)
     return HTTPFound('/viewLeague', headers=headers)
 
 
 @view_config(route_name='change_password')
 def change_password(request):
     session = DBSession()
-    username = authenticated_userid(request)
+    user_id = authenticated_userid(request)
     new_password = request.params.get('new_password')
     confirm_new_password = request.params.get('confirm_new_password')
     old_password = request.params.get('old_password')
-    user = session.query(User).filter(User.username == username).first()
+    user = session.query(User).filter(User.id == user_id).first()
     if not user:
         params = {"message": "Your username could not be found",
                   "message_type": "change_password"}
@@ -229,3 +231,54 @@ def update_game_settings(request):
     params = {"message": "Update successful",
               "message_type": "success"}
     return HTTPFound(location=request.route_url('account_settings', _query=params))
+
+
+@view_config(route_name='home', renderer='../templates/login.mako')
+def home(request):
+    return {"user": get_user(request),
+            "plus_id": request.registry.settings.get(
+        'SOCIAL_AUTH_STEAM_KEY'
+    ),
+    }
+    # return common_context(
+    #     request.registry.settings['SOCIAL_AUTH_AUTHENTICATION_BACKENDS'],
+    #     load_strategy(request),
+    #     user=get_user(request),
+    #     plus_id=request.registry.settings.get(
+    #         'SOCIAL_AUTH_GOOGLE_PLUS_KEY'
+    #     ),
+    # )
+
+
+@view_config(route_name='done')
+def done(request):
+    user = get_user(request)
+    headers = remember(request, user.id)
+    return HTTPFound('/viewLeague', headers=headers)
+    # return {"user": get_user(request),
+    #         "plus_id": request.registry.settings.get(
+    #             'SOCIAL_AUTH_STEAM_KEY'
+    #         ),
+    #         }
+    # return common_context(
+    #     request.registry.settings['SOCIAL_AUTH_AUTHENTICATION_BACKENDS'],
+    #     load_strategy(request),
+    #     user=get_user(request),
+    #     plus_id=request.registry.settings['SOCIAL_AUTH_GOOGLE_PLUS_KEY'],
+    # )
+
+
+# @view_config(route_name='email_required', renderer='common:templates/home.jinja2')
+# def email_required(request):
+#     strategy = load_strategy(request)
+#     partial_token = request.GET.get('partial_token')
+#     partial = strategy.partial_load(partial_token)
+#     return common_context(
+#         request.registry.settings['SOCIAL_AUTH_AUTHENTICATION_BACKENDS'],
+#         strategy,
+#         user=get_user(request),
+#         plus_id=request.registry.settings['SOCIAL_AUTH_GOOGLE_PLUS_KEY'],
+#         email_required=True,
+#         partial_backend_name=partial.backend,
+#         partial_token=partial_token
+#     )
