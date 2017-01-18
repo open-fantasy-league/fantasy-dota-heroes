@@ -1,6 +1,8 @@
 fantasydota README
 ==================
 
+Lives at https://www.fantasydota.eu
+
 Getting Started
 ---------------
 
