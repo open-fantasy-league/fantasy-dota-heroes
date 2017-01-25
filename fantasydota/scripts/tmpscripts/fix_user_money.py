@@ -21,10 +21,10 @@ def main():
             start_hero = len(heroes)
             heroes_seen = []
             # CARE!!! indentation was fucked when last checked this.
-	    active_counter = 0
+        active_counter = 0
             for hero in heroes:
-		if hero.active:
-		    active_counter += 1
+        if hero.active:
+            active_counter += 1
                 heroq = session.query(Hero).filter(Hero.hero_id == hero.hero).first()
                 if hero.hero in heroes_seen:
                     print "would remove", user.username
@@ -38,7 +38,7 @@ def main():
                         heroes_removed += 1
                 else:
                     user_money -= heroq.value
-	    if active_counter > 5:
+        if active_counter > 5:
                 print "uh oh. user has more than 5 active" % user.username
             if heroes_removed != 0:
                 print "would update hero count user: %s, -%s" % (user.username, heroes_removed)

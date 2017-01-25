@@ -11,6 +11,7 @@ from sqlalchemy import (
     ForeignKey)
 from sqlalchemy import DateTime
 from sqlalchemy import Float
+from sqlalchemy import UniqueConstraint
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session, relationship
 from zope.sqlalchemy import ZopeTransactionExtension
@@ -233,7 +234,7 @@ class Friend(Base):
 class Hero(Base):
     __tablename__ = "hero"
     id = Column(Integer, primary_key=True)  # api hero ids start at 1
-    name = Column(String(100), nullable=False, index=True)  #index=true?
+    name = Column(String(100), nullable=False, index=True, unique=True)  #index=true?
     league = Column(Integer, ForeignKey(League.id), primary_key=True, nullable=False)
     value = Column(Float, default=10.0)
     points = Column(Integer, default=0)
@@ -261,6 +262,7 @@ class TeamHero(Base):
     league = Column(Integer, ForeignKey(League.id), index=True, nullable=False)
     is_battlecup = Column(Boolean, index=True)
     days_left = Column(Integer, default=1)
+    UniqueConstraint('is_battlecup', 'league', 'hero_id', 'user_id')
 
     def __init__(self, user_id, hero_id, league, is_battlecup, days_left=1, **kwargs):
         self.user_id = user_id
