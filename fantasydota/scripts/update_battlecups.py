@@ -151,41 +151,41 @@ def update_battlecups(session, league):
             other_series_count = session.query(BattlecupRound).filter(
                 and_(BattlecupRound.series_id != series_id, BattlecupRound.round_ == bcup.current_round,
                      BattlecupRound.series_id != -1)).group_by(BattlecupRound.series_id).all() or []
-        other_series_count = len(other_series_count)
-        print "other_ser_cout", other_series_count
+            other_series_count = len(other_series_count)
+            print "other_ser_cout", other_series_count
 
-        try:
-            num_series = Battlecup.num_series_this_round(bcup.current_round,
-                                            bcup.series_per_round)
-            do_new_cup = other_series_count > 0 and other_series_count >= num_series
-        except:  # we are in the finals. no new cups
-            do_new_cup = False
-        do_new_cup = True if i == 0 else False
-        if do_new_cup:
-            print "DOING NEW CUP"
-            bcup_rounds = session.query(BattlecupRound).\
-                filter(and_(BattlecupRound.battlecup == bcup.id, BattlecupRound.round_ == bcup.current_round)).order_by(BattlecupRound.id).all()
-            num_games_in_round = len(bcup_rounds)
-            if num_games_in_round > 1:
-                for i, bcup_round in enumerate(bcup_rounds):
-                    with transaction.manager:
-                        # This function has side-effect of updating winner field
-                        # im not sure why the separate transactions mean winner hasnt updated by new_bcup_round
-                        round_winner = declare_bcup_rounds_winners(session, bcup_round)
-                        print "winner: ", round_winner
-                        transaction.commit()
-                    with transaction.manager:
-                        if i % 2 != 0:
-                            if num_games_in_round == 2:  # add 3rd place playoff
+            try:
+                num_series = Battlecup.num_series_this_round(bcup.current_round,
+                                                bcup.series_per_round)
+                do_new_cup = other_series_count >= num_series
+            except:  # we are in the finals. no new cups
+                do_new_cup = False
+            #do_new_cup = True if i == 0 else False
+            if do_new_cup:
+                print "DOING NEW CUP"
+                bcup_rounds = session.query(BattlecupRound).\
+                    filter(and_(BattlecupRound.battlecup == bcup.id, BattlecupRound.round_ == bcup.current_round)).order_by(BattlecupRound.id).all()
+                num_games_in_round = len(bcup_rounds)
+                if num_games_in_round > 1:
+                    for i, bcup_round in enumerate(bcup_rounds):
+                        with transaction.manager:
+                            # This function has side-effect of updating winner field
+                            # im not sure why the separate transactions mean winner hasnt updated by new_bcup_round
+                            round_winner = declare_bcup_rounds_winners(session, bcup_round)
+                            print "winner: ", round_winner
+                            transaction.commit()
+                        with transaction.manager:
+                            if i % 2 != 0:
+                                if num_games_in_round == 2:  # add 3rd place playoff
+                                    new_bcup_round(session, series_id, bcup,
+                                                   last_round, bcup_round, last_round_winner, round_winner,
+                                                   losers=True)
                                 new_bcup_round(session, series_id, bcup,
-                                               last_round, bcup_round, last_round_winner, round_winner,
-                                               losers=True)
-                            new_bcup_round(session, series_id, bcup,
-                                           last_round, bcup_round, last_round_winner, round_winner)
-                        else:
-                            last_round = bcup_round
-                            last_round_winner = round_winner
-                        transaction.commit()
+                                               last_round, bcup_round, last_round_winner, round_winner)
+                            else:
+                                last_round = bcup_round
+                                last_round_winner = round_winner
+                            transaction.commit()
             with transaction.manager:
                 session.query(Battlecup).filter(Battlecup.id == bcup.id).\
                             update({Battlecup.current_round: Battlecup.current_round + 1})
