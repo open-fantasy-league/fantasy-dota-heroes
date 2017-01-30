@@ -45,7 +45,7 @@ def view_league(request):
         #return HTTPFound('/login')
     else:
 
-        userq = session.query(LeagueUser).filter(User.id == user_id).first()
+        userq = session.query(LeagueUser).filter(LeagueUser.user_id == user_id).first()
         if not userq:
             username = session.query(User.username).filter(User.id == user_id).first()[0]
             user_league = LeagueUser(user_id, username, league.id)
@@ -61,12 +61,13 @@ def view_league(request):
 
             userq = FakeUser()  # so dont have to deal with a commit mid-request
 
-        team_ids = [res[0]for res in session.query(TeamHero.hero_id).\
-            filter(and_(TeamHero.user_id == user_id, TeamHero.league == league_id,
-                        TeamHero.is_battlecup.is_(False))).all()]
-        team = session.query(Hero).filter(and_(Hero.id.in_(team_ids),
+        team = session.query(Hero, TeamHero).filter(and_(
                                                Hero.is_battlecup.is_(False),
-                                               Hero.league == league_id)).all()
+                                               Hero.league == league_id)).\
+            filter(and_(TeamHero.user_id == user_id, TeamHero.league == league_id,
+                        TeamHero.is_battlecup.is_(False))).\
+            join(TeamHero).all()
+        print team
         username = session.query(User.username).filter(User.id == user_id).first()[0]
     heroes = session.query(Hero).filter(and_(Hero.league == league_id,
                                              Hero.is_battlecup.is_(False))).all()
@@ -101,10 +102,11 @@ def buy_hero_league(request):
         return {"success": False, "message": "Please login to play! :)"}
 
     hero_id = int(request.POST["hero"])
-    league_id = request.POST["league"]
+    league_id = int(request.POST["league"])
+    days = int(request.POST["days"])
     # transfer_think_open = request.POST["transfer"] really doesnt matter what the user thinks! :D
     transfer_actually_open = session.query(League.transfer_open).filter(League.id == league_id).first()[0]
     if not transfer_actually_open:
         return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
 
-    return buy(session, user_id, hero_id, league_id, False)
+    return buy(session, user_id, hero_id, league_id, False, days)

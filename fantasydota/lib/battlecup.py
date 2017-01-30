@@ -1,6 +1,5 @@
 import random
 
-#import transaction
 from fantasydota.models import User, League, Battlecup, BattlecupUser, BattlecupRound, BattlecupUserRound, TeamHero, \
     Hero, BattlecupTeamHeroHistory
 from sqlalchemy import and_
@@ -10,6 +9,7 @@ from sqlalchemy import or_
 
 class FakePlayer(object):
     def __init__(self):
+        self.user_id = -4
         self.username = "FAKE_USER_FOR_BATTLECUP_BYES"
         self.points = -9000
 
@@ -30,8 +30,8 @@ def check_winner_exists(session, p1, p2):
     if p1.points != p2.points:
         return p1.points, p2.points
     else:
-        p1_tournament_points = session.query(User.points).filter(User.username == p1.username).first()[0]
-        p2_tournament_points = session.query(User.points).filter(User.username == p2.username).first()[0]
+        p1_tournament_points = session.query(User.points).filter(User.id == p1.user_id).first()[0]
+        p2_tournament_points = session.query(User.points).filter(User.id == p2.user_id).first()[0]
         if p1_tournament_points > p2_tournament_points:
             return p1.points + 0.1, p2.points
         elif p1_tournament_points < p2_tournament_points:
@@ -81,9 +81,9 @@ def make_battlecups(session, league_id, rounds, players, series_per_round):
     for i, player in enumerate(players):
         if cup_counter >= cups:
             cup_counter = 0
-        session.add(BattlecupUser(player.user, league_id, highest_id + cup_counter + 1))
+        session.add(BattlecupUser(player.user_id, league_id, highest_id + cup_counter + 1))
         print "cup_counter: ", cup_counter
-        queues[cup_counter].append(player.user)
+        queues[cup_counter].append(player.user_id)
         print len(queues[cup_counter])
         cup_counter += 1
     print queues
@@ -137,8 +137,8 @@ def auto_fill_teams(session, league):
     for user in autofill_users:
         if not session.query(TeamHero).filter(and_(TeamHero.league == league.id,
                                                TeamHero.is_battlecup.is_(True),
-                                               TeamHero.user == user.username)).first():
-            generate_team(session, league.id, user.username)
+                                               TeamHero.user_id == user.id)).first():
+            generate_team(session, league.id, user.id)
     session.commit()
 
 
@@ -161,24 +161,24 @@ def player_hero_imgs(session, battlecup, round_, league_id, old_hero):
         hero_q = session.query(BattlecupTeamHeroHistory.hero_name). \
             filter(and_(BattlecupTeamHeroHistory.league == league_id,
                         BattlecupTeamHeroHistory.day == battlecup.day))
-        hero_q_1 = hero_q.filter(BattlecupTeamHeroHistory.user == round_.player_one)
+        hero_q_1 = hero_q.filter(BattlecupTeamHeroHistory.user_id == round_.player_one)
 
-        hero_q_2 = hero_q.filter(BattlecupTeamHeroHistory.user == round_.player_two)
+        hero_q_2 = hero_q.filter(BattlecupTeamHeroHistory.user_id == round_.player_two)
     else:
         hero_q = session.query(TeamHero.hero_name). \
             filter(and_(TeamHero.league == league_id,
                         TeamHero.is_battlecup.is_(True)
                         ))
-        hero_q_1 = hero_q.filter(TeamHero.user == round_.player_one)
+        hero_q_1 = hero_q.filter(TeamHero.user_id == round_.player_one)
 
-        hero_q_2 = hero_q.filter(TeamHero.user == round_.player_two)
+        hero_q_2 = hero_q.filter(TeamHero.user_id == round_.player_two)
 
-    p1_heroes = {"pname": round_.player_one,
+    p1_heroes = {"pname": session.query(User.username).filter(User.id == round_.player_one).first(),
                  "heroes": [
                      x[0] for x in hero_q_1.all()
                      ]}
 
-    p2_heroes = {"pname": round_.player_two,
+    p2_heroes = {"pname": session.query(User.username).filter(User.id == round_.player_two).first(),
                  "heroes": [
                      x[0] for x in hero_q_2.all()
                      ]}

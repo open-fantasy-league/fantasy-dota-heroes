@@ -2,7 +2,7 @@ import datetime
 
 from fantasydota.models import (
     DBSession,
-    Friend)
+    Friend, User)
 from fantasydota.util.random_function import add_months, bprint
 from pyramid.httpexceptions import (
     HTTPFound,
@@ -148,15 +148,18 @@ def view_index(request):
 @view_config(route_name="add_friend", renderer="json")
 def add_friend(request):
     session = DBSession()
-    user = authenticated_userid(request)
-    if user is None:
+    user_id = authenticated_userid(request)
+    if user_id is None:
         raise HTTPForbidden()
 
     new_friend = request.POST["newFriend"].lower()
-    if session.query(Friend).filter(and_(Friend.user == user, Friend.friend == new_friend)).first():
+    new_friend_id = session.query(User.id).filter(User.username == new_friend).first()
+    if session.query(Friend).filter(and_(Friend.user_id == user_id, Friend.friend == new_friend)).first():
+        return {"success": False, "message": "You have already added that friend"}
+    elif not new_friend_id:
         return {"success": False, "message": "You have already added that friend"}
     else:
-        session.add(Friend(user, new_friend))
+        session.add(Friend(user_id, new_friend_id[0]))
         return {"success": True, "message": "Friend successfully added"}
 
 

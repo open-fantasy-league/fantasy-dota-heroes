@@ -6,7 +6,7 @@ from pyramid.view import view_config
 
 from fantasydota import DBSession
 from fantasydota.models import BattlecupUser, League, Hero, TeamHero, BattlecupTeamHeroHistory, Battlecup, \
-    BattlecupRound, BattlecupUserRound
+    BattlecupRound, BattlecupUserRound, User
 from sqlalchemy import and_
 from sqlalchemy import func
 
@@ -19,22 +19,20 @@ def battlecup(request):
     if not user_id:
         return HTTPFound('/login')
 
-    league_id = int(request.params.get("league")) if request.params.get("league") else None \
-        or request.registry.settings["default_league"]
-    battlecup_id = int(request.params.get("battlecup_id")) if request.params.get("battlecup_id") else None \
-                                                                                       or -1
+    league_id = int(request.params.get("league", request.registry.settings["default_league"]))
+    battlecup_id = int(request.params.get("battlecup_id", -1))
     league = session.query(League).filter(League.id == league_id).first()
     is_playing = True
 
     all_bcup_user = session.query(BattlecupUser).filter(BattlecupUser.user_id == user_id).all()
     all_bcups = session.query(Battlecup).filter(Battlecup.id.in_([x.battlecup for x in all_bcup_user])).all()
 
-    if league.battlecup_status == 0:
-        class FakeBcup(object):
-            def __init__(self, id, day):
-                self.day = day
-                self.id = id
+    class FakeBcup(object):
+        def __init__(self, id, day):
+            self.day = day
+            self.id = id
 
+    if league.battlecup_status == 0:
         fake_bcup = FakeBcup(-1, league.current_day)  # fake because hasnt been created until transfer window closes
         all_bcups.append(fake_bcup)
     transfer_open = True if battlecup_id == -1 and league.battlecup_status == 0 else False
@@ -47,6 +45,8 @@ def battlecup(request):
         today = [bcup for bcup in all_bcups if bcup.day == league.current_day]
         if today:
             return_dict["battlecup"] = today[0]
+        else:
+            return_dict["battlecup"] = FakeBcup(-1, league.current_day)  # we are not entered into any today
 
     heroes = session.query(Hero).filter(and_(Hero.league == league_id, Hero.is_battlecup.is_(True))).all()
     return_dict["heroes"] = heroes
@@ -125,7 +125,7 @@ def battlecup_add_league_team(request):
         money -= new_h.value
         if money > 0:
             heroes_to_add.append(new_h.id)
-            session.add(TeamHero(user, new_h.id, league_id, True))
+            session.add(TeamHero(user_id, new_h.id, league_id, True, 1, 0))
         else:
             message = "League team too expensive for battlecup values. Hero removed"
             money += new_h.value
@@ -168,29 +168,6 @@ def battlecup_add_yesterday_team(request):
     return {"success": True, "message": message, "heroes": heroes_to_add, "new_credits": round(money, 1)}
 
 
-# @view_config(route_name='battlecup_team', renderer='templates/battlecup_team.mako')
-# def battlecup_team(request):
-#     session = DBSession()
-#     user = authenticated_userid(request)
-#     league_id = int(request.params.get("league")) if request.params.get("league") else None \
-#         or request.registry.settings["default_league"]
-#     league = session.query(League).filter(League.id == league_id).first()
-#     is_playing = True
-#     if not user:
-#         battlecup_id = 1
-#         is_playing = False
-#     else:
-#         battlecup_id = request.params.get("battlecup_id")
-#         if not battlecup_id:
-#             battlecupq = session.query(BattlecupUser.battlecup_id).filter(BattlecupUser.username == user).first()
-#             if battlecupq:
-#                 battlecup_id = battlecupq[0]
-#             else:
-#                 is_playing = False
-#                 battlecup_id = 1
-#     return {"league": league, "battlecup_id": battlecup_id, "is_playing": is_playing}
-
-
 @view_config(route_name='battlecup_json', renderer='json')
 def battlecup_json(request):
 
@@ -206,36 +183,22 @@ def battlecup_json(request):
         old_hero = False
     match_count = 2**(battlecup.total_rounds - 1)
     player_names, hero_imgs, results = [(None, None) for _ in xrange(match_count)], [], []
-    bcup_round_one = session.query(BattlecupRound).filter(and_(BattlecupRound.battlecup == battlecup_id,
-                                                               BattlecupRound.round_ == 1)).\
-        order_by(BattlecupRound.id).all()
 
-    bcup_round_two = session.query(BattlecupRound).filter(and_(BattlecupRound.battlecup == battlecup_id,
-                                                               BattlecupRound.round_ == 2)). \
-        order_by(BattlecupRound.id).all()
-
-    bcup_round_three = session.query(BattlecupRound).filter(and_(BattlecupRound.battlecup == battlecup_id,
-                                                               BattlecupRound.round_ == 3)). \
-        order_by(BattlecupRound.id).all()
-
-    bcup_round_four = session.query(BattlecupRound).filter(and_(BattlecupRound.battlecup == battlecup_id,
-                                                               BattlecupRound.round_ == 4)). \
-        order_by(BattlecupRound.id).all()
-
-    results_full, round_one_results, round_two_results, round_three_results, round_four_results = \
-        [], [], [], [], []
-
-    for current_round in range(battlecup.total_rounds):
+    for current_round in range(1, battlecup.total_rounds + 1):
         bcup_rounds = session.query(BattlecupRound).filter(and_(BattlecupRound.battlecup == battlecup_id,
-                                                               BattlecupRound.round_ == current_round + 1)).\
+                                                               BattlecupRound.round_ == current_round)).\
             order_by(BattlecupRound.id).all()
         round_results = []
         for i, round_ in enumerate(bcup_rounds):
             if current_round == 1:
-                player_names[i] = (round_.player_one, round_.player_two)
+                player_one_name = session.query(User.username).filter(User.id == round_.player_one).first()\
+                                  or [None]
+                player_two_name = session.query(User.username).filter(User.id == round_.player_two).first()\
+                                  or [None]
+                player_names[i] = (player_one_name[0], player_two_name[0])
                 hero_imgs.extend(player_hero_imgs(session, battlecup, round_, league_id, old_hero))
 
-            if battlecup.current_round > current_round + 1: # if round has ended and we've started next round
+            if battlecup.current_round > current_round:  # if round has ended and we've started next round
                 p1_points = \
                 session.query(BattlecupUserRound.points).filter(and_(BattlecupUserRound.battlecupround == round_.id,
                                                                      BattlecupUserRound.user_id == round_.player_one)) \
@@ -250,106 +213,11 @@ def battlecup_json(request):
                     p2_points = p2_points[0]
 
                 round_results.append([p1_points, p2_points])
-        results_full.append(round_results)
-
-
-
-
-
-    for i, round_ in enumerate(bcup_round_one): # TODO this round_ was a stupid name refactor
-        player_names[i] = (round_.player_one, round_.player_two)
-
-        if old_hero:
-            hero_q = session.query(BattlecupTeamHeroHistory.hero_name).\
-                         filter(and_(BattlecupTeamHeroHistory.league == league_id,
-                                     BattlecupTeamHeroHistory.day == battlecup.day))
-            hero_q_1 = hero_q.filter(BattlecupTeamHeroHistory.user == round_.player_one)
-
-            hero_q_2 = hero_q.filter(BattlecupTeamHeroHistory.user == round_.player_two)
-        else:
-            hero_q = session.query(TeamHero.hero_name).\
-                         filter(and_(TeamHero.league == league_id,
-                                     TeamHero.is_battlecup.is_(True)
-                                     ))
-            hero_q_1 = hero_q.filter(TeamHero.user_id == round_.player_one)
-
-            hero_q_2 = hero_q.filter(TeamHero.user_id == round_.player_two)
-
-        p1_heroes = {"pname": round_.player_one,
-                     "heroes": [
-                         x[0] for x in hero_q_1.all()
-                         ]}
-
-        p2_heroes = {"pname": round_.player_two,
-                     "heroes": [
-                         x[0] for x in hero_q_2.all()
-                         ]}
-
-        hero_imgs.extend([p1_heroes, p2_heroes])
-
-        if battlecup.current_round > 1:
-            p1_points = session.query(BattlecupUserRound.points).filter(and_(BattlecupUserRound.battlecupround == round_.id,
-                                                                      BattlecupUserRound.username == round_.player_one))\
-                .first()[0]
-
-            p2_points = session.query(BattlecupUserRound.points).filter(and_(BattlecupUserRound.battlecupround == round_.id,
-                                                                             BattlecupUserRound.username == round_.player_two)) \
-                .first()
-
-            if p2_points:  # If its none leave it as none, this is a bye
-                p2_points = p2_points[0]
-
-            round_one_results.append([p1_points, p2_points])
-    results_full.append(round_one_results)
-    if battlecup.current_round > 2:
-        for round_ in bcup_round_two:
-            p1_points = session.query(BattlecupUserRound.points).filter(and_(BattlecupUserRound.battlecupround == round_.id,
-                                                                      BattlecupUserRound.username == round_.player_one))\
-                .first()[0]
-
-            p2_points = session.query(BattlecupUserRound.points).filter(and_(BattlecupUserRound.battlecupround == round_.id,
-                                                                             BattlecupUserRound.username == round_.player_two)) \
-                .first()[0]
-
-            round_two_results.append([p1_points, p2_points])
-    results_full.append(round_two_results)
-
-    if battlecup.current_round > 3:
-        for round_ in bcup_round_three:
-            p1_points = session.query(BattlecupUserRound.points).filter(and_(BattlecupUserRound.battlecupround == round_.id,
-                                                                      BattlecupUserRound.username == round_.player_one))\
-                .first()[0]
-
-            p2_points = session.query(BattlecupUserRound.points).filter(and_(BattlecupUserRound.battlecupround == round_.id,
-                                                                             BattlecupUserRound.username == round_.player_two)) \
-                .first()[0]
-
-            round_three_results.append([p1_points, p2_points])
-    results_full.append(round_three_results)
-
-    if battlecup.current_round > 4:
-	last_round = 0
-        for round_ in bcup_round_four:
-	    
-	    print "Round: ", round_.id
-            p1_points = session.query(BattlecupUserRound.points).filter(and_(BattlecupUserRound.battlecupround == round_.id,
-                                                                      BattlecupUserRound.username == round_.player_one))\
-                .first()[0]
-
-            p2_points = session.query(BattlecupUserRound.points).filter(and_(BattlecupUserRound.battlecupround == round_.id,
-                                                                             BattlecupUserRound.username == round_.player_two)) \
-                .first()[0]
-	    if round_.id > last_round:
-            	round_four_results.insert(0, [p1_points, p2_points])
-	    else:
-            	round_four_results.append([p1_points, p2_points])
-
-	    last_round = round_.id
-    results_full.append(round_four_results)
+        results.append(round_results)
 
     bracket_dict = {
         "teams": player_names,
-        "results": results_full
+        "results": results
     }
 
     return {"bracket_dict": bracket_dict, "hero_imgs": hero_imgs}

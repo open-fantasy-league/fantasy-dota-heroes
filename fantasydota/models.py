@@ -150,7 +150,7 @@ class Battlecup(Base):
     series_per_round = Column(String(50))  # String? Yes string. sounds stupid. I think it'll play out well though
     # Format will be 2,1,1,1  . split based on current round
     transfer_open = Column(Boolean, default=True)
-    winner = Column(String(50), ForeignKey(User.username), index=True)
+    winner = Column(Integer, ForeignKey(User.id), index=True)
 
     def __init__(self, league, day, total_rounds, series_per_round):
         self.league = league
@@ -168,15 +168,14 @@ class BattlecupUser(Base):
     id = Column(Integer, Sequence('id'), primary_key=True)
     battlecup = Column(Integer, ForeignKey(Battlecup.id), index=True, nullable=False) # should index be here?
     user_id = Column(Integer, ForeignKey(User.id), index=True, nullable=False)
-    username = Column(String(50), ForeignKey(User.username), nullable=False)
+    #username = Column(String(50), ForeignKey(User.username), nullable=False)
     league = Column(Integer, ForeignKey(League.id), index=True)
     #user_id = Column(Integer, ForeignKey(User.user_id), index=True)  # should index be here?
     round_out = Column(Integer)
     money = Column(Float, default=50.0)
 
-    def __init__(self, user_id, username, league, battlecup=None):
+    def __init__(self, user_id, league, battlecup=None):
         self.user_id = user_id
-        self.username = username
         self.league = league
         self.battlecup = battlecup
 
@@ -234,7 +233,7 @@ class Friend(Base):
 class Hero(Base):
     __tablename__ = "hero"
     id = Column(Integer, primary_key=True)  # api hero ids start at 1
-    name = Column(String(100), nullable=False, index=True, unique=True)  #index=true?
+    name = Column(String(100), nullable=False, index=True)  #index=true?
     league = Column(Integer, ForeignKey(League.id), primary_key=True, nullable=False)
     value = Column(Float, default=10.0)
     points = Column(Integer, default=0)
@@ -243,6 +242,8 @@ class Hero(Base):
     wins = Column(Integer, default=0)
     active = Column(Boolean, default=True)  # this is for when valve release patch midway through tournament and add/remove from cm
     is_battlecup = Column(Boolean, primary_key=True)
+    UniqueConstraint('is_battlecup', 'league', 'hero_id')
+
     # maybe I want day here as well? somewhere to track day value fluctuations
 
     def __init__(self, id, name, value, league, is_battlecup):
@@ -258,19 +259,24 @@ class TeamHero(Base):
     id = Column(Integer, Sequence('id'), primary_key=True)
     user_id = Column(Integer, ForeignKey(User.id), index=True, nullable=False)
     hero_id = Column(Integer, ForeignKey(Hero.id), index=True, nullable=False)
-    hero_name = Column(String(100), ForeignKey(Hero.name))
+    # commented out due to mapper exception when joining Hero and TeamHero when multiple foreign keys
+    # To make it work you give join a tuple I now believe. table, then table column to join I think
+    hero_name = Column(String(100))#, ForeignKey(Hero.name))
     league = Column(Integer, ForeignKey(League.id), index=True, nullable=False)
     is_battlecup = Column(Boolean, index=True)
     days_left = Column(Integer, default=1)
+    active = Column(Boolean, default=False)
+    cost = Column(Float)
     UniqueConstraint('is_battlecup', 'league', 'hero_id', 'user_id')
 
-    def __init__(self, user_id, hero_id, league, is_battlecup, days_left=1, **kwargs):
+    def __init__(self, user_id, hero_id, league, is_battlecup, days_left, cost, **kwargs):
         self.user_id = user_id
         self.hero_id = hero_id
         self.hero_name = kwargs.get("hero_name", (item for item in heroes if item["id"] == hero_id).next()["name"])
         self.league = league
         self.is_battlecup = is_battlecup
         self.days_left = days_left
+        self.cost = cost
 
 
 class BattlecupTeamHeroHistory(Base):

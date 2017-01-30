@@ -29,7 +29,7 @@ def login(request):
             for user in userq:
                 if user.validate_password(request.params.get('password')):
                     headers = remember(request, user.id)
-                    userq.update({User.last_login: datetime.datetime.now()})
+                    user.last_login = datetime.datetime.now()
                     return HTTPFound('/viewLeague', headers=headers)
                 else:
                     headers = forget(request)

@@ -50,7 +50,7 @@ def leaderboard(request):
 
     player_heroes = []
     league = session.query(League).filter(League.id == league_id).first()
-    leagueq = session.query(LeagueUser).filter(LeagueUser.league == league_id).filter(LeagueUser.username.in_(users_playing))
+    leagueq = session.query(LeagueUser).filter(LeagueUser.league == league_id).filter(LeagueUser.user_id.in_(users_playing))
     if period == "tournament":
         luser = leagueq.filter(LeagueUser.user_id == user_id).first()
         if show_friend:  # TODO gonna be a bug with convert username -> id for friend

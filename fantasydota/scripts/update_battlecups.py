@@ -11,7 +11,7 @@ from sqlalchemy import func
 
 
 def add_result_to_user(userq, res, hero_count):
-    username = userq.username
+    user_id = userq.user_id
     if "p" in res:
         userq.picks += 1
     if "w" in res:
@@ -19,7 +19,7 @@ def add_result_to_user(userq, res, hero_count):
     if "b" in res:
         userq.bans += 1
     to_add = (0.5 ** (5 - hero_count)) * Result.result_to_value(res)
-    print "addin %s points to %s" % (to_add, username)
+    #print "addin %s points to %s" % (to_add, user_id)
     userq.points += to_add
 
 
@@ -32,15 +32,15 @@ def update_battlecup_points(session, result, series_id, bcup, league_id):
                 update({BattlecupRound.series_id: series_id})
     bcup_round_ids = [x.id for x in bcup_rounds]
     for player in session.query(BattlecupUserRound).filter(BattlecupUserRound.battlecupround.in_(bcup_round_ids)).all():
-        winner = session.query(TeamHero.user). \
+        winner = session.query(TeamHero.user_id). \
             filter(and_(TeamHero.hero_id == result.hero, TeamHero.league == league_id,
-                        TeamHero.user == player.username,
+                        TeamHero.user_id == player.user_id,
                         TeamHero.is_battlecup.is_(True))).first()
 
         if winner:
             hero_count = session.query(func.count(TeamHero)).filter(and_(TeamHero.league == league_id,
                                                                          TeamHero.is_battlecup.is_(True),
-                                                                         TeamHero.user == player.username)).scalar()
+                                                                         TeamHero.user_id == player.user_id)).scalar()
             add_result_to_user(player, result.result_str, hero_count)
 
 
@@ -52,8 +52,8 @@ def declare_bcup_rounds_winners(session, bcup_round):
         p2 = res[1]
     except IndexError:
         p2 = FakePlayer()  # bye
-    print "usr: %s, points: %s" % (p1.username, p1.points)
-    print "usr: %s, points: %s" % (p2.username, p2.points)
+    print "usr: %s, points: %s" % (p1.user_id, p1.points)
+    print "usr: %s, points: %s" % (p2.user_id, p2.points)
     if p1.points > p2.points:
         session.query(BattlecupRound).\
             filter(BattlecupRound.id == bcup_round.id).update({BattlecupRound.winner: 1})
@@ -66,39 +66,39 @@ def declare_bcup_rounds_winners(session, bcup_round):
         if p1.wins > p2.wins:
             session.query(BattlecupRound). \
                 filter(BattlecupRound.id == bcup_round.id).update({BattlecupRound.winner: 1})
-            bur_q.filter(BattlecupUserRound.username == p1.username).\
+            bur_q.filter(BattlecupUserRound.user_id == p1.user_id).\
                 update({BattlecupUserRound.points: BattlecupUserRound.points + 0.1})
             return 1
         elif p2.wins > p1.wins:
             session.query(BattlecupRound). \
                 filter(BattlecupRound.id == bcup_round.id).update({BattlecupRound.winner: 2})
-            bur_q.filter(BattlecupUserRound.username == p2.username).\
+            bur_q.filter(BattlecupUserRound.user_id == p2.user_id).\
                 update({BattlecupUserRound.points: BattlecupUserRound.points + 0.1})
             return 2
         else:
             if p1.picks > p2.picks:
                 session.query(BattlecupRound). \
                     filter(BattlecupRound.id == bcup_round.id).update({BattlecupRound.winner: 1})
-                bur_q.filter(BattlecupUserRound.username == p1.username). \
+                bur_q.filter(BattlecupUserRound.user_id == p1.user_id). \
                     update({BattlecupUserRound.points: BattlecupUserRound.points + 0.1})
                 return 1
             elif p2.picks > p1.picks:
                 session.query(BattlecupRound). \
                     filter(BattlecupRound.id == bcup_round.id).update({BattlecupRound.winner: 2})
-                bur_q.filter(BattlecupUserRound.username == p2.username). \
+                bur_q.filter(BattlecupUserRound.user_id == p2.user_id). \
                     update({BattlecupUserRound.points: BattlecupUserRound.points + 0.1})
                 return 2
             else:
                 if p1.bans > p2.bans:
                     session.query(BattlecupRound). \
                         filter(BattlecupRound.id == bcup_round.id).update({BattlecupRound.winner: 1})
-                    bur_q.filter(BattlecupUserRound.username == p1.username). \
+                    bur_q.filter(BattlecupUserRound.user_id == p1.user_id). \
                         update({BattlecupUserRound.points: BattlecupUserRound.points + 0.1})
                     return 1
                 elif p2.bans > p1.bans:
                     session.query(BattlecupRound). \
                         filter(BattlecupRound.id == bcup_round.id).update({BattlecupRound.winner: 2})
-                    bur_q.filter(BattlecupUserRound.username == p2.username). \
+                    bur_q.filter(BattlecupUserRound.user_id == p2.user_id). \
                         update({BattlecupUserRound.points: BattlecupUserRound.points + 0.1})
                     return 2
                 else:
@@ -106,13 +106,13 @@ def declare_bcup_rounds_winners(session, bcup_round):
                     if winner == 1:
                         session.query(BattlecupRound). \
                             filter(BattlecupRound.id == bcup_round.id).update({BattlecupRound.winner: 1})
-                        bur_q.filter(BattlecupUserRound.username == p1.username). \
+                        bur_q.filter(BattlecupUserRound.user_id == p1.user_id). \
                             update({BattlecupUserRound.points: BattlecupUserRound.points + 0.1})
                         return 1
                     else:
                         session.query(BattlecupRound). \
                             filter(BattlecupRound.id == bcup_round.id).update({BattlecupRound.winner: 2})
-                        bur_q.filter(BattlecupUserRound.username == p2.username). \
+                        bur_q.filter(BattlecupUserRound.user_id == p2.user_id). \
                             update({BattlecupUserRound.points: BattlecupUserRound.points + 0.1})
                         return 2
 
@@ -136,32 +136,23 @@ def new_bcup_round(session, series_id, bcup, previous_round_1, previous_round_2,
 
 def update_battlecups(session, league):
     league_id = league.id
-    new_results = session.query(Result).filter(Result.applied.is_(2)).\
-        filter(Result.tournament_id == league_id).all()
+    new_results = session.query(Result).filter(Result.applied == 2).\
+        filter(Result.tournament_id == league_id).order_by(Result.timestamp).all()
 
     for i, result in enumerate(new_results):
 
         # move this up to top. use queries already there
         series_id = result.series_id
 
-        bcups = session.query(Battlecup).filter(and_(Battlecup.league == league_id, Battlecup.id == 3,
+        bcups = session.query(Battlecup).filter(and_(Battlecup.league == league_id,
                                                      Battlecup.day == league.current_day)).all()
         for bcup in bcups:
             # -1 for 1st series day
-            other_series_count = session.query(BattlecupRound).filter(
-                and_(BattlecupRound.series_id != series_id, BattlecupRound.round_ == bcup.current_round,
-                     BattlecupRound.series_id != -1)).group_by(BattlecupRound.series_id).all() or []
-            other_series_count = len(other_series_count)
-            print "other_ser_cout", other_series_count
-
-            try:
-                num_series = Battlecup.num_series_this_round(bcup.current_round,
-                                                bcup.series_per_round)
-                do_new_cup = other_series_count >= num_series
-            except:  # we are in the finals. no new cups
-                do_new_cup = False
-            #do_new_cup = True if i == 0 else False
-            if do_new_cup:
+            do_new_cup = session.query(BattlecupRound).filter(and_(BattlecupRound.series_id != series_id,
+                                                                   BattlecupRound.series_id != -1,
+                                                                   BattlecupRound.battlecup == bcup.id,
+                                                                   BattlecupRound.round_ == bcup.current_round)).first()
+            if do_new_cup and bcup.current_round < bcup.total_rounds:
                 print "DOING NEW CUP"
                 bcup_rounds = session.query(BattlecupRound).\
                     filter(and_(BattlecupRound.battlecup == bcup.id, BattlecupRound.round_ == bcup.current_round)).order_by(BattlecupRound.id).all()
@@ -169,8 +160,8 @@ def update_battlecups(session, league):
                 if num_games_in_round > 1:
                     for i, bcup_round in enumerate(bcup_rounds):
                         with transaction.manager:
-                            # This function has side-effect of updating winner field
-                            # im not sure why the separate transactions mean winner hasnt updated by new_bcup_round
+                        # This function has side-effect of updating winner field
+                        # im not sure why the separate transactions mean winner hasnt updated by new_bcup_round
                             round_winner = declare_bcup_rounds_winners(session, bcup_round)
                             print "winner: ", round_winner
                             transaction.commit()
@@ -186,20 +177,23 @@ def update_battlecups(session, league):
                                 last_round = bcup_round
                                 last_round_winner = round_winner
                             transaction.commit()
-            with transaction.manager:
-                session.query(Battlecup).filter(Battlecup.id == bcup.id).\
-                            update({Battlecup.current_round: Battlecup.current_round + 1})
-                update_battlecup_points(session, result, series_id, bcup, league_id)  # refactor this. dont call 2
-                session.query(Battlecup).filter(Battlecup.id == bcup.id).\
-                   update({Battlecup.current_round: Battlecup.current_round + 1})
-                result.applied = 2
-                transaction.commit()
+                with transaction.manager:
+                    update_battlecup_points(session, result, series_id, bcup, league_id)  # refactor this. dont call 2
+                    print "ADDING CURRENT ROUND"
+                    #import pdb; pdb.set_trace()
+                    session.query(Battlecup).filter(Battlecup.id == bcup.id).\
+                       update({Battlecup.current_round: Battlecup.current_round + 1})
+                    result.applied = 2
+                    transaction.commit()
 
-        else:
-            with transaction.manager:
-                update_battlecup_points(session, result, series_id, bcup, league_id)
-                result.applied = 2
-                transaction.commit()
+            else:
+                if bcup.current_round > bcup.total_rounds:
+                    continue
+                #print "update bcup pints"
+                with transaction.manager:
+                    update_battlecup_points(session, result, series_id, bcup, league_id)
+                    result.applied = 2
+                    transaction.commit()
 
 
 def main():

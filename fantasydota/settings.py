@@ -10,6 +10,12 @@ SOCIAL_AUTH_AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.steam.SteamOpenId')
 
+# Specified key was too long mysql social auth bug
+SOCIAL_AUTH_UID_LENGTH = 128
+SOCIAL_AUTH_NONCE_SERVER_URL_LENGTH = 128
+SOCIAL_AUTH_ASSOCIATION_SERVER_URL_LENGTH = 128
+SOCIAL_AUTH_ASSOCIATION_HANDLE_LENGTH = 128
+
 SOCIAL_AUTH_TRAILING_SLASH = True
 
 SOCIAL_AUTH_PIPELINE = (

@@ -108,7 +108,7 @@ ${"period=%s" % period}
                     <td class="positionEntry">${i+1}
                     </td>
                     <td class="heroEntry">${player.username}
-                    %if len(player_heroes) > i and league.status > 0:
+                    %if len(player_heroes) > i and not league.transfer_open:
                         <span class="hero_images">
                         % for hero in player_heroes[i]:
                             <img src="/static/images/${hero.replace(" ", "_")}_icon.png"/>

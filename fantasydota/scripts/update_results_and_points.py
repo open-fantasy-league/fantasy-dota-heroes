@@ -1,6 +1,6 @@
 from fantasydota.lib.session_utils import make_session
 from fantasydota.scripts.get_tournament_data import add_matches
-from fantasydota.scripts.update_hero_values import update_hero_values
+from fantasydota.scripts.update_hero_points import update_hero_points
 
 
 def main():

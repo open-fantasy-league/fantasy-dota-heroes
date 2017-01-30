@@ -29,20 +29,20 @@
 <div id="myTeamBlock">
     <h2>My Team (Total points <span class="teamPoints">${userq.points}</span>)</h2>
     <div id="tableContainer">
-        <table class="sortable" id="teamTable">
+        <table class="sortable" id="teamTableTransfers">
             <tr>
                 <th class="heroHeader">Hero</th>
                 <th class="valueHeader">Value</th>
             </tr>
             % for hero in team:
-                <tr class="teamRow" id="${hero.hero_id}TeamRow">
-                    <td class="heroEntry"><img src="/static/images/${hero.hero_name.replace(" ", "_")}_icon.png"/>
-                        ${hero.hero_name}
+                <tr class="teamRow" id="${hero.id}TeamRow">
+                    <td class="heroEntry"><img src="/static/images/${hero.name.replace(" ", "_")}_icon.png"/>
+                        ${hero.name}
                     </td>
                     <td class="valueEntry">${hero.value}</td>
                     <td class="tradeEntry">
-                        <form name="tradeForm" id="${hero.hero_id}TradeForm" class="tradeForm" onsubmit="return false;">
-                            <input type="hidden" value="${hero.hero_id}" name="tradeHero"/>
+                        <form name="tradeForm" id="${hero.id}TradeForm" class="tradeForm" onsubmit="return false;">
+                            <input type="hidden" value="${hero.id}" name="tradeHero"/>
                             <button type="submit" name="sellHero">Sell
                             </button>
                         </form>
@@ -65,16 +65,18 @@
 
             </tr>
             % for hero in heroes:
-                <tr id="${hero.hero_id}Row">
-                    <td class="heroEntry"><img src="/static/images/${hero.hero_name.replace(" ", "_")}_icon.png"/>${hero.hero_name}</td>
+                <tr id="${hero.id}Row">
+                    <td class="heroEntry">
+                        <img src="/static/images/${hero.name.replace(" ", "_")}_icon.png"/>${hero.name}
+                    </td>
                     <td class="valueEntry">${hero.value}</td>
                     <td class="heroPointsEntry">${hero.points}</td>
                     <td class="picksEntry">${hero.picks}</td>
                     <td class="bansEntry">${hero.bans}</td>
                     <td class="winsEntry">${hero.wins}</td>
                     <td class="tradeEntry">
-                        <form name="tradeForm" id="${hero.hero_id}TradeForm" class="tradeForm" onsubmit="return false;">
-                            <input type="hidden" value="${hero.hero_id}" name="tradeHero"/>
+                        <form name="tradeForm" id="${hero.id}TradeForm" class="tradeForm" onsubmit="return false;">
+                            <input type="hidden" value="${hero.id}" name="tradeHero"/>
                             <button type="submit" name="buyHero">Buy</button>
                         </form>
                     </td>

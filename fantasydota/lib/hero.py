@@ -45,16 +45,12 @@ def calibrate_value(average_points, our_points):
 
 
 def combine_calibrations(older_value, newer_value):
-    return (newer_value + older_value) * 0.75/ 2.
+    return (newer_value + older_value * 2) * 0.98/ 3.
 
 
-def recalibrate_bcup_hero_values(session, league_id):
-    heroes = session.query(Hero).filter(and_(Hero.is_battlecup.is_(True),
-                                             Hero.league == league_id,
-                                        ))
-    average_points = float(session.query(func.avg(Hero.points)).filter(and_(
-       Hero.is_battlecup.is_(True), Hero.league == league_id
-    )).scalar())
+def recalibrate_hero_values(session, league_id):
+    heroes = session.query(Hero).filter(Hero.league == league_id)
+    average_points = float(session.query(func.avg(Hero.points)).filter(Hero.league == league_id).scalar())
     for hero in heroes:
         new_calibration = calibrate_value(average_points, hero.points)
         print "new calbration: %s, from %s" % (new_calibration, hero.value)

@@ -8,12 +8,14 @@ from fantasydota.scripts.start_of_day import start_of_day
 
 def main():
     session = make_session(False)
-    for i in range(105):
-        username = "tpain" + str(i)
-        session.add(User(username, "aaaaaa"))
-        session.flush()
-        session.add(LeagueUser(username, 4979))
-        session.flush()
+    for i in range(16):
+        username = "tpaintpaintpaintp" + str(i)
+        #session.add(User(username, "aaaaaa"))
+        #session.flush()
+        user_id = session.query(User.id).filter(User.username == username).first()[0]
+        #session.add(LeagueUser(user_id,
+        #                       username, 5018))
+        #session.flush()
         for i in range(3):
             if i >= 2:
                 stage = 2
@@ -21,11 +23,12 @@ def main():
                 stage = 1
             else:
                 stage = 0
-            session.add(LeagueUserDay(username, 4979, i, stage))
-            session.flush()
+            # session.add(LeagueUserDay(user_id,
+            #                           username, 5018, i, stage))
+            # session.flush()
         for _ in range(5):
-            session.add(TeamHero(username, random.choice(heroes)["id"], 4979, True))
-            session.add(TeamHero(username, random.choice(heroes)["id"], 4979, False))
+            session.add(TeamHero(user_id, random.choice(heroes)["id"], 5018, True, 1, 20.0))
+            session.add(TeamHero(user_id, random.choice(heroes)["id"], 5018, False, random.randint(1, 5), 20.0))
         session.flush()
     session.commit()
 
