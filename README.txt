@@ -3,6 +3,7 @@ fantasydota README
 
 Lives at https://www.fantasydota.eu
 
+Next tournament planned is Kie Major starting early April
 Getting Started
 ---------------
 
