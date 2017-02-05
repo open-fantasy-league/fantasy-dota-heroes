@@ -17,14 +17,15 @@
     <p>
     Points are allocated in the following way:</br>
     <ul>
-        <li>Pick/Ban  2 points</li>
-        <li>Win       8 points</li>
-        <li>Loss      -4 points</li>
+        <li>Ban       1 points</li>
+        <li>Pick      2 points</li>
+        <li>Win       6 points</li>
+        <li>Loss     -5 points</li>
     </ul></br>
         Bonus points:</br>
         <ul>
         <li>2nd Phase Pick/Ban/Win +1 point</li>
-        <li>3rd Phase Pick/Ban/Win +2 point</li>
+        <li>3rd Phase Pick/Ban/Win +3 point</li>
     </ul></br>
 
         (Picks and wins stack. so a 3rd phase pick will win earn 14 points total!)</br>

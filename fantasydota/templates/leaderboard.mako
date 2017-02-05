@@ -49,35 +49,41 @@ ${"period=%s" % period}
 </%def>
 
 <div id="leaderboardBlock" class="col-md-7">
-    <ul class="w3-navbar w3-border-bottom w3-light-grey intronav">
-        <li>
-            <a href="/viewLeague?league=${league.id}"><b>Team</b></a>
-        </li>
-        <li>
-            <a href="/leaderboard?league=${league.id}" class="w3-dark-grey"><b>Leaderboard</b></a>
-        </li>
-    </ul>
+    <nav>
+    <div class="nav-wrapper">
+        <ul class="left">
+            <li>
+                <a href="/viewLeague?league=${league.id}"><b>Team</b></a>
+            </li>
+            <li class="active">
+                <a href="/leaderboard?league=${league.id}"><b>Leaderboard</b></a>
+            </li>
+        </ul>
+    </div>
+    </nav>
     Points updated hourly
     <h2>${rank_by.title()}</h2>
-    <div>
-        <ul class="w3-navbar w3-border-bottom w3-light-grey intronav">
-            <li>
-                <a id="pointsBtn" href="/leaderboard?rank_by=points&${friendOrGlobal(switch_to)}&${getTime(period)}" class=${"w3-dark-grey" if rank_by=="points" else ""}>
+
+    <nav>
+    <div class="nav-wrapper">
+        <ul class="left">
+            <li class=${"active" if rank_by=="points" else ""}>
+                <a id="pointsBtn" href="/leaderboard?rank_by=points&${friendOrGlobal(switch_to)}&${getTime(period)}">
                     Points
                 </a>
             </li>
-            <li>
-                <a id="winsBtn" href="/leaderboard?rank_by=wins&${friendOrGlobal(switch_to)}&${getTime(period)}" class=${"w3-dark-grey" if rank_by=="wins" else ""}>
+            <li class=${"active" if rank_by=="wins" else ""}>
+                <a id="winsBtn" href="/leaderboard?rank_by=wins&${friendOrGlobal(switch_to)}&${getTime(period)}">
                     Wins
                 </a>
             </li>
-            <li>
-                <a id="picksBtn" href="/leaderboard?rank_by=picks&${friendOrGlobal(switch_to)}&${getTime(period)}" class=${"w3-dark-grey" if rank_by=="picks" else ""}>
+            <li class=${"active" if rank_by=="picks" else ""}>
+                <a id="picksBtn" href="/leaderboard?rank_by=picks&${friendOrGlobal(switch_to)}&${getTime(period)}">
                     Picks
                 </a>
             </li>
-            <li>
-                <a id="bansBtn" href="/leaderboard?rank_by=bans&${friendOrGlobal(switch_to)}&${getTime(period)}" class=${"w3-dark-grey" if rank_by=="bans" else ""}>
+            <li class=${"active" if rank_by=="bans" else ""}>
+                <a id="bansBtn" href="/leaderboard?rank_by=bans&${friendOrGlobal(switch_to)}&${getTime(period)}">
                     Bans
                 </a>
             </li>
@@ -85,17 +91,20 @@ ${"period=%s" % period}
                 ${switch_to.title()}
                 </a>
             </li>
-            <li class="w3-dropdown-hover">
-                <a>Period</a>
-                <div class="w3-dropdown-content w3-border">
-                    <a href="/leaderboard?rank_by=${rank_by}&${friendOrGlobal(switch_to)}&period=tournament">Tournament</a>
-                    % for i in range(league.current_day + 1):
-                        <a href="/leaderboard?rank_by=${rank_by}&${friendOrGlobal(switch_to)}&period=${i}">Day ${i+1}</a>
-	                % endfor
-	            </div>
+            <li>
+                <a class="dropdown-button" data-beloworigin="true" href="" data-activates="periodDropdown">Period<i class="material-icons right">arrow_drop_down</i></a>
             </li>
+            <ul id="periodDropdown" class="dropdown-content">
+                <li><a href="/leaderboard?rank_by=${rank_by}&${friendOrGlobal(switch_to)}&period=tournament">Tournament</a></li>
+                <li class="divider"></li>
+                % for i in range(league.current_day + 1):
+                    <li><a href="/leaderboard?rank_by=${rank_by}&${friendOrGlobal(switch_to)}&period=${i}">Day ${i+1}</a></li>
+                % endfor
+            </ul>
         </ul>
     </div>
+    </nav>
+
     <div id="tableContainer">
         <table id="leaderboardTable">
             <tr>
@@ -130,6 +139,16 @@ ${"period=%s" % period}
     </div>
 </div>
 
+<script>
+$( document ).ready(function() {
+    console.log("ready");
+    $(".dropdown-button").dropdown({
+        "belowOrigin": true,
+        "hover": true
+    });
+})
+</script>
+
 % if user:
     <div id="friendBlock" class="col-md-5">
         <p>
@@ -142,24 +161,27 @@ ${"period=%s" % period}
     </div>
 
     <script>
-    function addFriendOnclick(){
-        $.ajax({
-                url: "/addFriend",
-                type: "POST",
-                data: {"newFriend": $("input[name=newFriend]").val()},
-                success: function(data){
-                    var success = data.success,
-                    message = data.message;
-                    if (!success){
-                        sweetAlert(message);
-                    }
-                    else{
-                        window.location.reload();
+    $( document ).ready(function() {
+        $(".dropdown-button").dropdown({"hover": true});
+        function addFriendOnclick(){
+            $.ajax({
+                    url: "/addFriend",
+                    type: "POST",
+                    data: {"newFriend": $("input[name=newFriend]").val()},
+                    success: function(data){
+                        var success = data.success,
+                        message = data.message;
+                        if (!success){
+                            sweetAlert(message);
+                        }
+                        else{
+                            window.location.reload();
+                        }
                     }
                 }
-            }
-        );
-    };
-    $("#addFriendBtn").click(addFriendOnclick);
+            );
+        };
+        $("#addFriendBtn").click(addFriendOnclick);
+    })
     </script>
 % endif

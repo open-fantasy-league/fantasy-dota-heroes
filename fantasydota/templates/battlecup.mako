@@ -22,11 +22,13 @@
 <link rel="stylesheet" type="text/css" href="/static/jquery.bracket.min.css" />
 
 <div id="infoBlock" class="row">
-    <ul class="w3-navbar w3-border-bottom w3-light-grey intronav">
+    <nav>
+    <div class="nav-wrapper">
+    <ul class="left">
         % for pbcup in reversed(all_bcups):
-            <li>
+            <li {class="active if pbcup.id == battlecup.id else ""}>
                 % if pbcup.id == battlecup.id:
-                    <a href="/battlecup?battlecup_id=${pbcup.id}" "w3-dark-grey">
+                    <a href="/battlecup?battlecup_id=${pbcup.id}">
                 % else:
                     <a href="/battlecup?battlecup_id=${pbcup.id}">
                 % endif

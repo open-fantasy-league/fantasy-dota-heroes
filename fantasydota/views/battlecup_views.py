@@ -71,14 +71,7 @@ def sell_hero_battlecup(request):
         raise HTTPForbidden()
 
     hero_id = request.POST["hero"]
-    # transfer_think_open = request.POST["transfer"] really doesnt matter what the user thinks! :D
     league_id = request.POST["league"]
-
-    transfer_open = True
-    # transfer_think_open = request.POST["transfer"] really doesnt matter what the user thinks! :D
-    if not transfer_open:
-        return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
-
     return sell(session, user_id, hero_id, league_id, True)
 
 
@@ -90,13 +83,9 @@ def buy_hero_battlecup(request):
         raise HTTPForbidden()
 
     hero_id = int(request.POST["hero"])
-    league_id = request.POST["league"]
-    transfer_open = True
-    # transfer_think_open = request.POST["transfer"] really doesnt matter what the user thinks! :D
-    if not transfer_open:
-        return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
+    league_id = int(request.POST["league"])
 
-    return buy(session, user_id, hero_id, league_id, True)
+    return buy(session, user_id, hero_id, league_id, True, 1)
 
 
 @view_config(route_name="battlecup_add_league_team", renderer="json")
@@ -106,6 +95,9 @@ def battlecup_add_league_team(request):
     if user_id is None:
         raise HTTPForbidden()
     league_id = request.POST["league"]
+    transfer_actually_open = session.query(League.transfer_open).filter(League.id == league_id).first()[0]
+    if not transfer_actually_open:
+        return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
 
     # first nuke current team
     session.query(TeamHero).filter(and_(TeamHero.league == league_id,
@@ -114,6 +106,7 @@ def battlecup_add_league_team(request):
 
     league_team = session.query(TeamHero).filter(and_(TeamHero.league == league_id,
                                                       TeamHero.is_battlecup.is_(False),
+                                                      TeamHero.active.is_(True),
                                                       TeamHero.user_id == user_id)).all()
     heroes_to_add = []
     money = 50
@@ -139,6 +132,11 @@ def battlecup_add_yesterday_team(request):
     if user is None:
         raise HTTPForbidden()
     league_id = request.POST["league"]
+
+    transfer_actually_open = session.query(League.transfer_open).filter(League.id == league_id).first()[0]
+    if not transfer_actually_open:
+        return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
+
     yesterday = session.query(League.current_day).filter(League.id == league_id).first()[0] - 1
     if yesterday < 0:
         return {"success": False, "message": "No previous day to select from"}

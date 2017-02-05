@@ -78,7 +78,7 @@ def register(request):
     session.add(user)
     leagues = session.query(League).all()
     for l in leagues:
-        user_league = LeagueUser(user.id, l.id)
+        user_league = LeagueUser(user.id, username, l.id)
         session.add(user_league)
         for i in range(l.days):
             if i >= l.stage2_start:
@@ -87,7 +87,7 @@ def register(request):
                 stage = 1
             else:
                 stage = 0
-            session.add(LeagueUserDay(user.id, l.id, i, stage))
+            session.add(LeagueUserDay(user.id, username, l.id, i, stage))
     headers = remember(request, user.id)
     return HTTPFound('/viewLeague', headers=headers)
 

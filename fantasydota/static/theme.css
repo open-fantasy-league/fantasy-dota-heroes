@@ -1,7 +1,7 @@
 @import url(//fonts.googleapis.com/css?family=Roboto:300,400,600,700);
 body {
     font-family: 'Roboto', sans-serif;
-    font-size: 1.5em;
+    //font-size: 1.5em;
     padding-top: 30px;
     padding-bottom: 80px;
 }
@@ -35,7 +35,7 @@ table { table-layout: fixed;
   font-weight: 700;
 }
 
-#mySexyBody form {
+#mySexyBody .heroesForm {
                 width:500px;
                 margin:10px auto;
 }
@@ -170,3 +170,17 @@ img {margin-bottom: 0px}
 //#heroTable {width: 350px}
 
 [id^=heroTable] > .playerName{margin-top: 3px;}
+
+
+// override materialize stuff
+.container {
+  margin: 0 auto;
+  max-width: 1280px;
+  width: 90%;
+}
+
+nav {
+    height: 30px;
+    line-height: 30px;
+    border-bottom: 1px solid #ccc!important;
+    }

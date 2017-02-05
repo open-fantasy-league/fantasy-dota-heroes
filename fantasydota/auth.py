@@ -24,11 +24,6 @@ def create_user_with_league(strategy, details, backend, user=None, *args, **kwar
     decided to just make the league in the viewLeague request if needed
     '''
     return_dict = create_user(strategy, details, backend, user, *args, **kwargs)
-    print "KWARGGGSS: ", kwargs
-    print dir(backend.strategy)
-    print details, dir(details)
-    print strategy, dir(strategy)
-    print strategy.session_get("user_id")
     username = kwargs.get("username", details.get("username"))
     user_id = strategy.session_get("user_id")
     session = DBSession()

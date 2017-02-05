@@ -13,14 +13,18 @@
 </%def>
 
 <div>
-    <ul class="w3-navbar w3-border-bottom w3-light-grey intronav">
-        <li>
-            <a href="/viewLeague?league=${league.id}" class="w3-dark-grey"><b>Team</b></a>
-        </li>
-        <li>
-            <a href="/leaderboard?league=${league.id}"><b>Leaderboard</b></a>
-        </li>
-    </ul>
+    <nav>
+    <div class="nav-wrapper">
+        <ul class="left">
+            <li class="active">
+                <a href="/viewLeague?league=${league.id}"><b>Team</b></a>
+            </li>
+            <li>
+                <a href="/leaderboard?league=${league.id}"><b>Leaderboard</b></a>
+            </li>
+        </ul>
+    </div>
+    </nav>
     <p>Hi ${username}</p>
     <span class=${"messageTransOpen" if league.transfer_open != 0 else "messageTransClosed"}>
         <p>${"Transfer window currently open. Closes ~1 hour before games start." if league.transfer_open == 0 else """Transfer window now closed for tournament. You can still change your battlecup team daily though."""}

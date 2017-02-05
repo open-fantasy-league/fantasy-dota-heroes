@@ -10,19 +10,15 @@ def calibrate_all_hero_values(session):
         h["points"] = 0
     results = session.query(Result).filter(Result.applied.is_(False)).all()
     sum_points = 0
-    print len(results)
-    import pdb; pdb.set_trace()
+
     for res in results:
         points = Result.result_to_value(res.result_str)
         [hero for hero in new_heroes_list if hero["id"] == res.hero][0]["points"] += points
         sum_points += points
-    print sum_points
     average_points = sum_points / len(new_heroes_list)
-    print "average points", average_points
     sum = 0
     i = 0
     for hero in new_heroes_list:
-        print hero["name"], hero["points"]
         if hero["points"] < 0:
             hero["points"] = 1
         value = calibrate_value(average_points, hero["points"])
@@ -44,8 +40,8 @@ def calibrate_value(average_points, our_points):
     return ((float(our_points) / float(average_points)) * 8.5 * 3 + 8.5) / 4.
 
 
-def combine_calibrations(older_value, newer_value):
-    return (newer_value + older_value * 2) * 0.98/ 3.
+def combine_calibrations(older_value, newer_value, value_depreciation_factor):
+    return (newer_value + older_value * 2) * value_depreciation_factor / 3.
 
 
 def recalibrate_hero_values(session, league_id):
@@ -54,4 +50,4 @@ def recalibrate_hero_values(session, league_id):
     for hero in heroes:
         new_calibration = calibrate_value(average_points, hero.points)
         print "new calbration: %s, from %s" % (new_calibration, hero.value)
-        hero.value = round(combine_calibrations(hero.value, new_calibration), 1)
+        hero.value = round(combine_calibrations(hero.value, new_calibration, 0.98), 1)

@@ -42,6 +42,10 @@ def sell(session, user_id, hero_id, league_id, is_battlecup):
 
 
 def buy(session, user_id, hero_id, league_id, is_battlecup, days):
+    transfer_actually_open = session.query(League.transfer_open).filter(League.id == league_id).first()[0]
+    if not transfer_actually_open:
+        return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
+
     hero_value = session.query(Hero.value).filter(and_(Hero.id == hero_id,
                                                        Hero.league == league_id,
                                                        Hero.is_battlecup.is_(is_battlecup))).first()[0]

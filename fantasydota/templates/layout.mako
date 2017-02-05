@@ -1,88 +1,89 @@
 ## -*- coding: utf-8 -*-
 <!DOCTYPE html>
 <html lang="${request.locale_name}">
-  <head>
-    <meta charset="utf-8">
-    <meta name="description" content="${next.meta_description()}">
-    <meta name="keywords" content="${next.meta_keywords()}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="${next.meta_description()}">
+        <meta name="keywords" content="${next.meta_keywords()}">
 
-    <title>${next.title()}</title>
+        <title>${next.title()}</title>
 
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-    <!-- Should move these links just to the pages where they belong.but if this loaded after bootstrap
-     it looks shit lol-->
-    <link rel="stylesheet" href="/static/w3.css">
-    <!-- Bootstrap core CSS -->
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
-    <script type='text/javascript' src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <!-- Bootstrap core CSS -->
+        <script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
 
-    <!-- Custom styles for this scaffold -->
-    <link href="${request.static_url('fantasydota:static/theme.css')}" rel="stylesheet">
-    <link href="${request.static_url('fantasydota:static/favicon.ico')}" rel="icon" type="image/x-icon" />
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
 
-    <!-- Should move these links just to the pages where they belong -->
-    <script src="/static/sorttable.js"></script>
-
-    <script src="/static/sweetalert.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/static/sweetalert.css">
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 
-  </head>
+        <!-- Custom styles for this scaffold -->
+        <link href="${request.static_url('fantasydota:static/theme.css')}" rel="stylesheet">
+        <link href="${request.static_url('fantasydota:static/favicon.ico')}" rel="icon" type="image/x-icon" />
 
-  <body id="mySexyBody">
-  <div class="container">
-    <div id="topBar" class="row">
-      <div id="homeLink" class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-        <%block name="content">
-            % if request.authenticated_userid is None:
-                    <a href="${request.route_path('login')}">Login/Create Profile</a>
-            % else:
-                    <a href="${request.route_path('view_index')}">Home /</a>
-                    <a href="${request.route_path('logout')}">Logout</a>
-            % endif
-          </%block>
-      </div>
-      <div id="leagueBtn" class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-        <a href="${request.route_path('leaderboard')}">League</a>
-      </div>
-      <div id="battlecupBtn" class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-        <a href="/battlecup">Battlecups</a>
-      </div>
-      <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-        <a href="/rules">Rules</a>
-      </div>
-      <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-        <a href="/faq">FAQ</a>
-      </div>
-      <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-        <a href="/hallOfFame">Hall of Fame</a>
-      </div>
-      <div class="col-lg-3 col-md-3 col-sm-1 col-xs-1">
-        <a href="/accountSettings">Account Settings</a>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="content">
-          <h1><span class="font-semi-bold">${next.title()}</h1>
-            <div>
-                <!-- this is where contents of template inheriting from this layout will be inserted -->
-              ${next.body()}
-                <!-- this is where contents of template inheriting from this layout will be inserted -->
+        <!-- Should move these links just to the pages where they belong -->
+        <script src="/static/sorttable.js"></script>
+
+        <script src="/static/sweetalert.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="/static/sweetalert.css">
+
+
+    </head>
+
+    <body id="mySexyBody">
+        <div id="topBar" class="navbar-fixed">
+        <nav>
+            <div class="nav-wrapper">
+            <ul>
+            <div id="homeLink" class="col s2">
+                <%block name="content">
+                    % if request.authenticated_userid is None:
+                        <a href="${request.route_path('login')}">Login/Create Profile</a>
+                    % else:
+                        <a href="${request.route_path('view_index')}">Home /</a>
+                        <a href="${request.route_path('logout')}">Logout</a>
+                    % endif
+                  </%block>
             </div>
-
+            <div id="leagueBtn" class="col s1">
+                <a href="${request.route_path('leaderboard')}">League</a>
+            </div>
+            <div id="battlecupBtn" class="col s1">
+                <a href="/battlecup">Battlecups</a>
+            </div>
+            <div class="col s1">
+                <a href="/rules">Rules</a>
+            </div>
+            <div class="col s1">
+                <a href="/faq">FAQ</a>
+            </div>
+            <div class="col s2">
+                <a href="/hallOfFame">Hall of Fame</a>
+            </div>
+            <div class="col s3">
+                <a href="/accountSettings">Account Settings</a>
+            </div>
         </div>
-      </div>
+        <div class="main blue lighten-5">
+            <div class="container">
+        </div>
+        <div class="col s12">
+            <div class="content">
+                <div>
+                    <h1><span class="font-semi-bold">${next.title()}</h1>
+                    <!-- this is where contents of template inheriting from this layout will be inserted -->
+                    ${next.body()}
+                    <!-- this is where contents of template inheriting from this layout will be inserted -->
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+</div>
 
 
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="//oss.maxcdn.com/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
