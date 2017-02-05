@@ -1,9 +1,6 @@
 @import url(//fonts.googleapis.com/css?family=Roboto:300,400,600,700);
 body {
     font-family: 'Roboto', sans-serif;
-    //font-size: 1.5em;
-    padding-top: 30px;
-    padding-bottom: 80px;
 }
 h1,
 h2 {
@@ -179,7 +176,7 @@ img {margin-bottom: 0px}
   width: 90%;
 }
 
-nav {
+.fakeNav {
     height: 30px;
     line-height: 30px;
     border-bottom: 1px solid #ccc!important;

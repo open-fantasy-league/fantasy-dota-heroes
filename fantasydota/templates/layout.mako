@@ -33,50 +33,51 @@
 
     </head>
 
-    <body id="mySexyBody">
+    <body id="mySexyBody" class="grey lighten-5">
         <div id="topBar" class="navbar-fixed">
         <nav>
             <div class="nav-wrapper">
             <ul>
-            <div id="homeLink" class="col s2">
-                <%block name="content">
-                    % if request.authenticated_userid is None:
+            <%block name="content">
+                % if request.authenticated_userid is None:
+                    <li id="homeLink" class="col s2">
                         <a href="${request.route_path('login')}">Login/Create Profile</a>
-                    % else:
-                        <a href="${request.route_path('view_index')}">Home /</a>
-                        <a href="${request.route_path('logout')}">Logout</a>
-                    % endif
-                  </%block>
-            </div>
-            <div id="leagueBtn" class="col s1">
+                % else:
+                    <li><a href="${request.route_path('view_index')}">Home</a></li>
+                    <li><a href="${request.route_path('logout')}">Logout</a></li>
+                % endif
+            </%block>
+            <li id="leagueBtn" class="col s1">
                 <a href="${request.route_path('leaderboard')}">League</a>
-            </div>
-            <div id="battlecupBtn" class="col s1">
+            </li>
+            <li id="battlecupBtn" class="col s1">
                 <a href="/battlecup">Battlecups</a>
-            </div>
-            <div class="col s1">
+            </li>
+            <li class="col s1">
                 <a href="/rules">Rules</a>
-            </div>
-            <div class="col s1">
+            </li>
+            <li class="col s1">
                 <a href="/faq">FAQ</a>
-            </div>
-            <div class="col s2">
+            </li>
+            <li class="col s2">
                 <a href="/hallOfFame">Hall of Fame</a>
-            </div>
-            <div class="col s3">
+            </li>
+            <li class="col s3">
                 <a href="/accountSettings">Account Settings</a>
-            </div>
+            </li>
+            </ul></div>
+        </nav>
         </div>
-        <div class="main blue lighten-5">
+        <div class="main">
             <div class="container">
         </div>
         <div class="col s12">
             <div class="content">
                 <div>
-                    <h1><span class="font-semi-bold">${next.title()}</h1>
-                    <!-- this is where contents of template inheriting from this layout will be inserted -->
-                    ${next.body()}
-                    <!-- this is where contents of template inheriting from this layout will be inserted -->
+                    <!--<h1><span class="font-semi-bold">${next.title()}</h1>-->
+                    <div class="container">
+                        ${next.body()}
+                    </div>
                 </div>
             </div>
         </div>
