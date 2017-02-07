@@ -37,7 +37,10 @@ def calibrate_all_hero_values(session):
 def calibrate_value(average_points, our_points):
     # was (10. * (our_points / average_points) * 0.85 * 4 + 8.5) / 5. for boston
     # make bit higher for esl genting because so unknown whats going to happen.
-    return ((float(our_points) / float(average_points)) * 8.5 * 3 + 8.5) / 4.
+    output = ((float(our_points) / float(average_points)) * 8.5 * 3 + 8.5) / 4.
+    if output < 1.0:  # dont get into negative price shenanigans
+        output = 1.0
+    return output
 
 
 def combine_calibrations(older_value, newer_value, value_depreciation_factor):

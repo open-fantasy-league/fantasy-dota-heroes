@@ -17,7 +17,8 @@
         % if for_user:
             ${player.points_rank}
         % else:
-            ${round(player.points, 1)}
+            <% rounded_points = round(player.points, 1) %>
+            ${int(rounded_points) if rounded_points.is_integer() else rounded_points}
         % endif
     % elif x == "wins":
         % if for_user:
@@ -47,25 +48,12 @@ ${"showGlobal=kek" if switch_to == "friend" else "showFriend=kek"}
 <%def name="getTime(period)">
 ${"period=%s" % period}
 </%def>
-
-<div id="leaderboardBlock" class="col-md-7">
-    <nav>
-    <div class="nav-wrapper">
-        <ul class="left">
-            <li>
-                <a href="/viewLeague?league=${league.id}"><b>Team</b></a>
-            </li>
-            <li class="active">
-                <a href="/leaderboard?league=${league.id}"><b>Leaderboard</b></a>
-            </li>
-        </ul>
-    </div>
-    </nav>
-    Points updated hourly
-    <h2>${rank_by.title()}</h2>
+<h2>${rank_by.title()}</h2>
+<div class="row">
+<div id="leaderboardBlock" class="col s7">
 
     <nav>
-    <div class="nav-wrapper">
+    <div class="nav-wrapper teal darken-2">
         <ul class="left">
             <li class=${"active" if rank_by=="points" else ""}>
                 <a id="pointsBtn" href="/leaderboard?rank_by=points&${friendOrGlobal(switch_to)}&${getTime(period)}">
@@ -106,7 +94,7 @@ ${"period=%s" % period}
     </nav>
 
     <div id="tableContainer">
-        <table id="leaderboardTable">
+        <table id="leaderboardTable" class="card-table">
             <tr>
                 <th class="positionHeader">Position</th>
                 <th class="playerHeader">Player</th>
@@ -150,14 +138,19 @@ $( document ).ready(function() {
 </script>
 
 % if user:
-    <div id="friendBlock" class="col-md-5">
+<div id="friendBlock" class="col s5">
+    <div class="card">
+    <div class="card-content">
         <p>
-            Add friends usernames to compete in tables versus them
+            Add friends usernames to compete in tables against them
         </p>
         <form name="addFriendForm" onsubmit="return false;">
             <input type="text" name="newFriend" placeholder="New friend..."/>
-            <button type="button" id="addFriendBtn">Add</button>
+            <button type="submit" id="addFriendBtn" class="btn waves-effect waves-light">Add</button>
         </form>
+    </div>
+    </div>
+    </div>
     </div>
 
     <script>
@@ -184,4 +177,6 @@ $( document ).ready(function() {
         $("#addFriendBtn").click(addFriendOnclick);
     })
     </script>
+% else:
+    </div>
 % endif

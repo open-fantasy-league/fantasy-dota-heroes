@@ -53,14 +53,20 @@ var tradeOnclick = function tradeOnclick(event){
     }
 
 $("input[name=days]").each(function () {
-    $(this).change(function() {
-        var self = $(this)
-        var row = self.parent().parent(),
-        value = row.find('.valueEntry'),
+    $(this).on('change keyup paste', function() {
+        var self = $(this);
+        var days = self.val();
+        if (days > max_days){
+            days = max_days;
+            self.val(days)
+        };
+        var row = self.parent().parent();
+        var value = parseFloat(row.find('.valueEntry').text());
         adjusted_value = row.find('.adjustedValueEntry');
-        var new_val = parseFloat(value.text()) * (1 - (0.015 * (self.val() - 1)));
+        var new_val = value * (1 - (0.015 * (days - 1)));
         adjusted_value.text((Math.round(new_val * 10) / 10).toFixed(1));
         adjusted_value.fadeOut().fadeIn();
+        $(".userCredits").fadeOut().fadeIn();
     })
 })
 
@@ -77,7 +83,7 @@ $(".tradeForm").each(function (){
 function addToTeam(hero){
     var new_row = $("#" + hero + "Row").clone();
     new_row.attr('id', hero + "TeamRow");
-    new_row.find("button").replaceWith('<button type="submit" name="sellHero">Sell</button>');
+    new_row.find("button").replaceWith('<button type="submit" name="sellHero" class="btn waves-effect waves-light">Sell</button>');
     var form = new_row.find(".tradeForm");
     $("#teamTableTransfers").append(new_row);
     new_row.find("button").on("click", {form: form, mode: mode}, function(event){tradeOnclick(event)});  // otherwise need reload page to resell
@@ -86,15 +92,12 @@ function addToTeam(hero){
 function addToLeagueTeam(hero){
     var new_row = $("#" + hero + "Row").clone();
     new_row.attr('id', hero + "TeamRow");
-    new_row.find("button").replaceWith('<button type="submit" name="sellHero">Cancel loan</button>');
+    new_row.find("button").replaceWith('<button type="submit" name="sellHero" class="btn waves-effect waves-light">Cancel loan</button>');
     var days = new_row.find("input[name=days]");
     new_row.find("input[name=days]").replaceWith(days.val());
-    var value = new_row.find(".valueEntry");
-    value.after('<td class="costEntry">' + value.text() + '</td>');
+    new_row.find('.adjustedValueEntry').attr("class", "costEntry")
     var form = new_row.find(".tradeForm");
-    $("#teamTableTransfers").append(new_row);
-    console.log("days:");
-    console.log(days);
+    $(".teamRow").last().after(new_row);
     new_row.find("button").on("click", {form: form, mode: mode, days: days}, function(event){tradeOnclick(event)});  // otherwise need reload page to resell
 }
 

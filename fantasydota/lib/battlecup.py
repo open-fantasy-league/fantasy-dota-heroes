@@ -142,7 +142,7 @@ def auto_fill_teams(session, league):
     session.commit()
 
 
-def generate_team(session, league, username):
+def generate_team(session, league, user_id):
     heroes = session.query(Hero).filter(Hero.is_battlecup.is_(True)).filter(Hero.league == league).all()
     value_counter = 0
     for i in range(5):
@@ -152,7 +152,8 @@ def generate_team(session, league, username):
             filtered_heroes = [hero for hero in heroes if hero.value < 9.5 and hero.value + value_counter < 50.]
         else:
             filtered_heroes = [hero for hero in heroes if hero.value > 9.5 and hero.value + value_counter < 50.]
-        session.add(TeamHero(username, random.choice(filtered_heroes).id, league, True))
+        random_hero = random.choice(filtered_heroes)
+        session.add(TeamHero(user_id, random_hero.id, league, True, 1, random_hero.value))
 
 
 def player_hero_imgs(session, battlecup, round_, league_id, old_hero):

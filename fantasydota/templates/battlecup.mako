@@ -21,40 +21,43 @@
 <script type="text/javascript" src="/static/jquery.bracket.min.js"></script>
 <link rel="stylesheet" type="text/css" href="/static/jquery.bracket.min.css" />
 
-<div id="infoBlock" class="row">
-    <nav>
-    <div class="nav-wrapper">
-    <ul class="left">
-        % for pbcup in reversed(all_bcups):
-            <li {class="active if pbcup.id == battlecup.id else ""}>
-                % if pbcup.id == battlecup.id:
-                    <a href="/battlecup?battlecup_id=${pbcup.id}">
+<div class="row">
+<nav>
+<div class="nav-wrapper purple darken-2">
+<ul class="left">
+    % for pbcup in reversed(all_bcups):
+        <li {class="active if pbcup.id == battlecup.id else ""}>
+            % if pbcup.id == battlecup.id:
+                <a href="/battlecup?battlecup_id=${pbcup.id}">
+            % else:
+                <a href="/battlecup?battlecup_id=${pbcup.id}">
+            % endif
+                % if pbcup.day == league.current_day:
+                    Today
+                % elif pbcup.day == league.current_day - 1:
+                    Yesterday
                 % else:
-                    <a href="/battlecup?battlecup_id=${pbcup.id}">
+                    Day ${pbcup.day + 1}
                 % endif
-                    % if pbcup.day == league.current_day:
-                        Today
-                    % elif pbcup.day == league.current_day - 1:
-                        Yesterday
-                    % else:
-                        Day ${pbcup.day + 1}
-                    % endif
-                </a>
-            </li>
-        % endfor
-    </ul>
-    <p id="message">${"You are not signed up to play in a battlecup. Must have a valid account by the start of the days games" if not is_playing else ""}</p>
-    % if len(team) == 0:
-        % if transfer_open:
-            <p id="message">${"You are not entered in todays battlecup. To do so simply add heroes below"}</p>
-        % else:
-            <p id="message">${"Today's battlecup already started. To play tomorrow, add heroes to your battlecup team, between end of matches today, and start of matches tomorrow"}</p>
-        %endif
-    % endif
-    <p>
-    If points are tied, winner based on wins, picks, bans in that order (will add 0.1 points to score). </br>
-    Hero values in battlecups change each day based on their tournament performance.
-    </p>
+            </a>
+        </li>
+    % endfor
+</ul>
+</div>
+</nav>
+<div class="card-panel">
+<div class="row">
+% if len(team) == 0:
+    % if transfer_open:
+        <p id="message">${"You are not entered in todays battlecup. To do so simply add heroes below"}</p>
+    % else:
+        <p id="message">${"Today's battlecup already started. To play tomorrow, add heroes to your battlecup team, between end of matches today, and start of matches tomorrow"}</p>
+    %endif
+% endif
+If points are tied, winner based on wins, picks, bans in that order (will add 0.1 points to score). </br>
+Hero values in battlecups change each day based on their tournament performance.
+</p>
+</div>
 </div>
 
 % if transfer_open:
@@ -266,11 +269,11 @@ var mode = "bcup";
                         }
                         $(".blabel").filter(function(index) { return $(this).text() === name; }).hover(function(){
                             var pRow = $("[id*=heroTable]").find("." +name + "PRow");
-                            pRow.addClass('highlight');
+                            pRow.addClass('myHighlight');
                         },
                             function(){
                                 var pRow = $("[id*=heroTable]").find("." +name + "PRow");
-                                pRow.removeClass("highlight");
+                                pRow.removeClass("myHighlight");
                             }
                         );
                     })

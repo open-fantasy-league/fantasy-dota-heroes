@@ -33,26 +33,31 @@
 
     </head>
 
-    <body id="mySexyBody" class="grey lighten-5">
+    <body id="mySexyBody" class="blue-grey lighten-5">
         <div id="topBar" class="navbar-fixed">
         <nav>
-            <div class="nav-wrapper">
-            <ul>
+            <div class="nav-wrapper indigo darken-3">
+            <ul class="left">
             <%block name="content">
                 % if request.authenticated_userid is None:
                     <li id="homeLink" class="col s2">
                         <a href="${request.route_path('login')}">Login/Create Profile</a>
                 % else:
-                    <li><a href="${request.route_path('view_index')}">Home</a></li>
+                    <!--<li><a href="${request.route_path('view_index')}">Home</a></li>-->
                     <li><a href="${request.route_path('logout')}">Logout</a></li>
                 % endif
             </%block>
             <li id="leagueBtn" class="col s1">
-                <a href="${request.route_path('leaderboard')}">League</a>
+                <a href="/viewLeague">My team</a>
+            </li>
+            <li class="col s1">
+                <a href="/leaderboard">Leaderboard</a>
             </li>
             <li id="battlecupBtn" class="col s1">
                 <a href="/battlecup">Battlecups</a>
             </li>
+            </ul>
+            <ul class="right">
             <li class="col s1">
                 <a href="/rules">Rules</a>
             </li>
