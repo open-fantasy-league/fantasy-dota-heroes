@@ -30,11 +30,11 @@ def main():
             #heroes = session.query(TeamHero).filter(and_(TeamHero.user == user.username, TeamHero.active == True)).all()
             results = session.query(Result).filter(Result.match_id == 2836078773).all()
             for res in results:
-                user.points += (0.5 ** (5 - off[2])) * Result.result_to_value(res.result_str)
-                user.points -= (0.5 ** (5 - off[1])) * Result.result_to_value(res.result_str)
+                user.points += (0.5 ** (5 - off[2])) * Result.result_to_value(res.win)
+                user.points -= (0.5 ** (5 - off[1])) * Result.result_to_value(res.win)
                 bcp = session.query(BattlecupUserPoints).filter(BattlecupUserPoints.username == off[0]).first()
-                bcp.points += (0.5 ** (5 - off[2])) * Result.result_to_value(res.result_str)
-                bcp.points -= (0.5 ** (5 - off[1])) * Result.result_to_value(res.result_str)
+                bcp.points += (0.5 ** (5 - off[2])) * Result.result_to_value(res.win)
+                bcp.points -= (0.5 ** (5 - off[1])) * Result.result_to_value(res.win)
 
 
         #transaction.commit()

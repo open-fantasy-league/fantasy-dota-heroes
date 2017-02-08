@@ -9,7 +9,7 @@
 </%def>
 
 <%def name="meta_description()">
-    Hall of fame page for fantasy dota game.
+    Hall of fame page for fantasy brood war game.
 </%def>
 
 <div>

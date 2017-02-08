@@ -9,7 +9,7 @@
 </%def>
 
 <%def name="meta_description()">
-    Account settings page for fantasy dota game.
+    Account settings page for fantasy brood war game.
 </%def>
 
 <div>

@@ -9,7 +9,7 @@
 </%def>
 
 <%def name="meta_description()">
-    Home page for fantasy dota game.
+    Home page for fantasy brood war game.
 </%def>
 
 <div>

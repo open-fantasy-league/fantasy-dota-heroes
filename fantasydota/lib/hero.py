@@ -12,7 +12,7 @@ def calibrate_all_hero_values(session):
     sum_points = 0
 
     for res in results:
-        points = Result.result_to_value(res.result_str)
+        points = Result.result_to_value(res.win)
         [hero for hero in new_heroes_list if hero["id"] == res.hero][0]["points"] += points
         sum_points += points
     average_points = sum_points / len(new_heroes_list)
@@ -44,7 +44,7 @@ def calibrate_value(average_points, our_points):
 
 
 def combine_calibrations(older_value, newer_value, value_depreciation_factor):
-    return (newer_value + older_value * 2) * value_depreciation_factor / 3.
+    return (newer_value + older_value * 3) * value_depreciation_factor / 4.
 
 
 def recalibrate_hero_values(session, league_id):

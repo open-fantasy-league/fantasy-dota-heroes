@@ -63,10 +63,13 @@ $("input[name=days]").each(function () {
         var row = self.parent().parent();
         var value = parseFloat(row.find('.valueEntry').text());
         adjusted_value = row.find('.adjustedValueEntry');
-        var new_val = value * (1 - (0.015 * (days - 1)));
+        var scale_factor = 0.1
+        if (self.parent().parent().find(".teamEntry").text() == "Team Flash"){
+            scale_factor = 0.03
+        }
+        var new_val = value * (1 - (scale_factor * (days - 1)));
         adjusted_value.text((Math.round(new_val * 10) / 10).toFixed(1));
         adjusted_value.fadeOut().fadeIn();
-        $(".userCredits").fadeOut().fadeIn();
     })
 })
 
@@ -97,7 +100,9 @@ function addToLeagueTeam(hero){
     new_row.find("input[name=days]").replaceWith(days.val());
     new_row.find('.adjustedValueEntry').attr("class", "costEntry")
     var form = new_row.find(".tradeForm");
-    $(".teamRow").last().after(new_row);
+    var lastRow = $(".teamRow").last();
+    if (lastRow.length > 0){$(".teamRow").last().after(new_row)}
+    else{$("#teamTable").append(new_row)}
     new_row.find("button").on("click", {form: form, mode: mode, days: days}, function(event){tradeOnclick(event)});  // otherwise need reload page to resell
 }
 

@@ -9,7 +9,7 @@
 </%def>
 
 <%def name="meta_description()">
-    Password reset page for fantasy dota game.
+    Password reset page for fantasy brood war game.
 </%def>
 
 <div>

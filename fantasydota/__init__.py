@@ -44,8 +44,8 @@ def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
     settings["league_transfers"] = True  # why wont config file properly set this?
-    settings["default_league"] = 5018
-    sqlalchemy_url = os.path.expandvars(settings.get('sqlalchemy.url')) + "3"
+    settings["default_league"] = 1
+    sqlalchemy_url = os.path.expandvars(settings.get('sqlalchemy.url')) + "4"
     engine = create_engine(sqlalchemy_url, echo=False, pool_size=100, pool_recycle=3600)
     event.listen(engine, 'checkout', checkout_listener)
     DBSession.configure(bind=engine)
@@ -61,19 +61,9 @@ def main(global_config, **settings):
 
     config.include('pyramid_mako')
     config.include('pyramid_mailer')
-    # settings['jinja2.filters'] = {
-    #     'backend_name': filters.backend_name,
-    #     'backend_class': filters.backend_class,
-    #     'icon_name': filters.icon_name,
-    #     'social_backends': filters.social_backends,
-    #     'legacy_backends': filters.legacy_backends,
-    #     'oauth_backends': filters.oauth_backends,
-    #     'filter_backends': filters.filter_backends,
-    #     'slice_by': filters.slice_by
-    # }
+
     config.add_route('home', '/')
     config.add_route('done', '/done')
-    config.add_route('email_required', '/email')
 
     config.registry.settings.update(get_settings(app_settings))
     config.registry.settings.update(get_settings(app_local_settings))
@@ -84,10 +74,7 @@ def main(global_config, **settings):
     create_tables(DBSession)
 
     config.include('social_pyramid')
-    config.scan('social_pyramid') # 2nd scan below. does this break?
-
-    # pyramid_social_auth.register_provider(settings, google.GoogleOAuth2)
-    # psa.register_provider(settings, facebook.FacebookOAuth2)
+    config.scan('social_pyramid')  # 2nd scan below. does this break?
 
     config.add_request_method('.auth.get_user', 'user', reify=True)  # user or username? should it start with .?
 

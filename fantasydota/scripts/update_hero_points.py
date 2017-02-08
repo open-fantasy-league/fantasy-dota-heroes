@@ -6,27 +6,23 @@ from sqlalchemy import and_
 
 def update_hero_points(session, league):
     league_id = league.id
-    new_results = session.query(Result).filter(Result.applied.is_(False)).\
+    new_results = session.query(Result).filter(Result.applied == 0).\
         filter(Result.tournament_id == league_id).all()
 
     for i, result in enumerate(new_results):
-        res = result.result_str
         # More than one because we have battlecup and league
         heroq_all = session.query(Hero).filter(and_(Hero.id == result.hero,
-                                                Hero.league == league_id)).all()
-        # if not heroq_all:  # temp for no underlord
-        #     continue  # TODO remove!!!
+                                                    Hero.league == league_id)).all()
         for heroq in heroq_all:
-            print result.match_id
-            print "Hero id: ", result.hero
-            if "p" in res:
-                heroq.picks += 1
-            if "w" in res:
+            heroq.picks += 1
+            if result.win:
                 heroq.wins += 1
-            if "b" in res:
-                heroq.bans += 1
-            print "Would add %s to hero points", Result.result_to_value(res)
-            heroq.points += Result.result_to_value(res)
+                if result.set_ == 3:
+                    heroq.points += 1
+                elif result.set_ == 5:
+                    heroq.points += 3
+                else:
+                    heroq.points += 2
         result.applied = 1
 
 

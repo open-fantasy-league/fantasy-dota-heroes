@@ -15,7 +15,7 @@
 </%def>
 
 <%def name="meta_description()">
-    Battlecup page for fantasy dota game.
+    Battlecup page for fantasy brood war game.
 </%def>
 
 <script type="text/javascript" src="/static/jquery.bracket.min.js"></script>
@@ -104,7 +104,7 @@ Hero values in battlecups change each day based on their tournament performance.
     </div>
 </div>
 <div class="row">
-    <h2>Heroes (Credits Available: <span class="userCredits">${round(50 - (sum([hero.value for hero in team])), 1)}
+    <h2>Heroes (Credits Available: <span class="userCredits">${round(40 - (sum([hero.value for hero in team])), 1)}
     </span>)</h2>
     <div id="tableContainer">
         <table class="sortable">

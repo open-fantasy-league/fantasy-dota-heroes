@@ -68,31 +68,31 @@ def add_matches(session, tournament_id, tstamp_from=0):
                 key = int(key)
 
                 if key <= 3:
-                    result_string = "b1"
+                    wining = "b1"
                 elif key <= 7:
-                    result_string = "p1"
+                    wining = "p1"
                     if value["team"] == 0 and radiant_win or value["team"] == 1 and not radiant_win:
-                        result_string += "w"
+                        wining += "w"
                     else:
-                        result_string += "l"
+                        wining += "l"
                 elif key <= 11:
-                    result_string = "b2"
+                    wining = "b2"
                 elif key <= 15:
-                    result_string = "p2"
+                    wining = "p2"
                     if value["team"] == 0 and radiant_win or value["team"] == 1 and not radiant_win:
-                        result_string += "w"
+                        wining += "w"
                     else:
-                        result_string += "l"
+                        wining += "l"
                 elif key <= 17:
-                    result_string = "b3"
+                    wining = "b3"
                 else:
-                    result_string = "p3"
+                    wining = "p3"
                     if value["team"] == 0 and radiant_win or value["team"] == 1 and not radiant_win:
-                        result_string += "w"
+                        wining += "w"
                     else:
-                        result_string += "l"
+                        wining += "l"
                 print "Match is:", match_json["match_id"]
-                session.add(Result(tournament_id, value["hero_id"], int(match_json["match_id"]), result_string,
+                session.add(Result(tournament_id, value["hero_id"], int(match_json["match_id"]), wining,
                                    match_json["start_time"], series_id))
     transaction.commit()
 

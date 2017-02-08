@@ -50,30 +50,36 @@ def leaderboard(request):
 
     player_heroes = []
     league = session.query(League).filter(League.id == league_id).first()
-    leagueq = session.query(LeagueUser).filter(LeagueUser.league == league_id).filter(LeagueUser.user_id.in_(users_playing))
-    if period == "tournament":
-        luser = leagueq.filter(LeagueUser.user_id == user_id).first()
-        if show_friend:  # TODO gonna be a bug with convert username -> id for friend
-            players = leagueq.filter(LeagueUser.user_id.in_(friends)).\
-                order_by(desc(rank_)).limit(100).all()
-        else:
-            players = leagueq.order_by(desc(rank_)).limit(100).all()
-
+    if show_friend:
+        user_filter = friends
     else:
-        leagueq = session.query(LeagueUserDay).filter(LeagueUserDay.day == period_).filter(LeagueUserDay.league == league_id)
-        luser = leagueq.filter(LeagueUserDay.user_id == user_id).first()
-        if show_friend:
-            players = leagueq.filter(or_(LeagueUserDay.user_id.in_(friends), LeagueUserDay.user_id == user_id)). \
-                order_by(desc(rank_)).limit(100).all()
-        else:
-            players = leagueq.order_by(desc(rank_)).limit(100).all()
+        user_filter = users_playing
+    leagueq = session.query(LeagueUser, LeagueUserDay).filter(LeagueUser.league == league_id). \
+        filter(LeagueUser.user_id.in_(user_filter))
+
+    luser = session.query(LeagueUser).filter(LeagueUser.league == league_id).filter(LeagueUser.user_id == user_id).first()
+    if period == "tournament":
+        last_day = league.current_day - 1 if league.current_day != 0 else league.current_day
+        players = leagueq.filter(LeagueUserDay.day == last_day).order_by(desc(rank_)).join(LeagueUserDay).\
+            limit(100).all()
+        # If we dont only take one league user day we have too many entries.
+        # this is only day needed for up/down arrow of progress
+    else:
+        leagueq = session.query(LeagueUser.username, LeagueUserDay).filter(LeagueUserDay.day == period_).\
+            filter(LeagueUserDay.league_user.in_([x[0].id for x in leagueq.all()]))
+        players = leagueq.order_by(desc(rank_)).join(LeagueUserDay).limit(100).all()
+        # If we dont only take one league user day we have too many entries.
+        # this is only day needed for up/down arrow of progress
+
+        luser = session.query(LeagueUser.username, LeagueUserDay).filter(LeagueUserDay.day == period_).\
+            filter(LeagueUserDay.league_user == luser.id).join(LeagueUserDay).first()
 
     for player in players:
         heroes = []
-        for hero in session.query(TeamHero).filter(and_(TeamHero.user_id == player.user_id,
-                                                        TeamHero.is_battlecup.is_(False),
-                                                        TeamHero.league == league_id)).all():
-            heroes.append(hero.hero_name)
+        # for hero in session.query(TeamHero).filter(and_(TeamHero.user_id == player.user_id,
+        #                                                 TeamHero.is_battlecup.is_(False),
+        #                                                 TeamHero.league == league_id)).all():
+        #     heroes.append(hero.hero_name)
         player_heroes.append(heroes)
 
     return {'user': luser, 'players': players, 'rank_by': rank_by, 'switch_to': switch_to, 'period': period,

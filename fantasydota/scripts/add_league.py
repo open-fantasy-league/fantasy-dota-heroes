@@ -1,8 +1,8 @@
 import argparse
 
-import transaction
 from fantasydota.lib.session_utils import make_session
 from fantasydota.models import League, LeagueUserDay, User, LeagueUser
+from sqlalchemy import and_
 
 
 def main():
@@ -14,20 +14,21 @@ def main():
     parser.add_argument("stage2", type=int, help="when main event starts")
     args = parser.parse_args()
 
-    session = make_session()
-    with transaction.manager:
-        session.add(League(args.id, args.name, args.days, args.stage1, args.stage2))
-        for user in session.query(User).all():
-            session.add(LeagueUser(user.username, args.id))
-            for i in range(args.days):
-                if i >= args.stage2:
-                    stage = 2
-                elif i >= args.stage1:
-                    stage = 1
-                else:
-                    stage = 0
-                session.add(LeagueUserDay(user.username, args.id, i, stage))
-        transaction.commit()
+    session = make_session(False, True, True)
+    session.add(League(args.id, args.name, args.days, args.stage1, args.stage2))
+    for user in session.query(User).all():
+        session.add(LeagueUser(user.id, user.username, args.id))
+        session.commit()
+        league_user = session.query(LeagueUser.id).filter(and_(LeagueUser.user_id == user.id,
+                                                               LeagueUser.league == args.id)).first()[0]
+        for i in range(args.days):
+            if i >= args.stage2:
+                stage = 2
+            elif i >= args.stage1:
+                stage = 1
+            else:
+                stage = 0
+            session.add(LeagueUserDay(league_user, i, stage))
 
 if __name__ == "__main__":
     main()

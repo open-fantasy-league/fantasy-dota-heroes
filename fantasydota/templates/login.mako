@@ -1,15 +1,15 @@
 <%inherit file="layout.mako"/>
 
 <%def name="title()">
-    Fantasy DotA Heroes
+    fantasy brood war Heroes
 </%def>
 
 <%def name="meta_keywords()">
-    Login, Dota, Fantasy DOTA (heroes)
+    Login, Dota, fantasy brood war (heroes)
 </%def>
 
 <%def name="meta_description()">
-    Login to fantasy dota heroes
+    Login to fantasy brood war heroes
 </%def>
 
 <div class="card-panel">

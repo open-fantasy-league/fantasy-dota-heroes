@@ -5,11 +5,11 @@
 </%def>
 
 <%def name="meta_keywords()">
-    Rules, fantasy, dota
+    Rules, fantasy, brood war
 </%def>
 
 <%def name="meta_description()">
-    Rules page for fantasy dota
+    Rules page for fantasy brood war
 </%def>
 
 <div>
@@ -17,32 +17,19 @@
     <p>
     Points are allocated in the following way:</br>
     <ul>
-        <li>Ban       1 points</li>
-        <li>Pick      2 points</li>
-        <li>Win       6 points</li>
-        <li>Loss     -5 points</li>
-    </ul></br>
-        Bonus points:</br>
-        <ul>
-        <li>2nd Phase Pick/Ban/Win +1 point</li>
-        <li>3rd Phase Pick/Ban/Win +3 point</li>
-    </ul></br>
+        <li>1v1 Win       2 points</li>
+        <li>2v2 Win       1 point</li>
+        <li>5th Set Win   3 points</li>
+    </ul>
 
-        (Picks and wins stack. so a 3rd phase pick will win earn 14 points total!)</br>
-
-        Missing heroes penalty multiplier</br>
-        <ul><li>x0.5 for every missing hero  (to prevent people abusing half-empty teams of best heroes)
-        </li></ul>
-    </p>
-
-    <h2>Team</h2>
+    <h2>Teams</h2>
     <p>
-    Your team can consist of up to 5 dota heroes (you are not required to use all 5, but will incur a penalty).
+    Your team can consist of up to 4 players
     </br>
-    League team and Battlecup teams are separate. You will need to pick both.
+    You are only allowed one player from each team
     </br>
-    Once tournament has started no transfers for league team are allowed throughout the tournament
+    You can 'loan' a player for as many rounds as you want. The longer the loan, the better the value for you.
     </br>
-    Battlecup teams must be picked every-day (Hero values in battlecup mode will change throughout the tournament depending on their performance).
+    However you cannot cancel an active loan. Therefore gambling that player's team will make it through.
     </p>
 </div>

@@ -9,32 +9,36 @@
 </%def>
 
 <%def name="meta_description()">
-    League page for fantasy dota game.
+    League page for fantasy brood war game.
 </%def>
 
+<% from fantasydota.models import TeamHero %>
+
 <div class="row" id="myTeamBlock">
-    <h2>My Team (Total points <span class="teamPoints">${userq.points}</span>)</h2>
+    <h2><span class="left">My Team (Total points&nbsp;</span><span class="teamPoints">${userq.points}</span>)
+    <span class="right">${username}</span>
+    </h2>
     <div id="tableContainer">
-        <table class="sortable responsive-table card-table centered" id="teamTable">
+        <table class="sortable responsive-table card-table centered highlight" id="teamTable">
             <tr>
-                <th class="heroHeader" colspan="2">Hero</th>
+                <th class="teamHeader">Team</th>
+                <th class="heroHeader" colspan="2">Player</th>
                 <th class="heroPointsHeader">Points</th>
                 <th class="picksHeader">Picks</th>
-                <th class="bansHeader">Bans</th>
                 <th class="winsHeader">Wins</th>
                 <th class="valueHeader">Current value</th>
                 <th class="costHeader">Loan cost</th>
-                <th class="daysHeader">Days left</th>
+                <th class="daysHeader">Rounds left</th>
                 <th class="sellHeader">Cancel loan</th>
 
             </tr>
             % for hero in [hero_ for hero_ in team if hero_[1].active]:
                 <tr class="teamRow" id="${hero[0].id}TeamRow">
-                    <td class="heroImg"><img src="/static/images/${hero[0].name.replace(" ", "_")}_icon.png"/></td>
+                    <td class="teamEntry">${TeamHero.get_team(hero[0].id)}</td>
+                    <td class="heroImg"><img src="/static/images/${hero[0].race}_icon.png"/></td>
                     <td class="heroEntry">${hero[0].name}</td>
                     <td class="heroPointsEntry">${hero[0].points}</td>
                     <td class="picksEntry">${hero[0].picks}</td>
-                    <td class="bansEntry">${hero[0].bans}</td>
                     <td class="winsEntry">${hero[0].wins}</td>
                     <td class="valueEntry">${hero[0].value}</td>
                     <td class="costEntry">${hero[1].cost}</td>
@@ -44,11 +48,11 @@
             % endfor
             % for hero in [hero_ for hero_ in team if not hero_[1].active]:
                 <tr class="teamRow toBuy" id="${hero[0].id}TeamRow">
-                    <td class="heroImg"><img src="/static/images/${hero[0].name.replace(" ", "_")}_icon.png"/></td>
+                    <td class="teamEntry">${TeamHero.get_team(hero[0].id)}</td>
+                    <td class="heroImg"><img src="/static/images/${hero[0].race}_icon.png"/></td>
                     <td class="heroEntry">${hero[0].name}</td>
                     <td class="heroPointsEntry">${hero[0].points}</td>
                     <td class="picksEntry">${hero[0].picks}</td>
-                    <td class="bansEntry">${hero[0].bans}</td>
                     <td class="winsEntry">${hero[0].wins}</td>
                     <td class="valueEntry">${hero[0].value}</td>
                     <td class="costEntry">${hero[1].cost}</td>
@@ -67,40 +71,41 @@
 <div class="card row">
     <div class="card-content">
         <span class=${"messageTransOpen" if league.transfer_open != 0 else "messageTransClosed"}>
-            <p>${"Transfer window currently open. Closes ~1 hour before games start." if league.transfer_open != 0 else """Transfer window now closed for tournament. You can still change your battlecup team daily though."""}
+            <p>${"Transfer window currently open. Closes ~1 hour before games start" if league.transfer_open != 0 else """Transfer window now closed. Re-opens after weekends games finished"""}
             </p>
         </span>
         <span>
-        <p>Tables are sortable (click table headers). Max 5 heroes per team (points <a href="/rules">penalties</a> for <5)</p>
+        <p>Tables are sortable (click table headers). See <a href="/rules">Rules</a></p>
         </span>
         <span>
-            <p>Max loan time is ${league.days - league.current_day} days</p>
+            <p>Max loan time is ${league.days - league.current_day} rounds</p>
         </span>
     </div>
 </div>
 <div id="heroesBlock" class="row">
-    <h2>Heroes (Credits Available: <span class="userCredits">${round(50 - (sum([hero[0].value for hero in team])), 1)}</span>)</h2>
+    <h2><span class="left">Players (Credits Available:&nbsp;</span><span class="userCredits">${round(40 - (sum([hero[0].value for hero in team])), 1)}</span>)
+    </h2>
     <div id="tableContainer">
-        <table class="sortable responsive-table card-table centered">
+        <table class="sortable responsive-table card-table centered highlight">
             <tr>
+                <th class="teamHeader">Team</th>
                 <th class="heroHeader" colspan="2">Hero</th>
                 <th class="heroPointsHeader">Points</th>
                 <th class="picksHeader">Picks</th>
-                <th class="bansHeader">Bans</th>
                 <th class="winsHeader">Wins</th>
                 <th class="valueHeader">Value</th>
                 <th class="adjustedValueHeader">Loan cost</th>
-                <th class="daysHeader">Days</th>
+                <th class="daysHeader">Rounds</th>
                 <th class="sellHeader">Loan</th>
 
             </tr>
             % for hero in heroes:
                 <tr id="${hero.id}Row">
-                    <td class="heroImg"><img src="/static/images/${hero.name.replace(" ", "_")}_icon.png"/></td>
+                    <td class="teamEntry">${TeamHero.get_team(hero.id)}</td>
+                    <td class="heroImg"><img src="/static/images/${hero.race}_icon.png"/></td>
                     <td class="heroEntry">${hero.name}</td>
                     <td class="heroPointsEntry">${hero.points}</td>
                     <td class="picksEntry">${hero.picks}</td>
-                    <td class="bansEntry">${hero.bans}</td>
                     <td class="winsEntry">${hero.wins}</td>
                     <td class="valueEntry">${hero.value}</td>
                     <td class="adjustedValueEntry">${hero.value}</td>

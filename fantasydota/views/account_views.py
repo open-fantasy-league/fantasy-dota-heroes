@@ -80,6 +80,7 @@ def register(request):
     for l in leagues:
         user_league = LeagueUser(user.id, username, l.id)
         session.add(user_league)
+        session.flush()
         for i in range(l.days):
             if i >= l.stage2_start:
                 stage = 2
@@ -87,7 +88,7 @@ def register(request):
                 stage = 1
             else:
                 stage = 0
-            session.add(LeagueUserDay(user.id, username, l.id, i, stage))
+            session.add(LeagueUserDay(user_league.id, i, stage))
     headers = remember(request, user.id)
     return HTTPFound('/viewLeague', headers=headers)
 
@@ -143,7 +144,7 @@ def forgot_password(request):
         session.add(PasswordReset(userq.id, guid, request.remote_addr))
         email_url = "https://www.fantasydota.eu/resetPasswordPage?u=" + str(userq.id) + "&guid="  # how not hardcode domain bit?
         email_url += quote_plus(guid)
-        message = Message(subject="Fantasy Dota EU password reset",
+        message = Message(subject="fantasy brood war EU password reset",
                           sender="fantasydotaeu@gmail.com",
                           recipients=[userq.email],
                           body="Hi %s.\n\nIf you did not request a password reset, either ignore this email or report incident to me.\n\n"

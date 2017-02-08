@@ -53,9 +53,6 @@
             <li class="col s1">
                 <a href="/leaderboard">Leaderboard</a>
             </li>
-            <li id="battlecupBtn" class="col s1">
-                <a href="/battlecup">Battlecups</a>
-            </li>
             </ul>
             <ul class="right">
             <li class="col s1">
@@ -63,12 +60,6 @@
             </li>
             <li class="col s1">
                 <a href="/faq">FAQ</a>
-            </li>
-            <li class="col s2">
-                <a href="/hallOfFame">Hall of Fame</a>
-            </li>
-            <li class="col s3">
-                <a href="/accountSettings">Account Settings</a>
             </li>
             </ul></div>
         </nav>

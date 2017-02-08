@@ -8,16 +8,16 @@ from sqlalchemy import and_
 def start_of_day():
     session = make_session(transaction=False, autoflush=False)
     for league in session.query(League).all():  # .filter(League.status == 1)
-        rounds = 4  # temp
-        series_per_round = "1,1,1,1"
-        session.query(TeamHero).filter(and_(TeamHero.is_battlecup.is_(False),
-                                            TeamHero.league == league.id,
-                                            )).update({TeamHero.active: True})
-        auto_fill_teams(session, league)
-        players = session.query(TeamHero.user_id).\
-            filter(and_(TeamHero.is_battlecup.is_(True),
-                        TeamHero.league == league.id)).group_by(TeamHero.user_id).all()
-        make_battlecups(session, league.id, rounds, players, series_per_round)
+        # rounds = 4  # temp
+        # series_per_round = "1,1,1,1"
+        # session.query(TeamHero).filter(and_(TeamHero.is_battlecup.is_(False),
+        #                                     TeamHero.league == league.id,
+        #                                     )).update({TeamHero.active: True})
+        # auto_fill_teams(session, league)
+        # players = session.query(TeamHero.user_id).\
+        #     filter(and_(TeamHero.is_battlecup.is_(True),
+        #                 TeamHero.league == league.id)).group_by(TeamHero.user_id).all()
+        # make_battlecups(session, league.id, rounds, players, series_per_round)
         session.query(League).filter(League.id == league.id).update({
             League.battlecup_status: 1, League.transfer_open: 0
         })

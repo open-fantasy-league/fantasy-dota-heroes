@@ -9,7 +9,7 @@
 </%def>
 
 <%def name="meta_description()">
-    News page for fantasy dota game.
+    News page for fantasy brood war game.
 </%def>
 
 <div class="articleBlock">

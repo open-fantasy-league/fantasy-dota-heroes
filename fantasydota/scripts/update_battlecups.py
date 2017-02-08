@@ -41,7 +41,7 @@ def update_battlecup_points(session, result, series_id, bcup, league_id):
             hero_count = session.query(func.count(TeamHero)).filter(and_(TeamHero.league == league_id,
                                                                          TeamHero.is_battlecup.is_(True),
                                                                          TeamHero.user_id == player.user_id)).scalar()
-            add_result_to_user(player, result.result_str, hero_count)
+            add_result_to_user(player, result.win, hero_count)
 
 
 def declare_bcup_rounds_winners(session, bcup_round):

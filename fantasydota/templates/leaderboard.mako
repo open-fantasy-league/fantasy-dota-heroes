@@ -9,7 +9,7 @@
 </%def>
 
 <%def name="meta_description()">
-    Leaderboard page for fantasy dota game.
+    Leaderboard page for fantasy brood war game.
 </%def>
 
 <%def name="rank_by_fn(x, player, for_user)">
@@ -31,12 +31,6 @@
             ${player.picks_rank}
         % else:
             ${player.picks}
-        % endif
-    % elif x == "bans":
-        % if for_user:
-            ${player.bans_rank}
-        % else:
-            ${player.bans}
         % endif
     % endif
 </%def>
@@ -70,11 +64,6 @@ ${"period=%s" % period}
                     Picks
                 </a>
             </li>
-            <li class=${"active" if rank_by=="bans" else ""}>
-                <a id="bansBtn" href="/leaderboard?rank_by=bans&${friendOrGlobal(switch_to)}&${getTime(period)}">
-                    Bans
-                </a>
-            </li>
             <li><a id="friendsGlobalBtn" href="/leaderboard?rank_by=${rank_by}&${"showFriend=kek" if switch_to == "friend" else "showGlobal=kek"}&${getTime(period)}">
                 ${switch_to.title()}
                 </a>
@@ -86,7 +75,7 @@ ${"period=%s" % period}
                 <li><a href="/leaderboard?rank_by=${rank_by}&${friendOrGlobal(switch_to)}&period=tournament">Tournament</a></li>
                 <li class="divider"></li>
                 % for i in range(league.current_day + 1):
-                    <li><a href="/leaderboard?rank_by=${rank_by}&${friendOrGlobal(switch_to)}&period=${i}">Day ${i+1}</a></li>
+                    <li><a href="/leaderboard?rank_by=${rank_by}&${friendOrGlobal(switch_to)}&period=${i}">Round ${i+1}</a></li>
                 % endfor
             </ul>
         </ul>
@@ -101,10 +90,14 @@ ${"period=%s" % period}
                 <th class="rankingHeader">${rank_by.title()}</th>
             </tr>
             % for i, player in enumerate(players):
-                <tr class=${"playerRow" if not user or player.username != user.username else "userRow"}>
+                % if period == "tournament":
+                    <tr class=${"playerRow" if not user or player[0].username != user.username else "userRow"}>
+                % else:
+                    <tr class=${"playerRow" if not user or player[0] != user.username else "userRow"}>
+                % endif
                     <td class="positionEntry">${i+1}
                     </td>
-                    <td class="heroEntry">${player.username}
+                    <td class="heroEntry">${player[0].username if period == "tournament" else player[0]}
                     %if len(player_heroes) > i and not league.transfer_open:
                         <span class="hero_images">
                         % for hero in player_heroes[i]:
@@ -113,15 +106,27 @@ ${"period=%s" % period}
                         </span>
                     %endif
                     </td>
-                    <td class="rankingEntry">${rank_by_fn(rank_by, player, False)}</td>
+                    % if period == "tournament":
+                        <td class="rankingEntry">${rank_by_fn(rank_by, player[0], False)}</td>
+                    % else:
+                        <td class="rankingEntry">${rank_by_fn(rank_by, player[1], False)}</td>
+                    % endif
                 </tr>
             % endfor
             % if user and switch_to == "friend":
-            <tr class="userRow outsideRanks">
-                <td class="userRank">${rank_by_fn(rank_by, user, True)}</td>
-                <td class="heroEntry">${user.username}</td>
-                <td class="rankingEntry">${rank_by_fn(rank_by, user, False)}</td>
-            </tr>
+                % if period == "tournament":
+                    <tr class="userRow outsideRanks">
+                        <td class="userRank">${rank_by_fn(rank_by, user, True)}</td>
+                        <td class="heroEntry">${user.username}</td>
+                        <td class="rankingEntry">${rank_by_fn(rank_by, user, False)}</td>
+                    </tr>
+                % else:
+                    <tr class="userRow outsideRanks">
+                        <td class="userRank">${rank_by_fn(rank_by, user[1], True)}</td>
+                        <td class="heroEntry">${user[0]}</td>
+                        <td class="rankingEntry">${rank_by_fn(rank_by, user[1], False)}</td>
+                    </tr>
+                % endif
             % endif
         </table>
     </div>

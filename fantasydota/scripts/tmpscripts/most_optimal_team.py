@@ -13,7 +13,7 @@ def main():
             value = hero.value
             results = session.query(Result).filter(Result.tournament_id == 4874).filter(Result.hero == hero.hero_id).filter(Result.date > 1481251149)
             for result in results:
-                points += Result.result_to_value(result.result_str)
+                points += Result.result_to_value(result.win)
 
             valRatio = points / value
             mvh.append({"hero": hero.name, "ratio": valRatio, "points": points, "value": value})

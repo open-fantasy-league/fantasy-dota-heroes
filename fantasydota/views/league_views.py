@@ -26,7 +26,7 @@ def view_league(request):
     class FakeUser():  # hacky quick way so unlogged in users can see the page
         username = ""
         league = league_id
-        money = 50.0
+        money = 40.0
         points = 0
         picks = 0
         bans = 0
@@ -50,6 +50,7 @@ def view_league(request):
             username = session.query(User.username).filter(User.id == user_id).first()[0]
             user_league = LeagueUser(user_id, username, league.id)
             session.add(user_league)
+            session.flush()
             for i in range(league.days):
                 if i >= league.stage2_start:
                     stage = 2
@@ -57,7 +58,7 @@ def view_league(request):
                     stage = 1
                 else:
                     stage = 0
-                session.add(LeagueUserDay(user_id, username, league.id, i, stage))
+                session.add(LeagueUserDay(user_league.id, i, stage))
 
             userq = FakeUser()  # so dont have to deal with a commit mid-request
 
