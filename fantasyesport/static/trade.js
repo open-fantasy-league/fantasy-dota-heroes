@@ -95,7 +95,7 @@ function addToLeagueTeam(hero){
     new_row.find("button").replaceWith('<button type="submit" name="sellHero" class="btn waves-effect waves-light">Cancel loan</button>');
     var days = new_row.find("input[name=days]");
     new_row.find("input[name=days]").replaceWith(days.val());
-    new_row.find('.adjustedValueEntry').attr("class", "costEntry")
+    new_row.find('.adjustedValueEntry').attr("class", "costEntry").css({'opacity': '1.0'});
     var form = new_row.find(".tradeForm");
     var lastRow = $(".teamRow").last();
     if (lastRow.length > 0){$(".teamRow").last().after(new_row)}
