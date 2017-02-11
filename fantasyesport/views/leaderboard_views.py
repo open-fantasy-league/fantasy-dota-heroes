@@ -1,10 +1,9 @@
-from fantasyesport import DBSession
-from fantasyesport.models import Friend, LeagueUser, LeagueUserDay, TeamHero, League, User
 from pyramid.security import authenticated_userid
 from pyramid.view import view_config
-from sqlalchemy import and_
 from sqlalchemy import desc
-from sqlalchemy import or_
+
+from fantasyesport import DBSession
+from fantasyesport.models import Friend, LeagueUser, LeagueUserDay, League, User
 
 
 @view_config(route_name='leaderboard', renderer='../templates/leaderboard.mako')
@@ -25,7 +24,7 @@ def leaderboard(request):
     period = request.params.get("period") or "tournament"
 
     rank_by = request.params.get("rank_by")
-    rank_by = rank_by if rank_by in ("points", "wins", "picks", "bans") else "points"
+    rank_by = rank_by if rank_by in ("points", "wins", "picks") else "points"
 
     # should prob move this func
     def rank_filter(rank_by, period):
@@ -34,8 +33,6 @@ def leaderboard(request):
             return userOb.wins
         elif rank_by == "picks":
             return userOb.picks
-        elif rank_by == "bans":
-            return userOb.bans
         else:
             return userOb.points
 
