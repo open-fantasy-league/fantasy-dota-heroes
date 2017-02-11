@@ -22,7 +22,8 @@
         <table class="sortable responsive-table card-table centered highlight" id="teamTable">
             <tr>
                 <th class="teamHeader">Team</th>
-                <th class="heroHeader" colspan="2">Player</th>
+                <th class="dummyHeader" colspan="0"></th>
+                <th class="heroHeader left">Player</th>
                 <th class="heroPointsHeader">Points</th>
                 <th class="picksHeader">Picks</th>
                 <th class="winsHeader">Wins</th>
@@ -36,7 +37,8 @@
                 <tr class="teamRow" id="${hero[0].id}TeamRow">
                     <td class="teamEntry">${TeamHero.get_team(hero[0].id)}</td>
                     <td class="heroImg"><img src="/static/images/${hero[0].race}_icon.png"/></td>
-                    <td class="heroEntry">${hero[0].name}</td>
+                    <td class="heroEntry"><a href="http://wiki.teamliquid.net/starcraft/${hero[0].name.split("(")[0]}" target="_blank">
+                    ${hero[0].name}</a></td>
                     <td class="heroPointsEntry">${hero[0].points}</td>
                     <td class="picksEntry">${hero[0].picks}</td>
                     <td class="winsEntry">${hero[0].wins}</td>
@@ -50,7 +52,8 @@
                 <tr class="teamRow toBuy" id="${hero[0].id}TeamRow">
                     <td class="teamEntry">${TeamHero.get_team(hero[0].id)}</td>
                     <td class="heroImg"><img src="/static/images/${hero[0].race}_icon.png"/></td>
-                    <td class="heroEntry">${hero[0].name}</td>
+                    <td class="heroEntry"><a href="http://wiki.teamliquid.net/starcraft/${hero[0].name.split("(")[0]}" target="_blank">
+                    ${hero[0].name}</a></td>
                     <td class="heroPointsEntry">${hero[0].points}</td>
                     <td class="picksEntry">${hero[0].picks}</td>
                     <td class="winsEntry">${hero[0].wins}</td>
@@ -89,11 +92,12 @@
         <table class="sortable responsive-table card-table centered highlight">
             <tr>
                 <th class="teamHeader">Team</th>
-                <th class="heroHeader" colspan="2">Hero</th>
+                <th class="dummyHeader" colspan="0"></th>
+                <th class="heroHeader left">Player</th>
                 <th class="heroPointsHeader">Points</th>
                 <th class="picksHeader">Picks</th>
                 <th class="winsHeader">Wins</th>
-                <th class="valueHeader">Value</th>
+                <th class="valueHeader sorttable_numeric">Value</th>
                 <th class="adjustedValueHeader">Loan cost</th>
                 <th class="daysHeader">Rounds</th>
                 <th class="sellHeader">Loan</th>
@@ -103,7 +107,8 @@
                 <tr id="${hero.id}Row">
                     <td class="teamEntry">${TeamHero.get_team(hero.id)}</td>
                     <td class="heroImg"><img src="/static/images/${hero.race}_icon.png"/></td>
-                    <td class="heroEntry">${hero.name}</td>
+                    <td class="heroEntry"><a href="http://wiki.teamliquid.net/starcraft/${hero.name.split("(")[0]}" target="_blank">
+                    ${hero.name}</a></td>
                     <td class="heroPointsEntry">${hero.points}</td>
                     <td class="picksEntry">${hero.picks}</td>
                     <td class="winsEntry">${hero.wins}</td>
