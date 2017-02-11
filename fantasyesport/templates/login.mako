@@ -12,13 +12,13 @@
     Login to fantasy brood war heroes
 </%def>
 
+% if message:
 <div class="card-panel">
-    <div id=${"successMessage" if message and 'have been emailed to you' in message else "message"}>
-        % if message:
-            ${message}
-        % endif
+    <div id=${"successMessage" if 'have been emailed to you' in message else "message"}>
+        ${message}
     </div>
 </div>
+% endif
 <div class="card">
     <div class="card-content">
         <div class="row">
