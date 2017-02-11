@@ -3,6 +3,8 @@ fantasydota README
 
 Lives at https://www.fantasydota.eu
 
+with a brood-war spin-off https://www.fantasyesport.eu/viewLeague
+
 Next tournament planned is Kie Major starting early April
 Getting Started
 ---------------
