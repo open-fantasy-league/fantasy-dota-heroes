@@ -1,20 +1,16 @@
 from fantasyesport.models import League, Hero, LeagueUser, TeamHero
 from sqlalchemy import and_
 
+
 def cost(hero_value, days, hero_id):
-        if hero_id <= 3:  # team flash
-            return round(hero_value * (1 - (0.1 * (days - 1))), 1)
-        else:
-            return round(hero_value * (1 - (0.1 * (days - 1))), 1)
+    return round(hero_value * (1 - (0.1 * (days - 1))), 1)
+
 
 def sell(session, user_id, hero_id, league_id, is_battlecup):
     transfer_actually_open = session.query(League.transfer_open).filter(League.id == league_id).first()[0]
     if not transfer_actually_open:
         return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
 
-    hero_value = session.query(Hero.value).filter(and_(Hero.id == hero_id,
-                                                       Hero.is_battlecup.is_(is_battlecup),
-                                                       Hero.league == league_id)).first()[0]
     teamq = session.query(TeamHero.hero_id).filter(and_(TeamHero.user_id == user_id,
                                                 TeamHero.league == league_id,
                                                 TeamHero.is_battlecup.is_(is_battlecup)))
@@ -57,14 +53,14 @@ def buy(session, user_id, hero_id, league_id, is_battlecup, days):
 
     teamq = session.query(TeamHero).filter(TeamHero.user_id == user_id).filter(TeamHero.league == league_id).\
                                                 filter(TeamHero.is_battlecup.is_(is_battlecup))
-	
+
     user_money = 40.0 - sum([session.query(TeamHero.cost).filter(TeamHero.user_id == user_id).filter(TeamHero.hero_id == hero.id).filter(TeamHero.is_battlecup.is_(is_battlecup)).first()[0] for hero in
                              session.query(Hero).filter(and_(Hero.is_battlecup.is_(is_battlecup),
                                                              Hero.league == league_id,
                                                              Hero.id.in_([x.hero_id for x in teamq.all()])))
                              ])
 
-    cost_ =   cost(hero_value, days, hero_id)# knock off 10% for every extra game round loaned for
+    cost_ = cost(hero_value, days, hero_id)# knock off 10% for every extra game round loaned for
     if user_money < cost_:
         return {"success": False, "message": "ERROR: Insufficient credits"}
 
