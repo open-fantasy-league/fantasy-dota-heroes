@@ -1,2 +1,2 @@
 include *.txt *.ini *.cfg *.rst
-recursive-include fantasydota *.ico *.png *.css *.gif *.jpg *.pt *.txt *.mak *.mako *.js *.html *.xml
+recursive-include fantasyesport *.ico *.png *.css *.gif *.jpg *.pt *.txt *.mak *.mako *.js *.html *.xml
