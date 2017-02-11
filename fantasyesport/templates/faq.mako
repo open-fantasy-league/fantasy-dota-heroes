@@ -15,12 +15,12 @@
 <div>
 <h2>What is this site?</h2>
 <p>
-Simple fantasy league for brood war. I was already coding some similar stuff for DotA so a copy paste for Brood War was fairly straight-forward
+Simple fantasy league for brood war. I was already coding some similar stuff for DotA so a copy paste for Brood War was fairly straight-forward. </br>
 Send feedback/hatemail to fantasydotaeu@gmail.com
 </p>
 <h2>Are there any prizes?</h2>
 <p>
-Nope! :D
+Nope! :D (For the dota ones i usually give out items, but no items/things to award for brood war)
 </p>
 <h2>Is it safe to make an account/login through steam?</h2>
 <p>
