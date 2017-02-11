@@ -42,7 +42,10 @@ ${"showGlobal=kek" if switch_to == "friend" else "showFriend=kek"}
 <%def name="getTime(period)">
 ${"period=%s" % period}
 </%def>
-<h2>${rank_by.title()}</h2>
+<div class="row">
+<h2>${rank_by.title()}<a class="right" href="http://wiki.teamliquid.net/starcraft/Afreeca_Team_League_Season_1" target="_blank">${league.name}</a>
+</h2>
+</div>
 <div class="row">
 <div id="leaderboardBlock" class="col s7">
 

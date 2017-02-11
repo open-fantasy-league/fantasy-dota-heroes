@@ -87,6 +87,8 @@
 </div>
 <div id="heroesBlock" class="row">
     <h2><span class="left">Players (Credits Available:&nbsp;</span><span class="userCredits">${round(40 - (sum([hero[1].cost for hero in team])), 1)}</span>)
+        <span class="right">
+        <a href="http://wiki.teamliquid.net/starcraft/Afreeca_Team_League_Season_1" target="_blank">${league.name}</a></span>
     </h2>
     <div id="tableContainer">
         <table class="sortable responsive-table card-table centered highlight">
