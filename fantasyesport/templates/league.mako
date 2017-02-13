@@ -80,9 +80,13 @@
         <span>
         <p>Tables are sortable (click table headers). See <a href="/rules">Rules</a></p>
         </span>
-        <span>
-            <p>Max loan time is ${league.days - league.current_day} rounds</p>
-        </span>
+        <ul class="browser-default">
+        <li>Your team can consist of up to 4 players</li>
+        <li>You are only allowed one player from each team</li>
+        <li>You 'loan' a player for as many consecutive rounds as you wish</li>
+        <li>i.e. You can loan Flash for 2 rounds. This means he will be in your team for the quarter-finals and semi-finals</li>
+            <li>The transfer window is open between rounds (If you loan Bisu for 1 round, he will leave team after quarter finals. You can then add Bisu, or any other player, back to your team for the semi-finals)</li>
+    </ul>
     </div>
 </div>
 <div id="heroesBlock" class="row">
