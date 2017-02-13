@@ -138,5 +138,5 @@ var max_days = ${league.days - league.current_day};
 
 </script>
 
-<script src="/static/trade.js"/>
+<script src="/static/trade.js"></script>
 
