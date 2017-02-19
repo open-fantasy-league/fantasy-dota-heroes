@@ -1,9 +1,10 @@
 from pyramid.security import authenticated_userid
 from pyramid.view import view_config
+from sqlalchemy import and_
 from sqlalchemy import desc
 
 from fantasyesport import DBSession
-from fantasyesport.models import Friend, LeagueUser, LeagueUserDay, League, User
+from fantasyesport.models import Friend, LeagueUser, LeagueUserDay, League, User, TeamHero
 
 
 @view_config(route_name='leaderboard', renderer='../templates/leaderboard.mako')
@@ -62,21 +63,22 @@ def leaderboard(request):
         # If we dont only take one league user day we have too many entries.
         # this is only day needed for up/down arrow of progress
     else:
-        leagueq = session.query(LeagueUser.username, LeagueUserDay).filter(LeagueUserDay.day == period_).\
+        leagueq = session.query(LeagueUser.username, LeagueUserDay, LeagueUser.user_id).filter(LeagueUserDay.day == period_).\
             filter(LeagueUserDay.league_user.in_([x[0].id for x in leagueq.all()]))
         players = leagueq.order_by(desc(rank_)).join(LeagueUserDay).limit(100).all()
         # If we dont only take one league user day we have too many entries.
         # this is only day needed for up/down arrow of progress
 
-        luser = session.query(LeagueUser.username, LeagueUserDay).filter(LeagueUserDay.day == period_).\
+        luser = session.query(LeagueUser.username, LeagueUserDay, LeagueUser.user_id).filter(LeagueUserDay.day == period_).\
             filter(LeagueUserDay.league_user == luser.id).join(LeagueUserDay).first()
 
     for player in players:
         heroes = []
-        # for hero in session.query(TeamHero).filter(and_(TeamHero.user_id == player.user_id,
-        #                                                 TeamHero.is_battlecup.is_(False),
-        #                                                 TeamHero.league == league_id)).all():
-        #     heroes.append(hero.hero_name)
+        print player[0], player[1], player[2]
+        for hero in session.query(TeamHero).filter(and_(TeamHero.user_id == player[2],
+                                                        TeamHero.is_battlecup.is_(False),
+                                                        TeamHero.league == league_id)).all():
+            heroes.append(hero.hero_name)
         player_heroes.append(heroes)
 
     return {'user': luser, 'players': players, 'rank_by': rank_by, 'switch_to': switch_to, 'period': period,

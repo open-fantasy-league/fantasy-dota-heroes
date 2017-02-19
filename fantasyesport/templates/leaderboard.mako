@@ -86,10 +86,11 @@ ${"period=%s" % period}
     </nav>
 
     <div id="tableContainer">
-        <table id="leaderboardTable" class="card-table">
+        <table id="leaderboardTable" class="card-table striped">
             <tr>
                 <th class="positionHeader">Position</th>
                 <th class="playerHeader">Player</th>
+                <th class="teamHeader">Team</th>
                 <th class="rankingHeader">${rank_by.title()}</th>
             </tr>
             % for i, player in enumerate(players):
@@ -101,13 +102,13 @@ ${"period=%s" % period}
                     <td class="positionEntry">${i+1}
                     </td>
                     <td class="heroEntry">${player[0].username if period == "tournament" else player[0]}
-                    %if len(player_heroes) > i and not league.transfer_open:
-                        <span class="hero_images">
-                        % for hero in player_heroes[i]:
-                            <img src="/static/images/${hero.replace(" ", "_")}_icon.png"/>
-                        % endfor
-                        </span>
-                    %endif
+                    </td>
+                    <td>
+                        %if len(player_heroes) > i and not league.transfer_open:
+                            % for hero in player_heroes[i]:
+                                <span>${hero}</span>
+                            % endfor
+                        %endif
                     </td>
                     % if period == "tournament":
                         <td class="rankingEntry">${rank_by_fn(rank_by, player[0], False)}</td>
