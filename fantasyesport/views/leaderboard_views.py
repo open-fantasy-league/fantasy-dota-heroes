@@ -52,7 +52,7 @@ def leaderboard(request):
         user_filter = friends
     else:
         user_filter = users_playing
-    leagueq = session.query(LeagueUser, LeagueUserDay).filter(LeagueUser.league == league_id). \
+    leagueq = session.query(LeagueUser, LeagueUserDay, LeagueUser.user_id).filter(LeagueUser.league == league_id). \
         filter(LeagueUser.user_id.in_(user_filter))
 
     luser = session.query(LeagueUser).filter(LeagueUser.league == league_id).filter(LeagueUser.user_id == user_id).first()
