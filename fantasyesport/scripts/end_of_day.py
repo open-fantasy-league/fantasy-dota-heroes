@@ -32,7 +32,7 @@ def main():
                                                 TeamHero.is_battlecup.is_(False))).\
                 update({TeamHero.days_left: TeamHero.days_left - 1})
 
-            recalibrate_hero_values(session, league.id)
+            # recalibrate_hero_values(session, league.id) not doing this for bw. too short tournament
             league.current_day += 1
             league.battlecup_status = 0  # switch bcup view to pick team view
             league.transfer_open = True

@@ -74,7 +74,7 @@
 <div class="card row">
     <div class="card-content">
         <span class=${"messageTransOpen" if league.transfer_open != 0 else "messageTransClosed"}>
-            <p>${"Transfer window currently open. Closes ~1 hour before games start" if league.transfer_open != 0 else """Transfer window now closed. Re-opens after weekends games finished"""}
+            <p>${"Transfer window currently open. Closes ~1 hour before games start" if league.transfer_open != 0 else """Transfer window now closed for this round. Re-opens just after quarter finals"""}
             </p>
         </span>
         <span>

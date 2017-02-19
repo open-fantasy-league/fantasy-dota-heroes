@@ -6,6 +6,7 @@ from sqlalchemy import and_
 
 
 def start_of_day():
+    print "Close transfer windows"
     session = make_session(transaction=False, autoflush=False)
     for league in session.query(League).all():  # .filter(League.status == 1)
         # rounds = 4  # temp
