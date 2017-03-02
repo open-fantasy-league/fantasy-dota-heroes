@@ -86,11 +86,11 @@ ${"period=%s" % period}
     </nav>
 
     <div id="tableContainer">
-        <table id="leaderboardTable" class="card-table striped">
+        <table id="leaderboardTable" class="card-table striped centered">
             <tr>
                 <th class="positionHeader">Position</th>
                 <th class="playerHeader">Player</th>
-                <th class="teamHeader">Team</th>
+                <th class="teamHeader centered">Team</th>
                 <th class="rankingHeader">${rank_by.title()}</th>
             </tr>
             % for i, player in enumerate(players):

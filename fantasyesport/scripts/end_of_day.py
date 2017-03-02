@@ -9,7 +9,7 @@ from sqlalchemy import and_
 def main():
     with transaction.manager:
         session = make_session()
-        for league in session.query(League).filter(League.status == 1).all():
+        for league in session.query(League).all():
             bcup_teams = session.query(TeamHero).filter(and_(TeamHero.league == league.id,
                                                                    TeamHero.is_battlecup.is_(True))).all()
             for bcup_team in bcup_teams:
