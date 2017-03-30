@@ -37,12 +37,13 @@
 
     <h2>Team</h2>
     <p>
-    Your team can consist of up to 5 dota heroes (you are not required to use all 5, but will incur a penalty).
+    Your team can consist of up to 5 dota heroes (you are not required to use all 5, but you incur percentage penalty for each missing hero).
     </br>
-    League team and Battlecup teams are separate. You will need to pick both.
+    Unlimited transfers can take place every day, between games
     </br>
-    Once tournament has started no transfers for league team are allowed throughout the tournament
+        Hero values will be slightly reclibrated every day
     </br>
-    Battlecup teams must be picked every-day (Hero values in battlecup mode will change throughout the tournament depending on their performance).
+        Selling a hero simply refunds the cost you paid for it, not it's current value
+    </br>
     </p>
 </div>

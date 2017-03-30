@@ -1,13 +1,9 @@
-import datetime
-
-from fantasydota.lib.trade import buy, sell
-from pyramid.httpexceptions import HTTPFound, HTTPForbidden
 from pyramid.security import authenticated_userid
 from pyramid.view import view_config
 from sqlalchemy import and_
-from sqlalchemy import or_
 
 from fantasydota import DBSession
+from fantasydota.lib.trade import buy, sell
 from fantasydota.models import User, League, LeagueUser, Hero, TeamHero, LeagueUserDay
 
 
@@ -61,24 +57,20 @@ def view_league(request):
 
             userq = FakeUser()  # so dont have to deal with a commit mid-request
 
-        team = session.query(Hero, TeamHero).filter(and_(
-                                               Hero.is_battlecup.is_(False),
-                                               Hero.league == league_id)).\
-            filter(and_(TeamHero.user_id == user_id, TeamHero.league == league_id,
-                        TeamHero.is_battlecup.is_(False))).\
+        team = session.query(Hero, TeamHero).filter(Hero.league == league_id).\
+            filter(and_(TeamHero.user_id == user_id, TeamHero.league == league_id)).\
             join(TeamHero).all()
         print team
         username = session.query(User.username).filter(User.id == user_id).first()[0]
-    heroes = session.query(Hero).filter(and_(Hero.league == league_id,
-                                             Hero.is_battlecup.is_(False))).all()
+    heroes = session.query(Hero).filter(Hero.league == league_id).all()
 
     #transfer_open = True if request.registry.settings["transfers"] else False
     return {'username': username, 'userq': userq, 'team': team, 'heroes': heroes, 'message': message,
             'message_type': message_type, 'league': league}
 
 
-@view_config(route_name="sell_hero_league", renderer="json")
-def sell_hero_league(request):
+@view_config(route_name="sell_hero", renderer="json")
+def sell_hero(request):
     session = DBSession()
     user_id = authenticated_userid(request)
     if user_id is None:
@@ -91,11 +83,11 @@ def sell_hero_league(request):
     if not transfer_actually_open:
         return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
 
-    return sell(session, user_id, hero_id, league_id, False)
+    return sell(session, user_id, hero_id, league_id)
 
 
-@view_config(route_name="buy_hero_league", renderer="json")
-def buy_hero_league(request):
+@view_config(route_name="buy_hero", renderer="json")
+def buy_hero(request):
     session = DBSession()
     user_id = authenticated_userid(request)
     if user_id is None:
@@ -103,10 +95,9 @@ def buy_hero_league(request):
 
     hero_id = int(request.POST["hero"])
     league_id = int(request.POST["league"])
-    days = int(request.POST["days"])
     # transfer_think_open = request.POST["transfer"] really doesnt matter what the user thinks! :D
     transfer_actually_open = session.query(League.transfer_open).filter(League.id == league_id).first()[0]
     if not transfer_actually_open:
         return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
 
-    return buy(session, user_id, hero_id, league_id, False, days)
+    return buy(session, user_id, hero_id, league_id)

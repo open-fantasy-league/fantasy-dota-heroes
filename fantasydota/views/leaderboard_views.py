@@ -1,10 +1,11 @@
-from fantasydota import DBSession
-from fantasydota.models import Friend, LeagueUser, LeagueUserDay, TeamHero, League, User
 from pyramid.security import authenticated_userid
 from pyramid.view import view_config
 from sqlalchemy import and_
 from sqlalchemy import desc
 from sqlalchemy import or_
+
+from fantasydota import DBSession
+from fantasydota.models import Friend, LeagueUser, LeagueUserDay, TeamHero, League
 
 
 @view_config(route_name='leaderboard', renderer='../templates/leaderboard.mako')
@@ -13,7 +14,7 @@ def leaderboard(request):
     user_id = authenticated_userid(request)
     league_id = int(request.params.get("league")) if request.params.get("league") else None \
         or request.registry.settings["default_league"]
-    users_playing = [x[0] for x in session.query(TeamHero.user_id).filter(TeamHero.league == league_id).filter(TeamHero.is_battlecup.is_(False)).group_by(TeamHero.user_id).all()]
+    users_playing = [x[0] for x in session.query(TeamHero.user_id).filter(TeamHero.league == league_id).group_by(TeamHero.user_id).all()]
     show_friend = True if request.params.get("showFriend") and user_id else False
     if show_friend:
         switch_to = "global"
@@ -71,7 +72,6 @@ def leaderboard(request):
     for player in players:
         heroes = []
         for hero in session.query(TeamHero).filter(and_(TeamHero.user_id == player.user_id,
-                                                        TeamHero.is_battlecup.is_(False),
                                                         TeamHero.league == league_id)).all():
             heroes.append(hero.hero_name)
         player_heroes.append(heroes)

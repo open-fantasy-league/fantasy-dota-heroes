@@ -1,13 +1,10 @@
-import random
-
 import transaction
-from fantasydota.lib.battlecup import FakePlayer
-from fantasydota.lib.session_utils import make_session
-from fantasydota.models import Hero, Result, Battlecup, LeagueUser, League, LeagueUserDay, \
-    BattlecupUserRound, BattlecupRound, TeamHero
 from sqlalchemy import and_
-from sqlalchemy import desc
 from sqlalchemy import func
+
+from fantasydota.lib.session_utils import make_session
+from fantasydota.models import Result, LeagueUser, League, LeagueUserDay, \
+    TeamHero
 
 
 def add_result_to_user(userq, res, hero_count):
@@ -31,8 +28,7 @@ def update_league_points(session, league):
     for i, result in enumerate(new_results):
         res = result.result_str
         winners = session.query(TeamHero.user_id). \
-            filter(and_(TeamHero.hero_id == result.hero, TeamHero.league == league_id,
-                        TeamHero.is_battlecup.is_(False))).all()
+            filter(and_(TeamHero.hero_id == result.hero, TeamHero.league == league_id)).all()
         for winner in winners:
             userq = session.query(LeagueUser).filter(and_(LeagueUser.user_id == winner[0],
                                                           LeagueUser.league == league_id)).first()
@@ -43,8 +39,7 @@ def update_league_points(session, league):
                                                                  )).first()
             user_id = userq.user_id
             hero_count = session.query(func.count(TeamHero)).filter(and_(TeamHero.league == league_id,
-                                                                         TeamHero.user_id == user_id,
-                                                                         TeamHero.is_battlecup.is_(False))).scalar()
+                                                                         TeamHero.user_id == user_id)).scalar()
             add_result_to_user(userq, res, hero_count)
             add_result_to_user(userq_day, res, hero_count)
 

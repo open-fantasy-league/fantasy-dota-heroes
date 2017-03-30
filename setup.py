@@ -15,13 +15,13 @@ requires = [
     'pyramid_mako',
     'pyramid_tm',
     'SQLAlchemy',
-    'transaction==1.4.4',  # had some funny issues with some version combinations transaction and zope
+    'transaction',  # had some funny issues with some version combinations transaction and zope
     'waitress',
     'docutils',
     'mysql-python',
-    'zope.deprecation==4.2.0',
-    'zope.interface==4.1.3',
-    'zope.sqlalchemy==0.7.6',
+    'zope.deprecation',
+    'zope.interface',
+    'zope.sqlalchemy',
     'bcrypt',
     'passlib',
     'social-auth-app-pyramid'

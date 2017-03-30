@@ -97,6 +97,9 @@ padding-right:0px;}
 .sdownMyArrow{color:tomato;}
 .downMyArrow{color:red;}
 
+.positive{color:green;}
+.negative{color:red;}
+
 .search {
                 padding:8px 15px;
                 background:rgba(50, 50, 50, 0.2);
@@ -203,3 +206,4 @@ img {margin-bottom: 0px;
 }
 
 .daysInput {margin: 0!important;}
+

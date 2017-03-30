@@ -53,9 +53,6 @@
             <li class="col s1">
                 <a href="/leaderboard">Leaderboard</a>
             </li>
-            <li id="battlecupBtn" class="col s1">
-                <a href="/battlecup">Battlecups</a>
-            </li>
             </ul>
             <ul class="right">
             <li class="col s1">
