@@ -10,12 +10,12 @@ def main():
     session = make_session(False)
     for i in range(16):
         username = "tpaintpaintpaintp" + str(i)
-        #session.add(User(username, "aaaaaa"))
-        #session.flush()
+        session.add(User(username, "aaaaaa"))
+        session.flush()
         user_id = session.query(User.id).filter(User.username == username).first()[0]
-        #session.add(LeagueUser(user_id,
-        #                       username, 5018))
-        #session.flush()
+        session.add(LeagueUser(user_id,
+                              username, 5018))
+        session.flush()
         for i in range(3):
             if i >= 2:
                 stage = 2
@@ -23,17 +23,14 @@ def main():
                 stage = 1
             else:
                 stage = 0
-            # session.add(LeagueUserDay(user_id,
-            #                           username, 5018, i, stage))
-            # session.flush()
+            session.add(LeagueUserDay(user_id,
+                                      username, 5018, i, stage))
+            session.flush()
         for _ in range(5):
-            session.add(TeamHero(user_id, random.choice(heroes)["id"], 5018, True, 1, 20.0))
-            session.add(TeamHero(user_id, random.choice(heroes)["id"], 5018, False, random.randint(1, 5), 20.0))
+            session.add(TeamHero(user_id, random.choice(heroes)["id"], 5018, 20.0))
         session.flush()
     session.commit()
 
-    # session.add(User("FAKE_USER_FOR_BATTLECUP", "aaaaaa"))
-    # session.flush()
     #start_of_day()
 
 if __name__ == "__main__":

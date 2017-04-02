@@ -223,20 +223,6 @@ def update_email_settings(request):
     return HTTPFound(location=request.route_url('account_settings', _query=params))
 
 
-@view_config(route_name='update_game_settings')
-def update_game_settings(request):
-    session = DBSession()
-    user_id = authenticated_userid(request)
-    if not user_id:
-        return HTTPFound('/login')
-    autofill = True if request.params.get('autofillTeam') == "on" else False
-    session.query(User).filter(User.id == user_id).\
-        update({User.autofill_team: autofill})
-    params = {"message": "Update successful",
-              "message_type": "success"}
-    return HTTPFound(location=request.route_url('account_settings', _query=params))
-
-
 @view_config(route_name='home', renderer='../templates/login.mako')
 def home(request):
     return {"user": get_user(request),

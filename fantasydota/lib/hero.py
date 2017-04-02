@@ -30,7 +30,8 @@ def calibrate_all_hero_values(session):
         i += 1
 
     print "Average new value:", sum / i
-    with open("/home/jdog/bin/seovenv/bin/fantasydota/fantasydota/lib/herolist_vals.py", 'w+') as f:
+    "/home/jdog/bin/seovenv/bin/fantasydota/fantasydota/lib/herolist_vals.py"
+    with open("/home/jdog/projects/fantasy-dota-heroes/fantasydota/lib/herolist_vals.py", 'w+') as f:
         f.write("heroes_init = " + repr(new_heroes_list))
 
 
@@ -43,8 +44,8 @@ def calibrate_value(average_points, our_points):
     return output
 
 
-def combine_calibrations(older_value, newer_value, value_depreciation_factor):
-    return (newer_value + older_value * 2) * value_depreciation_factor / 3.
+def combine_calibrations(older_value, newer_value):
+    return (newer_value + older_value * 4) / 5.
 
 
 def recalibrate_hero_values(session, league_id):
@@ -53,4 +54,4 @@ def recalibrate_hero_values(session, league_id):
     for hero in heroes:
         new_calibration = calibrate_value(average_points, hero.points)
         print "new calbration: %s, from %s" % (new_calibration, hero.value)
-        hero.value = round(combine_calibrations(hero.value, new_calibration, 0.98), 1)
+        hero.value = round(combine_calibrations(hero.value, new_calibration), 1)

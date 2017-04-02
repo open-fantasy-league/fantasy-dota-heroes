@@ -1,9 +1,5 @@
 import datetime
 
-from fantasydota.models import (
-    DBSession,
-    Friend, User)
-from fantasydota.util.random_function import add_months, bprint
 from pyramid.httpexceptions import (
     HTTPFound,
     HTTPForbidden)
@@ -14,6 +10,11 @@ from pyramid.view import (
 )
 from sqlalchemy import and_
 
+from fantasydota.models import (
+    DBSession,
+    Friend, User)
+from fantasydota.util.random_function import add_months, bprint
+
 
 @view_config(route_name='view_faq', renderer='../templates/faq.mako')
 def view_faq(request):
@@ -23,11 +24,6 @@ def view_faq(request):
 @view_config(route_name='view_rules', renderer='../templates/rules.mako')
 def view_rules(request):
     return {}
-
-
-@view_config(route_name='view_index')
-def view_index(request):
-    return HTTPFound("/viewLeague")
 
 
 @view_config(route_name="add_friend", renderer="json")
@@ -46,22 +42,6 @@ def add_friend(request):
     else:
         session.add(Friend(user_id, new_friend_id[0]))
         return {"success": True, "message": "Friend successfully added"}
-
-
-@view_config(route_name="switch_transfers", renderer="string")
-def switch_transfers(request):
-    change = request.params.get("state")
-    if request.remote_addr not in ('127.0.0.1', '149.210.217.128'):
-        raise HTTPForbidden()
-    bprint(request.remote_addr)
-    if change == 'open':
-        request.registry.settings.update({"transfers": True})
-        return "transfer window opened"
-    elif change == 'closed':
-        request.registry.settings.update({"transfers": False})
-        return "transfer window closed"
-    else:
-        return "incorrect state param"
 
 
 @view_config(route_name="news", renderer="../templates/news.mako")

@@ -12,18 +12,20 @@
     Login to fantasy dota heroes
 </%def>
 
-<div class="card-panel">
-    <div id=${"successMessage" if message and 'have been emailed to you' in message else "message"}>
-        % if message:
-            ${message}
-        % endif
+% if message:
+    <div class="card-panel">
+        <div id=${"successMessage" if message and 'have been emailed to you' in message else "message"}>
+            % if message:
+                ${message}
+            % endif
+        </div>
     </div>
-</div>
+% endif
 <div class="card">
     <div class="card-content">
         <div class="row">
-            <h2><span class="left">Existing User . . .</span>
-                <span class="right">... or <a id="steam-button" href="/login/steam/">
+            <h2>Existing User . . .
+                <span class="right">. . . or <a id="steam-button" href="/login/steam/">
                 <img src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_01.png" width="180" height="35" border="0"/>
                 </a>
                 </span>

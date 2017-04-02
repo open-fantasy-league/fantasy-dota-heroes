@@ -15,12 +15,12 @@ p {
   font-weight: 300;
 }
 
-table { table-layout: fixed;
+/*table { table-layout: fixed;
         width: 100%;
         float: left;
 
         border-collapse: collapse;
-}
+}*/
 
 .font-normal {
   font-weight: 400;
@@ -90,8 +90,6 @@ padding-right:0px;}
                      overflow: visible
                      }
 
-[class*=MyArrow]{display:none;}
-
 .upMyArrow{color:lime;}
 .supMyArrow{color:green;}
 .sdownMyArrow{color:tomato;}
@@ -149,8 +147,8 @@ submit:hover  {
 
 .toSell {opacity: 0.5}
 
-.positionHeader {width: 60px}
-.rankingHeader {width: 60px}
+.positionHeader {width: 8%}
+.rankingHeader {width: 15%}
 
 .hero_images {float:right;
                             margin-right:6px;
@@ -204,6 +202,4 @@ img {margin-bottom: 0px;
 .heroEntry {text-align: left!important;
     width: 170px
 }
-
-.daysInput {margin: 0!important;}
 

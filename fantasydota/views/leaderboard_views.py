@@ -54,7 +54,7 @@ def leaderboard(request):
     leagueq = session.query(LeagueUser).filter(LeagueUser.league == league_id).filter(LeagueUser.user_id.in_(users_playing))
     if period == "tournament":
         luser = leagueq.filter(LeagueUser.user_id == user_id).first()
-        if show_friend:  # TODO gonna be a bug with convert username -> id for friend
+        if show_friend:
             players = leagueq.filter(LeagueUser.user_id.in_(friends)).\
                 order_by(desc(rank_)).limit(100).all()
         else:

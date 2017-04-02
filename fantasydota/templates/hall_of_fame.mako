@@ -1,7 +1,7 @@
 <%inherit file="layout.mako"/>
 
 <%def name="title()">
-    <img src="/static/images/trophy.png"/> Hall of Fame
+    Hall of Fame
 </%def>
 
 <%def name="meta_keywords()">
@@ -11,21 +11,31 @@
 <%def name="meta_description()">
     Hall of fame page for fantasy dota game.
 </%def>
-
 <div>
-    <table>
+    <h2><img src="/static/images/trophy.png"/> Hall of Fame</h2>
+</div>
+<div>
+    <table class="card-table striped">
         <thead>
         <tr>
             <th>Tournament</th>
             <th>League Winner</th>
             <th>Runner-up</th>
-            <th>Battlecup champion</th>
         </tr></thead>
         <tbody>
         <tr>
             <td>Boston Major</td>
             <td>Liquid92</td>
             <td>Kattbarn</td>
+        </tr>
+        <tr>
+            <td>ESL Genting</td>
+            <td>Nkgrimreaper</td>
+            <td>Thepianodentist</td>
+        </tr>
+        <tr>
+            <td>Kiev Major</td>
+            <td>-</td>
             <td>-</td>
         </tr>
         </tbody>

@@ -1,3 +1,5 @@
+<%! from pyramid.security import authenticated_userid %>
+
 ## -*- coding: utf-8 -*-
 <!DOCTYPE html>
 <html lang="${request.locale_name}">
@@ -39,11 +41,10 @@
             <div class="nav-wrapper indigo darken-3">
             <ul class="left">
             <%block name="content">
-                % if request.authenticated_userid is None:
+                % if authenticated_userid(request) is None:
                     <li id="homeLink" class="col s2">
                         <a href="${request.route_path('login')}">Login/Create Profile</a>
                 % else:
-                    <!--<li><a href="${request.route_path('view_index')}">Home</a></li>-->
                     <li><a href="${request.route_path('logout')}">Logout</a></li>
                 % endif
             </%block>

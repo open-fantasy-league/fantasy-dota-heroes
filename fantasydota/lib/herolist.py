@@ -299,10 +299,10 @@ heroes = [
       "id": 76,
       "name": "Outworld Devourer"
     },
-    # {
-    #   "id": 77,
-    #   "name": "Lycan"
-    # },
+    {
+      "id": 77,
+      "name": "Lycan"
+    },
     {
       "id": 78,
       "name": "Brewmaster"
@@ -446,5 +446,9 @@ heroes = [
     {
       "id": 113,
       "name": "Arc Warden"
+    },
+    {
+        "id": 114,
+        "name": "Monkey King"
     }
 ]

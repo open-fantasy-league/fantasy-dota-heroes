@@ -101,6 +101,7 @@ def main():
     session = make_session()
     #add_matches(session, 4874)  # boston
     add_matches(session, 5018, 1483479256)  # esl genting
+    #5157 kiev
 
     # for calibration for esl genting
     t = 1482627282  # christmas!!!

@@ -13,12 +13,13 @@ def main():
     parser.add_argument("stage1", type=int, help="when group stage starts")
     parser.add_argument("stage2", type=int, help="when main event starts")
     args = parser.parse_args()
+    url = "https://www.dotabuff.com"
 
     session = make_session()
     with transaction.manager:
-        session.add(League(args.id, args.name, args.days, args.stage1, args.stage2))
+        session.add(League(args.id, args.name, args.days, args.stage1, args.stage2, url))
         for user in session.query(User).all():
-            session.add(LeagueUser(user.username, args.id))
+            session.add(LeagueUser(user.id, user.username, args.id))
             for i in range(args.days):
                 if i >= args.stage2:
                     stage = 2
@@ -26,7 +27,7 @@ def main():
                     stage = 1
                 else:
                     stage = 0
-                session.add(LeagueUserDay(user.username, args.id, i, stage))
+                session.add(LeagueUserDay(user.id, user.username, args.id, i, stage))
         transaction.commit()
 
 if __name__ == "__main__":

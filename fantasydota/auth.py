@@ -1,8 +1,5 @@
-import datetime
 from pyramid.events import subscriber, BeforeRender
-from social_core.backends import username
-from social_core.pipeline.user import create_user, USER_FIELDS
-
+from social_core.pipeline.user import create_user
 from social_pyramid.utils import backends
 
 from .models import DBSession, User, LeagueUserDay, LeagueUser, League

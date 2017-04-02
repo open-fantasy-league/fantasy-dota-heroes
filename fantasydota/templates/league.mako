@@ -25,7 +25,7 @@
 <div class="row" id="myTeamBlock">
     <h2>My Team (Total points <span class="teamPoints">${userq.points}</span>)</h2>
     <div id="tableContainer">
-        <table class="sortable responsive-table card-table centered" id="teamTable">
+        <table class="sortable responsive-table card-table striped centered" id="teamTable">
             <tr>
                 <th class="heroHeader">Hero</th>
                 <th class="dummyHeader" colspan="0"></th>
@@ -62,21 +62,22 @@
 <div class="card row">
     <div class="card-content">
         <span class=${"messageTransOpen" if league.transfer_open != 0 else "messageTransClosed"}>
-            <p>${"Transfer window currently open. Closes ~1 hour before games start." if league.transfer_open != 0 else """Transfer window now closed until todays games over"""}
+            <p>${"Transfer window currently open. Closes ~1 hour before games start." if league.transfer_open != 0 else """Transfer window closed until 1 week before start"""}
             </p>
         </span>
         <span>
         <p>Tables are sortable (click table headers). Max 5 heroes per team (points <a href="/rules">penalties</a> for <5)</p>
         </span>
         <span>
-            <p>You can sell your hero back for whatever price you paid for him at any point</p>
+            <p>Selling heros whose value has gone up or down, pays 40% tax on any profits.
+                But also a 40% rebate on any losses</p>
         </span>
     </div>
 </div>
 <div id="heroesBlock" class="row">
-    <h2>Heroes (Credits Available: <span class="userCredits">${round(50 - (sum([hero[0].value for hero in team])), 1)}</span>)</h2>
+    <h2>Heroes (Credits Available: <span class="userCredits">${round(userq.money, 1)}</span>)</h2>
     <div id="tableContainer">
-        <table class="sortable responsive-table card-table centered">
+        <table class="sortable responsive-table card-table striped centered">
             <tr>
                 <th class="heroHeader">Hero</th>
                 <th class="dummyHeader" colspan="0"></th>

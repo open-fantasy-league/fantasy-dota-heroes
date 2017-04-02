@@ -48,7 +48,37 @@ ${"showGlobal=kek" if switch_to == "friend" else "showFriend=kek"}
 <%def name="getTime(period)">
 ${"period=%s" % period}
 </%def>
-<h2>${rank_by.title()}</h2>
+
+<%def name="progress_arrow(i, player, x)">
+    % if x == "points":
+        <% old = player.old_points_rank %>
+    % elif x == "wins":
+        <% old = player.old_wins_rank %>
+    % elif x == "picks":
+        <% old = player.old_picks_rank %>
+    % elif x == "bans":
+        <% old = player.old_bans_rank %>
+    % endif
+    % if old:
+        <% diff = i + 1 - old %>
+        % if diff == 0:
+            <span>&#8660;</span>
+        % elif diff < -3:
+            <span class="upMyArrow">&#8657;</span>
+        % elif diff > 3:
+            <span class="downMyArrow">&#8659;</span>
+        % elif diff < 0:
+            <span class="supMyArrow">&#8663;</span>
+        % else:
+            <span class="sdownMyArrow">&#8664;</span>
+        % endif
+    % endif
+</%def>
+
+<div class="row">
+    <h2>${rank_by.title()} (${period.title() if period == "tournament" else "Day %d" % (int(period) + 1)})
+        <a class="right" href="${league.url}" target="_blank">${league.name}</a></h2>
+</div>
 <div class="row">
 <div id="leaderboardBlock" class="col s7">
 
@@ -94,7 +124,7 @@ ${"period=%s" % period}
     </nav>
 
     <div id="tableContainer">
-        <table id="leaderboardTable" class="card-table">
+        <table id="leaderboardTable" class="card-table striped centered">
             <tr>
                 <th class="positionHeader">Position</th>
                 <th class="playerHeader">Player</th>
@@ -102,7 +132,7 @@ ${"period=%s" % period}
             </tr>
             % for i, player in enumerate(players):
                 <tr class=${"playerRow" if not user or player.username != user.username else "userRow"}>
-                    <td class="positionEntry">${i+1}
+                    <td class="positionEntry">${i+1} ${progress_arrow(i, player, rank_by) if period == "tournament" else ""}
                     </td>
                     <td class="heroEntry">${player.username}
                     %if len(player_heroes) > i and not league.transfer_open:

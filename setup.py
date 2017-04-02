@@ -14,6 +14,7 @@ requires = [
     'pyramid_debugtoolbar',
     'pyramid_mako',
     'pyramid_tm',
+    'pyramid_beaker',
     'SQLAlchemy',
     'transaction',  # had some funny issues with some version combinations transaction and zope
     'waitress',

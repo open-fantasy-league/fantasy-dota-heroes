@@ -1,4 +1,3 @@
-from fantasydota.lib.herolist import heroes
 from passlib.handlers.bcrypt import bcrypt
 from sqlalchemy import BigInteger
 from sqlalchemy import (
@@ -13,8 +12,10 @@ from sqlalchemy import DateTime
 from sqlalchemy import Float
 from sqlalchemy import UniqueConstraint
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, scoped_session, relationship
+from sqlalchemy.orm import sessionmaker, scoped_session
 from zope.sqlalchemy import ZopeTransactionExtension
+
+from fantasydota.lib.herolist import heroes
 
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 
@@ -76,18 +77,20 @@ class League(Base):
     id = Column(Integer, primary_key=True)  # use id that matches dota2 api
     name = Column(String(100), nullable=False)
     status = Column(Integer, default=0)  # 0 not started. 1 is running. 2 is ended
-    transfer_open = Column(Boolean, default=True)
+    transfer_open = Column(Boolean, default=False)
     current_day = Column(Integer, default=0)
     days = Column(Integer)
     stage1_start = Column(Integer)
     stage2_start = Column(Integer)
+    url = Column(String(150))
 
-    def __init__(self, id, name, days, stage1_start, stage2_start):
+    def __init__(self, id, name, days, stage1_start, stage2_start, url):
         self.id = id
         self.name = name
         self.days = days
         self.stage1_start = stage1_start
         self.stage2_start = stage2_start
+        self.url = url
     
 
 class LeagueUser(Base):
@@ -105,6 +108,10 @@ class LeagueUser(Base):
     wins_rank = Column(Integer)
     picks_rank = Column(Integer)
     bans_rank = Column(Integer)
+    old_points_rank = Column(Integer)
+    old_wins_rank = Column(Integer)
+    old_picks_rank = Column(Integer)
+    old_bans_rank = Column(Integer)
 
     def __init__(self, user_id, username, league):
         self.user_id = user_id
@@ -144,6 +151,7 @@ class Friend(Base):
     id = Column(Integer, Sequence('id'), primary_key=True)
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
     friend = Column(Integer, ForeignKey(User.id), nullable=False)
+    UniqueConstraint('user_id', 'friend')
 
     def __init__(self, user_id, friend):
         self.user_id = user_id
@@ -193,18 +201,25 @@ class TeamHero(Base):
         self.league = league
         self.cost = cost
 
-# class Sale(Base):
-#     __tablename__ = "sale"
-#     sale_id = Column(Integer, Sequence('sale_id'), primary_key=True)
-#     user = Column(String(50), ForeignKey('user.username'), nullable=False) # index true?
-#     hero = Column(Integer, ForeignKey('hero.hero_id'), nullable=False, index=True)
-#     date = Column(Date, nullable=False, default=func.now())
-#     number = Column(Integer, nullable=False)
-#
-#     def __init__(self, user, hero, number):
-#         self.user = user
-#         self.hero = hero
-#         self.number = number
+
+class Sale(Base):
+    __tablename__ = "sale"
+    sale_id = Column(Integer, Sequence('sale_id'), primary_key=True)
+    user = Column(Integer, ForeignKey('league_user.id'), nullable=False, index=True)  # index true?
+    hero = Column(Integer, ForeignKey('hero.id'), nullable=False, index=True)
+    league_id = Column(Integer, ForeignKey('league.id'), nullable=False, index=True)
+    date = Column(DateTime, nullable=False, default=func.now())
+    value = Column(Integer, nullable=False)
+    cost = Column(Integer, nullable=False)
+    is_buy = Column(Boolean, nullable=False)
+
+    def __init__(self, user, hero, league_id, value, cost, is_buy):
+        self.user = user
+        self.hero = hero
+        self.league_id = league_id
+        self.value = value
+        self.cost = cost
+        self.is_buy = is_buy
 
 
 class Result(Base):
@@ -231,12 +246,12 @@ class Result(Base):
         points_dict = {
             "b1": 1,
             "b2": 2,
-            "b3": 3,
-            "p1l": -5,
-            "p2l": -4,
-            "p3l": -3,
-            "p1w": 10,
-            "p2w": 12,
+            "b3": 4,
+            "p1l": -4,
+            "p2l": -3,
+            "p3l": -1,
+            "p1w": 8,
+            "p2w": 10,
             "p3w": 14,
         }
         return points_dict[result_str]
