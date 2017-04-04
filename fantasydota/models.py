@@ -35,7 +35,7 @@ Base = declarative_base(cls=Base)
 class User(Base):
     __tablename__ = "user"
     id = Column(Integer, Sequence('id'), primary_key=True)
-    username = Column(String(50), unique=True, nullable=False, index=True)
+    username = Column(String(50), nullable=False, index=True)
     password = Column(String(300), nullable=False)
     email = Column(String(300))
     registered_on = Column(Date, default=func.now())
