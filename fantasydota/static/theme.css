@@ -98,6 +98,9 @@ padding-right:0px;}
 .positive{color:green;}
 .negative{color:red;}
 
+#positiveMessage{color:green;!important}
+#negativeMessage{color:red;!important}
+
 .search {
                 padding:8px 15px;
                 background:rgba(50, 50, 50, 0.2);
@@ -159,7 +162,6 @@ img {margin-bottom: 0px;
     margin-right: 2px
 }
 
-.bcupSeries {text-align: center;}
 
 .myHighlight {background-color: #3c0}
 [id^=heroTable] > tbody > tr:nth-child(odd) {background-color: #f2f2f2}

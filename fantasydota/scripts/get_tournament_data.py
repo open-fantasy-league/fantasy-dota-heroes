@@ -5,7 +5,7 @@ import urllib2
 import transaction
 
 from fantasydota.lib.session_utils import make_session
-from fantasydota.models import Result
+from fantasydota.models import Result, HeroGame, ItemBuild
 
 APIKEY = os.environ.get("APIKEY")
 if not APIKEY:
@@ -97,12 +97,30 @@ def add_matches(session, tournament_id, tstamp_from=0):
     transaction.commit()
 
 
+def add_matches_guesser(session, tournament_id, tstamp_from):
+    match_list_json = get_league_match_list(tournament_id)
+
+    matches = [(match["match_id"], match["series_id"]) for match in match_list_json["result"]["matches"]
+               if match["start_time"] > tstamp_from]
+    print "matches", matches
+    for match, series_id in matches:
+        match_json = get_match_details(match)["result"]
+        for player in match_json["players"]:
+            new_hero_game = HeroGame(match, player["hero_id"])
+            session.add(new_hero_game)
+            session.flush()
+            for i in range(6):
+                session.add(ItemBuild(new_hero_game.id, player["item_%s" % i], i))
+            session.commit()
+
+
 def main():
     session = make_session()
     #add_matches(session, 4874)  # boston
-    add_matches(session, 5018, 1483479256)  # esl genting
+    #add_matches(session, 5018, 1483479256)  # esl genting
     #5157 kiev
-
+    session2 = make_session(False)
+    add_matches_guesser(session2, 5197, 1489449600)
     # for calibration for esl genting
     t = 1482627282  # christmas!!!
     # add_matches(session, 4958, t)  # royal arena
