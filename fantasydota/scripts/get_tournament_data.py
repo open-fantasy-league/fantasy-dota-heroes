@@ -105,7 +105,7 @@ def add_matches_guesser(session, tournament_id, tstamp_from):
     print "matches", matches
     for match, series_id in matches:
         match_json = get_match_details(match)["result"]
-	if len(match_json["players"] < 3:
+	if len(match_json["players"]) < 3:
 	    continue  # dont count the 1v1s
         for player in match_json["players"]:
             new_hero_game = HeroGame(match, player["hero_id"])
