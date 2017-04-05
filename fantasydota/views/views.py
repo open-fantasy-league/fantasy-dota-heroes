@@ -54,6 +54,11 @@ def hall_of_fame(request):
     return {}
 
 
+@view_config(route_name="guess_the_hero", renderer="../templates/guesshero.mako")
+def guess_hero(request):
+    return {}
+
+
 def get_time_range(time_range):
     if time_range == 'week':
         date_start = datetime.datetime.now() - datetime.timedelta(days=7)
