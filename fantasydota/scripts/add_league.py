@@ -13,7 +13,7 @@ def main():
     parser.add_argument("stage1", type=int, help="when group stage starts")
     parser.add_argument("stage2", type=int, help="when main event starts")
     args = parser.parse_args()
-    url = "https://www.dotabuff.com"
+    url = "https://www.dotabuff.com/esports/leagues/5157" 
 
     session = make_session()
     with transaction.manager:

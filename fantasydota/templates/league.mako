@@ -64,6 +64,9 @@
         <span class=${"messageTransOpen" if league.transfer_open != 0 else "messageTransClosed"}>
             <p>${"Transfer window currently open. Closes ~1 hour before games start." if league.transfer_open != 0 else """Transfer window closed until 1 week before start"""}
             </p>
+	<p>
+	Current hero values only placeholders. Proper calibration will occur before tournament
+	</p>
         </span>
         <span>
         <p>Tables are sortable (click table headers). Max 5 heroes per team (points <a href="/rules">penalties</a> for <5)</p>

@@ -43,7 +43,7 @@ def main(global_config, **settings):
     """
     settings["league_transfers"] = True  # why wont config file properly set this?
     settings["default_league"] = 5157
-    sqlalchemy_url = os.path.expandvars(settings.get('sqlalchemy.url')) + "3"
+    sqlalchemy_url = os.path.expandvars(settings.get('sqlalchemy.url')) 
     engine = create_engine(sqlalchemy_url, echo=False, pool_size=100, pool_recycle=3600)
     event.listen(engine, 'checkout', checkout_listener)
     DBSession.configure(bind=engine)
@@ -69,7 +69,7 @@ def main(global_config, **settings):
     init_social(config, Base, DBSession)  # is this the right place?
     Base.metadata.bind = engine
     Base.metadata.create_all(engine)
-    create_tables(DBSession)
+    #create_tables(DBSession) already created!
 
     config.include('social_pyramid')
     config.scan('social_pyramid')
