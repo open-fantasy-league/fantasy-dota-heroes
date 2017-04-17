@@ -43,13 +43,13 @@ def main(global_config, **settings):
     """
     settings["league_transfers"] = True  # why wont config file properly set this?
     settings["default_league"] = 5157
-    sqlalchemy_url = os.path.expandvars(settings.get('sqlalchemy.url')) 
+    sqlalchemy_url = os.path.expandvars(settings.get('sqlalchemy.url'))
     engine = create_engine(sqlalchemy_url, echo=False, pool_size=100, pool_recycle=3600)
     event.listen(engine, 'checkout', checkout_listener)
     DBSession.configure(bind=engine)
 
     # Need https set up on local machine for secure True to work locally
-    authn_policy = AuthTktAuthenticationPolicy(settings.get('authn_policy_secr'), hashalg='sha512', http_only=True,
+    authn_policy = AuthTktAuthenticationPolicy(settings.get('authn_policy_secr'), hashalg='sha512', http_only=True, secure=True,
                                                max_age=10000000)
     authz_policy = ACLAuthorizationPolicy()
 
@@ -69,7 +69,7 @@ def main(global_config, **settings):
     init_social(config, Base, DBSession)  # is this the right place?
     Base.metadata.bind = engine
     Base.metadata.create_all(engine)
-    create_tables(DBSession)# already created!
+    create_tables(DBSession) #already created!
 
     config.include('social_pyramid')
     config.scan('social_pyramid')
