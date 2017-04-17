@@ -72,7 +72,7 @@ def guess_the_hero(request):
     message = request.params.get("message", "")
     match_id = request.params.get("match_id", "")
     correct_hero = request.params.get("correct_hero", "")
-    success = ast.literal_eval(request.params.get("success", True))
+    success = ast.literal_eval(request.params.get("success", "True"))
 
     if not user:
         hero_game_id = session.query(HeroGame.id).order_by(func.random()).first()[0]

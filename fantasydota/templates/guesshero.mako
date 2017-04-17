@@ -73,9 +73,9 @@
 
 <div class="col s6">
     <h3>Leaderboard</h3>
-    <table id="leaderboardTable" class="card-table striped centered">
+    <table id="leaderboardTable" class="card-table striped">
         <tr>
-            <th class="positionHeader">Position</th>
+            <th class="guessPositionHeader">Position</th>
             <th class="playerHeader">Player</th>
             <th class="streakHeader">Streak</th>
         </tr>

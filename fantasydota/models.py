@@ -319,7 +319,7 @@ class GuessUser(Base):
             matching_games = set(x[0] for x in session.query(ItemBuild.hero_game).filter(ItemBuild.item == item.item)\
                 .filter(ItemBuild.slot == item.slot).all())
             if i == 0:
-                valid.add(matching_games)
+                valid |= matching_games
             else:
                 valid.intersection_update(matching_games)
         for id_ in valid:
