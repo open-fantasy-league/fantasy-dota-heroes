@@ -323,10 +323,10 @@ heroes = [
       "id": 82,
       "name": "Meepo"
     },
-    # {
-    #   "id": 83,
-    #   "name": "Treant Protector"
-    # },
+    {
+      "id": 83,
+      "name": "Treant Protector"
+    },
     {
       "id": 84,
       "name": "Ogre Magi"

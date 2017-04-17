@@ -160,6 +160,15 @@ class Friend(Base):
     # Is some fucking fuckhead going to break this by adding themselves as a friend?
         # should also make user/friend be a unique pair. so cant friend twice
 
+class OldFriend(Base):
+    __tablename__ = "friend"
+    id = Column(Integer, Sequence('id'), primary_key=True)
+    user = Column(String(50), ForeignKey(User.username), nullable=False)
+    friend = Column(String(50), ForeignKey(User.username), nullable=False)
+
+    def __init__(self, user, friend):
+        self.user = user
+        self.friend = friend
 
 class Hero(Base):
     __tablename__ = "hero"

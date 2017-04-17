@@ -109,10 +109,13 @@ def add_matches_guesser(session, tournament_id, tstamp_from):
 	    continue  # dont count the 1v1s
         for player in match_json["players"]:
             new_hero_game = HeroGame(match, player["hero_id"])
+            items = []
+            item_value_sum = 0  # we only want to choose/select builds that are guessable (i.e not boots + wand)
             session.add(new_hero_game)
             session.flush()
             for i in range(6):
-                session.add(ItemBuild(new_hero_game.id, player["item_%s" % i], i))
+                item = player["item_%s" % i]
+                session.add(ItemBuild(new_hero_game.id, item, i))
             session.commit()
 
 
@@ -121,8 +124,8 @@ def main():
     #add_matches(session, 4874)  # boston
     #add_matches(session, 5018, 1483479256)  # esl genting
     #5157 kiev
-    session2 = make_session(False)
-    add_matches_guesser(session2, 5197, 1489449600)
+    #session2 = make_session(False)
+    #add_matches_guesser(session2, 5197, 1489449600)
     # for calibration for esl genting
     t = 1482627282  # christmas!!!
     # add_matches(session, 4958, t)  # royal arena
