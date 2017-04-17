@@ -12,10 +12,14 @@ def main():
             username = old.user
             friend_username = old.friend
             user_id = session.query(User.id).filter(User.username == username).first()[0]
-            friend_id = session.query(User.id).filter(User.username == friend_username).first()[0]
-            new_friend = Friend(user_id, friend_id)
+            try:
+	    	friend_id = session.query(User.id).filter(User.username == friend_username).first()[0]
+            except:
+                print "friend was missing"
+                continue
+	    new_friend = Friend(user_id, friend_id)
             session.add(new_friend)
-        transaction.commit()
+        #transaction.commit()
 
 if __name__ == "__main__":
     main()

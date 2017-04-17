@@ -69,7 +69,7 @@ def main(global_config, **settings):
     init_social(config, Base, DBSession)  # is this the right place?
     Base.metadata.bind = engine
     Base.metadata.create_all(engine)
-    #create_tables(DBSession) already created!
+    create_tables(DBSession)# already created!
 
     config.include('social_pyramid')
     config.scan('social_pyramid')

@@ -162,7 +162,7 @@ class Friend(Base):
 
 class OldFriend(Base):
     __tablename__ = "friend"
-    id = Column(Integer, Sequence('id'), primary_key=True)
+    friend_id = Column(Integer, Sequence('id'), primary_key=True)
     user = Column(String(50), ForeignKey(User.username), nullable=False)
     friend = Column(String(50), ForeignKey(User.username), nullable=False)
 
