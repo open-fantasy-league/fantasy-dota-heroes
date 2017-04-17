@@ -56,7 +56,7 @@ else{
             var value = parseFloat(parent.find(".valueEntry").text());
             var trade_val = Math.round(((value - cost) * -0.4 + value) * 10) / 10;
             var title = "Confirm trade " + parent.find(".heroEntry").text() + " for " + trade_val + " credits";
-            if (trade_val && trade_val != 0){
+            if (trade_val && trade_val != 0 && trade_val != cost){
                 sweetAlert({
                     title: title,
                     //text: "for +money credits",
