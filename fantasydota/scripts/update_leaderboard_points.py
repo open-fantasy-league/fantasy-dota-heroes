@@ -15,7 +15,7 @@ def add_result_to_user(userq, res, hero_count):
         userq.wins += 1
     if "b" in res:
         userq.bans += 1
-    to_add = (0.5 ** (5 - hero_count)) * Result.result_to_value(res)
+    to_add = 1.25 * ((0.5 ** (5 - hero_count)) * Result.result_to_value(res))
     print "addin %s points to %s" % (to_add, user_id)
     userq.points += to_add
 

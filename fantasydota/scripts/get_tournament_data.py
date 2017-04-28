@@ -122,7 +122,7 @@ def add_matches_guesser(session, tournament_id, tstamp_from):
 def main():
     session = make_session()
     #add_matches(session, 4874)  # boston
-    #add_matches(session, 5018, 1483479256)  # esl genting
+    add_matches(session, 5157, 1492999802)  # kiev major
     #5157 kiev
     #session2 = make_session(False)
     #add_matches_guesser(session2, 5197, 1489449600)

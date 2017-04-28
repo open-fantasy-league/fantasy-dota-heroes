@@ -40,7 +40,7 @@
             </tr>
             % for hero in team:
                 <tr class="teamRow" id="${hero[0].id}TeamRow">
-                    <td class="heroImg"><img src="/static/images/${hero[0].name.replace(" ", "_")}_icon.png"/></td>
+                    <td class="heroImg" sorttable_customkey="${hero[0].name}"><img src="/static/images/${hero[0].name.replace(" ", "_")}_icon.png"/></td>
                     <td class="heroEntry">${hero[0].name}</td>
                     <td class="heroPointsEntry">${hero[0].points}</td>
                     <td class="picksEntry">${hero[0].picks}</td>
@@ -90,7 +90,7 @@
             </tr>
             % for hero in heroes:
                 <tr id="${hero.id}Row">
-                    <td class="heroImg"><img src="/static/images/${hero.name.replace(" ", "_")}_icon.png"/></td>
+                    <td class="heroImg" sorttable_customkey="${hero.name}"><img src="/static/images/${hero.name.replace(" ", "_")}_icon.png"/></td>
                     <td class="heroEntry">${hero.name}</td>
                     <td class="heroPointsEntry">${hero.points}</td>
                     <td class="picksEntry">${hero.picks}</td>

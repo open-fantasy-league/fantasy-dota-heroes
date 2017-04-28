@@ -63,9 +63,9 @@ ${"period=%s" % period}
         <% diff = i + 1 - old %>
         % if diff == 0:
             <span>&#8660;</span>
-        % elif diff < -3:
+        % elif diff < -5:
             <span class="upMyArrow">&#8657;</span>
-        % elif diff > 3:
+        % elif diff > 5:
             <span class="downMyArrow">&#8659;</span>
         % elif diff < 0:
             <span class="supMyArrow">&#8663;</span>
