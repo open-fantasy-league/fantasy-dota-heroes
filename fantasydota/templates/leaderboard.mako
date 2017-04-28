@@ -81,7 +81,6 @@ ${"period=%s" % period}
 </div>
 <div class="row">
 <div id="leaderboardBlock" class="col s7">
-
     <nav>
     <div class="nav-wrapper teal darken-2">
         <ul class="left">
@@ -166,9 +165,12 @@ $( document ).ready(function() {
     });
 })
 </script>
-
-% if user:
 <div id="friendBlock" class="col s5">
+    <div class="card-panel">
+        <p>Results updated ~2 minutes after match ends</p>
+        <p><a href="https://discord.gg/MAH7EEv" target="_blank">Discord channel for suggestions/improvements</a></p>
+    </div>
+% if user:
     <div class="card">
     <div class="card-content">
         <p>
@@ -178,8 +180,6 @@ $( document ).ready(function() {
             <input type="text" name="newFriend" placeholder="New friend..."/>
             <button type="submit" id="addFriendBtn" class="btn waves-effect waves-light">Add</button>
         </form>
-    </div>
-    </div>
     </div>
     </div>
 
@@ -207,6 +207,6 @@ $( document ).ready(function() {
         $("#addFriendBtn").click(addFriendOnclick);
     })
     </script>
-% else:
-    </div>
 % endif
+</div>
+</div>
