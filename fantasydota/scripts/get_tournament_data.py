@@ -113,9 +113,17 @@ def add_matches_guesser(session, tournament_id, tstamp_from):
             item_value_sum = 0  # we only want to choose/select builds that are guessable (i.e not boots + wand)
             session.add(new_hero_game)
             session.flush()
+            empty_items = 0
+            legit_items = [79, 81, 90, 96, 98, 100, 104, 201, 202, 203, 204, 205, 106, 193, 194, 110, 112, 114, 116, 117, 119, 121, 123, 125, 127, 133, 135, 139, 141, 143, 145, 147, 149, 151, 152, 154, 160, 158, 156, 164, 166, 168, 170, 172, 174, 196, 176, 206, 208, 210, 231, 226, 235, 249, 250, 252, 263]
             for i in range(6):
                 item = player["item_%s" % i]
+                if item == 0:
+                    empty_items += 1
+                items.append(item)
                 session.add(ItemBuild(new_hero_game.id, item, i))
+            if empty_items > 1 or any(item for item in items if item in legit_items):
+                session.rollback()
+                continue
             session.commit()
 
 
