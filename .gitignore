@@ -1,0 +1,4 @@
+*.pyc
+production.ini
+*local_settings*
+data/*

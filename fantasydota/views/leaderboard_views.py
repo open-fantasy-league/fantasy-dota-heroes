@@ -58,7 +58,7 @@ def leaderboard(request):
             players = leagueq.filter(LeagueUser.user_id.in_(friends)).\
                 order_by(desc(rank_)).limit(100).all()
         else:
-            players = leagueq.order_by(desc(rank_)).limit(100).all()
+            players = leagueq.order_by(desc(rank_)).order_by(desc(LeagueUser.points)).order_by(desc(LeagueUser.wins)).limit(100).all()
 
     else:
         leagueq = session.query(LeagueUserDay).filter(LeagueUserDay.day == period_).filter(LeagueUserDay.league == league_id)

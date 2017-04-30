@@ -26,7 +26,7 @@ def update_hero_points(session, league):
             if "b" in res:
                 heroq.bans += 1
             print "Would add %s to hero points", Result.result_to_value(res)
-            heroq.points += 1.25 * Result.result_to_value(res)
+            heroq.points += 1.5 * Result.result_to_value(res)
         result.applied = 1
 
 

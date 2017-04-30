@@ -167,6 +167,7 @@ $( document ).ready(function() {
 </script>
 <div id="friendBlock" class="col s5">
     <div class="card-panel">
+	<p>1.5x points multiplier active for final day</p>
         <p>Results updated ~2 minutes after match ends</p>
         <p><a href="https://discord.gg/MAH7EEv" target="_blank">Discord channel for suggestions/improvements</a></p>
     </div>

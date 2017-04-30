@@ -9,7 +9,7 @@ def main():
     with transaction.manager:
         session = make_session()
         for league in session.query(League).filter(League.status == 1).all():
-            """old_list = []
+            old_list = []
             for league_user in session.query(LeagueUser).filter(LeagueUser.league == league.id):
                 recent_points_q = session.query(LeagueUserDay.points)\
                     .filter(LeagueUserDay.user_id == league_user.user_id).filter(LeagueUserDay.league == league.id)\
@@ -58,11 +58,11 @@ def main():
             for i, old_user in enumerate(sorted_bans):
                 session.query(LeagueUser).filter(LeagueUser.id == old_user["id"]).update({
                     LeagueUser.old_bans_rank: i + 1
-                })"""
+                })
 	    
-            recalibrate_hero_values(session, league.id)
-            league.current_day += 1
-            league.transfer_open = True
+            #recalibrate_hero_values(session, league.id)
+            #league.current_day += 1
+            #league.transfer_open = True
         transaction.commit()
 
 if __name__ == "__main__":
