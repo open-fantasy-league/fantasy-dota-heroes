@@ -219,3 +219,11 @@ img {margin-bottom: 0px;
   .container {
     width: 70%;
 }
+
+.banIcon {
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  -ms-filter: grayscale(100%);
+  -o-filter: grayscale(100%);
+  filter: grayscale(100%);
+ }

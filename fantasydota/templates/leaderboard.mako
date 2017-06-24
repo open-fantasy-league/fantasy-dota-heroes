@@ -134,17 +134,14 @@ ${"period=%s" % period}
                     <td class="positionEntry">${i+1} ${progress_arrow(i, player, rank_by) if period == "tournament" else ""}
                     </td>
                     <td class="heroEntry">
-                        % if player.username == "seni":
-                        <img src="/static/images/trophy.png"/>
-                        % endif
                         ${player.username}
-                    %if len(player_heroes) > i and not league.transfer_open:
+                    % if len(player_heroes) > i:
                         <span class="hero_images">
                         % for hero in player_heroes[i]:
                             <img src="/static/images/${hero.replace(" ", "_")}_icon.png"/>
                         % endfor
                         </span>
-                    %endif
+                    % endif
                     </td>
                     <td class="rankingEntry">${rank_by_fn(rank_by, player, False)}</td>
                 </tr>

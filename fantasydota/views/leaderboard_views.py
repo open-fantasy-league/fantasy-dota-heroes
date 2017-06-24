@@ -6,7 +6,7 @@ from sqlalchemy import desc
 from sqlalchemy import or_
 
 from fantasydota import DBSession
-from fantasydota.models import Friend, LeagueUser, LeagueUserDay, TeamHero, League, Match, Result
+from fantasydota.models import Friend, LeagueUser, LeagueUserDay, TeamHero, League, Match, Result, TeamHeroHistoric
 
 
 @view_config(route_name='leaderboard', renderer='../templates/leaderboard.mako')
@@ -54,9 +54,15 @@ def leaderboard(request):
 
     for player in players:
         heroes = []
-        for hero in session.query(TeamHero).filter(and_(TeamHero.user_id == player.user_id,
-                                                        TeamHero.league == league_id)).all():
-            heroes.append(hero.hero_name)
+        if league.transfer_open:
+            for hero in session.query(TeamHeroHistoric).filter(
+                    and_(TeamHeroHistoric.user_id == player.user_id, TeamHeroHistoric.league == league_id)).\
+                    filter(TeamHeroHistoric.day == league.current_day - 1).all():
+                heroes.append(hero.hero_name)
+        else:
+            for hero in session.query(TeamHero).filter(and_(TeamHero.user_id == player.user_id,
+                                                            TeamHero.league == league_id)).all():
+                heroes.append(hero.hero_name)
         player_heroes.append(heroes)
 
     return {'user': luser, 'players': players, 'rank_by': rank_by, 'switch_to': switch_to, 'period': "tournament",
@@ -69,6 +75,7 @@ def daily(request):
     user_id = authenticated_userid(request)
     league_id = int(request.params.get("league")) if request.params.get("league") else None \
         or request.registry.settings["default_league"]
+    league = session.query(League).filter(League.id == league_id).first()
     show_friend = True if request.params.get("showFriend") and user_id else False
     if show_friend:
         switch_to = "global"
@@ -77,7 +84,8 @@ def daily(request):
             friends.append(user_id)
     else:
         switch_to = "friend"
-    period = request.params.get("period") or session.query(League.current_day).filter(League.id == league_id).first()[0]
+    period = int(request.params.get("period") or
+                 (league.current_day if not league.transfer_open else league.current_day - 1))
 
     rank_by = request.params.get("rank_by")
     rank_by = rank_by if rank_by in ("points", "wins", "picks", "bans") else "points"
@@ -97,7 +105,6 @@ def daily(request):
     rank_ = rank_filter(rank_by)
 
     player_heroes = []
-    league = session.query(League).filter(League.id == league_id).first()
     leagueq = session.query(LeagueUserDay).filter(LeagueUserDay.day == period).filter(LeagueUserDay.league == league_id)
     luser = leagueq.filter(LeagueUserDay.user_id == user_id).first()
     if show_friend:
@@ -108,9 +115,15 @@ def daily(request):
 
     for player in players:
         heroes = []
-        for hero in session.query(TeamHero).filter(and_(TeamHero.user_id == player.user_id,
-                                                        TeamHero.league == league_id)).all():
-            heroes.append(hero.hero_name)
+        if period == league.current_day:
+            for hero in session.query(TeamHero).filter(
+                    and_(TeamHero.user_id == player.user_id, TeamHero.league == league_id)).all():
+                heroes.append(hero.hero_name)
+        else:
+            for hero in session.query(TeamHeroHistoric).filter(
+                    and_(TeamHeroHistoric.user_id == player.user_id, TeamHeroHistoric.league == league_id)).\
+                    filter(TeamHeroHistoric.day == period).all():
+                heroes.append(hero.hero_name)
         player_heroes.append(heroes)
 
     match_data = []

@@ -134,11 +134,8 @@ ${"period=%s" % period}
                     <td class="positionEntry">${i+1} ${progress_arrow(i, player, rank_by) if period == "tournament" else ""}
                     </td>
                     <td class="heroEntry">
-                        % if player.username == "seni":
-                        <img src="/static/images/trophy.png"/>
-                        % endif
                         ${player.username}
-                    %if len(player_heroes) > i and not league.transfer_open:
+                    % if len(player_heroes) > i and (not league.transfer_open or league.current_day != period):
                         <span class="hero_images">
                         % for hero in player_heroes[i]:
                             <img src="/static/images/${hero.replace(" ", "_")}_icon.png" title="${hero}" />
@@ -229,12 +226,12 @@ $( document ).ready(function() {
         <div class="row" style="margin-bottom: 0px">
             <div class="left">
                 % for hero in match["radiant_bans"]:
-                    <img src="/static/images/${hero['hero'].replace(' ', '_')}_icon.png" title="${hero['hero']}" style="filter: grayscale(100%)"/>
+                    <img class="banIcon" src="/static/images/${hero['hero'].replace(' ', '_')}_icon.png" title="${hero['hero']}"/>
                 % endfor
             </div>
             <div class="right">
                 % for hero in match["dire_bans"]:
-                    <img src="/static/images/${hero['hero'].replace(' ', '_')}_icon.png" title="${hero['hero']}" style="filter: grayscale(100%)"/>
+                    <img class="banIcon" src="/static/images/${hero['hero'].replace(' ', '_')}_icon.png" title="${hero['hero']}"/>
                 % endfor
             </div>
         </div>
