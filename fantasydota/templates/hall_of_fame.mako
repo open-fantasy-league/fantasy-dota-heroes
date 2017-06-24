@@ -38,6 +38,11 @@
             <td>Seni</td>
             <td>Noxville</td>
         </tr>
+        <tr>
+            <td>The International 2017</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
         </tbody>
     </table>
 </div>

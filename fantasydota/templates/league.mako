@@ -62,15 +62,15 @@
 <div class="card row">
     <div class="card-content">
         <span class=${"messageTransOpen" if league.transfer_open != 0 else "messageTransClosed"}>
-            <p>${"Transfer window currently open. Closes ~1 hour before games start." if league.transfer_open != 0 else """Transfer window closed until todays games end"""}
-            </p>
+            <p><strong>${"Transfer window currently open. Closes ~1 hour before games start." if league.transfer_open != 0 else """Transfer window closed until todays games end"""}
+            </strong></p>
         </span>
         <span>
-        <p>Tables are sortable (click table headers). Max 5 heroes per team (points <a href="/rules">penalties</a> for <5)</p>
+            <p>Tables are sortable (click table headers). Max <strong>5 heroes per team</strong> (points <a href="/rules">penalties</a> for under 5)</p>
         </span>
         <span>
-            <p>Selling heros whose value has gone up or down, pays 40% tax on any profits.
-                But also a 40% rebate on any losses</p>
+            <p>Selling heroes pays <strong>50% tax</strong> only on <strong>profits</strong>. But also a <strong>50% rebate</strong> on any losses. (This is done to help players who picked a poor starting team)</p>
+            <p>i.e. A hero <strong>bought</strong> for <strong>20</strong> credits, now <strong>valued</strong> at <strong>24</strong> credits. Will be <strong>sold</strong> for for <strong>22</strong> credits</p>
         </span>
     </div>
 </div>
