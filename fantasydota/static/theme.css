@@ -159,7 +159,7 @@ submit:hover  {
 
 .heroIcon {margin-bottom: 0px}
 img {margin-bottom: 0px;
-    margin-right: 2px
+    margin-right: 0px
 }
 
 
@@ -205,3 +205,17 @@ img {margin-bottom: 0px;
     width: 170px
 }
 
+
+.container {
+  margin: 0 auto;
+  max-width: 1280px;
+  width: 85%;
+}
+@media only screen and (min-width: 601px)
+  .container {
+    width: 85%;
+}
+@media only screen and (min-width: 993px)
+  .container {
+    width: 70%;
+}

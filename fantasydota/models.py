@@ -36,7 +36,7 @@ Base = declarative_base(cls=Base)
 class User(Base):
     __tablename__ = "user"
     id = Column(Integer, Sequence('id'), primary_key=True)
-    username = Column(String(50), nullable=False, index=True)
+    username = Column(String(20), nullable=False, index=True)
     password = Column(String(300), nullable=False)
     email = Column(String(300))
     registered_on = Column(Date, default=func.now())
@@ -242,14 +242,16 @@ class Result(Base):
     timestamp = Column(Integer)
     applied = Column(Integer, default=0)  # 1 is applied to heroes. 2 for leagues. 3 for battlecups
     series_id = Column(BigInteger)
+    is_radiant = Column(Boolean)
 
-    def __init__(self, tournament, hero, match, result_str, timestamp, series_id):
+    def __init__(self, tournament, hero, match, result_str, timestamp, series_id, is_radiant):
         self.tournament_id = tournament
         self.hero = hero
         self.match_id = match
         self.result_str = result_str
         self.timestamp = timestamp
         self.series_id = series_id
+        self.is_radiant = is_radiant
 
     @staticmethod
     def result_to_value(result_str):
@@ -265,6 +267,72 @@ class Result(Base):
             "p3w": 14,
         }
         return points_dict[result_str]
+
+
+class Match(Base):
+    __tablename__ = "match"
+    match_id = Column(BigInteger, nullable=False, primary_key=True)
+    radiant_team = Column(String(100), nullable=False)
+    dire_team = Column(String(100), nullable=False)
+    radiant_win = Column(Boolean, nullable=False)
+    day = Column(Integer)
+
+    def __init__(self, match_id, radiant_team, dire_team, radiant_win, day):
+        self.match_id = match_id
+        self.dire_team = dire_team
+        self.radiant_team = radiant_team
+        self.radiant_win = radiant_win
+        self.day = day
+
+
+class TeamHeroHistoric(Base):
+    __tablename__ = "team_hero_historic"
+    id = Column(Integer, Sequence('id'), primary_key=True)
+    user_id = Column(Integer, ForeignKey(User.id), index=True, nullable=False)
+    hero_id = Column(Integer, ForeignKey(Hero.id), index=True, nullable=False)
+    # commented out due to mapper exception when joining Hero and TeamHero when multiple foreign keys
+    # To make it work you give join a tuple I now believe. table, then table column to join I think
+    hero_name = Column(String(100))#, ForeignKey(Hero.name))
+    league = Column(Integer, ForeignKey(League.id), index=True, nullable=False)
+    cost = Column(Float)
+    day = Column(Integer)
+    UniqueConstraint('league', 'hero_id', 'user_id', 'day')
+
+    def __init__(self, user_id, hero_id, league, cost, day, **kwargs):
+        self.user_id = user_id
+        self.hero_id = hero_id
+        self.hero_name = kwargs.get("hero_name", (item for item in heroes if item["id"] == hero_id).next()["name"])
+        self.league = league
+        self.cost = cost
+        self.day = day
+
+# # check if I should use polymorphic mapping for this with userLeague
+class HeroDay(Base):
+    __tablename__ = "hero_day"
+    id = Column(Integer, Sequence('id'), primary_key=True)
+    hero_id = Column(Integer, ForeignKey(Hero.id), index=True, nullable=False)
+    hero_name = Column(String(100), nullable=False)
+    league = Column(Integer, ForeignKey(League.id), index=True)
+    day = Column(Integer, index=True)
+    stage = Column(Integer)  # 0 qualifiers, 1 group stage, 2 main event
+    value = Column(Float)
+    points = Column(Float, default=0.0)
+    picks = Column(Integer, default=0)
+    bans = Column(Integer, default=0)
+    wins = Column(Integer, default=0)
+    points_rank = Column(Integer)
+    wins_rank = Column(Integer)
+    picks_rank = Column(Integer)
+    bans_rank = Column(Integer)
+
+    def __init__(self, hero_id, hero_name, league, day, stage, value):
+        self.hero_id = hero_id
+        self.hero_name = hero_name
+        self.league = league
+        self.day = day
+        self.stage = stage
+        self.value = value
+
 
 # Guesser stuff
 

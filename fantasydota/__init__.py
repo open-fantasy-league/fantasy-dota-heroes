@@ -98,6 +98,8 @@ def main(global_config, **settings):
     config.add_route('buy_hero', '/buyHero')
     config.add_route('sell_hero', '/sellHero')
     config.add_route('leaderboard', '/leaderboard')
+    config.add_route('daily', '/daily')
+    config.add_route('matches', '/matches')
     config.add_route('account_settings', '/accountSettings')
     config.add_route('news', '/news')
     config.add_route('hall_of_fame', '/hallOfFame')

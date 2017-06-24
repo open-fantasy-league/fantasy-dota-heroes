@@ -38,7 +38,9 @@ def login(request):
         else:
             message = 'Oops! SOmething went wrong'
             headers = forget(request)
-    return {'message': message}
+    return {'message': message, "plus_id": request.registry.settings.get(
+        'SOCIAL_AUTH_STEAM_KEY'
+    )}
 
 
 @view_config(route_name='logout')
@@ -225,11 +227,11 @@ def update_email_settings(request):
 
 @view_config(route_name='home', renderer='../templates/login.mako')
 def home(request):
-    return {"user": get_user(request),
-            "plus_id": request.registry.settings.get(
-        'SOCIAL_AUTH_STEAM_KEY'
-    ),
-    }
+    try:
+        user = get_user(request)
+        headers = remember(request, user.id)
+    except:
+        return HTTPFound("/login")
     # return common_context(
     #     request.registry.settings['SOCIAL_AUTH_AUTHENTICATION_BACKENDS'],
     #     load_strategy(request),

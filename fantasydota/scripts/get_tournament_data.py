@@ -5,7 +5,7 @@ import urllib2
 import transaction
 
 from fantasydota.lib.session_utils import make_session
-from fantasydota.models import Result, HeroGame, ItemBuild
+from fantasydota.models import Result, HeroGame, ItemBuild, Match, League
 
 APIKEY = os.environ.get("APIKEY")
 if not APIKEY:
@@ -64,6 +64,12 @@ def add_matches(session, tournament_id, tstamp_from=0):
             elif len(picks) < 20:
                 print "MatchID: %s fucked up picks bans. not 20. Check if need update" % match
                 continue
+            day = session.query(League.current_day).filter(League.id == tournament_id).first()[0]
+            session.add(Match(
+                int(match_json["match_id"]), match_json["radiant_name"], match_json["dire_name"],
+                match_json["radiant_win"], day
+            ))
+
             for key, value in enumerate(picks):
                 key = int(key)
 
@@ -93,7 +99,7 @@ def add_matches(session, tournament_id, tstamp_from=0):
                         result_string += "l"
                 print "Match is:", match_json["match_id"]
                 session.add(Result(tournament_id, value["hero_id"], int(match_json["match_id"]), result_string,
-                                   match_json["start_time"], series_id))
+                                   match_json["start_time"], series_id, (value["team"] == 0)))
     transaction.commit()
 
 

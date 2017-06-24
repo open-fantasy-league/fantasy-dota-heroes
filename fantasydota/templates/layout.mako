@@ -54,6 +54,9 @@
             <li class="col s1">
                 <a href="/leaderboard">Leaderboard</a>
             </li>
+            <li class="col s1">
+                <a href="/daily">Daily</a>
+            </li>
             </ul>
             <ul class="right">
             <li class="col s1">

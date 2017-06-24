@@ -85,26 +85,26 @@ ${"period=%s" % period}
     <div class="nav-wrapper teal darken-2">
         <ul class="left">
             <li class=${"active" if rank_by=="points" else ""}>
-                <a id="pointsBtn" href="/leaderboard?rank_by=points&${friendOrGlobal(switch_to)}&${getTime(period)}">
+                <a id="pointsBtn" href="/daily?rank_by=points&${friendOrGlobal(switch_to)}&${getTime(period)}">
                     Points
                 </a>
             </li>
             <li class=${"active" if rank_by=="wins" else ""}>
-                <a id="winsBtn" href="/leaderboard?rank_by=wins&${friendOrGlobal(switch_to)}&${getTime(period)}">
+                <a id="winsBtn" href="/daily?rank_by=wins&${friendOrGlobal(switch_to)}&${getTime(period)}">
                     Wins
                 </a>
             </li>
             <li class=${"active" if rank_by=="picks" else ""}>
-                <a id="picksBtn" href="/leaderboard?rank_by=picks&${friendOrGlobal(switch_to)}&${getTime(period)}">
+                <a id="picksBtn" href="/daily?rank_by=picks&${friendOrGlobal(switch_to)}&${getTime(period)}">
                     Picks
                 </a>
             </li>
             <li class=${"active" if rank_by=="bans" else ""}>
-                <a id="bansBtn" href="/leaderboard?rank_by=bans&${friendOrGlobal(switch_to)}&${getTime(period)}">
+                <a id="bansBtn" href="/daily?rank_by=bans&${friendOrGlobal(switch_to)}&${getTime(period)}">
                     Bans
                 </a>
             </li>
-            <li><a id="friendsGlobalBtn" href="/leaderboard?rank_by=${rank_by}&${"showFriend=kek" if switch_to == "friend" else "showGlobal=kek"}&${getTime(period)}">
+            <li><a id="friendsGlobalBtn" href="/daily?rank_by=${rank_by}&${"showFriend=kek" if switch_to == "friend" else "showGlobal=kek"}&${getTime(period)}">
                 ${switch_to.title()}
                 </a>
             </li>
@@ -141,7 +141,7 @@ ${"period=%s" % period}
                     %if len(player_heroes) > i and not league.transfer_open:
                         <span class="hero_images">
                         % for hero in player_heroes[i]:
-                            <img src="/static/images/${hero.replace(" ", "_")}_icon.png"/>
+                            <img src="/static/images/${hero.replace(" ", "_")}_icon.png" title="${hero}" />
                         % endfor
                         </span>
                     %endif
@@ -167,51 +167,98 @@ $( document ).ready(function() {
         "belowOrigin": true,
         "hover": true
     });
+
+    /*$.getJSON("/matches", {"day": ${period}}).done(
+        function( data ){
+
+        }
+    )*/
 })
 </script>
-<div id="friendBlock" class="col s5">
-    <div class="card-panel">
-	<p>1.5x points multiplier active for final day</p>
-        <p>Results updated ~2 minutes after match ends</p>
-        <p><a href="https://discord.gg/MAH7EEv" target="_blank">Discord channel for suggestions/improvements</a></p>
-    </div>
-% if user:
+<div id="matchesBlock" class="col s5">
     <div class="card">
-    <div class="card-content">
-        <p>
-            Add friends usernames to compete in tables against them
-        </p>
-        <form name="addFriendForm" onsubmit="return false;">
-            <input type="text" name="newFriend" placeholder="New friend..."/>
-            <button type="submit" id="addFriendBtn" class="btn waves-effect waves-light">Add</button>
-        </form>
-    </div>
-    </div>
+    <div class="card-content" id="matchesCard">
+        <h2>Matches</h2>
+        % for match in match_data:
+        <div class="section">
+        <div class="row">
+            <!--<img src="/static/images/trophy.png" class=${"hide" if not match["radiant_win"] else ""} />-->
+            <span class="radiantTeam">
+                % if match["radiant_win"]:
+                <strong>${match["radiant"]}</strong>
+                % else:
+                ${match["radiant"]}
+                % endif
+            </span>
+            <span class="direTeam right">
+                % if not match["radiant_win"]:
+                <strong>${match["dire"]}</strong>
+                % else:
+                ${match["dire"]}
+                % endif
+            </span>
+        </div>
+        <div class="row" style="margin-bottom: 0px">
+            <div class="left">
+                % for hero in match["radiant_picks"]:
+                    <span class="${'positive' if hero['points'] >= 0 else 'negative'}" style="display: inline-block; width: 32px; text-align: center;">
+                        ${'+' if hero["points"] >= 0 else '-'}${hero["points"]}
+                    </span>
+                % endfor
+            </div>
+            <div class="right">
+                % for hero in match["dire_picks"]:
+                    <span class="${'positive' if hero['points'] >= 0 else 'negative'}" style="display: inline-block; width: 32px; text-align: center;">
+                        ${'+' if hero["points"] >= 0 else '-'}${hero["points"]}
+                    </span>
+                % endfor
+            </div>
+        </div>
+        <div class="row">
+            <div class="left">
+                % for hero in match["radiant_picks"]:
+                    <img src="/static/images/${hero['hero'].replace(' ', '_')}_icon.png" title="${hero['hero']}" />
+                % endfor
+            </div>
+            <div class="right">
+                % for hero in match["dire_picks"]:
+                    <img src="/static/images/${hero['hero'].replace(' ', '_')}_icon.png" title="${hero['hero']}"/>
+                % endfor
+            </div>
+        </div>
+        <div class="row" style="margin-bottom: 0px">
+            <div class="left">
+                % for hero in match["radiant_bans"]:
+                    <img src="/static/images/${hero['hero'].replace(' ', '_')}_icon.png" title="${hero['hero']}" style="filter: grayscale(100%)"/>
+                % endfor
+            </div>
+            <div class="right">
+                % for hero in match["dire_bans"]:
+                    <img src="/static/images/${hero['hero'].replace(' ', '_')}_icon.png" title="${hero['hero']}" style="filter: grayscale(100%)"/>
+                % endfor
+            </div>
+        </div>
+        <div class="row">
+            <div class="left">
+                % for hero in match["radiant_bans"]:
+                    <span class="${'positive' if hero['points'] >= 0 else 'negative'}" style="display: inline-block; width: 32px; text-align: center;">
+                        ${'+' if hero["points"] >= 0 else '-'}${hero["points"]}
+                    </span>
+                % endfor
+            </div>
+            <div class="right">
+                % for hero in match["dire_bans"]:
+                    <span class="${'positive' if hero['points'] >= 0 else 'negative'}" style="display: inline-block; width: 32px; text-align: center;">
+                        ${'+' if hero["points"] >= 0 else '-'}${hero["points"]}
+                    </span>
+                % endfor
+            </div>
+        </div>
+        </div>
+        <div class="divider"></div>
+        % endfor
 
-    <script>
-    $( document ).ready(function() {
-        $(".dropdown-button").dropdown({"hover": true});
-        function addFriendOnclick(){
-            $.ajax({
-                    url: "/addFriend",
-                    type: "POST",
-                    data: {"newFriend": $("input[name=newFriend]").val()},
-                    success: function(data){
-                        var success = data.success,
-                        message = data.message;
-                        if (!success){
-                            sweetAlert(message);
-                        }
-                        else{
-                            window.location.reload();
-                        }
-                    }
-                }
-            );
-        };
-        $("#addFriendBtn").click(addFriendOnclick);
-    })
-    </script>
-% endif
+    </div>
+    </div>
 </div>
 </div>
