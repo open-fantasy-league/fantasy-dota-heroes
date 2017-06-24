@@ -69,7 +69,7 @@
                 <a href="/accountSettings">Account Settings</a>
             </li>
                 <li class="col s3">
-                <a href="/guessHero">DAC Hero Guess</a>
+                <a href="/guessHero">Kiev Hero Guesser</a>
             </li>
             </ul></div>
         </nav>

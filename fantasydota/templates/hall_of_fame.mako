@@ -35,8 +35,8 @@
         </tr>
         <tr>
             <td>Kiev Major</td>
-            <td>-</td>
-            <td>-</td>
+            <td>Seni</td>
+            <td>Noxville</td>
         </tr>
         </tbody>
     </table>

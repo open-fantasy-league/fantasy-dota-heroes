@@ -73,6 +73,9 @@
 
 <div class="col s6">
     <h3>Leaderboard</h3>
+    <div class="card-content">
+    <p>Congratulations to AdmiralSkadoosh for finishing top of DAC hero guesser</p>
+    </div>
     <table id="leaderboardTable" class="card-table striped">
         <tr>
             <th class="guessPositionHeader">Position</th>
