@@ -43,7 +43,7 @@ class User(Base):
     last_login = Column(Date, default=func.now())
     contactable = Column(Boolean, default=False)
     autofill_team = Column(Boolean, default=False)
-    battlecup_wins = Column(Integer, default=0)
+    daily_wins = Column(Integer, default=0)
     # TODO is_steam = Column(Boolean, default=True) # set False when called. add to below init
 
     def __init__(self, username, password="", email=""):
@@ -160,6 +160,7 @@ class Friend(Base):
     # Is some fucking fuckhead going to break this by adding themselves as a friend?
         # should also make user/friend be a unique pair. so cant friend twice
 
+
 class OldFriend(Base):
     __tablename__ = "friend"
     friend_id = Column(Integer, Sequence('id'), primary_key=True)
@@ -169,6 +170,7 @@ class OldFriend(Base):
     def __init__(self, user, friend):
         self.user = user
         self.friend = friend
+
 
 class Hero(Base):
     __tablename__ = "hero"
@@ -305,6 +307,7 @@ class TeamHeroHistoric(Base):
         self.league = league
         self.cost = cost
         self.day = day
+
 
 # # check if I should use polymorphic mapping for this with userLeague
 class HeroDay(Base):

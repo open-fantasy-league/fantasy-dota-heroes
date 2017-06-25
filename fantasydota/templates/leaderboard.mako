@@ -133,7 +133,8 @@ ${"period=%s" % period}
                 <tr class=${"playerRow" if not user or player.username != user.username else "userRow"}>
                     <td class="positionEntry">${i+1} ${progress_arrow(i, player, rank_by) if period == "tournament" else ""}
                     </td>
-                    <td class="heroEntry">
+                    <td class="heroEntry" style=${"color:gold" if player.username == "seni" else ""}
+            title=${"Reigning-Champion"  if player.username == "seni" else ""}>
                         ${player.username}
                     % if len(player_heroes) > i:
                         <span class="hero_images">
