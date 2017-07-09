@@ -41,7 +41,9 @@ def view_league(request):
         #return HTTPFound('/login')
     else:
 
-        userq = session.query(LeagueUser).filter(LeagueUser.user_id == user_id).first()
+        userq = session.query(LeagueUser).filter(and_(
+            LeagueUser.league == league.id, LeagueUser.user_id == user_id
+        )).first()
         if not userq:
             username = session.query(User.username).filter(User.id == user_id).first()[0]
             user_league = LeagueUser(user_id, username, league.id)
