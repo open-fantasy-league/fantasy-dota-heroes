@@ -230,6 +230,7 @@ def home(request):
     try:
         user = get_user(request)
         headers = remember(request, user.id)
+        return HTTPFound("/viewLeague", headers=headers)
     except:
         return HTTPFound("/login")
     # return common_context(

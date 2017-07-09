@@ -26,7 +26,7 @@
     <h2>My Team (Total points <span class="teamPoints">${userq.points}</span>)</h2>
     <div id="tableContainer">
         <table class="sortable responsive-table card-table striped centered" id="teamTable">
-            <tr>
+            <tr style="cursor: pointer">
                 <th class="heroHeader">Hero</th>
                 <th class="dummyHeader" colspan="0"></th>
                 <th class="heroPointsHeader">Points</th>

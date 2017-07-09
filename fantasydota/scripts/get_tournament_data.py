@@ -2,6 +2,7 @@ import json
 import os
 import urllib2
 
+import time
 import transaction
 
 from fantasydota.lib.session_utils import make_session
@@ -15,10 +16,11 @@ LEAGUE_LISTING = "http://api.steampowered.com/IDOTA2Match_570/GetLeagueListing/v
 
 def dont_piss_off_valve_but_account_for_sporadic_failures(req_url):
     fuck = True  # no idea why this failing. im waiting long enough to not piss off valve?
-    sleep_time = 5  # valve say no more than 1 per second. be safe
+    sleep_time = 1
     while fuck:
         try:
             response = urllib2.urlopen(req_url)
+            time.sleep(sleep_time)
             fuck = False
         except:
             sleep_time += 30  # incase script breaks dont want to spam
