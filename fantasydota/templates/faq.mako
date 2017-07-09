@@ -24,13 +24,15 @@ Send feedback/questions to fantasydotaeu@gmail.com
 <h2>Are there any prizes?</h2>
     <div class="card-panel">
 <p>
-Choice of Juggernaught or Monkey King arcana for winner
+    Choice of any standard arcana for winner. Prize sponsored by <a href="https://stratz.com">Stratz Esports</a> (DotA 2 statistics & analytics).
 (If points are tied, winner will be decided by wins, picks, bans in that order. For identical teams winner drawn from hat)
+
+*Disclaimer: Although this site is still my independent project, I am currently working for Stratz-Esports.
 </p>
     </div>
 <h2>Mobile/App version of site?</h2>
     <div class="card-panel">
-<p>Will be learning app development soon. Hope to port then
+<p>Sorry about that. If enough people request it I'll try and do it.
 </p>
     </div>
 <h2>Aren't there already fantasy dota games?</h2>
@@ -48,6 +50,14 @@ The least clicks possible to add extra interest to games
 <p>
 This is so that people do not just instantly fill their team with the most imba-heroes who are guarantee 1st phase pick/ban
 A little bit of thought has to be put in to trade-off pick-rate with bonus points for less in demand heroes
+</p>
+    </div>
+    <h2>Why is there a big points multiplier for main event?</h2>
+    <div class="card-panel">
+<p>
+Because there are so many group games compared to main event, in the past, the tournament would be pretty much decided after the group stage.
+    If you weren't top ~15 after group stage...might as well give up.
+    With these multipliers you can still come back and win after a mediocre group stage performance.
 </p>
     </div>
 </div>
