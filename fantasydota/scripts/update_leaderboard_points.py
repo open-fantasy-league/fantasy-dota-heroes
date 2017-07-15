@@ -2,6 +2,7 @@ import transaction
 from sqlalchemy import and_
 from sqlalchemy import func
 
+from fantasydota.lib.constants import MULTIPLIER
 from fantasydota.lib.session_utils import make_session
 from fantasydota.models import Result, LeagueUser, League, LeagueUserDay, \
     TeamHero
@@ -15,7 +16,7 @@ def add_result_to_user(userq, res, hero_count):
         userq.wins += 1
     if "b" in res:
         userq.bans += 1
-    to_add = 1.5 * ((0.5 ** (5 - hero_count)) * Result.result_to_value(res))
+    to_add = MULTIPLIER * ((0.5 ** (5 - hero_count)) * Result.result_to_value(res))
     print "addin %s points to %s" % (to_add, user_id)
     userq.points += to_add
 

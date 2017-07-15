@@ -113,8 +113,8 @@ def add_matches_guesser(session, tournament_id, tstamp_from):
     print "matches", matches
     for match, series_id in matches:
         match_json = get_match_details(match)["result"]
-	if len(match_json["players"]) < 3:
-	    continue  # dont count the 1v1s
+        if len(match_json["players"]) < 3:
+            continue  # dont count the 1v1s
         for player in match_json["players"]:
             new_hero_game = HeroGame(match, player["hero_id"])
             items = []
@@ -137,18 +137,9 @@ def add_matches_guesser(session, tournament_id, tstamp_from):
 
 def main():
     session = make_session()
-    #add_matches(session, 4874)  # boston
-    add_matches(session, 5157, 1492999802)  # kiev major
-    #5157 kiev
-    #session2 = make_session(False)
     #add_matches_guesser(session2, 5197, 1489449600)
     # for calibration for esl genting
-    t = 1482627282  # christmas!!!
-    # add_matches(session, 4958, t)  # royal arena
-    # add_matches(session, 5077, t)  # 5077 https://www.dotabuff.com/esports/leagues/5077
-    # add_matches(session, 4920, t)  # 4920 https://www.dotabuff.com/esports/leagues/4920
-    # add_matches(session, 4665, t)  # https://www.dotabuff.com/esports/leagues/4665
-    #add_matches(session, 4177, t)  # https://www.dotabuff.com/esports/leagues/4177
+    add_matches(session, 5401, 1500121359)  # TI7. games are qualifiers
     #add_matches(session, 4682, t)  # https://www.dotabuff.com/esports/leagues/4665
 
 if __name__ == "__main__":

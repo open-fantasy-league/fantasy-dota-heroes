@@ -1,4 +1,6 @@
 import transaction
+
+from fantasydota.lib.constants import MULTIPLIER
 from fantasydota.lib.session_utils import make_session
 from fantasydota.models import Hero, Result, League
 from sqlalchemy import and_
@@ -11,11 +13,10 @@ def update_hero_points(session, league):
 
     for i, result in enumerate(new_results):
         res = result.result_str
-        # More than one because we have battlecup and league
+
         heroq_all = session.query(Hero).filter(and_(Hero.id == result.hero,
                                                 Hero.league == league_id)).all()
-        # if not heroq_all:  # temp for no underlord
-        #     continue  # TODO remove!!!
+
         for heroq in heroq_all:
             print result.match_id
             print "Hero id: ", result.hero
@@ -26,7 +27,7 @@ def update_hero_points(session, league):
             if "b" in res:
                 heroq.bans += 1
             print "Would add %s to hero points", Result.result_to_value(res)
-            heroq.points += 1.5 * Result.result_to_value(res)
+            heroq.points += MULTIPLIER * Result.result_to_value(res)
         result.applied = 1
 
 
