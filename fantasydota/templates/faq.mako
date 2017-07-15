@@ -18,7 +18,8 @@
 <p>
 Simple fantasy dota style game. You put the heroes in your team you think are likely to be picked/banned and win.
 When this happens you get points.
-Send feedback/questions to fantasydotaeu@gmail.com
+    Send feedback/questions to fantasydotaeu@gmail.com or <a href="https://discord.gg/MAH7EEv" target=_blank">discord</a>
+    Source-code available here https://github.com/ThePianoDentist/fantasy-dota-heroes (my instructions for setting up/running are abysmal, PM me for that)
 </p>
     </div>
 <h2>Are there any prizes?</h2>
@@ -32,7 +33,7 @@ Send feedback/questions to fantasydotaeu@gmail.com
     </div>
 <h2>Mobile/App version of site?</h2>
     <div class="card-panel">
-<p>Sorry about that. If enough people request it I'll try and do it.
+<p>Sorry, doesn't seem to be enough demand for me to make one right now.
 </p>
     </div>
 <h2>Aren't there already fantasy dota games?</h2>

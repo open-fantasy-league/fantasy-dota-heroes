@@ -68,10 +68,6 @@
         <span>
             <p>Tables are sortable (click table headers). Max <strong>5 heroes per team</strong> (points <a href="/rules">penalties</a> for under 5)</p>
         </span>
-        <span>
-            <p>Selling heroes pays <strong>50% tax</strong> only on <strong>profits</strong>. But also a <strong>50% rebate</strong> on any losses. (This is done to help players who picked a poor starting team)</p>
-            <p>i.e. A hero <strong>bought</strong> for <strong>20</strong> credits, now <strong>valued</strong> at <strong>24</strong> credits. Will be <strong>sold</strong> for for <strong>22</strong> credits</p>
-        </span>
     </div>
 </div>
 <div id="heroesBlock" class="row">

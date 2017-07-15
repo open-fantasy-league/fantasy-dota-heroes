@@ -54,29 +54,27 @@ else{
             var parent = event.data.form.parent().parent();
             var cost = parseFloat(parent.find(".costEntry").text());
             var value = parseFloat(parent.find(".valueEntry").text());
-            var trade_val = Math.round(((value - cost) * -0.5 + value) * 10) / 10;
-            var title = "Confirm trade " + parent.find(".heroEntry").text() + " for " + trade_val + " credits";
-            if (trade_val && trade_val != 0 && trade_val != cost){
-                sweetAlert({
-                    title: title,
-                    //text: "for +money credits",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "green",
-                    cancelButtonColor: "red",
-                    confirmButtonText: "Yes!",
-                    closeOnConfirm: false },
-                    function(isConfirm){
-                    if (!isConfirm){
-                        $("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).removeAttr("disabled");});
-                        return
-                    }
-                    doTrade(event, action);
-                });
-            }
-            else {
-                doTrade(event, action);
-            }
+//            var trade_val = Math.round(((value - cost) * -0.5 + value) * 10) / 10;
+//            var title = "Confirm trade " + parent.find(".heroEntry").text() + " for " + trade_val + " credits";
+//            if (trade_val && trade_val != 0 && trade_val != cost){
+//                sweetAlert({
+//                    title: title,
+//                    //text: "for +money credits",
+//                    type: "warning",
+//                    showCancelButton: true,
+//                    confirmButtonColor: "green",
+//                    cancelButtonColor: "red",
+//                    confirmButtonText: "Yes!",
+//                    closeOnConfirm: false },
+//                    function(isConfirm){
+//                    if (!isConfirm){
+//                        $("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).removeAttr("disabled");});
+//                        return
+//                    }
+//                    doTrade(event, action);
+//                });
+//            }
+            doTrade(event, action);
         }
 
     $(".tradeForm").each(function (){

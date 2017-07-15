@@ -23,13 +23,10 @@ def sell(session, user_id, hero_id, league_id):
 
         if check_hero_res:
             hero_value = session.query(Hero.value).filter(Hero.league == league_id).filter(Hero.id == hero_id).first()[0]
-            hero_cost = check_hero_res.cost
-            diff = hero_cost - hero_value
-            sale_value = hero_value + (diff * 0.5)
-            new_credits = round(user_money + sale_value, 1)
+            new_credits = round(user_money + hero_value, 1)
             l_user.money = new_credits
             check_hero.delete()
-            session.add(Sale(l_user.id, hero_id, league_id, hero_value, sale_value, False))
+            session.add(Sale(l_user.id, hero_id, league_id, hero_value, hero_value, False))
             return {"success": True, "message": "Hero successfully sold", "action": "sell", "hero": hero_id,
                     "new_credits": new_credits}
         else:
