@@ -50,10 +50,7 @@
                 Unlimited transfers can take place every day, between games
             </li>
             <li>
-            Hero values will be slightly recalibrated every day
-            </li>
-            <li>
-            Selling a hero you are taxed 40% of however much value has increased (or given back 40% of whatever you lost on hero)
+            Hero values will be slightly recalibrated every day based upon their performances
             </li>
         </ul>
     </div>
