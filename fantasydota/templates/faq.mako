@@ -27,7 +27,8 @@ When this happens you get points.<br>
 <p>
     Choice of any standard arcana for winner. Prize sponsored by <a href="https://stratz.com">Stratz Esports</a> (DotA 2 statistics & analytics).<br>
 (If points are tied, winner will be decided by wins, picks, bans in that order. For identical teams winner drawn from hat)
-<br><br>
+<br>
+    Obviously I cannot get you IO arcana (not tradeable)<br><br>
 *Disclaimer: Although this site is still my independent project, I am currently working for Stratz-Esports.
 </p>
     </div>

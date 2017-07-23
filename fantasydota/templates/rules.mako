@@ -33,9 +33,9 @@
             <ul class="browser-default"><li>x0.5 for every missing hero  (to prevent people abusing half-empty teams of best heroes)
             </li></ul>
             Main event multiplier:</br>
-            <ul class="browser-default"><li>x1.25 points for main event matches
+            <ul class="browser-default"><li>x2 points for main event matches
             </li>
-            <li>x1.5 points for final day games
+            <li>x4 points for final day games
             </li>
             </ul>
         </p>

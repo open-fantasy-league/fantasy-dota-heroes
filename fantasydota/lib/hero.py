@@ -83,14 +83,16 @@ def calibrate_all_hero_values_datdota(session, patch=None):
         print "Average new value:", sum / i
         return new_heroes_list
 
+
 def calibrate_all_hero_values(session, patch=None):
     new_heroes_list = heroes
     for h in new_heroes_list:
         h["points"] = 0
     if patch:
-        start_time, end_time = get_patch_timestamps(patch)
+        start_time, end_time = (1499021011, 1500857011) #get_patch_timestamps(patch)
         results = session.query(Result).filter(Result.applied.is_(False)).\
             filter(Result.timestamp > start_time).filter(Result.timestamp < end_time).all()
+        print("Calibrating on %s" % len(results))
     else:
         results = session.query(Result).filter(Result.applied.is_(False)).all()
     sum_points = 0
