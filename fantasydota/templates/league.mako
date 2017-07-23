@@ -74,7 +74,7 @@
     <h2>Heroes (Credits Available: <span class="userCredits">${round(userq.money, 1)}</span>)</h2>
     <div id="tableContainer">
         <table class="sortable responsive-table card-table striped centered">
-            <tr>
+            <tr style="cursor: pointer">
                 <th class="heroHeader">Hero</th>
                 <th class="dummyHeader" colspan="0"></th>
                 <th class="heroPointsHeader">Points</th>
