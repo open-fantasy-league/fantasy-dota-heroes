@@ -92,6 +92,7 @@ def calibrate_all_hero_values(session, patch=None):
         start_time, end_time = (1499021011, 1500857011) #get_patch_timestamps(patch)
         results = session.query(Result).filter(Result.applied.is_(False)).\
             filter(Result.timestamp > start_time).filter(Result.timestamp < end_time).all()
+        results.extend(session.query(Result).filter(Result.applied.is_(False)).filter(Result.tournament_id.in_([5157, 5353])).all())
         print("Calibrating on %s" % len(results))
     else:
         results = session.query(Result).filter(Result.applied.is_(False)).all()

@@ -145,13 +145,15 @@ def main():
     session = make_session()
     #add_matches_guesser(session2, 5197, 1489449600)
     # for calibration for esl genting
-    add_matches(session, 5504, 0)
-    add_matches(session, 5401, 0)
-    add_matches(session, 5336, 0)
-    add_matches(session, 5434, 0)
-    add_matches(session, 5388, 0)
-    add_matches(session, 5227, 0)
-    add_matches(session, 4665, 0)
+    # add_matches(session, 5504, 0)
+    # add_matches(session, 5401, 0)
+    # add_matches(session, 5336, 0)
+    # add_matches(session, 5434, 0)
+    # add_matches(session, 5388, 0)
+    # add_matches(session, 5227, 0)
+    # add_matches(session, 4665, 0)
+    add_matches(session, 5353, 1496537374)
+    add_matches(session, 5157, 1492994974)
 
     #add_matches(session, 5401, 1500121359)  # TI7. games are qualifiers
     #add_matches(session, 4682, t)  # https://www.dotabuff.com/esports/leagues/4665
