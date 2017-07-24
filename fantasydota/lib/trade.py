@@ -46,7 +46,7 @@ def buy(session, user_id, hero_id, league_id):
     teamq = session.query(TeamHero).filter(TeamHero.user_id == user_id).filter(TeamHero.league == league_id)
     teamq_hero = teamq.filter(TeamHero.hero_id == hero_id)
 
-    l_user = session.query(LeagueUser).filter(LeagueUser.user_id == user_id).first()
+    l_user = session.query(LeagueUser).filter(LeagueUser.user_id == user_id).filter(LeagueUser.league == league_id).first()
 
     user_money = l_user.money
 
