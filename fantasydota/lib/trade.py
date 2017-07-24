@@ -8,7 +8,7 @@ def sell(session, user_id, hero_id, league_id):
     if not transfer_actually_open:
         return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
 
-    l_user = session.query(LeagueUser).filter(LeagueUser.user_id == user_id).first()
+    l_user = session.query(LeagueUser).filter(LeagueUser.user_id == user_id).filter(LeagueUser.league == league_id).first()
 
     teamq = session.query(TeamHero).filter(and_(TeamHero.user_id == user_id,
                                                         TeamHero.league == league_id))
