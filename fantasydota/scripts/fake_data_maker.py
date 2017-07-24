@@ -14,7 +14,7 @@ def main():
         session.flush()
         user_id = session.query(User.id).filter(User.username == username).first()[0]
         session.add(LeagueUser(user_id,
-                              username, 5157))
+                              username, 5401))
         session.flush()
         for i in range(3):
             if i >= 2:
@@ -24,10 +24,10 @@ def main():
             else:
                 stage = 0
             session.add(LeagueUserDay(user_id,
-                                      username, 5157, i, stage))
+                                      username, 5401, i, stage))
             session.flush()
         for _ in range(5):
-            session.add(TeamHero(user_id, random.choice(heroes)["id"], 5157, 20.0))
+            session.add(TeamHero(user_id, random.choice(heroes)["id"], 5401, 20.0))
         session.flush()
     session.commit()
 
