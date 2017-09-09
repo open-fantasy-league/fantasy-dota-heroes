@@ -47,7 +47,7 @@
                 Your team can consist of up to 5 dota heroes (you are not required to use all 5, but you incur percentage penalty for each missing hero).
             </li>
             <li>
-                Unlimited transfers can take place every day, between games
+                Unlimited transfers can take place every night, between each day (Transfer window is closed whilst the day's games are in progress).
             </li>
             <li>
             Hero values will be slightly recalibrated every day based upon their performances

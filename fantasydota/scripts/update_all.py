@@ -14,17 +14,17 @@ def main():
     session = make_session()
     with transaction.manager:
         print "Updating hero points"
-        for league in session.query(League).all():
+        for league in session.query(League).filter(League.status == 1).all():
             update_hero_points(session, league)
         transaction.commit()
     with transaction.manager:
         print "Updating league points"
-        for league in session.query(League).all():
+        for league in session.query(League).filter(League.status == 1).all():
             update_league_points(session, league)
         transaction.commit()
     with transaction.manager:
         print "Updating user rankings"
-        for league in session.query(League).all():
+        for league in session.query(League).filter(League.status == 1).all():
             update_user_rankings(session, league)
         transaction.commit()
 

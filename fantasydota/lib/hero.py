@@ -126,14 +126,14 @@ def write_calibration(new_heroes_list):
 
 
 def calibrate_value(average_points, our_points):
-    output = ((float(our_points) / float(average_points)) * 9.0 * 3 + 9.0) / 4.
+    output = ((float(our_points) / float(average_points)) * 9.1 * 3 + 9.1) / 4.
     if output < 1.0:  # dont get into negative price shenanigans
         output = 1.0
     return output
 
 
 def combine_calibrations(older_value, newer_value):
-    return (newer_value + older_value * 7) / 8.
+    return (newer_value + older_value * 5) / 6.
 
 
 def recalibrate_hero_values(session, league_id):

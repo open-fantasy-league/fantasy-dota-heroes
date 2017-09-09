@@ -1,4 +1,4 @@
 import os
 
 DIR = os.environ.get('FDOTA')
-MULTIPLIER = 1
+MULTIPLIER = 4 

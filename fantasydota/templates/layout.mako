@@ -72,7 +72,7 @@
                 <a href="/accountSettings">Account Settings</a>
             </li>
                 <li class="col s3">
-                <a href="/guessHero">Kiev Hero Guesser</a>
+                <a href="/guessHero">TI7 Hero Guesser</a>
             </li>
             </ul></div>
         </nav>

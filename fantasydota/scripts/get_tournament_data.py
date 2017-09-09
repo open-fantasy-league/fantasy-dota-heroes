@@ -1,6 +1,7 @@
 import json
 import os
 import urllib2
+import re
 
 import time
 import transaction
@@ -11,6 +12,7 @@ from fantasydota.models import Result, HeroGame, ItemBuild, Match, League
 APIKEY = os.environ.get("APIKEY")
 if not APIKEY:
     print "Set your APIKEY environment variable"
+LEAGUE_LISTING = "http://api.steampowered.com/IDOTA2Match_570/GetLeagueListing/v0001?key=%s" % APIKEY
 
 
 def dont_piss_off_valve_but_account_for_sporadic_failures(req_url):
@@ -31,30 +33,31 @@ def dont_piss_off_valve_but_account_for_sporadic_failures(req_url):
 
 def get_league_match_list(league_id):
     return dont_piss_off_valve_but_account_for_sporadic_failures(
-        "https://api.stratz.com/api/v1/match?leagueId=%s&take=9001" % league_id)
+        "http://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/v0001?" \
+        "key=%s&league_id=%s" % (APIKEY, league_id))
 
 
 def get_match_details(match_id):
     return dont_piss_off_valve_but_account_for_sporadic_failures(
-        "https://api.stratz.com/api/v1/match?matchId=%s&include=Team,pickban,player" % match_id)
+        "http://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/v0001?" \
+        "key=%s&match_id=%s" % (APIKEY, match_id))
 
 
 def add_matches(session, tournament_id, tstamp_from=0):
     match_list_json = get_league_match_list(tournament_id)
 
-    matches = [(match["id"], match.get("series", {"id": match["id"]})["id"]) for match in match_list_json["results"]
-               if match["endDate"] > tstamp_from]
+    matches = [(match["match_id"], match["series_id"]) for match in match_list_json["result"]["matches"]
+               if match["start_time"] > tstamp_from and match["match_id"] != 3368387319]
     print "matches", matches
     for match, series_id in matches:
         with transaction.manager:
             if session.query(Result).filter(Result.match_id == match).first():  # if old result dont process
                 continue
 
-            match_json = get_match_details(match)["results"][0]
-            print "Match is:", match_json["id"]
-            radiant_win = match_json["didRadiantWin"]
+            match_json = get_match_details(match)["result"]
+            radiant_win = match_json["radiant_win"]
             try:
-                picks = match_json["pickBans"]
+                picks = match_json["picks_bans"]
             except KeyError:  # game crashed and they remade with all pick. need to manually
                 print "MatchID: %s no picks and bans. Need manually inserting" % match
                 continue
@@ -64,20 +67,11 @@ def add_matches(session, tournament_id, tstamp_from=0):
             elif len(picks) < 20:
                 print "MatchID: %s fucked up picks bans. not 20. Check if need update" % match
                 continue
-            day = session.query(League.current_day).filter(League.id == tournament_id).first()
-            if not day:
-                print "No day. are you calibrating?"
-                day = 0
-            try:
-                session.add(Match(
-                    int(match_json["id"]), match_json["radiantTeam"]["name"], match_json["direTeam"]["name"],
-                    radiant_win, day
-                ))
-            except KeyError:
-                session.add(Match(
-                    int(match_json["id"]), "No name", "No name",
-                    radiant_win, day
-                ))
+            day = session.query(League.current_day).filter(League.id == tournament_id).first()[0]
+            session.add(Match(
+                int(match_json["match_id"]), re.sub(r'\W+', '', match_json["radiant_name"]), re.sub(r'\W+', '', match_json["dire_name"]),
+                match_json["radiant_win"], day
+            ))
 
             for key, value in enumerate(picks):
                 key = int(key)
@@ -106,8 +100,9 @@ def add_matches(session, tournament_id, tstamp_from=0):
                         result_string += "w"
                     else:
                         result_string += "l"
-                session.add(Result(tournament_id, value["heroId"], int(match_json["id"]), result_string,
-                                   match_json["endDate"], series_id, (value["team"] == 0)))
+                print "Match is:", match_json["match_id"]
+                session.add(Result(tournament_id, value["hero_id"], int(match_json["match_id"]), result_string,
+                                   match_json["start_time"], series_id, (value["team"] == 0)))
     transaction.commit()
 
 
@@ -135,27 +130,18 @@ def add_matches_guesser(session, tournament_id, tstamp_from):
                     empty_items += 1
                 items.append(item)
                 session.add(ItemBuild(new_hero_game.id, item, i))
-            if empty_items > 1 or any(item for item in items if item in legit_items):
+            if empty_items > 1 or not any(item for item in items if item in legit_items):
                 session.rollback()
                 continue
             session.commit()
 
 
 def main():
-    session = make_session()
-    #add_matches_guesser(session2, 5197, 1489449600)
+    #session = make_session()
+    session2 = make_session(False)
+    add_matches_guesser(session2, 5401, 1501687737)
     # for calibration for esl genting
-    # add_matches(session, 5504, 0)
-    # add_matches(session, 5401, 0)
-    # add_matches(session, 5336, 0)
-    # add_matches(session, 5434, 0)
-    # add_matches(session, 5388, 0)
-    # add_matches(session, 5227, 0)
-    # add_matches(session, 4665, 0)
-    add_matches(session, 5353, 1496537374)
-    add_matches(session, 5157, 1492994974)
-
-    #add_matches(session, 5401, 1500121359)  # TI7. games are qualifiers
+    #add_matches(session, 5401, 1501687737)  # TI7. games are qualifiers
     #add_matches(session, 4682, t)  # https://www.dotabuff.com/esports/leagues/4665
 
 if __name__ == "__main__":

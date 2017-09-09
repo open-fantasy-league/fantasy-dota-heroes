@@ -74,7 +74,7 @@
 <div class="col s6">
     <h3>Leaderboard</h3>
     <div class="card-content">
-    <p>Congratulations to AdmiralSkadoosh for finishing top of DAC hero guesser</p>
+    <p>Congratulations to Thekmart for finishing top of Kiev hero guesser with 9!</p>
     </div>
     <table id="leaderboardTable" class="card-table striped">
         <tr>

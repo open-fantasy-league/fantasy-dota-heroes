@@ -133,9 +133,15 @@ ${"period=%s" % period}
                 <tr class=${"playerRow" if not user or player.username != user.username else "userRow"}>
                     <td class="positionEntry">${i+1} ${progress_arrow(i, player, rank_by) if period == "tournament" else ""}
                     </td>
-                    <td class="heroEntry" style=${"color:gold" if player.username == "seni" else ""}
-            title=${"Reigning-Champion"  if player.username == "seni" else ""}>
-                        ${player.username}
+                    <td class="heroEntry" style=${"color:gold;cursor:help" if player.username in ["seni", "nkgrimreaper", "liquid92"] else ''}
+
+            title=${"Previous-Champion"  if player.username in ["seni", "nkgrimreaper", "liquid92"] else ''}>
+                        <span style="vertical-align:middle">
+
+                        % if player.username == "yuridaisuki":
+                        <img src="/static/images/trophy.png"/>
+                        % endif
+                        ${player.username}</span>
                     % if len(player_heroes) > i:
                         <span class="hero_images">
                         % for hero in player_heroes[i]:
@@ -169,6 +175,7 @@ $( document ).ready(function() {
 </script>
 <div id="friendBlock" class="col s5">
     <div class="card-panel">
+	<p><b>Thanks for playing everyone! See you next tournament with more hopefully more features!</b></p>
 	<p>2x points multiplier active for main event. 4x multiplier for finals day</p>
         <p>Results updated ~2 minutes after match ends</p>
         <p><a href="https://discord.gg/MAH7EEv" target="_blank">Discord channel for suggestions/improvements</a></p>

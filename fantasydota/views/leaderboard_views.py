@@ -7,7 +7,7 @@ from sqlalchemy import or_
 
 from fantasydota import DBSession
 from fantasydota.models import Friend, LeagueUser, LeagueUserDay, TeamHero, League, Match, Result, TeamHeroHistoric
-
+from fantasydota.lib.constants import MULTIPLIER
 
 @view_config(route_name='leaderboard', renderer='../templates/leaderboard.mako')
 def leaderboard(request):
@@ -135,8 +135,14 @@ def daily(request):
             "dire_picks": []
         }
         for result in session.query(Result).filter(Result.match_id == match.match_id).all():
-            result_entry = {"hero": [h["name"] for h in herolist if h["id"] == result.hero][0],
-                            "points": Result.result_to_value(result.result_str)
+            if league.current_day < league.stage1_start:
+		multiplier = 1
+	    elif league.current_day < league.stage2_start:
+		multiplier = 2
+	    else:
+		multiplier = 4
+	    result_entry = {"hero": [h["name"] for h in herolist if h["id"] == result.hero][0],
+                            "points": multiplier * Result.result_to_value(result.result_str)
                             }
             if result.is_radiant:
                 if result.result_str[0] == "p":
@@ -167,7 +173,7 @@ def matches(request):
         }
         for result in session.query(Result).filter(Result.match_id == match.match_id).all():
             result_entry = {"hero": [h["name"] for h in herolist if h["id"] == result.hero][0],
-                            "points": Result.result_to_value(result.result_str)
+                            "points": MULTIPLIER * Result.result_to_value(result.result_str)
                             }
             if result.is_radiant:
                 if result.result_str[0] == "p":

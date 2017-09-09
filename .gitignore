@@ -2,3 +2,5 @@
 production.ini
 *local_settings*
 data/*
+build
+dist

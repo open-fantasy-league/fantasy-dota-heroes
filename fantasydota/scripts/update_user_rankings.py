@@ -41,7 +41,7 @@ def update_user_rankings(session, league):
 
 def main():
     session = make_session()
-    for league in session.query(League).all():
+    for league in session.query(League).filter(League.status == 1).all():
         update_user_rankings(session, league)
 
 if __name__ == "__main__":

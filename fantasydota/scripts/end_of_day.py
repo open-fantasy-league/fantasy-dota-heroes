@@ -10,22 +10,22 @@ def set_old_rankings(session, league):
     for league_user in session.query(LeagueUser).filter(LeagueUser.league == league.id):
         recent_points_q = session.query(LeagueUserDay.points) \
             .filter(LeagueUserDay.user_id == league_user.user_id).filter(LeagueUserDay.league == league.id) \
-            .filter(LeagueUserDay.day >= league.current_day).all()
+            .filter(LeagueUserDay.day > league.current_day).all()
         recent_points = sum(t[0] for t in recent_points_q)
 
         recent_wins_q = session.query(LeagueUserDay.wins) \
             .filter(LeagueUserDay.user_id == league_user.user_id).filter(LeagueUserDay.league == league.id) \
-            .filter(LeagueUserDay.day >= league.current_day).all()
+            .filter(LeagueUserDay.day > league.current_day).all()
         recent_wins = sum(t[0] for t in recent_wins_q)
 
         recent_bans_q = session.query(LeagueUserDay.bans) \
             .filter(LeagueUserDay.user_id == league_user.user_id).filter(LeagueUserDay.league == league.id) \
-            .filter(LeagueUserDay.day >= league.current_day).all()
+            .filter(LeagueUserDay.day > league.current_day).all()
         recent_bans = sum(t[0] for t in recent_bans_q)
 
         recent_picks_q = session.query(LeagueUserDay.picks) \
             .filter(LeagueUserDay.user_id == league_user.user_id).filter(LeagueUserDay.league == league.id) \
-            .filter(LeagueUserDay.day >= league.current_day).all()
+            .filter(LeagueUserDay.day > league.current_day).all()
         recent_picks = sum(t[0] for t in recent_picks_q)
 
         old_list.append({
@@ -59,7 +59,7 @@ def set_old_rankings(session, league):
 
 
 def store_todays_teams(session, league):
-    for th in session.query(TeamHero):
+    for th in session.query(TeamHero).filter(TeamHero.league == league.id).all():
         day = league.current_day
         session.add(TeamHeroHistoric(th.user_id, th.hero_id, th.league, th.cost, day))
 
@@ -68,12 +68,12 @@ def main():
     with transaction.manager:
         session = make_session()
         for league in session.query(League).filter(League.status == 1).all():
-            set_old_rankings(session, league)
-            store_todays_teams(session, league)
+           set_old_rankings(session, league)
+           #store_todays_teams(session, league)
 
-            recalibrate_hero_values(session, league.id)
-            league.current_day += 1
-            league.transfer_open = True
+           #recalibrate_hero_values(session, league.id)
+           #league.current_day += 1
+           #league.transfer_open = True
         transaction.commit()
 
 if __name__ == "__main__":
