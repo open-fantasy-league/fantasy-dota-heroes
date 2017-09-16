@@ -42,7 +42,7 @@ def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
     settings["league_transfers"] = True  # why wont config file properly set this?
-    settings["default_league"] = 5401
+    settings["default_league"] = 5579
     sqlalchemy_url = os.path.expandvars(settings.get('sqlalchemy.url'))
     engine = create_engine(sqlalchemy_url, echo=False, pool_size=100, pool_recycle=3600)
     event.listen(engine, 'checkout', checkout_listener)
@@ -70,7 +70,7 @@ def main(global_config, **settings):
     init_social(config, Base, DBSession)  # is this the right place?
     Base.metadata.bind = engine
     Base.metadata.create_all(engine)
-    create_tables(DBSession) #already created!
+    create_tables(DBSession, settings["default_league"]) #already created!
 
     config.include('social_pyramid')
     config.scan('social_pyramid')

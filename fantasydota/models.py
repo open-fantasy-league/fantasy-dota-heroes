@@ -193,6 +193,11 @@ class Hero(Base):
         self.value = value
         self.league = league
 
+    @property
+    def username(self):
+        # kind of hack to not have to refactor leaderboard pages
+        return self.name
+
 
 class TeamHero(Base):
     __tablename__ = "team_hero"
@@ -335,6 +340,11 @@ class HeroDay(Base):
         self.day = day
         self.stage = stage
         self.value = value
+
+    @property
+    def username(self):
+        # kind of hack to not have to refactor leaderboard pages
+        return self.hero_name
 
 
 # Guesser stuff

@@ -16,7 +16,7 @@ def update_hero_points(session, league):
 
         heroq = session.query(Hero).filter(and_(Hero.id == result.hero,
                                             Hero.league == league_id)).first()
-        herod = session.query(HeroDay).filter(HeroDay.day == league.current_day).filter(and_(HeroDay.id == result.hero,
+        herod = session.query(HeroDay).filter(HeroDay.day == league.current_day).filter(and_(HeroDay.hero_id == result.hero,
                                                 HeroDay.league == league_id)).first()
         print result.match_id
         print "Hero id: ", result.hero

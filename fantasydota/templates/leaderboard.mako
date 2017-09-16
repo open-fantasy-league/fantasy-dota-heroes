@@ -41,10 +41,6 @@
     % endif
 </%def>
 
-<%def name="friendOrGlobal(switch_to)">
-${"showGlobal=kek" if switch_to == "friend" else "showFriend=kek"}
-</%def>
-
 <%def name="getTime(period)">
 ${"period=%s" % period}
 </%def>
@@ -85,37 +81,43 @@ ${"period=%s" % period}
     <div class="nav-wrapper teal darken-2">
         <ul class="left">
             <li class=${"active" if rank_by=="points" else ""}>
-                <a id="pointsBtn" href="/leaderboard?rank_by=points&${friendOrGlobal(switch_to)}&${getTime(period)}">
+                <a id="pointsBtn" href="/leaderboard?rank_by=points&mode=${mode}&${getTime(period)}">
                     Points
                 </a>
             </li>
             <li class=${"active" if rank_by=="wins" else ""}>
-                <a id="winsBtn" href="/leaderboard?rank_by=wins&${friendOrGlobal(switch_to)}&${getTime(period)}">
+                <a id="winsBtn" href="/leaderboard?rank_by=wins&mode=${mode}&${getTime(period)}">
                     Wins
                 </a>
             </li>
             <li class=${"active" if rank_by=="picks" else ""}>
-                <a id="picksBtn" href="/leaderboard?rank_by=picks&${friendOrGlobal(switch_to)}&${getTime(period)}">
+                <a id="picksBtn" href="/leaderboard?rank_by=picks&mode=${mode}&${getTime(period)}">
                     Picks
                 </a>
             </li>
             <li class=${"active" if rank_by=="bans" else ""}>
-                <a id="bansBtn" href="/leaderboard?rank_by=bans&${friendOrGlobal(switch_to)}&${getTime(period)}">
+                <a id="bansBtn" href="/leaderboard?rank_by=bans&mode=${mode}&${getTime(period)}">
                     Bans
                 </a>
             </li>
-            <li><a id="friendsGlobalBtn" href="/leaderboard?rank_by=${rank_by}&${"showFriend=kek" if switch_to == "friend" else "showGlobal=kek"}&${getTime(period)}">
-                ${switch_to.title()}
-                </a>
+            <li>
+                <a class="dropdown-button" data-beloworigin="true" href="" data-activates="modeDropdown">${mode.title()}<i class="material-icons right">arrow_drop_down</i></a>
             </li>
+            <ul id="modeDropdown" class="dropdown-content">
+                <li><a href="/leaderboard?rank_by=${rank_by}&mode=${mode}">${mode.title()}</a></li>
+                <li class="divider"></li>
+                % for m in other_modes:
+                    <li><a href="/leaderboard?rank_by=${rank_by}&mode=${m}">${m.title()}</a></li>
+                % endfor
+            </ul>
             <li>
                 <a class="dropdown-button" data-beloworigin="true" href="" data-activates="periodDropdown">Period<i class="material-icons right">arrow_drop_down</i></a>
             </li>
             <ul id="periodDropdown" class="dropdown-content">
-                <li><a href="/leaderboard?rank_by=${rank_by}&${friendOrGlobal(switch_to)}&period=tournament">Tournament</a></li>
+                <li><a href="/leaderboard?rank_by=${rank_by}&mode=${mode}&period=tournament">Tournament</a></li>
                 <li class="divider"></li>
                 % for i in range(league.current_day + 1):
-                    <li><a href="/daily?rank_by=${rank_by}&${friendOrGlobal(switch_to)}&period=${i}">Day ${i+1}</a></li>
+                    <li><a href="/daily?rank_by=${rank_by}&mode=${mode}&period=${i}">Day ${i+1}</a></li>
                 % endfor
             </ul>
         </ul>
@@ -131,7 +133,7 @@ ${"period=%s" % period}
             </tr>
             % for i, player in enumerate(players):
                 <tr class=${"playerRow" if not user or player.username != user.username else "userRow"}>
-                    <td class="positionEntry">${i+1} ${progress_arrow(i, player, rank_by) if period == "tournament" else ""}
+                    <td class="positionEntry">${i+1} ${progress_arrow(i, player, rank_by) if period == "tournament" and mode != "hero" else ""}
                     </td>
                     <td class="heroEntry" style=${"color:gold;cursor:help" if player.username in ["seni", "nkgrimreaper", "liquid92"] else ''}
 
@@ -153,7 +155,7 @@ ${"period=%s" % period}
                     <td class="rankingEntry">${rank_by_fn(rank_by, player, False)}</td>
                 </tr>
             % endfor
-            % if user and switch_to == "friend":
+            % if user and mode == "global":
             <tr class="userRow outsideRanks">
                 <td class="userRank">${rank_by_fn(rank_by, user, True)}</td>
                 <td class="heroEntry">${user.username}</td>
