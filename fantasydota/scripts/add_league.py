@@ -1,8 +1,10 @@
 import argparse
 
 import transaction
+from fantasydota.lib.herolist_vals import heroes_init
+
 from fantasydota.lib.session_utils import make_session
-from fantasydota.models import League, LeagueUserDay, User, LeagueUser
+from fantasydota.models import League, LeagueUserDay, User, LeagueUser, HeroDay
 
 
 def main():
@@ -18,6 +20,16 @@ def main():
     session = make_session()
     with transaction.manager:
         session.add(League(args.id, args.name, args.days, args.stage1, args.stage2, url))
+        for add_hero in heroes_init:
+            for i in range(args.days):
+                if i >= args.stage2:
+                    stage = 2
+                elif i >= args.stage1:
+                    stage = 1
+                else:
+                    stage = 0
+                hero = HeroDay(add_hero["id"], add_hero["name"], args.id, i, stage, add_hero["value"])
+                session.add(hero)
         for user in session.query(User).all():
             session.add(LeagueUser(user.id, user.username, args.id))
             for i in range(args.days):
