@@ -27,7 +27,7 @@ def main():
                                       username, 5579, i, stage))
             session.flush()
         for _ in range(5):
-            session.add(TeamHero(user_id, random.choice(heroes)["id"], 5579, 20.0))
+            session.add(TeamHero(user_id, random.choice(heroes)["id"], 5579, 20.0, False))
         session.flush()
     session.commit()
 

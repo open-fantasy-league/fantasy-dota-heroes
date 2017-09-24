@@ -4,7 +4,7 @@ import transaction
 from fantasydota.lib.herolist_vals import heroes_init
 
 from fantasydota.lib.session_utils import make_session
-from fantasydota.models import League, LeagueUserDay, User, LeagueUser, HeroDay
+from fantasydota.models import League, LeagueUserDay, User, LeagueUser, HeroDay, Hero
 
 
 def main():
@@ -20,6 +20,10 @@ def main():
     session = make_session()
     with transaction.manager:
         session.add(League(args.id, args.name, args.days, args.stage1, args.stage2, url))
+        session.flush()
+        for add_hero in heroes_init:
+            hero = Hero(add_hero["id"], add_hero["name"], add_hero["value"], args.id)
+            session.add(hero)
         for add_hero in heroes_init:
             for i in range(args.days):
                 if i >= args.stage2:

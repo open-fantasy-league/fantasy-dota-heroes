@@ -149,8 +149,6 @@ def do_guess(request):
                                                                           }))
 
 
-
-
 def get_time_range(time_range):
     if time_range == 'week':
         date_start = datetime.datetime.now() - datetime.timedelta(days=7)

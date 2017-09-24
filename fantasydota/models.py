@@ -79,6 +79,7 @@ class League(Base):
     name = Column(String(100), nullable=False)
     status = Column(Integer, default=0)  # 0 not started. 1 is running. 2 is ended
     transfer_open = Column(Boolean, default=False)
+    swap_open = Column(Boolean, default=False)
     current_day = Column(Integer, default=0)
     days = Column(Integer)
     stage1_start = Column(Integer)
@@ -101,6 +102,7 @@ class LeagueUser(Base):
     username = Column(String(50), ForeignKey(User.username), nullable=False)
     league = Column(Integer, ForeignKey(League.id), index=True)
     money = Column(Float, default=50.0)
+    reserve_money = Column(Float, default=50.0)
     points = Column(Float, default=0.0)
     picks = Column(Integer, default=0)
     bans = Column(Integer, default=0)
@@ -209,14 +211,16 @@ class TeamHero(Base):
     hero_name = Column(String(100))#, ForeignKey(Hero.name))
     league = Column(Integer, ForeignKey(League.id), index=True, nullable=False)
     cost = Column(Float)
+    reserve = Column(Boolean)
     UniqueConstraint('league', 'hero_id', 'user_id')
 
-    def __init__(self, user_id, hero_id, league, cost, **kwargs):
+    def __init__(self, user_id, hero_id, league, cost, reserve, **kwargs):
         self.user_id = user_id
         self.hero_id = hero_id
         self.hero_name = kwargs.get("hero_name", (item for item in heroes if item["id"] == hero_id).next()["name"])
         self.league = league
         self.cost = cost
+        self.reserve = reserve
 
 
 class Sale(Base):

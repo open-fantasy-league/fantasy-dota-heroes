@@ -50,13 +50,11 @@ def main(global_config, **settings):
 
     # Need https set up on local machine for secure True to work locally
     authn_policy = AuthTktAuthenticationPolicy(settings.get('authn_policy_secr'), hashalg='sha512', http_only=True,
-                                               secure=True,
+                                               #secure=True,
                                                max_age=10000000)
     authz_policy = ACLAuthorizationPolicy()
 
     my_session_factory = session_factory_from_settings(settings)
-    # my_session_factory = UnencryptedCookieSessionFactoryConfig('itsaseekreet', cookie_max_age=10000000,
-    #                                                            cookie_httponly=True)
 
     config = Configurator(settings=settings, session_factory=my_session_factory, authentication_policy=authn_policy,
         authorization_policy=authz_policy,)
@@ -98,6 +96,8 @@ def main(global_config, **settings):
     config.add_route("add_friend", '/addFriend')
     config.add_route('buy_hero', '/buyHero')
     config.add_route('sell_hero', '/sellHero')
+    config.add_route('swap_in_hero', '/swapInHero')
+    config.add_route('swap_out_hero', '/swapOutHero')
     config.add_route('leaderboard', '/leaderboard')
     config.add_route('daily', '/daily')
     config.add_route('matches', '/matches')
