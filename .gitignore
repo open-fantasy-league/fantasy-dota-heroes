@@ -4,3 +4,5 @@ production.ini
 data/*
 build
 dist
+.idea
+*.swp
