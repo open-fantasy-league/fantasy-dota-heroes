@@ -70,7 +70,7 @@ def main(global_config, **settings):
     init_social(config, Base, DBSession)  # is this the right place?
     Base.metadata.bind = engine
     Base.metadata.create_all(engine)
-    create_tables(DBSession) #already created!
+    #create_tables(DBSession) #already created!
 
     config.include('social_pyramid')
     config.scan('social_pyramid')
@@ -106,5 +106,7 @@ def main(global_config, **settings):
     config.add_route('hall_of_fame', '/hallOfFame')
     config.add_route('guess_the_hero', '/guessHero')
     config.add_route('do_guess', '/doGuess')
+    config.add_route('neuralnet', '/neuralnet')
+    config.add_route('neuralnet_post', '/neuralnet_post')
     config.scan()
     return config.make_wsgi_app()

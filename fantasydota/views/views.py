@@ -17,6 +17,7 @@ from sqlalchemy import desc
 from sqlalchemy import func
 
 from fantasydota.lib.items import ITEMS
+from fantasydota.lib.neuralnets import get_prediction
 from fantasydota.models import (
     DBSession,
     Friend, User, GuessUser, HeroGame, ItemBuild)
@@ -147,6 +148,28 @@ def do_guess(request):
                                                                           "correct_hero": correct_hero,
                                                                           "success": success
                                                                           }))
+
+
+@view_config(route_name="neuralnet", renderer="../templates/ai.mako")
+def neuralnet(request):
+    heroes_ = heroes
+    return {"heroes": heroes_}
+
+
+@view_config(route_name="neuralnet_post", renderer="json")
+def neuralnet_post(request):
+    data = request.json
+    pickbans_in = data["pickbans"]
+    use_max = data["use_max"]
+    allow_dupes = data["allow_dupes"]
+    use_rnn = data["use_rnn"]
+    new_pick_bans = get_prediction(data)
+
+    data["success"] = True
+    data["message"] = "Beep Blop! Draft completed."
+    new_pick_bans = ["Crystal Maiden", "Nightstalker"]
+    data["pickbans"] = new_pick_bans
+    return data
 
 
 
