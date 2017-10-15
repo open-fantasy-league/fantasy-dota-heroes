@@ -1,3 +1,5 @@
+import json
+
 import requests
 
 
@@ -6,5 +8,6 @@ def get_prediction(data):
     use_max = data["use_max"]
     allow_dupes = data["allow_dupes"]
     use_rnn = data["use_rnn"]
-    r = requests.post("http://localhost:5000", data=data, allow_redirects=True)
-    return r.content
+    headers = {'Content-type': 'application/json'}
+    r = requests.post("http://127.0.0.1:5000/", data=json.dumps(data), headers=headers)
+    return r.content, r.status_code

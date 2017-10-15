@@ -159,19 +159,17 @@ def neuralnet(request):
 @view_config(route_name="neuralnet_post", renderer="json")
 def neuralnet_post(request):
     data = request.json
-    pickbans_in = data["pickbans"]
-    use_max = data["use_max"]
-    allow_dupes = data["allow_dupes"]
-    use_rnn = data["use_rnn"]
-    new_pick_bans = get_prediction(data)
+    resp, status = get_prediction(data)
 
-    data["success"] = True
-    data["message"] = "Beep Blop! Draft completed."
-    new_pick_bans = ["Crystal Maiden", "Nightstalker"]
-    data["pickbans"] = new_pick_bans
+    if status != 200:
+        data["success"] = False
+        data["message"] = "Blop Bloop. I dun fucked up. sorry."
+    else:
+        new_data = json.loads(resp)
+        data["success"] = new_data["success"]
+        data["message"] = new_data["message"] or "Beep Blop! Draft completed."
+        data["pickbans"] = new_data["pick_ban"]
     return data
-
-
 
 
 def get_time_range(time_range):
