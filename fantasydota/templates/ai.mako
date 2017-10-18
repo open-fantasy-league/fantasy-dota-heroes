@@ -55,6 +55,8 @@
         <input type="checkbox" class="filled-in" name="useMax" id="useMax">
         <label for="useMax">Use Max (Always select hero with maximum probability. Rather than making random weighted choice)</label>
         <button type="submit" name="draft" class="btn waves-effect waves-light" id="draftBtn">Draft!</button>
+        <button type="submit" name="clear" class="btn waves-effect waves-light" id="clearBtn">Clear</button>
+    </form>
     </form>
 </div>
 

@@ -46,4 +46,8 @@ var draftOnclick = function draftOnclick(event){
     });
 }
 
+var clearOnclick = function clearOnclick(){
+	$("input[name^=pickban]").each(function(){this.value = "";});
+}
 $("#draftBtn").click(draftOnclick);
+$("#clearBtn").click(clearOnclick);
