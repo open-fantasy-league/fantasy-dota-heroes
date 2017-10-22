@@ -1,4 +1,3 @@
-from fantasydota.lib.herolist import heroes as herolist
 from pyramid.security import authenticated_userid
 from pyramid.view import view_config
 from sqlalchemy import and_
@@ -6,9 +5,10 @@ from sqlalchemy import desc
 from sqlalchemy import or_
 
 from fantasydota import DBSession
+from fantasydota.lib.herolist import heroes as herolist
 from fantasydota.models import Friend, LeagueUser, LeagueUserDay, TeamHero, League, Match, Result, TeamHeroHistoric, \
     HeroDay, Hero
-from fantasydota.lib.constants import MULTIPLIER
+
 
 @view_config(route_name='leaderboard', renderer='../templates/leaderboard.mako')
 def leaderboard(request):
@@ -46,7 +46,7 @@ def leaderboard(request):
 
     player_heroes = []
     league = session.query(League).filter(League.id == league_id).first()
-    leagueq = session.query(LeagueUser).filter(LeagueUserDay.league == league_id).filter(LeagueUser.user_id.in_(users_playing))
+    leagueq = session.query(LeagueUser).filter(LeagueUser.league == league_id).filter(LeagueUser.user_id.in_(users_playing))
     luser = leagueq.filter(LeagueUser.user_id == user_id).first()
     if mode == "friend":
         players = leagueq.filter(or_(LeagueUser.user_id.in_(friends), LeagueUser.user_id == user_id)). \
@@ -57,6 +57,7 @@ def leaderboard(request):
             setattr(p, "%s_rank" % rank_by, i + 1)
     else:
         players = leagueq.order_by(desc(rank_)).limit(100).all()
+        bprint(players)
 
     for player in players:
         if mode == "hero":
@@ -70,32 +71,10 @@ def leaderboard(request):
                             heroes.append(hero.hero_name)
             else:
                 for hero in session.query(TeamHero).filter(and_(TeamHero.user_id == player.user_id,
-                                                                        TeamHero.league == league_id)).all():
+                                                                        TeamHero.league == league_id))\
+                        .filter(TeamHero.reserve.is_(False)).all():
                             heroes.append(hero.hero_name)
             player_heroes.append(heroes)
-
-    # player_heroes = []
-    # league = session.query(League).filter(League.id == league_id).first()
-    # leagueq = session.query(LeagueUser).filter(LeagueUser.league == league_id).filter(LeagueUser.user_id.in_(users_playing))
-    # luser = leagueq.filter(LeagueUser.user_id == user_id).first()
-    # if mode == "friend":
-    #     players = leagueq.filter(LeagueUser.user_id.in_(friends)).\
-    #         order_by(desc(rank_)).limit(100).all()
-    # else:
-    #     players = leagueq.order_by(desc(rank_)).order_by(desc(LeagueUser.points)).order_by(desc(LeagueUser.wins)).limit(100).all()
-    #
-    # for player in players:
-    #     heroes = []
-    #     if league.transfer_open:
-    #         for hero in session.query(TeamHeroHistoric).filter(
-    #                 and_(TeamHeroHistoric.user_id == player.user_id, TeamHeroHistoric.league == league_id)).\
-    #                 filter(TeamHeroHistoric.day == league.current_day - 1).all():
-    #             heroes.append(hero.hero_name)
-    #     else:
-    #         for hero in session.query(TeamHero).filter(and_(TeamHero.user_id == player.user_id,
-    #                                                         TeamHero.league == league_id)).all():
-    #             heroes.append(hero.hero_name)
-    #     player_heroes.append(heroes)
 
     return {'user': luser, 'players': players, 'rank_by': rank_by, 'mode': mode, 'other_modes': other_modes, 'period': "tournament",
             'player_heroes': player_heroes, 'league': league}
@@ -156,7 +135,8 @@ def daily(request):
             heroes = []
             if period == league.current_day:
                 for hero in session.query(TeamHero).filter(
-                        and_(TeamHero.user_id == player.user_id, TeamHero.league == league_id)).all():
+                        and_(TeamHero.user_id == player.user_id, TeamHero.league == league_id)).\
+                        filter(TeamHero.reserve.is_(False)).all():
                     heroes.append(hero.hero_name)
             else:
                 for hero in session.query(TeamHeroHistoric).filter(
@@ -196,33 +176,3 @@ def daily(request):
         match_data.append(match_dict)
     return {'user': luser, 'players': players, 'rank_by': rank_by, 'mode': mode, 'period': period,
             'player_heroes': player_heroes, 'league': league, 'match_data': match_data, 'other_modes': other_modes}
-
-
-@view_config(route_name='matches', renderer='json')
-def matches(request):
-    session = DBSession()
-    day = request.POST.get("day")
-    data = []
-    matches = session.query(Match).filter(Match.day == day).all()
-    for match in matches:
-        match_dict = {
-            "radiant": match.radiant_team, "dire": match.dire_team, "radiant_win": match.radiant_win,
-            "match_id": match.match_id, "radiant_bans": [], "dire_bans": [], "radiant_picks": [],
-            "dire_picks": []
-        }
-        for result in session.query(Result).filter(Result.match_id == match.match_id).all():
-            result_entry = {"hero": [h["name"] for h in herolist if h["id"] == result.hero][0],
-                            "points": MULTIPLIER * Result.result_to_value(result.result_str)
-                            }
-            if result.is_radiant:
-                if result.result_str[0] == "p":
-                    match_dict["radiant_picks"].append(result_entry)
-                else:
-                    match_dict["radiant_bans"].append(result_entry)
-            else:
-                if result.result_str[0] == "p":
-                    match_dict["dire_picks"].append(result_entry)
-                else:
-                    match_dict["dire_bans"].append(result_entry)
-        data.append(match_dict)
-    return data

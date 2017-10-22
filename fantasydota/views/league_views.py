@@ -1,4 +1,5 @@
-from pyramid.security import authenticated_userid
+from pyramid.httpexceptions import HTTPFound
+from pyramid.security import authenticated_userid, forget
 from pyramid.view import view_config
 from sqlalchemy import and_
 
@@ -40,14 +41,17 @@ def view_league(request):
         team = []
         username = ""
         reserve_team = []
-        #return HTTPFound('/login')
     else:
 
         userq = session.query(LeagueUser).filter(and_(
             LeagueUser.league == league.id, LeagueUser.user_id == user_id
         )).first()
         if not userq:
-            username = session.query(User.username).filter(User.id == user_id).first()[0]
+            try:
+                username = session.query(User.username).filter(User.id == user_id).first()[0]
+            except TypeError:
+                headers = forget(request)
+                return HTTPFound(location='/login', headers=headers)
             user_league = LeagueUser(user_id, username, league.id)
             session.add(user_league)
             for i in range(league.days):
@@ -70,7 +74,6 @@ def view_league(request):
         username = session.query(User.username).filter(User.id == user_id).first()[0]
     heroes = session.query(Hero).filter(Hero.league == league_id).all()
 
-    #transfer_open = True if request.registry.settings["transfers"] else False
     return {'username': username, 'userq': userq, 'team': team, 'heroes': heroes, 'message': message,
             'message_type': message_type, 'league': league, 'reserve_team': reserve_team}
 
@@ -83,7 +86,6 @@ def sell_hero(request):
         return {"success": False, "message": "Please create an account to play! :)"}
 
     hero_id = request.POST["hero"]
-    # transfer_think_open = request.POST["transfer"] really doesnt matter what the user thinks! :D
     league_id = request.POST["league"]
     reserve = bool(int(request.POST["reserve"]))
     transfer_actually_open = session.query(League.transfer_open).filter(League.id == league_id).first()[0]
@@ -103,7 +105,6 @@ def buy_hero(request):
     hero_id = int(request.POST["hero"])
     league_id = int(request.POST["league"])
     reserve = bool(int(request.POST["reserve"]))
-    # transfer_think_open = request.POST["transfer"] really doesnt matter what the user thinks! :D
     transfer_actually_open = session.query(League.transfer_open).filter(League.id == league_id).first()[0]
     if not transfer_actually_open:
         return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
@@ -120,10 +121,9 @@ def swap_in_hero(request):
 
     hero_id = int(request.POST["hero"])
     league_id = int(request.POST["league"])
-    # transfer_think_open = request.POST["transfer"] really doesnt matter what the user thinks! :D
     transfer_actually_open = session.query(League.swap_open).filter(League.id == league_id).first()[0]
     if not transfer_actually_open:
-        return {"success": False, "message": "Swap window just open/closed. Please reload page"}
+        return {"success": False, "message": "Swap window just open/closed. If your team was incomplete it has been reset to yesterday's starting lineup"}
 
     return swap_in(session, user_id, hero_id, league_id)
 
@@ -137,9 +137,8 @@ def swap_out_hero(request):
 
     hero_id = int(request.POST["hero"])
     league_id = int(request.POST["league"])
-    # transfer_think_open = request.POST["transfer"] really doesnt matter what the user thinks! :D
     transfer_actually_open = session.query(League.swap_open).filter(League.id == league_id).first()[0]
     if not transfer_actually_open:
-        return {"success": False, "message": "Swap window just open/closed. Please reload page"}
+        return {"success": False, "message": "Swap window just open/closed. If your team was incomplete it has been reset to yesterday's starting lineup"}
 
     return swap_out(session, user_id, hero_id, league_id)

@@ -1,6 +1,6 @@
 from sqlalchemy import and_
 
-from fantasydota.models import League, Hero, TeamHero, LeagueUser, Sale
+from fantasydota.models import Hero, TeamHero, LeagueUser, Sale, TeamHeroHistoric
 
 
 def sell(session, user_id, hero_id, league_id, reserve):
@@ -126,3 +126,18 @@ def swap_out(session, user_id, hero_id, league_id):
             return {"success": False, "message": "ERROR: Cannot sell, hero not in your team"}
 
     return {"success": False, "message": "Erm....you don't appear to be in this league. This is awkward"}
+
+
+def reset_incomplete_teams(session, league):
+    for luser in session.query(LeagueUser).filter(LeagueUser.league == league.id).all():
+        thero_q = session.query(TeamHero).filter(TeamHero.user_id == luser.user_id).filter(TeamHero.league == league.id)
+        hero_count = thero_q.filter(TeamHero.reserve.is_(False)).count()
+        if hero_count < 5:
+            old_heroes = session.query(TeamHeroHistoric).filter(TeamHeroHistoric.user_id == luser.user_id).\
+                filter(TeamHeroHistoric.league == league.id).filter(TeamHeroHistoric.day == league.current_day - 1).all()
+            if len(old_heroes) == 5:
+                thero_q.update({TeamHero.reserve: True})
+                thero_q.filter(TeamHero.hero_id.in_([h.hero_id for h in old_heroes])).update({TeamHero.reserve: False},
+                                                                                             synchronize_session='fetch')
+                old_value = sum(h.cost for h in old_heroes)
+                luser.money = 50 - old_value

@@ -59,7 +59,7 @@ def set_old_rankings(session, league):
 
 
 def store_todays_teams(session, league):
-    for th in session.query(TeamHero).filter(TeamHero.league == league.id).all():
+    for th in session.query(TeamHero).filter(TeamHero.league == league.id).filter(TeamHero.reserve.is_(False)).all():
         day = league.current_day
         session.add(TeamHeroHistoric(th.user_id, th.hero_id, th.league, th.cost, day))
 
@@ -68,12 +68,11 @@ def main():
     with transaction.manager:
         session = make_session()
         for league in session.query(League).filter(League.status == 1).all():
-           set_old_rankings(session, league)
-           #store_todays_teams(session, league)
+           # set_old_rankings(session, league)
+           store_todays_teams(session, league)
 
-           #recalibrate_hero_values(session, league.id)
-           #league.current_day += 1
-           #league.transfer_open = True
+           league.current_day += 1
+           league.swap_open = True
         transaction.commit()
 
 if __name__ == "__main__":

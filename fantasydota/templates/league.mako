@@ -23,7 +23,8 @@
 </%def>
 
 <div class="row" id="myTeamBlock">
-    <h2>My Team (Total points <span class="teamPoints">${userq.points}</span>)</h2>
+    <span class="left"><h2>My Team (Credits: <span class="userCredits">${round(userq.money, 1)}</span>)</h2></span>
+    <span class="right"><h2>Total points: <span class="teamPoints">${userq.points}</span></h2></span>
     <div id="tableContainer">
         <table class="sortable responsive-table card-table striped centered" id="teamTable">
             <tr style="cursor: pointer">
@@ -60,7 +61,11 @@
 </div>
 
 <div class="row" id="myReserveBlock">
-    <h2>My Reserves</h2>
+    % if league.transfer_open:
+        <span class="left"><h2>My Reserves (Credits: <span class="userReserveCredits">${round(userq.reserve_money, 1)}</span>)</h2></span>
+    % else:
+        <span class="left"><h2>My Reserves</h2></span>
+    % endif
     <div id="tableContainer">
         <table class="sortable responsive-table card-table striped centered" id="reserveTable">
             <tr style="cursor: pointer">
@@ -107,7 +112,11 @@
     </div>
 </div>
 <div id="heroesBlock" class="row">
-    <h2>Heroes (Credits Available: <span class="userCredits">${round(userq.money, 1)}</span>, Reserve Credits: <span class="userReserveCredits">${round(userq.reserve_money, 1)}</span>)</h2>
+    % if league.transfer_open:
+        <h2>Heroes (Credits Available: <span class="userCredits">${round(userq.money, 1)}</span>, Reserve Credits: <span class="userReserveCredits">${round(userq.reserve_money, 1)}</span>)</h2>
+    % else:
+        <h2>Heroes</h2>
+    % endif
     <div id="tableContainer">
         <table class="sortable responsive-table card-table striped centered">
             <tr style="cursor: pointer">

@@ -29,7 +29,8 @@ def update_league_points(session, league):
     for i, result in enumerate(new_results):
         res = result.result_str
         winners = session.query(TeamHero.user_id). \
-            filter(and_(TeamHero.hero_id == result.hero, TeamHero.league == league_id)).all()
+            filter(and_(TeamHero.hero_id == result.hero, TeamHero.league == league_id)).filter(TeamHero.reserve.is_(False))\
+            .all()
         for winner in winners:
             userq = session.query(LeagueUser).filter(and_(LeagueUser.user_id == winner[0],
                                                           LeagueUser.league == league_id)).first()
@@ -39,7 +40,8 @@ def update_league_points(session, league):
                                                             LeagueUserDay.day == league.current_day
                                                                  )).first()
             hero_count = session.query(func.count(TeamHero)).filter(and_(TeamHero.league == league_id,
-                                                                         TeamHero.user_id == user_id)).scalar()
+                                                                         TeamHero.user_id == user_id)).filter(TeamHero.reserve.is_(False))\
+                .scalar()
 
             add_result_to_user(userq, res, hero_count)
             add_result_to_user(userq_day, res, hero_count)

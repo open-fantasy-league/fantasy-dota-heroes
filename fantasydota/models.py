@@ -211,7 +211,7 @@ class TeamHero(Base):
     hero_name = Column(String(100))#, ForeignKey(Hero.name))
     league = Column(Integer, ForeignKey(League.id), index=True, nullable=False)
     cost = Column(Float)
-    reserve = Column(Boolean)
+    reserve = Column(Boolean, index=True)
     UniqueConstraint('league', 'hero_id', 'user_id')
 
     def __init__(self, user_id, hero_id, league, cost, reserve, **kwargs):

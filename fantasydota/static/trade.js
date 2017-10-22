@@ -34,7 +34,7 @@ else{
                         else{
                             addToTeam(data.hero, reserve);
                         }
-                        reserve ? $(".userReserveCredits").text(data.new_credits) : $(".userCredits").text(data.new_credits);
+                        reserve ? $(".userReserveCredits").each(function(){$(this).text(data.new_credits)}) : $(".userCredits").each(function(){$(this).text(data.new_credits)});
                     }
                 },
                 failure: function(data){
@@ -91,8 +91,8 @@ else{
     $("[name=swapInHero]").add("[name=swapOutHero]").each(function(){$(this).removeAttr("disabled");})
 
     function doTrade(event, action){
-        var formID = event.data.form.attr('id'),
-        tradeUrl = action,
+        var formID = event.data.form.attr('id');
+        var tradeUrl = action;
         var formData = {
             "hero": event.data.form.find('input[name=tradeHero]').val(),
             "league": league_id,
@@ -118,7 +118,7 @@ else{
                         $("#" + data.hero + "ReserveRow").remove();
                         addToTeam(data.hero, false);
                     }
-                    $(".userCredits").text(data.new_credits);
+                    $(".userCredits").each(function() { $(this).text(data.new_credits)});
                 }
             },
             failure: function(data){

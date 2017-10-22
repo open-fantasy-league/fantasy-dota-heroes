@@ -16,6 +16,7 @@ LEAGUE_LISTING = "http://api.steampowered.com/IDOTA2Match_570/GetLeagueListing/v
 
 
 def dont_piss_off_valve_but_account_for_sporadic_failures(req_url):
+    print("requesting {0}".format(req_url))
     fuck = True  # no idea why this failing. im waiting long enough to not piss off valve?
     sleep_time = 1
     while fuck:

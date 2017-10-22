@@ -1,7 +1,6 @@
-from sqlalchemy import and_
-
 from fantasydota.lib.session_utils import make_session
-from fantasydota.models import League, TeamHero
+from fantasydota.lib.trade import reset_incomplete_teams
+from fantasydota.models import League
 
 
 def start_of_day():
@@ -11,6 +10,8 @@ def start_of_day():
         #     League.transfer_open: 0
         # })
         league.transfer_open = False  # close league window if not already closed
+        league.swap_open = False
+        reset_incomplete_teams(session, league)
     session.commit()
 
 
