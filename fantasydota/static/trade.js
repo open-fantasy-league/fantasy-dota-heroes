@@ -68,7 +68,7 @@ else{
 
     function addToTeam(hero, reserve){
         var new_row = $("#" + hero + "Row").clone();
-        new_row.find(".tradeEntry")[0].remove();
+        reserve ? new_row.find(".tradeEntry")[0].remove() : new_row.find(".tradeEntry")[1].remove();
         reserve ? new_row.attr('id', hero + "ReserveRow") : new_row.attr('id', hero + "TeamRow");
         new_row.find("button").replaceWith('<button type="submit" name="sellHero" class="btn waves-effect waves-light">Sell</button>');
         var form = new_row.find(".tradeForm");
