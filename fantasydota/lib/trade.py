@@ -1,3 +1,4 @@
+import time
 from sqlalchemy import and_
 
 from fantasydota.models import Hero, TeamHero, LeagueUser, Sale, TeamHeroHistoric
@@ -99,6 +100,7 @@ def swap_in(session, user_id, hero_id, league_id):
     else:
         l_user.money = new_credits
         swap_hero.reserve = False
+        l_user.last_change = int(time.time())
     return {"success": True, "message": "Hero successfully Added",
             "action": "buy", "hero": hero_id,
             "new_credits": new_credits}
@@ -120,6 +122,7 @@ def swap_out(session, user_id, hero_id, league_id):
             new_credits = round(user_money + hero_value, 1)
             l_user.money = new_credits
             check_hero_res.reserve = 1
+            l_user.last_change = int(time.time())
             return {"success": True, "message": "Hero successfully sold", "action": "sell", "hero": hero_id,
                     "new_credits": new_credits}
         else:
@@ -130,14 +133,15 @@ def swap_out(session, user_id, hero_id, league_id):
 
 def reset_incomplete_teams(session, league):
     for luser in session.query(LeagueUser).filter(LeagueUser.league == league.id).all():
-        thero_q = session.query(TeamHero).filter(TeamHero.user_id == luser.user_id).filter(TeamHero.league == league.id)
-        hero_count = thero_q.filter(TeamHero.reserve.is_(False)).count()
-        if hero_count < 5:
-            old_heroes = session.query(TeamHeroHistoric).filter(TeamHeroHistoric.user_id == luser.user_id).\
-                filter(TeamHeroHistoric.league == league.id).filter(TeamHeroHistoric.day == league.current_day - 1).all()
-            if len(old_heroes) == 5:
-                thero_q.update({TeamHero.reserve: True})
-                thero_q.filter(TeamHero.hero_id.in_([h.hero_id for h in old_heroes])).update({TeamHero.reserve: False},
-                                                                                             synchronize_session='fetch')
-                old_value = sum(h.cost for h in old_heroes)
-                luser.money = 50 - old_value
+        if int(time.time()) - luser.last_change < 300:
+            thero_q = session.query(TeamHero).filter(TeamHero.user_id == luser.user_id).filter(TeamHero.league == league.id)
+            hero_count = thero_q.filter(TeamHero.reserve.is_(False)).count()
+            if hero_count < 5:
+                old_heroes = session.query(TeamHeroHistoric).filter(TeamHeroHistoric.user_id == luser.user_id).\
+                    filter(TeamHeroHistoric.league == league.id).filter(TeamHeroHistoric.day == league.current_day - 1).all()
+                if len(old_heroes) == 5:
+                    thero_q.update({TeamHero.reserve: True})
+                    thero_q.filter(TeamHero.hero_id.in_([h.hero_id for h in old_heroes])).update({TeamHero.reserve: False},
+                                                                                                 synchronize_session='fetch')
+                    old_value = sum(h.cost for h in old_heroes)
+                    luser.money = 50 - old_value

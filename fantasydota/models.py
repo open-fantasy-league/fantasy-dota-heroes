@@ -15,6 +15,7 @@ from sqlalchemy import UniqueConstraint
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
 from zope.sqlalchemy import ZopeTransactionExtension
+import time
 
 from fantasydota.lib.herolist import heroes
 
@@ -115,6 +116,7 @@ class LeagueUser(Base):
     old_wins_rank = Column(Integer)
     old_picks_rank = Column(Integer)
     old_bans_rank = Column(Integer)
+    last_change = Column(BigInteger, default=int(time.time()))
 
     def __init__(self, user_id, username, league):
         self.user_id = user_id
@@ -221,26 +223,6 @@ class TeamHero(Base):
         self.league = league
         self.cost = cost
         self.reserve = reserve
-
-
-class Sale(Base):
-    __tablename__ = "sale"
-    sale_id = Column(Integer, Sequence('sale_id'), primary_key=True)
-    user = Column(Integer, ForeignKey('league_user.id'), nullable=False, index=True)  # index true?
-    hero = Column(Integer, ForeignKey('hero.id'), nullable=False, index=True)
-    league_id = Column(Integer, ForeignKey('league.id'), nullable=False, index=True)
-    date = Column(DateTime, nullable=False, default=func.now())
-    value = Column(Integer, nullable=False)
-    cost = Column(Integer, nullable=False)
-    is_buy = Column(Boolean, nullable=False)
-
-    def __init__(self, user, hero, league_id, value, cost, is_buy):
-        self.user = user
-        self.hero = hero
-        self.league_id = league_id
-        self.value = value
-        self.cost = cost
-        self.is_buy = is_buy
 
 
 class Result(Base):
