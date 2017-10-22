@@ -30,7 +30,7 @@
             </p>
             % if success != True:
             <p>
-                Correct hero was <a href="https://www.dotabuff.com/matches/${match_id}" target="_blank">${correct_hero}</a>
+                Correct hero was <a href="https://www.stratz.com/match/${match_id}" target="_blank">${correct_hero}</a>
             </p>
             % endif
         </div>

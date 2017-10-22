@@ -16,7 +16,7 @@ def main():
     parser.add_argument("stage1", type=int, help="when group stage starts")
     parser.add_argument("stage2", type=int, help="when main event starts")
     args = parser.parse_args()
-    url = "http://wiki.teamliquid.net/dota2/The_International/2017"
+    url = "http://wiki.teamliquid.net/dota2/ESL_One/Hamburg/2017"
 
     session = make_session()
     with transaction.manager:
