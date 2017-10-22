@@ -42,7 +42,7 @@ def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
     settings["league_transfers"] = True  # why wont config file properly set this?
-    settings["default_league"] = 5579
+    settings["default_league"] = 5609
     sqlalchemy_url = os.path.expandvars(settings.get('sqlalchemy.url'))
     engine = create_engine(sqlalchemy_url, echo=False, pool_size=100, pool_recycle=3600)
     event.listen(engine, 'checkout', checkout_listener)

@@ -8,7 +8,7 @@ from fantasydota.lib.session_utils import make_session
 
 def main():
     session = make_session()
-    write_calibration(squeeze_values_together(calibrate_all_hero_values(session, patch=True)))
+    write_calibration(squeeze_values_together(calibrate_all_hero_values(session, patch=False)))
 
 if __name__ == "__main__":
     main()

@@ -143,10 +143,22 @@ def add_matches_guesser(session, tournament_id, tstamp_from):
 def main():
     session = make_session()
     #session2 = make_session(False)
-    add_matches(session, 5579, 1501687737)
-    # for calibration for esl genting
-    #add_matches(session, 5401, 1501687737)  # TI7. games are qualifiers
-    #add_matches(session, 4682, t)  # https://www.dotabuff.com/esports/leagues/4665
+    #add_matches(session, 5609, 1508672372)
+
+    # for calibration for esl hamburg
+    add_matches(session, 5616, 1505867329)
+    add_matches(session, 5651, 1505867329)
+    add_matches(session, 5522, 1505867329)
+    add_matches(session, 5175, 1505867329)
+    add_matches(session, 5562, 1505867329)
+    add_matches(session, 4820, 1505867329)
+    add_matches(session, 5556, 1505867329)
+    add_matches(session, 5609, 1505867329)
+    add_matches(session, 4669, 1505867329)
+    add_matches(session, 4920, 1505867329)
+    add_matches(session, 5336, 1505867329)
+    add_matches(session, 5690, 1505867329)
+    add_matches(session, 5609, 1505867329)
 
 if __name__ == "__main__":
     main()

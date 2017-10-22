@@ -54,12 +54,12 @@ This is so that people do not just instantly fill their team with the most imba-
 A little bit of thought has to be put in to trade-off pick-rate with bonus points for less in demand heroes
 </p>
     </div>
-    <h2>Why is there a big points multiplier for main event?</h2>
-    <div class="card-panel">
-<p>
-Because there are so many group games compared to main event, in the past, the tournament would be pretty much decided after the group stage.<br>
-    If you weren't top ~15 after group stage...might as well give up.<br>
-    With these multipliers you can still come back and win after a mediocre group stage performance.
-</p>
-    </div>
+    <!--<h2>Why is there a big points multiplier for main event?</h2>-->
+    <!--<div class="card-panel">-->
+<!--<p>-->
+<!--Because there are so many group games compared to main event, in the past, the tournament would be pretty much decided after the group stage.<br>-->
+    <!--If you weren't top ~15 after group stage...might as well give up.<br>-->
+    <!--With these multipliers you can still come back and win after a mediocre group stage performance.-->
+<!--</p>-->
+    <!--</div>-->
 </div>

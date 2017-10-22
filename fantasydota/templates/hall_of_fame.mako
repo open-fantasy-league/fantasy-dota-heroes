@@ -40,6 +40,11 @@
         </tr>
         <tr>
             <td>The International 2017</td>
+            <td>Yuridaisuki</td>
+            <td>Saranglaba</td>
+        </tr>
+        <tr>
+            <td>ESL Hamburg [Major]</td>
             <td>-</td>
             <td>-</td>
         </tr>

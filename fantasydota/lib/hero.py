@@ -126,7 +126,7 @@ def write_calibration(new_heroes_list):
 
 
 def calibrate_value(average_points, our_points):
-    output = ((float(our_points) / float(average_points)) * 9.1 * 3 + 9.1) / 4.
+    output = ((float(our_points) / float(average_points)) * 9.8 * 3 + 9.8) / 4.
     if output < 1.0:  # dont get into negative price shenanigans
         output = 1.0
     return output

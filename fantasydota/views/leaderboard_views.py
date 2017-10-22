@@ -57,7 +57,6 @@ def leaderboard(request):
             setattr(p, "%s_rank" % rank_by, i + 1)
     else:
         players = leagueq.order_by(desc(rank_)).limit(100).all()
-        bprint(players)
 
     for player in players:
         if mode == "hero":

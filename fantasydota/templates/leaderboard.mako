@@ -135,9 +135,9 @@ ${"period=%s" % period}
                 <tr class=${"playerRow" if not user or player.username != user.username else "userRow"}>
                     <td class="positionEntry">${i+1} ${progress_arrow(i, player, rank_by) if period == "tournament" and mode != "hero" else ""}
                     </td>
-                    <td class="heroEntry" style=${"color:gold;cursor:help" if player.username in ["seni", "nkgrimreaper", "liquid92"] else ''}
+                    <td class="heroEntry" style=${"color:gold;cursor:help" if player.username in ["seni", "nkgrimreaper", "liquid92", "yuridaisuki"] else ''}
 
-            title=${"Previous-Champion"  if player.username in ["seni", "nkgrimreaper", "liquid92"] else ''}>
+            title=${"Previous-Champion"  if player.username in ["seni", "nkgrimreaper", "liquid92", "yuridaisuki"] else ''}>
                         <span style="vertical-align:middle">
 
                         % if player.username == "yuridaisuki":
@@ -177,8 +177,7 @@ $( document ).ready(function() {
 </script>
 <div id="friendBlock" class="col s5">
     <div class="card-panel">
-	<p><b>Thanks for playing everyone! See you next tournament with more hopefully more features!</b></p>
-	<p>2x points multiplier active for main event. 4x multiplier for finals day</p>
+	<p>2x points multiplier for finals day</p>
         <p>Results updated ~2 minutes after match ends</p>
         <p><a href="https://discord.gg/MAH7EEv" target="_blank">Discord channel for suggestions/improvements</a></p>
         <p>Statistics provided by <a href="https://www.stratz.com" target="_blank">Stratz Esports <img src="/static/images/stratz_icon.png"/></a></p>

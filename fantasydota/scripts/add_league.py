@@ -8,6 +8,7 @@ from fantasydota.models import League, LeagueUserDay, User, LeagueUser, HeroDay,
 
 
 def main():
+    # 4 2 4
     parser = argparse.ArgumentParser()
     parser.add_argument("id", type=int, help="league id")
     parser.add_argument("name", type=str, help="league name")
