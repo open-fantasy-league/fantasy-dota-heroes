@@ -1,4 +1,5 @@
 import time
+
 from sqlalchemy import and_
 
 from fantasydota.models import Hero, TeamHero, LeagueUser, Sale, TeamHeroHistoric

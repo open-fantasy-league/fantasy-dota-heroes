@@ -225,6 +225,25 @@ class TeamHero(Base):
         self.reserve = reserve
 
 
+class Sale(Base):
+    __tablename__ = "sale"
+    sale_id = Column(Integer, Sequence('sale_id'), primary_key=True)
+    user = Column(Integer, ForeignKey('league_user.id'), nullable=False, index=True)  # index true?
+    hero = Column(Integer, ForeignKey('hero.id'), nullable=False, index=True)
+    league_id = Column(Integer, ForeignKey('league.id'), nullable=False, index=True)
+    date = Column(DateTime, nullable=False, default=func.now())
+    value = Column(Integer, nullable=False)
+    cost = Column(Integer, nullable=False)
+    is_buy = Column(Boolean, nullable=False)
+
+    def __init__(self, user, hero, league_id, value, cost, is_buy):
+        self.user = user
+        self.hero = hero
+        self.league_id = league_id
+        self.value = value
+        self.cost = cost
+        self.is_buy = is_buy
+
 class Result(Base):
     __tablename__ = "result"
     id = Column(Integer, Sequence('id'), primary_key=True)
