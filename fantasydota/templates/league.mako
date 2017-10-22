@@ -103,8 +103,17 @@
 <div class="card row">
     <div class="card-content">
         <span class=${"messageTransOpen" if league.transfer_open != 0 else "messageTransClosed"}>
-            <p><strong>${"Transfer window currently open (closes ~1 hour before games start). No transfers available during tournament, however you can swap heroes between your main team and reserve heroes" if league.transfer_open != 0 else """Transfer window closed until todays games end."""}
-            </strong></p>
+            % if league.transfer_open != 0:
+            <p><strong>NEW SYSTEM!</strong></p>
+            <p>You are given <strong>100 credits total</strong> to pick both a <strong>Main team and Reserve team</strong></p>
+            <p>Your <strong>Reserves score 0 points</strong>. However they can be <strong>swapped with main heroes each evening</strong> after games are over</p>
+            <p>You <strong>cannot purchase any new heroes once tournament started</strong>. You must pick Main and Reserves carefully</p>
+            <p><strong>Transfer window currently open (closes ~1 hour before games start)</strong></p>
+            % else:
+                <p><strong>
+                Swaps between reserves and main team only available between days. When all day's games finished
+                </strong></p>
+            % endif
         </span>
         <span>
             <p>Tables are sortable (click table headers). Max <strong>5 heroes per team</strong> (points <a href="/rules">penalties</a> for under 5)</p>
