@@ -10,7 +10,7 @@ from fantasydota.models import Hero, Result, TeamHero, LeagueUser, Sale
 #
 #
 #
-def add_hero_player(session, user_id, hero_id, league_id):
+def add_hero_player(session, user_id, hero_id, league_id, reserve):
     with transaction.manager:
 
         hero_value = session.query(Hero.value).filter(and_(Hero.id == hero_id,
@@ -35,7 +35,7 @@ def add_hero_player(session, user_id, hero_id, league_id):
             return {"success": False, "message": "ERROR: Hero already in team"}
         else:
             l_user.money = new_credits
-            session.add(TeamHero(user_id, hero_id, league_id, hero_value, False))
+            session.add(TeamHero(user_id, hero_id, league_id, hero_value, reserve))
             session.add(Sale(l_user.id, hero_id, league_id, hero_value, hero_value, True))
 
         transaction.commit()
@@ -43,8 +43,17 @@ def add_hero_player(session, user_id, hero_id, league_id):
 
 def main():
     session = make_session()
-    add_hero_player(session, 507, 78, 5401)
-    add_hero_player(session, 507, 104, 5401)
+    add_hero_player(session, 480, 107, 5609, False)
+    add_hero_player(session, 480, 71, 5609, False)
+    add_hero_player(session, 480, 112, 5609, False)
+    add_hero_player(session, 480, 66, 5609, False)
+    add_hero_player(session, 480, 32, 5609, False)
+
+    add_hero_player(session, 480, 30, 5609, True)
+    add_hero_player(session, 480, 18, 5609, True)
+    add_hero_player(session, 480, 17, 5609, True)
+    add_hero_player(session, 480, 86, 5609, True)
+    add_hero_player(session, 480, 58, 5609, True)
 
 if __name__ == "__main__":
     main()
