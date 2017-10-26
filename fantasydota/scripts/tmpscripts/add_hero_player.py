@@ -22,7 +22,7 @@ def add_hero_player(session, user_id, hero_id, league_id, reserve):
         l_user = session.query(LeagueUser).filter(LeagueUser.user_id == user_id).filter(
             LeagueUser.league == league_id).first()
 
-        user_money = l_user.money
+        user_money = l_user.money if not reserve else l_user.reserve_money
 
         if user_money < hero_value:
             print("ERROR: Insufficient credits")
