@@ -137,15 +137,15 @@ def forgot_password(request):
         return {"message": "Sorry you did not have an email address associated with this account. Please email fantasydotaeu@gmail.com directly"}
 
     guid = bcrypt.encrypt(str(userq.id))
-    if session.query(func.count(PasswordReset)).filter(PasswordReset.time > datetime.datetime.now() - datetime.timedelta(days=1)).\
-        scalar() > 2:
+    tries = session.query(PasswordReset).filter(PasswordReset.time > datetime.datetime.now() - datetime.timedelta(days=1)).filter(PasswordReset.user_id == userq.id).count()
+    if tries > 1:
         return {"message": "You have already tried 2 password resets today. Please email directly if still having issues"}
     try:
         session.add(PasswordReset(userq.id, guid, request.remote_addr))
         email_url = "https://www.fantasydota.eu/resetPasswordPage?u=" + str(userq.id) + "&guid="  # how not hardcode domain bit?
         email_url += quote_plus(guid)
         message = Message(subject="Fantasy Dota EU password reset",
-                          sender="fantasydotaeu@gmail.com",
+                          sender="Fantasy Dota EU",
                           recipients=[userq.email],
                           body="Hi %s.\n\nIf you did not request a password reset, either ignore this email or report incident to me.\n\n"
                                "Otherwise please click this link to reset: %s\n\nThis link will expire in 24 hours" % (userq.username, email_url))
