@@ -244,6 +244,7 @@ class Sale(Base):
         self.cost = cost
         self.is_buy = is_buy
 
+
 class Result(Base):
     __tablename__ = "result"
     id = Column(Integer, Sequence('id'), primary_key=True)
