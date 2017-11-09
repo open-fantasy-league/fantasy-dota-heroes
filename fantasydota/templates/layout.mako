@@ -48,6 +48,16 @@
                     <li><a href="${request.route_path('logout')}">Logout</a></li>
                 % endif
             </%block>
+                <li>
+                    <li>
+                        <a class="dropdown-button" data-beloworigin="true" href="" data-activates="gameDropdown">Game<i class="material-icons right">arrow_drop_down</i></a>
+                    </li>
+                    <ul id="gameDropdown" class="dropdown-content">
+                        % for game in other_games:
+                            <li><a href="/changeGame?game=${game.code}">${game.name}</a></li>
+                        % endfor
+                    </ul>
+                </li>
             <li id="leagueBtn" class="col s1">
                 <a href="/viewLeague">My team</a>
             </li>

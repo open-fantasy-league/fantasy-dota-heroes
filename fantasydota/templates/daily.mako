@@ -141,7 +141,7 @@ ${"period=%s" % period}
                     % if len(player_heroes) > i and (not league.transfer_open or league.current_day != period):
                         <span class="hero_images">
                         % for hero in player_heroes[i]:
-                            <img src="/static/images/${hero.replace(" ", "_")}_icon.png" title="${hero}" />
+                            <img src="/static/images/dota/${hero.replace(" ", "_")}_icon.png" title="${hero}" />
                         % endfor
                         </span>
                     %endif
@@ -182,7 +182,7 @@ $( document ).ready(function() {
         % for match in match_data:
         <div class="section">
         <div class="row">
-            <!--<img src="/static/images/trophy.png" class=${"hide" if not match["radiant_win"] else ""} />-->
+            <!--<img src="/static/images/dota/trophy.png" class=${"hide" if not match["radiant_win"] else ""} />-->
             <span class="radiantTeam">
                 % if match["radiant_win"]:
                 <strong>${match["radiant"]}</strong>
@@ -217,24 +217,24 @@ $( document ).ready(function() {
         <div class="row">
             <div class="left">
                 % for hero in match["radiant_picks"]:
-                    <img src="/static/images/${hero['hero'].replace(' ', '_')}_icon.png" title="${hero['hero']}" />
+                    <img src="/static/images/dota/${hero['hero'].replace(' ', '_')}_icon.png" title="${hero['hero']}" />
                 % endfor
             </div>
             <div class="right">
                 % for hero in match["dire_picks"]:
-                    <img src="/static/images/${hero['hero'].replace(' ', '_')}_icon.png" title="${hero['hero']}"/>
+                    <img src="/static/images/dota/${hero['hero'].replace(' ', '_')}_icon.png" title="${hero['hero']}"/>
                 % endfor
             </div>
         </div>
         <div class="row" style="margin-bottom: 0px">
             <div class="left">
                 % for hero in match["radiant_bans"]:
-                    <img class="banIcon" src="/static/images/${hero['hero'].replace(' ', '_')}_icon.png" title="${hero['hero']}"/>
+                    <img class="banIcon" src="/static/images/dota/${hero['hero'].replace(' ', '_')}_icon.png" title="${hero['hero']}"/>
                 % endfor
             </div>
             <div class="right">
                 % for hero in match["dire_bans"]:
-                    <img class="banIcon" src="/static/images/${hero['hero'].replace(' ', '_')}_icon.png" title="${hero['hero']}"/>
+                    <img class="banIcon" src="/static/images/dota/${hero['hero'].replace(' ', '_')}_icon.png" title="${hero['hero']}"/>
                 % endfor
             </div>
         </div>

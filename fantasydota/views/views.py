@@ -3,6 +3,9 @@ import json
 
 import ast
 
+from pyramid.response import Response
+
+from fantasydota.lib.general import add_other_games
 from fantasydota.lib.herolist import heroes
 from pyramid.httpexceptions import (
     HTTPFound,
@@ -25,12 +28,22 @@ from fantasydota.util.random_function import add_months, bprint
 
 @view_config(route_name='view_faq', renderer='../templates/faq.mako')
 def view_faq(request):
-    return {}
+    session = DBSession()
+    return add_other_games(session, request.game, {})
 
 
 @view_config(route_name='view_rules', renderer='../templates/rules.mako')
 def view_rules(request):
-    return {}
+    session = DBSession()
+    return add_other_games(session, request.game, {})
+
+
+@view_config(route_name='change_game')
+def change_game(request):
+    # https://userlinux.net/pyramid-set-cookie-returning-httpfound.html
+    response = HTTPFound(location=request.environ['HTTP_REFERER'])
+    response.set_cookie('game', value=request.params.get('game', 'DOTA'), max_age=315360000)
+    return response
 
 
 @view_config(route_name="add_friend", renderer="json")
@@ -58,7 +71,8 @@ def news(request):
 
 @view_config(route_name="hall_of_fame", renderer="../templates/hall_of_fame.mako")
 def hall_of_fame(request):
-    return {}
+    session = DBSession()
+    return add_other_games(session, request.game, {})
 
 
 @view_config(route_name="guess_the_hero", renderer="../templates/guesshero.mako")

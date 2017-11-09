@@ -39,7 +39,7 @@
         <div class="card">
         <div class="card-content">
             % for item in items:
-                <img src="/static/images/items/${item}.png"/>
+                <img src="/static/images/dota/items/${item}.png"/>
             % endfor
         </div>
         </div>

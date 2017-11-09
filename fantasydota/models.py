@@ -74,10 +74,28 @@ class PasswordReset(Base):
         return bcrypt.verify(str(self.user_id), guid)
 
 
+class Game(Base):
+    __tablename__ = 'game'
+    id = Column(Integer, Sequence('id'), primary_key=True)
+    name = Column(String(100), nullable=False)
+    code = Column(String(4), nullable=False)
+    pickee = Column(String(10), nullable=False)  # i.e. Hero, champion, player
+    team_size = Column(Integer, nullable=False)
+    reserve_size = Column(Integer, nullable=False)
+
+    def __init__(self, name, code, pickee, team_size, reserve_size):
+        self.name = name
+        self.code = code
+        self.pickee = pickee
+        self.team_size = team_size
+        self.reserve_size = reserve_size
+
+
 class League(Base):
     __tablename__ = "league"
     id = Column(Integer, primary_key=True)  # use id that matches dota2 api
     name = Column(String(100), nullable=False)
+    game = Column(Integer, ForeignKey(Game.id), index=True, nullable=False)
     status = Column(Integer, default=0)  # 0 not started. 1 is running. 2 is ended
     transfer_open = Column(Boolean, default=False)
     swap_open = Column(Boolean, default=False)
@@ -87,7 +105,8 @@ class League(Base):
     stage2_start = Column(Integer)
     url = Column(String(150))
 
-    def __init__(self, id, name, days, stage1_start, stage2_start, url):
+    def __init__(self, game, id, name, days, stage1_start, stage2_start, url):
+        self.game = game
         self.id = id
         self.name = name
         self.days = days
@@ -118,10 +137,12 @@ class LeagueUser(Base):
     old_bans_rank = Column(Integer)
     last_change = Column(BigInteger, default=int(time.time()))
 
-    def __init__(self, user_id, username, league):
+    def __init__(self, user_id, username, league, money=50.0, reserve_money=50.0):
         self.user_id = user_id
         self.username = username
         self.league = league
+        self.money = money
+        self.reserve_money = reserve_money
 
 
 # # check if I should use polymorphic mapping for this with userLeague
@@ -180,6 +201,7 @@ class Hero(Base):
     __tablename__ = "hero"
     id = Column(Integer, primary_key=True)  # api hero ids start at 1
     name = Column(String(100), nullable=False, index=True)  #index=true?
+    team = Column(String(100), index=True)  # for pubg
     league = Column(Integer, ForeignKey(League.id), primary_key=True, nullable=False)
     value = Column(Float, default=10.0)
     points = Column(Integer, default=0)
@@ -191,11 +213,13 @@ class Hero(Base):
 
     # maybe I want day here as well? somewhere to track day value fluctuations
 
-    def __init__(self, id, name, value, league):
+    def __init__(self, id, name, value, league, team=None):
         self.id = id
         self.name = name
         self.value = value
         self.league = league
+        if team:
+            self.team = team
 
     @property
     def username(self):
@@ -281,21 +305,28 @@ class Result(Base):
         }
         return points_dict[result_str]
 
+    @staticmethod
+    def result_to_value_pubg(result_str):
+        position, kills = result_str.split(",")
+        return kills + (20 - position)
+
 
 class Match(Base):
     __tablename__ = "match"
     match_id = Column(BigInteger, nullable=False, primary_key=True)
+    league = Column(Integer, ForeignKey(League.id), nullable=False)
     radiant_team = Column(String(100), nullable=False)
     dire_team = Column(String(100), nullable=False)
     radiant_win = Column(Boolean, nullable=False)
     day = Column(Integer)
 
-    def __init__(self, match_id, radiant_team, dire_team, radiant_win, day):
+    def __init__(self, match_id, radiant_team, dire_team, radiant_win, day, league_id):
         self.match_id = match_id
         self.dire_team = dire_team
         self.radiant_team = radiant_team
         self.radiant_win = radiant_win
         self.day = day
+        self.league = league_id
 
 
 class TeamHeroHistoric(Base):

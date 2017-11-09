@@ -1,0 +1,8 @@
+insert into game() VALUES (1, "DotA 2", "DOTA", "Hero", 5, 5);
+
+insert into game() VALUES (2, "PUBG", "PUBG", "Player", 4, 2);
+
+ALTER TABLE league ADD COLUMN game INT DEFAULT 1;
+ALTER TABLE league ADD FOREIGN KEY game_fk(game) REFERENCES game(id) ON DELETE CASCADE;
+
+ALTER TABLE hero ADD COLUMN team varchar(100);

@@ -4,6 +4,7 @@ from pyramid.view import view_config
 from sqlalchemy import and_
 
 from fantasydota import DBSession
+from fantasydota.lib.general import add_other_games
 from fantasydota.lib.trade import buy, sell, swap_in, swap_out
 from fantasydota.models import User, League, LeagueUser, Hero, TeamHero, LeagueUserDay
 
@@ -12,70 +13,142 @@ from fantasydota.models import User, League, LeagueUser, Hero, TeamHero, LeagueU
 def view_league(request):
     session = DBSession()
     user_id = authenticated_userid(request)
-    message_type = request.params.get('message_type')
-    message = request.params.get('message')
+    game = request.game
+    if game == 'DOTA':
+        message_type = request.params.get('message_type')
+        message = request.params.get('message')
 
-    league_id = int(request.params.get("league")) if request.params.get("league") else None \
-        or request.registry.settings["default_league"]
+        league_id = int(request.params.get("league")) if request.params.get("league") else None \
+            or request.registry.settings[game]["default_league"]
 
-    league = session.query(League).filter(League.id == league_id).first()
+        league = session.query(League).filter(League.id == league_id).first()
 
-    class FakeUser():  # hacky quick way so unlogged in users can see the page
-        username = ""
-        league = league_id
-        money = 50.0
-        reserve_money = 50.0
-        points = 0
-        picks = 0
-        bans = 0
-        wins = 0
-        points_rank = None
-        wins_rank = None
-        picks_rank = None
-        bans_rank = None
+        class FakeUser():  # hacky quick way so unlogged in users can see the page
+            username = ""
+            league = league_id
+            money = 50.0
+            reserve_money = 50.0
+            points = 0
+            picks = 0
+            bans = 0
+            wins = 0
+            points_rank = None
+            wins_rank = None
+            picks_rank = None
+            bans_rank = None
 
-    if user_id is None:
-        message = "You must login to pick team"
+        if user_id is None:
+            message = "You must login to pick team"
 
-        userq = FakeUser()
-        team = []
-        username = ""
-        reserve_team = []
+            userq = FakeUser()
+            team = []
+            username = ""
+            reserve_team = []
+        else:
+
+            userq = session.query(LeagueUser).filter(and_(
+                LeagueUser.league == league.id, LeagueUser.user_id == user_id
+            )).first()
+            if not userq:
+                try:
+                    username = session.query(User.username).filter(User.id == user_id).first()[0]
+                except TypeError:
+                    headers = forget(request)
+                    return HTTPFound(location='/login', headers=headers)
+                user_league = LeagueUser(user_id, username, league.id)
+                session.add(user_league)
+                for i in range(league.days):
+                    if i >= league.stage2_start:
+                        stage = 2
+                    elif i >= league.stage1_start:
+                        stage = 1
+                    else:
+                        stage = 0
+                    session.add(LeagueUserDay(user_id, username, league.id, i, stage))
+
+                userq = FakeUser()  # so dont have to deal with a commit mid-request
+
+            team = session.query(Hero, TeamHero).filter(Hero.league == league_id).\
+                filter(and_(TeamHero.user_id == user_id, TeamHero.league == league_id)).filter(TeamHero.reserve.is_(False)).\
+                join(TeamHero).all()
+            reserve_team = session.query(Hero, TeamHero).filter(Hero.league == league_id).\
+                filter(and_(TeamHero.user_id == user_id, TeamHero.league == league_id)).filter(TeamHero.reserve.is_(True)).\
+                join(TeamHero).all()
+            username = session.query(User.username).filter(User.id == user_id).first()[0]
+        heroes = session.query(Hero).filter(Hero.league == league_id).all()
+
+        return_dict = {'username': username, 'userq': userq, 'team': team, 'heroes': heroes, 'message': message,
+                'message_type': message_type, 'league': league, 'reserve_team': reserve_team}
+    elif game == 'PUBG':
+        message_type = request.params.get('message_type')
+        message = request.params.get('message')
+
+        league_id = int(request.params.get("league")) if\
+            request.params.get("league") else request.registry.settings[game]["default_league"]
+
+        league = session.query(League).filter(League.id == league_id).first()
+
+        class FakeUser():  # hacky quick way so unlogged in users can see the page
+            username = ""
+            league = league_id
+            money = 50.0 if game == 'dota' else 40.0
+            reserve_money = 50.0 if game == 'dota' else 20.0
+            points = 0
+            picks = 0
+            bans = 0
+            wins = 0
+            points_rank = None
+            wins_rank = None
+            picks_rank = None
+            bans_rank = None
+
+        if user_id is None:
+            message = "You must login to pick team"
+
+            userq = FakeUser()
+            team = []
+            username = ""
+            reserve_team = []
+        else:
+            userq = session.query(LeagueUser).filter(and_(
+                LeagueUser.league == league.id, LeagueUser.user_id == user_id
+            )).first()
+            if not userq:
+                try:
+                    username = session.query(User.username).filter(User.id == user_id).first()[0]
+                except TypeError:
+                    headers = forget(request)
+                    return HTTPFound(location='/login', headers=headers)
+                user_league = LeagueUser(user_id, username, league.id, money=game.team_size * 10.0,
+                                         reserve_money=game.reserve_size * 10.0)
+                session.add(user_league)
+                for i in range(league.days):
+                    if i >= league.stage2_start:
+                        stage = 2
+                    elif i >= league.stage1_start:
+                        stage = 1
+                    else:
+                        stage = 0
+                    session.add(LeagueUserDay(user_id, username, league.id, i, stage))
+
+                userq = FakeUser()  # so dont have to deal with a commit mid-request
+
+            team = session.query(Hero, TeamHero).filter(Hero.league == league_id). \
+                filter(and_(TeamHero.user_id == user_id, TeamHero.league == league_id)).filter(
+                TeamHero.reserve.is_(False)). \
+                join(TeamHero).all()
+            reserve_team = session.query(Hero, TeamHero).filter(Hero.league == league_id). \
+                filter(and_(TeamHero.user_id == user_id, TeamHero.league == league_id)).filter(
+                TeamHero.reserve.is_(True)). \
+                join(TeamHero).all()
+            username = session.query(User.username).filter(User.id == user_id).first()[0]
+        heroes = session.query(Hero).filter(Hero.league == league_id).all()
+
+        return_dict = {'username': username, 'userq': userq, 'team': team, 'heroes': heroes, 'message': message,
+                'message_type': message_type, 'league': league, 'reserve_team': reserve_team, 'game': game}
     else:
-
-        userq = session.query(LeagueUser).filter(and_(
-            LeagueUser.league == league.id, LeagueUser.user_id == user_id
-        )).first()
-        if not userq:
-            try:
-                username = session.query(User.username).filter(User.id == user_id).first()[0]
-            except TypeError:
-                headers = forget(request)
-                return HTTPFound(location='/login', headers=headers)
-            user_league = LeagueUser(user_id, username, league.id)
-            session.add(user_league)
-            for i in range(league.days):
-                if i >= league.stage2_start:
-                    stage = 2
-                elif i >= league.stage1_start:
-                    stage = 1
-                else:
-                    stage = 0
-                session.add(LeagueUserDay(user_id, username, league.id, i, stage))
-
-            userq = FakeUser()  # so dont have to deal with a commit mid-request
-
-        team = session.query(Hero, TeamHero).filter(Hero.league == league_id).\
-            filter(and_(TeamHero.user_id == user_id, TeamHero.league == league_id)).filter(TeamHero.reserve.is_(False)).\
-            join(TeamHero).all()
-        reserve_team = session.query(Hero, TeamHero).filter(Hero.league == league_id).\
-            filter(and_(TeamHero.user_id == user_id, TeamHero.league == league_id)).filter(TeamHero.reserve.is_(True)).\
-            join(TeamHero).all()
-        username = session.query(User.username).filter(User.id == user_id).first()[0]
-    heroes = session.query(Hero).filter(Hero.league == league_id).all()
-
-    return {'username': username, 'userq': userq, 'team': team, 'heroes': heroes, 'message': message,
-            'message_type': message_type, 'league': league, 'reserve_team': reserve_team}
+        return_dict = {'game': 'whoops'}
+    return add_other_games(session, game, return_dict)
 
 
 @view_config(route_name="sell_hero", renderer="json")

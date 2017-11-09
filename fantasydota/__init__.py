@@ -42,7 +42,8 @@ def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
     settings["league_transfers"] = True  # why wont config file properly set this?
-    settings["default_league"] = 5609
+    settings["DOTA"] = {"default_league": 5609}
+    settings["PUBG"] = {"default_league": 1}
     sqlalchemy_url = os.path.expandvars(settings.get('sqlalchemy.url'))
     engine = create_engine(sqlalchemy_url, echo=False, pool_size=100, pool_recycle=3600)
     event.listen(engine, 'checkout', checkout_listener)
@@ -50,7 +51,7 @@ def main(global_config, **settings):
 
     # Need https set up on local machine for secure True to work locally
     authn_policy = AuthTktAuthenticationPolicy(settings.get('authn_policy_secr'), hashalg='sha512', http_only=True,
-                                               secure=True,
+                                               #secure=True,
                                                max_age=10000000)
     authz_policy = ACLAuthorizationPolicy()
 
@@ -68,7 +69,7 @@ def main(global_config, **settings):
     init_social(config, Base, DBSession)  # is this the right place?
     Base.metadata.bind = engine
     Base.metadata.create_all(engine)
-    create_tables(DBSession, settings["default_league"]) #already created!
+    #create_tables(DBSession, settings["DOTA"]["default_league"]) #already created!
 
     config.include('social_pyramid')
     config.scan('social_pyramid')
@@ -77,31 +78,34 @@ def main(global_config, **settings):
     # psa.register_provider(settings, facebook.FacebookOAuth2)
 
     config.add_request_method('.auth.get_user', 'user', reify=True)  # user or username? should it start with .?
+    config.add_request_method('.lib.general.get_game', 'game', reify=True)
 
     config.add_renderer('json', custom_json_renderer())
     config.add_static_view('static', 'static', cache_max_age=3600)
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
     config.add_route('view_faq', '/faq')
-    config.add_route('view_rules', '/rules')
-    config.add_route('view_account', '/viewAccount')
-    config.add_route('view_league', '/viewLeague')
+    
     config.add_route('register', '/register')
     config.add_route('change_password', '/changePassword')
     config.add_route('forgot_password', '/forgotPassword')
     config.add_route('reset_password', '/resetPassword')
     config.add_route('reset_password_page', '/resetPasswordPage')
     config.add_route('update_email_settings', '/updateEmailSettings')
-
     config.add_route("add_friend", '/addFriend')
+    config.add_route('change_game', '/changeGame')
+
+    config.add_route('view_rules', '/rules')
+    config.add_route('view_account', '/viewAccount')
+    config.add_route('view_league', '/viewLeague')
     config.add_route('buy_hero', '/buyHero')
     config.add_route('sell_hero', '/sellHero')
     config.add_route('swap_in_hero', '/swapInHero')
     config.add_route('swap_out_hero', '/swapOutHero')
     config.add_route('leaderboard', '/leaderboard')
     config.add_route('daily', '/daily')
-    config.add_route('matches', '/matches')
     config.add_route('account_settings', '/accountSettings')
+    
     config.add_route('news', '/news')
     config.add_route('hall_of_fame', '/hallOfFame')
     config.add_route('guess_the_hero', '/guessHero')

@@ -139,15 +139,11 @@ ${"period=%s" % period}
 
             title=${"Previous-Champion"  if player.username in ["seni", "nkgrimreaper", "liquid92", "yuridaisuki"] else ''}>
                         <span style="vertical-align:middle">
-
-                        % if player.username == "yuridaisuki":
-                        <img src="/static/images/trophy.png"/>
-                        % endif
                         ${player.username}</span>
                     % if len(player_heroes) > i:
                         <span class="hero_images">
                         % for hero in player_heroes[i]:
-                            <img src="/static/images/${hero.replace(" ", "_")}_icon.png"/>
+                            <img src="/static/images/dota/${hero.replace(" ", "_")}_icon.png"/>
                         % endfor
                         </span>
                     % endif
@@ -180,7 +176,7 @@ $( document ).ready(function() {
 	<p>2x points multiplier for finals day</p>
         <p>Results updated ~2 minutes after match ends</p>
         <p><a href="https://discord.gg/MAH7EEv" target="_blank">Discord channel for suggestions/improvements</a></p>
-        <p>Statistics provided by <a href="https://www.stratz.com" target="_blank">Stratz Esports <img src="/static/images/stratz_icon.png"/></a></p>
+        <p>Statistics provided by <a href="https://www.stratz.com" target="_blank">Stratz Esports <img src="/static/images/dota/stratz_icon.png"/></a></p>
     </div>
 % if user:
     <div class="card">

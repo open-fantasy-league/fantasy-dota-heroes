@@ -11,6 +11,7 @@
 <%def name="meta_description()">
     League page for fantasy dota game.
 </%def>
+
 <div class="row" id="myTeamBlock">
     <span class="left"><h2>My Team (Credits: <span class="userCredits">${round(userq.money, 1)}</span>)</h2></span>
     <span class="right"><h2>Total points: <span class="teamPoints">${userq.points}</span></h2></span>
@@ -20,9 +21,6 @@
                 <th class="heroHeader">Hero</th>
                 <th class="dummyHeader" colspan="0"></th>
                 <th class="heroPointsHeader">Points</th>
-                <th class="picksHeader">Picks</th>
-                <th class="bansHeader">Bans</th>
-                <th class="winsHeader">Wins</th>
                 <th class="valueHeader">Value</th>
                 <th class="sellHeader">${"Sell" if not league.swap_open else "Swap"}</th>
 
@@ -32,9 +30,6 @@
                     <td class="heroImg" sorttable_customkey="${hero[0].name}"><img src="/static/images/dota/${hero[0].name.replace(" ", "_")}_icon.png" title="${hero[0].name}"/></td>
                     <td class="heroEntry">${hero[0].name}</td>
                     <td class="heroPointsEntry">${hero[0].points}</td>
-                    <td class="picksEntry">${hero[0].picks}</td>
-                    <td class="bansEntry">${hero[0].bans}</td>
-                    <td class="winsEntry">${hero[0].wins}</td>
                     <td class="valueEntry">${hero[0].value}</td>
                     <td class="tradeEntry">
                         <form name="tradeForm" id="${hero[0].id}TradeForm" class="tradeForm" onsubmit="return false;">
@@ -61,9 +56,6 @@
                 <th class="heroHeader">Hero</th>
                 <th class="dummyHeader" colspan="0"></th>
                 <th class="heroPointsHeader">Points</th>
-                <th class="picksHeader">Picks</th>
-                <th class="bansHeader">Bans</th>
-                <th class="winsHeader">Wins</th>
                 <th class="valueHeader">Value</th>
                 <th class="sellHeader">${"Sell" if not league.swap_open else "Swap"}</th>
             </tr>
@@ -72,9 +64,6 @@
                     <td class="heroImg" sorttable_customkey="${hero[0].name}"><img src="/static/images/dota/${hero[0].name.replace(" ", "_")}_icon.png" title="${hero[0].name}"/></td>
                     <td class="heroEntry">${hero[0].name}</td>
                     <td class="heroPointsEntry">${hero[0].points}</td>
-                    <td class="picksEntry">${hero[0].picks}</td>
-                    <td class="bansEntry">${hero[0].bans}</td>
-                    <td class="winsEntry">${hero[0].wins}</td>
                     <td class="valueEntry">${hero[0].value}</td>
                     <td class="tradeEntry">
                         <form name="tradeForm" id="${hero[0].id}TradeForm" class="tradeForm" onsubmit="return false;">
@@ -121,9 +110,6 @@
                 <th class="heroHeader">Hero</th>
                 <th class="dummyHeader" colspan="0"></th>
                 <th class="heroPointsHeader">Points</th>
-                <th class="picksHeader">Picks</th>
-                <th class="bansHeader">Bans</th>
-                <th class="winsHeader">Wins</th>
                 <th class="valueHeader">Value</th>
                 <th class="sellHeader">Buy</th>
                 <th class="sellHeader">Reserve</th>
@@ -133,9 +119,6 @@
                     <td class="heroImg" sorttable_customkey="${hero.name}"><img src="/static/images/dota/${hero.name.replace(" ", "_")}_icon.png" title="${hero.name}"/></td>
                     <td class="heroEntry">${hero.name}</td>
                     <td class="heroPointsEntry">${hero.points}</td>
-                    <td class="picksEntry">${hero.picks}</td>
-                    <td class="bansEntry">${hero.bans}</td>
-                    <td class="winsEntry">${hero.wins}</td>
                     <td class="valueEntry">${hero.value}</td>
                     <td class="tradeEntry">
                         <form name="tradeForm" id="${hero.id}TradeForm" class="tradeForm" onsubmit="return false;">

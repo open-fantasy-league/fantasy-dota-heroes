@@ -59,7 +59,7 @@
             </tr>
             % for hero in [hero_ for hero_ in team if hero_["active"]]:
                 <tr class="teamRow ${'toSell' if hero["to_trade"] else ''}" id="${hero["hero_"].hero_id}TeamRow">
-                    <td class="heroEntry"><img src="/static/images/${hero["hero_"].name.replace(" ", "_")}_icon.png"/>
+                    <td class="heroEntry"><img src="/static/images/dota/${hero["hero_"].name.replace(" ", "_")}_icon.png"/>
                         ${hero["hero_"].name}
                     </td>
                     <td class="valueEntry">${hero["hero_"].value}</td>
@@ -82,7 +82,7 @@
         <table id="teamTableTransfers">
             % for hero in [hero_ for hero_ in team if not hero_["active"]]:
                 <tr class="teamRow toBuy" id="${hero["hero_"].hero_id}TeamRow">
-                    <td class="heroEntry"><img src="/static/images/${hero["hero_"].name.replace(" ", "_")}_icon.png"/>
+                    <td class="heroEntry"><img src="/static/images/dota/${hero["hero_"].name.replace(" ", "_")}_icon.png"/>
                         ${hero["hero_"].name}
                     </td>
                     <td class="valueEntry">${hero["hero_"].value}</td>
@@ -115,7 +115,7 @@
             </tr>
             % for hero in heroes:
                 <tr id="${hero.hero_id}Row">
-                    <td class="heroEntry"><img src="/static/images/${hero.name.replace(" ", "_")}_icon.png"/>${hero.name}</td>
+                    <td class="heroEntry"><img src="/static/images/dota/${hero.name.replace(" ", "_")}_icon.png"/>${hero.name}</td>
                     <td class="valueEntry">${hero.value}</td>
                     <td class="heroPointsEntry">${hero.points}</td>
                     <td class="picksEntry">${hero.picks}</td>

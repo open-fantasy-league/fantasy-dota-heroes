@@ -18,7 +18,7 @@
 #         name = item.get_attribute("itemname")
 #         src = item.find_element_by_xpath("./img").get_attribute("src")
 #         print(src)
-#         urllib.request.urlretrieve(str(src), "/home/jdog/projects/fantasy-dota-heroes/fantasydota/static/images/items/%s.png" % name)
+#         urllib.request.urlretrieve(str(src), "/home/jdog/projects/fantasy-dota-heroes/fantasydota/static/images/dota/items/%s.png" % name)
 #
 # if __name__ == '__main__':
 #     try:

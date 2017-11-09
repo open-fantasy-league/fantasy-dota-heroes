@@ -12,7 +12,7 @@
     Hall of fame page for fantasy dota game.
 </%def>
 <div>
-    <h2><img src="/static/images/trophy.png"/> Hall of Fame</h2>
+    <h2><img src="/static/images/dota/trophy.png"/> Hall of Fame</h2>
 </div>
 <div>
     <table class="card-table striped">
