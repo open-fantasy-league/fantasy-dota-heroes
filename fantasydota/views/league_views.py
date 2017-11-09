@@ -6,20 +6,23 @@ from sqlalchemy import and_
 from fantasydota import DBSession
 from fantasydota.lib.general import add_other_games
 from fantasydota.lib.trade import buy, sell, swap_in, swap_out
-from fantasydota.models import User, League, LeagueUser, Hero, TeamHero, LeagueUserDay
+from fantasydota.models import User, League, LeagueUser, Hero, TeamHero, LeagueUserDay, Game
 
 
-@view_config(route_name='view_league', renderer='../templates/league.mako')
+@view_config(route_name='view_league', renderer='../templates/team.mako')
 def view_league(request):
     session = DBSession()
     user_id = authenticated_userid(request)
-    game = request.game
-    if game == 'DOTA':
+    game_code = request.game
+    game = session.query(Game).filter(Game.code == game_code).first()
+    if game_code == 'DOTA':
+        print("we in dota_---------___----___---__--___------")
+        print(game.code)
         message_type = request.params.get('message_type')
         message = request.params.get('message')
 
         league_id = int(request.params.get("league")) if request.params.get("league") else None \
-            or request.registry.settings[game]["default_league"]
+            or request.registry.settings[game_code]["default_league"]
 
         league = session.query(League).filter(League.id == league_id).first()
 
@@ -78,13 +81,13 @@ def view_league(request):
         heroes = session.query(Hero).filter(Hero.league == league_id).all()
 
         return_dict = {'username': username, 'userq': userq, 'team': team, 'heroes': heroes, 'message': message,
-                'message_type': message_type, 'league': league, 'reserve_team': reserve_team}
-    elif game == 'PUBG':
+                        'message_type': message_type, 'league': league, 'reserve_team': reserve_team, 'game': game}
+    elif game_code == 'PUBG':
         message_type = request.params.get('message_type')
         message = request.params.get('message')
 
         league_id = int(request.params.get("league")) if\
-            request.params.get("league") else request.registry.settings[game]["default_league"]
+            request.params.get("league") else request.registry.settings[game_code]["default_league"]
 
         league = session.query(League).filter(League.id == league_id).first()
 
@@ -145,10 +148,11 @@ def view_league(request):
         heroes = session.query(Hero).filter(Hero.league == league_id).all()
 
         return_dict = {'username': username, 'userq': userq, 'team': team, 'heroes': heroes, 'message': message,
-                'message_type': message_type, 'league': league, 'reserve_team': reserve_team, 'game': game}
+                'message_type': message_type, 'league': league, 'reserve_team': reserve_team, 'game': game,
+                       }
     else:
         return_dict = {'game': 'whoops'}
-    return add_other_games(session, game, return_dict)
+    return add_other_games(session, game_code, return_dict)
 
 
 @view_config(route_name="sell_hero", renderer="json")

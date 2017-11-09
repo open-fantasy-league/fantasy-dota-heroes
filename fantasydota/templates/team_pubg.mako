@@ -18,7 +18,7 @@
     <div id="tableContainer">
         <table class="sortable responsive-table card-table striped centered" id="teamTable">
             <tr style="cursor: pointer">
-                <th class="heroHeader">Hero</th>
+                <th class="heroHeader">${game.pickee}</th>
                 <th class="dummyHeader" colspan="0"></th>
                 <th class="heroPointsHeader">Points</th>
                 <th class="valueHeader">Value</th>
@@ -27,7 +27,7 @@
             </tr>
             % for hero in team:
                 <tr class="teamRow" id="${hero[0].id}TeamRow">
-                    <td class="heroImg" sorttable_customkey="${hero[0].name}"><img src="/static/images/dota/${hero[0].name.replace(" ", "_")}_icon.png" title="${hero[0].name}"/></td>
+                    <td class="heroImg" sorttable_customkey="${hero[0].name}"><img src="/static/images/pubg/${hero[0].team.replace(" ", "_")}_icon.png" title="${hero[0].name}"/></td>
                     <td class="heroEntry">${hero[0].name}</td>
                     <td class="heroPointsEntry">${hero[0].points}</td>
                     <td class="valueEntry">${hero[0].value}</td>
@@ -53,7 +53,7 @@
     <div id="tableContainer">
         <table class="sortable responsive-table card-table striped centered" id="reserveTable">
             <tr style="cursor: pointer">
-                <th class="heroHeader">Hero</th>
+                <th class="heroHeader">${game.pickee}</th>
                 <th class="dummyHeader" colspan="0"></th>
                 <th class="heroPointsHeader">Points</th>
                 <th class="valueHeader">Value</th>
@@ -61,7 +61,7 @@
             </tr>
             % for hero in reserve_team:
                 <tr class="reserveRow" id="${hero[0].id}ReserveRow">
-                    <td class="heroImg" sorttable_customkey="${hero[0].name}"><img src="/static/images/dota/${hero[0].name.replace(" ", "_")}_icon.png" title="${hero[0].name}"/></td>
+                    <td class="heroImg" sorttable_customkey="${hero[0].name}"><img src="/static/images/pubg/${hero[0].team.replace(" ", "_")}_icon.png" title="${hero[0].name}"/></td>
                     <td class="heroEntry">${hero[0].name}</td>
                     <td class="heroPointsEntry">${hero[0].points}</td>
                     <td class="valueEntry">${hero[0].value}</td>
@@ -100,14 +100,14 @@
 </div>
 <div id="heroesBlock" class="row">
     % if league.transfer_open:
-        <h2>Heroes (Credits Available: <span class="userCredits">${round(userq.money, 1)}</span>, Reserve Credits: <span class="userReserveCredits">${round(userq.reserve_money, 1)}</span>)</h2>
+        <h2>${game.pickee}s (Credits Available: <span class="userCredits">${round(userq.money, 1)}</span>, Reserve Credits: <span class="userReserveCredits">${round(userq.reserve_money, 1)}</span>)</h2>
     % else:
-        <h2>Heroes</h2>
+        <h2>${game.pickee}s</h2>
     % endif
     <div id="tableContainer">
         <table class="sortable responsive-table card-table striped centered">
             <tr style="cursor: pointer">
-                <th class="heroHeader">Hero</th>
+                <th class="heroHeader">${game.pickee}</th>
                 <th class="dummyHeader" colspan="0"></th>
                 <th class="heroPointsHeader">Points</th>
                 <th class="valueHeader">Value</th>
@@ -116,7 +116,7 @@
             </tr>
             % for hero in heroes:
                 <tr id="${hero.id}Row">
-                    <td class="heroImg" sorttable_customkey="${hero.name}"><img src="/static/images/dota/${hero.name.replace(" ", "_")}_icon.png" title="${hero.name}"/></td>
+                    <td class="heroImg" sorttable_customkey="${hero.name}"><img src="/static/images/pubg/${hero.team.replace(" ", "_")}_icon.png" title="${hero.name}"/></td>
                     <td class="heroEntry">${hero.name}</td>
                     <td class="heroPointsEntry">${hero.points}</td>
                     <td class="valueEntry">${hero.value}</td>

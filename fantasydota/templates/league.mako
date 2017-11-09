@@ -1,16 +1,3 @@
-<%inherit file="layout.mako"/>
-
-<%def name="title()">
-    League Team: ${league.name}
-</%def>
-
-<%def name="meta_keywords()">
-    League, Dota, fantasy, points, game
-</%def>
-
-<%def name="meta_description()">
-    League page for fantasy dota game.
-</%def>
 <div class="row" id="myTeamBlock">
     <span class="left"><h2>My Team (Credits: <span class="userCredits">${round(userq.money, 1)}</span>)</h2></span>
     <span class="right"><h2>Total points: <span class="teamPoints">${userq.points}</span></h2></span>
@@ -156,10 +143,3 @@
         </table>
     </div>
 </div>
-<script>
-var transfers = ${'true' if league.transfer_open != 0 else 'false'};
-var league_id = ${league.id};
-var swaps = ${'true' if league.swap_open != 0 else "false"}
-</script>
-
-<script src="/static/trade.js"></script>

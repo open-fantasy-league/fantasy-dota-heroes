@@ -164,7 +164,6 @@ ${"period=%s" % period}
 
 <script>
 $( document ).ready(function() {
-    console.log("ready");
     $(".dropdown-button").dropdown({
         "belowOrigin": true,
         "hover": true
