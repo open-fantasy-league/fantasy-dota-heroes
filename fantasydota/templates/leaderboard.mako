@@ -75,6 +75,7 @@ ${"period=%s" % period}
     <h2>${rank_by.title()} (${period.title() if period == "tournament" else "Day %d" % (int(period) + 1)})
         <a class="right" href="${league.url}" target="_blank">${league.name}</a></h2>
 </div>
+% if game.code == 'DOTA':
 <div class="row">
 <div id="leaderboardBlock" class="col s7">
     <nav>
@@ -162,6 +163,80 @@ ${"period=%s" % period}
     </div>
 </div>
 
+    % elif game.code == 'PUBG':
+    <div class="row">
+<div id="leaderboardBlock" class="col s7">
+    <nav>
+    <div class="nav-wrapper teal darken-2">
+        <ul class="left">
+            <li class=${"active" if rank_by=="points" else ""}>
+                <a id="pointsBtn" href="/leaderboard?rank_by=points&mode=${mode}&${getTime(period)}">
+                    Points
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-button" data-beloworigin="true" href="" data-activates="modeDropdown">${mode.title()}<i class="material-icons right">arrow_drop_down</i></a>
+            </li>
+            <ul id="modeDropdown" class="dropdown-content">
+                <li><a href="/leaderboard?rank_by=${rank_by}&mode=${mode}">${mode.title()}</a></li>
+                <li class="divider"></li>
+                % for m in other_modes:
+                    <li><a href="/leaderboard?rank_by=${rank_by}&mode=${m}">${m.title()}</a></li>
+                % endfor
+            </ul>
+            <li>
+                <a class="dropdown-button" data-beloworigin="true" href="" data-activates="periodDropdown">Period<i class="material-icons right">arrow_drop_down</i></a>
+            </li>
+            <ul id="periodDropdown" class="dropdown-content">
+                <li><a href="/leaderboard?rank_by=${rank_by}&mode=${mode}&period=tournament">Tournament</a></li>
+                <li class="divider"></li>
+                % for i in range(league.current_day + 1):
+                    <li><a href="/daily?rank_by=${rank_by}&mode=${mode}&period=${i}">Day ${i+1}</a></li>
+                % endfor
+            </ul>
+        </ul>
+    </div>
+    </nav>
+
+    <div id="tableContainer">
+        <table id="leaderboardTable" class="card-table striped centered">
+            <tr>
+                <th class="positionHeader">Position</th>
+                <th class="playerHeader">Player</th>
+                <th class="rankingHeader">${rank_by.title()}</th>
+            </tr>
+            % for i, player in enumerate(players):
+                <tr class=${"playerRow" if not user or player.username != user.username else "userRow"}>
+                    <td class="positionEntry">${i+1} ${progress_arrow(i, player, rank_by) if period == "tournament" and mode != "hero" else ""}
+                    </td>
+                    <td class="heroEntry" style=${"color:gold;cursor:help" if player.username in ["seni", "nkgrimreaper", "liquid92", "yuridaisuki"] else ''}
+
+            title=${"Previous-Champion"  if player.username in ["seni", "nkgrimreaper", "liquid92", "yuridaisuki"] else ''}>
+                        <span style="vertical-align:middle">
+                        ${player.username}</span>
+                    % if len(player_heroes) > i:
+                        <span class="hero_images">
+                        % for hero in player_heroes[i]:
+                            <img src="/static/images/pubg/${hero.team.replace(" ", "_")}_icon.png"/>
+                        % endfor
+                        </span>
+                    % endif
+                    </td>
+                    <td class="rankingEntry">${rank_by_fn(rank_by, player, False)}</td>
+                </tr>
+            % endfor
+            % if user and mode == "global":
+            <tr class="userRow outsideRanks">
+                <td class="userRank">${rank_by_fn(rank_by, user, True)}</td>
+                <td class="heroEntry">${user.username}</td>
+                <td class="rankingEntry">${rank_by_fn(rank_by, user, False)}</td>
+            </tr>
+            % endif
+        </table>
+    </div>
+</div>
+        %endif
+
 <script>
 $( document ).ready(function() {
     $(".dropdown-button").dropdown({
@@ -171,12 +246,19 @@ $( document ).ready(function() {
 })
 </script>
 <div id="friendBlock" class="col s5">
+    % if game.code == "DOTA":
     <div class="card-panel">
 	<p>2x points multiplier for finals day</p>
         <p>Results updated ~2 minutes after match ends</p>
         <p><a href="https://discord.gg/MAH7EEv" target="_blank">Discord channel for suggestions/improvements</a></p>
         <p>Statistics provided by <a href="https://www.stratz.com" target="_blank">Stratz Esports <img src="/static/images/dota/stratz_icon.png"/></a></p>
     </div>
+    % elif game.code == "PUBG":
+        <div class="card-panel">
+        <p>Results updated manually after match ends</p>
+        <p><a href="https://discord.gg/MAH7EEv" target="_blank">Discord channel for suggestions/improvements</a></p>
+    </div>
+    % endif
 % if user:
     <div class="card">
     <div class="card-content">

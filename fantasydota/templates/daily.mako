@@ -75,6 +75,7 @@ ${"period=%s" % period}
     <h2>${rank_by.title()} (${period.title() if period == "tournament" else "Day %d" % (int(period) + 1)})
         <a class="right" href="${league.url}" target="_blank">${league.name}</a></h2>
 </div>
+% if game.code == 'DOTA':
 <div class="row">
 <div id="leaderboardBlock" class="col s7">
     <nav>
@@ -168,11 +169,6 @@ $( document ).ready(function() {
         "hover": true
     });
 
-    /*$.getJSON("/matches", {"day": ${period}}).done(
-        function( data ){
-
-        }
-    )*/
 })
 </script>
 <div id="matchesBlock" class="col s5">
@@ -262,3 +258,101 @@ $( document ).ready(function() {
     </div>
 </div>
 </div>
+% elif game.code == 'PUBG':
+<div class="row">
+<div id="leaderboardBlock" class="col s7">
+    <nav>
+    <div class="nav-wrapper teal darken-2">
+        <ul class="left">
+            <li class=${"active" if rank_by=="points" else ""}>
+                <a id="pointsBtn" href="/daily?rank_by=points&mode=${mode}&${getTime(period)}">
+                    Points
+                </a>
+            </li>
+            <li class=${"active" if rank_by=="wins" else ""}>
+                <a id="winsBtn" href="/daily?rank_by=wins&mode=${mode}&${getTime(period)}">
+                    Wins
+                </a>
+            </li>
+            <li class=${"active" if rank_by=="picks" else ""}>
+                <a id="picksBtn" href="/daily?rank_by=picks&mode=${mode}&${getTime(period)}">
+                    Picks
+                </a>
+            </li>
+            <li class=${"active" if rank_by=="bans" else ""}>
+                <a id="bansBtn" href="/daily?rank_by=bans&mode=${mode}&${getTime(period)}">
+                    Bans
+                </a>
+            </li>
+
+            <li>
+                <a class="dropdown-button" data-beloworigin="true" href="" data-activates="modeDropdown">${mode.title()}<i class="material-icons right">arrow_drop_down</i></a>
+            </li>
+            <ul id="modeDropdown" class="dropdown-content">
+                <li><a href="/daily?rank_by=${rank_by}&mode=${mode}&${getTime(period)}">${mode.title()}</a></li>
+                <li class="divider"></li>
+                % for m in other_modes:
+                    <li><a href="/daily?rank_by=${rank_by}&mode=${m}&${getTime(period)}">${m.title()}</a></li>
+                % endfor
+            </ul>
+            <li>
+                <a class="dropdown-button" data-beloworigin="true" href="" data-activates="periodDropdown">Period<i class="material-icons right">arrow_drop_down</i></a>
+            </li>
+            <ul id="periodDropdown" class="dropdown-content">
+                <li><a href="/leaderboard?rank_by=${rank_by}&mode=${mode}&period=tournament">Tournament</a></li>
+                <li class="divider"></li>
+                % for i in range(league.current_day + 1):
+                    <li><a href="/daily?rank_by=${rank_by}&mode=${mode}&period=${i}">Day ${i+1}</a></li>
+                % endfor
+            </ul>
+        </ul>
+    </div>
+    </nav>
+
+    <div id="tableContainer">
+        <table id="leaderboardTable" class="card-table striped centered">
+            <tr>
+                <th class="positionHeader">Position</th>
+                <th class="playerHeader">Player</th>
+                <th class="rankingHeader">${rank_by.title()}</th>
+            </tr>
+            % for i, player in enumerate(players):
+                <tr class=${"playerRow" if not user or player.username != user.username else "userRow"}>
+                    <td class="positionEntry">${i+1} ${progress_arrow(i, player, rank_by) if period == "tournament" else ""}
+                    </td>
+                    <td class="heroEntry">
+                        ${player.username}
+                    % if len(player_heroes) > i and (not league.transfer_open or league.current_day != period):
+                        <span class="hero_images">
+                        % for hero in player_heroes[i]:
+                            <img src="/static/images/dota/${hero.replace(" ", "_")}_icon.png" title="${hero}" />
+                        % endfor
+                        </span>
+                    %endif
+                    </td>
+                    <td class="rankingEntry">${rank_by_fn(rank_by, player, False)}</td>
+                </tr>
+            % endfor
+            % if user and mode == "global":
+            <tr class="userRow outsideRanks">
+                <td class="userRank">${rank_by_fn(rank_by, user, True)}</td>
+                <td class="heroEntry">${user.username}</td>
+                <td class="rankingEntry">${rank_by_fn(rank_by, user, False)}</td>
+            </tr>
+            % endif
+        </table>
+    </div>
+</div>
+
+<script>
+$( document ).ready(function() {
+    console.log("ready");
+    $(".dropdown-button").dropdown({
+        "belowOrigin": true,
+        "hover": true
+    });
+
+})
+</script>
+</div>
+% endif

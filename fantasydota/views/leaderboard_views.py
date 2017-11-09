@@ -8,16 +8,17 @@ from fantasydota import DBSession
 from fantasydota.lib.general import add_other_games
 from fantasydota.lib.herolist import heroes as herolist
 from fantasydota.models import Friend, LeagueUser, LeagueUserDay, TeamHero, League, Match, Result, TeamHeroHistoric, \
-    HeroDay, Hero
+    HeroDay, Hero, Game
 
 
 @view_config(route_name='leaderboard', renderer='../templates/leaderboard.mako')
 def leaderboard(request):
     session = DBSession()
-    game = request.game
+    game_code = request.game
+    game = session.query(Game).filter(Game.code == game_code).first()
     user_id = authenticated_userid(request)
     league_id = int(request.params.get("league")) if request.params.get("league") else None \
-        or request.registry.settings[game]["default_league"]
+        or request.registry.settings[game_code]["default_league"]
     users_playing = [x[0] for x in session.query(TeamHero.user_id).filter(TeamHero.league == league_id).group_by(TeamHero.user_id).all()]
     mode = request.params.get("mode", "global")
     if mode == "friend" and not user_id:
@@ -78,17 +79,18 @@ def leaderboard(request):
             player_heroes.append(heroes)
 
     return_dict = {'user': luser, 'players': players, 'rank_by': rank_by, 'mode': mode, 'other_modes': other_modes, 'period': "tournament",
-            'player_heroes': player_heroes, 'league': league}
-    return add_other_games(session, game, return_dict)
+            'player_heroes': player_heroes, 'league': league, 'game': game}
+    return add_other_games(session, game_code, return_dict)
 
 
 @view_config(route_name='daily', renderer='../templates/daily.mako')
 def daily(request):
     session = DBSession()
-    game = request.game
+    game_code = request.game
+    game = session.query(Game).filter(Game.code == game_code).first()
     user_id = authenticated_userid(request)
     league_id = int(request.params.get("league")) if request.params.get("league") else None \
-        or request.registry.settings[game]["default_league"]
+        or request.registry.settings[game_code]["default_league"]
     league = session.query(League).filter(League.id == league_id).first()
     mode = request.params.get("mode", "global")
     if mode == "friend" and not user_id:
@@ -149,7 +151,7 @@ def daily(request):
             player_heroes.append(heroes)
 
     match_data = []
-    matches = session.query(Match).filter(Match.day == period).all() if game == 'DOTA' else []
+    matches = session.query(Match).filter(Match.day == period).all() if game_code == 'DOTA' else []
     for match in reversed(matches):  # we want to show most recent matches at the top
         match_dict = {
             "radiant": match.radiant_team, "dire": match.dire_team, "radiant_win": match.radiant_win,
@@ -177,6 +179,6 @@ def daily(request):
                 else:
                     match_dict["dire_bans"].append(result_entry)
         match_data.append(match_dict)
-    return_dict = {'user': luser, 'players': players, 'rank_by': rank_by, 'mode': mode, 'period': period,
+    return_dict = {'user': luser, 'players': players, 'rank_by': rank_by, 'mode': mode, 'period': period, 'game': game,
             'player_heroes': player_heroes, 'league': league, 'match_data': match_data, 'other_modes': other_modes}
-    return add_other_games(session, game, return_dict)
+    return add_other_games(session, game_code, return_dict)
