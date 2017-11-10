@@ -43,7 +43,7 @@ def main(global_config, **settings):
     """
     settings["league_transfers"] = True  # why wont config file properly set this?
     settings["DOTA"] = {"default_league": 5609}
-    settings["PUBG"] = {"default_league": 2}
+    settings["PUBG"] = {"default_league": 1}
     sqlalchemy_url = os.path.expandvars(settings.get('sqlalchemy.url'))
     engine = create_engine(sqlalchemy_url, echo=False, pool_size=100, pool_recycle=3600)
     event.listen(engine, 'checkout', checkout_listener)
@@ -97,7 +97,7 @@ def main(global_config, **settings):
 
     config.add_route('view_rules', '/rules')
     config.add_route('view_account', '/viewAccount')
-    config.add_route('view_league', '/viewLeague')
+    config.add_route('view_team', '/team')
     config.add_route('buy_hero', '/buyHero')
     config.add_route('sell_hero', '/sellHero')
     config.add_route('swap_in_hero', '/swapInHero')

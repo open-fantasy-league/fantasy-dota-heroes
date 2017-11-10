@@ -1,4 +1,6 @@
 from pyramid.httpexceptions import HTTPFound
+from pyramid.renderers import render
+from pyramid.response import Response
 from pyramid.security import authenticated_userid, forget
 from pyramid.view import view_config
 from sqlalchemy import and_
@@ -9,11 +11,13 @@ from fantasydota.lib.trade import buy, sell, swap_in, swap_out
 from fantasydota.models import User, League, LeagueUser, Hero, TeamHero, LeagueUserDay, Game
 
 
-@view_config(route_name='view_league', renderer='../templates/team.mako')
-def view_league(request):
+@view_config(route_name='view_team', renderer='../templates/team.mako')
+def view_team(request):
     session = DBSession()
     user_id = authenticated_userid(request)
-    game_code = request.game
+    game_code = request.params.get('game')
+    if not game_code:
+        game_code = request.game
     game = session.query(Game).filter(Game.code == game_code).first()
     if game_code == 'DOTA':
         message_type = request.params.get('message_type')
@@ -150,7 +154,13 @@ def view_league(request):
                        }
     else:
         return_dict = {'game': 'whoops'}
-    return add_other_games(session, game_code, return_dict)
+    return_dict = add_other_games(session, game_code, return_dict)
+    result = render('fantasydota:templates/team.mako',
+                    return_dict,
+                    request=request)
+    response = Response(result)
+    response.set_cookie('game', value=game_code, max_age=315360000)
+    return response
 
 
 @view_config(route_name="sell_hero", renderer="json")

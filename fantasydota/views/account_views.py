@@ -30,7 +30,7 @@ def login(request):
                 if user.validate_password(request.params.get('password')):
                     headers = remember(request, user.id)
                     user.last_login = datetime.datetime.now()
-                    return HTTPFound('/viewLeague', headers=headers)
+                    return HTTPFound('/team', headers=headers)
                 else:
                     headers = forget(request)
                     message = "Password did not match stored value for %s" % user.username
@@ -92,7 +92,7 @@ def register(request):
                 stage = 0
             session.add(LeagueUserDay(user.id, username, l.id, i, stage))
     headers = remember(request, user.id)
-    return HTTPFound('/viewLeague', headers=headers)
+    return HTTPFound('/team', headers=headers)
 
 
 @view_config(route_name='change_password')
@@ -233,7 +233,7 @@ def home(request):
     try:
         user = get_user(request)
         headers = remember(request, user.id)
-        return HTTPFound("/viewLeague", headers=headers)
+        return HTTPFound("/team", headers=headers)
     except:
         return HTTPFound("/login")
     # return common_context(
@@ -250,7 +250,7 @@ def home(request):
 def done(request):
     user = get_user(request)
     headers = remember(request, user.id)
-    return HTTPFound('/viewLeague', headers=headers)
+    return HTTPFound('/team', headers=headers)
     # return {"user": get_user(request),
     #         "plus_id": request.registry.settings.get(
     #             'SOCIAL_AUTH_STEAM_KEY'

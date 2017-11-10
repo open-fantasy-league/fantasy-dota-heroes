@@ -59,7 +59,7 @@
                     </ul>
                 </li>
             <li id="leagueBtn" class="col s1">
-                <a href="/viewLeague">My team</a>
+                <a href="/team">My team</a>
             </li>
             <li class="col s1">
                 <a href="/leaderboard">Leaderboard</a>
