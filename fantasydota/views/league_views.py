@@ -16,8 +16,6 @@ def view_league(request):
     game_code = request.game
     game = session.query(Game).filter(Game.code == game_code).first()
     if game_code == 'DOTA':
-        print("we in dota_---------___----___---__--___------")
-        print(game.code)
         message_type = request.params.get('message_type')
         message = request.params.get('message')
 

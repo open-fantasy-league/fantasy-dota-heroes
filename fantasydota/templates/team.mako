@@ -174,7 +174,7 @@
             </tr>
             % for hero in team:
                 <tr class="teamRow" id="${hero[0].id}TeamRow">
-                    <td class="heroImg" sorttable_customkey="${hero[0].name}"><img src="/static/images/pubg/${hero[0].team.replace(" ", "_")}_icon.png" title="${hero[0].name}"/></td>
+                    <td class="heroImg" sorttable_customkey="${hero[0].name}"><img src="/static/images/pubg/teams/${hero[0].team.replace(" ", "_")}_icon.png" title="${hero[0].team}"/></td>
                     <td class="heroEntry">${hero[0].name}</td>
                     <td class="heroPointsEntry">${hero[0].points}</td>
                     <td class="valueEntry">${hero[0].value}</td>
@@ -208,7 +208,7 @@
             </tr>
             % for hero in reserve_team:
                 <tr class="reserveRow" id="${hero[0].id}ReserveRow">
-                    <td class="heroImg" sorttable_customkey="${hero[0].name}"><img src="/static/images/pubg/${hero[0].team.replace(" ", "_")}_icon.png" title="${hero[0].name}"/></td>
+                    <td class="heroImg" sorttable_customkey="${hero[0].name}"><img src="/static/images/pubg/teams/${hero[0].team.replace(" ", "_")}_icon.png" title="${hero[0].team}"/></td>
                     <td class="heroEntry">${hero[0].name}</td>
                     <td class="heroPointsEntry">${hero[0].points}</td>
                     <td class="valueEntry">${hero[0].value}</td>
@@ -229,11 +229,11 @@
     <div class="card-content">
         <span class=${"messageTransOpen" if league.transfer_open != 0 else "messageTransClosed"}>
             % if league.transfer_open != 0:
-            <p><strong>NEW SYSTEM!</strong></p>
-            <p>You are given <strong>100 credits total</strong> to pick both a <strong>Main team and Reserve team</strong></p>
-            <p>Your <strong>Reserves score 0 points</strong>. However they can be <strong>swapped with main heroes each evening</strong> after games are over</p>
-            <p>You <strong>cannot purchase any new heroes once tournament started</strong>. You must pick Main and Reserves carefully</p>
+        <p>Your main team can consist of ${game.team_size} players</p>
+        <p>You can pick ${game.reserve_size} reserves. These players earn 0 points, but can be swapped into your main team for day 2</p>
+        <p>Your main team is only ever allowed to pick <strong>one player from each team</strong></p>
             <p><strong>Transfer window currently open (closes ~1 hour before games start)</strong></p>
+        <p>Detailed rules <a href="/rules">here</a></p>
             % else:
                 <p><strong>
                 Swaps between reserves and main team only available between days. When all day's games finished
@@ -263,7 +263,7 @@
             </tr>
             % for hero in heroes:
                 <tr id="${hero.id}Row">
-                    <td class="heroImg" sorttable_customkey="${hero.name}"><img src="/static/images/pubg/${hero.team.replace(" ", "_")}_icon.png" title="${hero.name}"/></td>
+                    <td class="heroImg" sorttable_customkey="${hero.name}"><img src="/static/images/pubg/teams/${hero.team.replace(" ", "_")}_icon.png" title="${hero.team}"/></td>
                     <td class="heroEntry">${hero.name}</td>
                     <td class="heroPointsEntry">${hero.points}</td>
                     <td class="valueEntry">${hero.value}</td>

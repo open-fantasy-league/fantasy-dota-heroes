@@ -9,3 +9,15 @@ ALTER TABLE hero ADD COLUMN team varchar(100);
 
 ALTER TABLE `match` ADD COLUMN league INT DEFAULT 5609;
 ALTER TABLE `match` ADD FOREIGN KEY league_fk(league) REFERENCES league(id) ON DELETE CASCADE;
+
+
+alter table team_hero drop foreign key team_hero_ibfk_2;
+alter table team_hero_historic drop foreign key team_hero_historic_ibfk_2;
+alter table hero_day drop foreign key hero_day_ibfk_1;
+
+
+ALTER TABLE team_hero ADD FOREIGN KEY hero_fk(hero_id, league) REFERENCES hero(id, league) ON DELETE CASCADE;
+ALTER TABLE team_hero_historic ADD FOREIGN KEY team_hero_historic_hero_fk(hero_id, league) REFERENCES hero(id, league) ON DELETE CASCADE;
+ALTER TABLE hero_day ADD FOREIGN KEY hero_day_hero_fk(hero_id, league) REFERENCES hero(id, league) ON DELETE CASCADE;
+
+alter table sale drop foreign key sale_ibfk_2;

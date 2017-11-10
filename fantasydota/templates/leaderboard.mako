@@ -217,7 +217,7 @@ ${"period=%s" % period}
                     % if len(player_heroes) > i:
                         <span class="hero_images">
                         % for hero in player_heroes[i]:
-                            <img src="/static/images/pubg/${hero.team.replace(" ", "_")}_icon.png"/>
+                            <img src="/static/images/pubg/teams/${hero.team.replace(" ", "_")}_icon.png"/>
                         % endfor
                         </span>
                     % endif

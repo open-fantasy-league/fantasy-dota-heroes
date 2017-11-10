@@ -11,6 +11,7 @@ from sqlalchemy import (
     ForeignKey)
 from sqlalchemy import DateTime
 from sqlalchemy import Float
+from sqlalchemy import ForeignKeyConstraint
 from sqlalchemy import UniqueConstraint
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
@@ -231,14 +232,17 @@ class TeamHero(Base):
     __tablename__ = "team_hero"
     id = Column(Integer, Sequence('id'), primary_key=True)
     user_id = Column(Integer, ForeignKey(User.id), index=True, nullable=False)
-    hero_id = Column(Integer, ForeignKey(Hero.id), index=True, nullable=False)
+    hero_id = Column(Integer, index=True, nullable=False)
     # commented out due to mapper exception when joining Hero and TeamHero when multiple foreign keys
     # To make it work you give join a tuple I now believe. table, then table column to join I think
     hero_name = Column(String(100))#, ForeignKey(Hero.name))
-    league = Column(Integer, ForeignKey(League.id), index=True, nullable=False)
+    league = Column(Integer, index=True, nullable=False)
     cost = Column(Float)
     reserve = Column(Boolean, index=True)
     UniqueConstraint('league', 'hero_id', 'user_id')
+    __table_args__ = (ForeignKeyConstraint([hero_id, league],
+                                           [Hero.id, Hero.league]),
+                      {})
 
     def __init__(self, user_id, hero_id, league, cost, reserve, **kwargs):
         self.user_id = user_id
@@ -253,7 +257,7 @@ class Sale(Base):
     __tablename__ = "sale"
     sale_id = Column(Integer, Sequence('sale_id'), primary_key=True)
     user = Column(Integer, ForeignKey('league_user.id'), nullable=False, index=True)  # index true?
-    hero = Column(Integer, ForeignKey('hero.id'), nullable=False, index=True)
+    hero = Column(Integer, nullable=False, index=True)
     league_id = Column(Integer, ForeignKey('league.id'), nullable=False, index=True)
     date = Column(DateTime, nullable=False, default=func.now())
     value = Column(Integer, nullable=False)
@@ -308,7 +312,16 @@ class Result(Base):
     @staticmethod
     def result_to_value_pubg(result_str):
         position, kills = result_str.split(",")
-        return kills + (20 - position)
+        score = kills * 2
+        if position <= 1:
+            score += 5
+        elif position <= 3:
+            score += 3
+        elif position <= 5:
+            score += 2
+        elif position <= 10:
+            score += 1
+        return score
 
 
 class Match(Base):
@@ -333,14 +346,17 @@ class TeamHeroHistoric(Base):
     __tablename__ = "team_hero_historic"
     id = Column(Integer, Sequence('id'), primary_key=True)
     user_id = Column(Integer, ForeignKey(User.id), index=True, nullable=False)
-    hero_id = Column(Integer, ForeignKey(Hero.id), index=True, nullable=False)
+    hero_id = Column(Integer, index=True, nullable=False)
     # commented out due to mapper exception when joining Hero and TeamHero when multiple foreign keys
     # To make it work you give join a tuple I now believe. table, then table column to join I think
     hero_name = Column(String(100))#, ForeignKey(Hero.name))
-    league = Column(Integer, ForeignKey(League.id), index=True, nullable=False)
+    league = Column(Integer, index=True, nullable=False)
     cost = Column(Float)
     day = Column(Integer)
     UniqueConstraint('league', 'hero_id', 'user_id', 'day')
+    __table_args__ = (ForeignKeyConstraint([hero_id, league],
+                                           [Hero.id, Hero.league]),
+                      {})
 
     def __init__(self, user_id, hero_id, league, cost, day, **kwargs):
         self.user_id = user_id
@@ -355,9 +371,9 @@ class TeamHeroHistoric(Base):
 class HeroDay(Base):
     __tablename__ = "hero_day"
     id = Column(Integer, Sequence('id'), primary_key=True)
-    hero_id = Column(Integer, ForeignKey(Hero.id), index=True, nullable=False)
+    hero_id = Column(Integer, index=True, nullable=False)
     hero_name = Column(String(100), nullable=False)
-    league = Column(Integer, ForeignKey(League.id), index=True)
+    league = Column(Integer, index=True)
     day = Column(Integer, index=True)
     stage = Column(Integer)  # 0 qualifiers, 1 group stage, 2 main event
     value = Column(Float)
@@ -369,6 +385,9 @@ class HeroDay(Base):
     wins_rank = Column(Integer)
     picks_rank = Column(Integer)
     bans_rank = Column(Integer)
+    __table_args__ = (ForeignKeyConstraint([hero_id, league],
+                                           [Hero.id, Hero.league]),
+                      {})
 
     def __init__(self, hero_id, hero_name, league, day, stage, value):
         self.hero_id = hero_id
