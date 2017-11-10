@@ -80,10 +80,6 @@
             </li>
             <li class="col s3">
                 <a href="/accountSettings">Account Settings</a>
-            </li>
-                <li class="col s3">
-                <a href="/guessHero">TI7 Hero Guesser</a>
-            </li>
             </ul></div>
         </nav>
         </div>

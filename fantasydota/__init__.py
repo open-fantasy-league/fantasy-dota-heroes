@@ -108,7 +108,5 @@ def main(global_config, **settings):
     
     config.add_route('news', '/news')
     config.add_route('hall_of_fame', '/hallOfFame')
-    config.add_route('guess_the_hero', '/guessHero')
-    config.add_route('do_guess', '/doGuess')
     config.scan()
     return config.make_wsgi_app()
