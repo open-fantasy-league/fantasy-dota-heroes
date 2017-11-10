@@ -151,12 +151,20 @@ def daily(request):
                 for hero in session.query(TeamHero).filter(
                         and_(TeamHero.user_id == player.user_id, TeamHero.league == league_id)).\
                         filter(TeamHero.reserve.is_(False)).all():
-                    heroes.append(hero.hero_name)
+                    if game_code == 'DOTA':
+                        heroes.append(hero.hero_name)
+                    elif game_code == 'PUBG':
+                        heroes.append(session.query(Hero).filter(Hero.id == hero.hero_id).filter(
+                            Hero.league == league.id).first())
             else:
                 for hero in session.query(TeamHeroHistoric).filter(
                         and_(TeamHeroHistoric.user_id == player.user_id, TeamHeroHistoric.league == league_id)).\
                         filter(TeamHeroHistoric.day == period).all():
-                    heroes.append(hero.hero_name)
+                    if game_code == 'DOTA':
+                        heroes.append(hero.hero_name)
+                    elif game_code == 'PUBG':
+                        heroes.append(session.query(Hero).filter(Hero.id == hero.hero_id).filter(
+                            Hero.league == league.id).first())
             player_heroes.append(heroes)
 
     match_data = []

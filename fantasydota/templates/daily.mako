@@ -325,7 +325,7 @@ $( document ).ready(function() {
                     % if len(player_heroes) > i and (not league.transfer_open or league.current_day != period):
                         <span class="hero_images">
                         % for hero in player_heroes[i]:
-                            <img src="/static/images/dota/${hero.replace(" ", "_")}_icon.png" title="${hero}" />
+                            <img src="/static/images/pubg/teams/${hero.team.replace(" ", "_")}_icon.png" title="${hero.name}" />
                         % endfor
                         </span>
                     %endif
