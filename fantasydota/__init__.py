@@ -51,7 +51,7 @@ def main(global_config, **settings):
 
     # Need https set up on local machine for secure True to work locally
     authn_policy = AuthTktAuthenticationPolicy(settings.get('authn_policy_secr'), hashalg='sha512', http_only=True,
-                                               #secure=True,
+                                               secure=True,
                                                max_age=10000000)
     authz_policy = ACLAuthorizationPolicy()
 

@@ -64,11 +64,11 @@
     <div class="card-panel">
         Points are allocated in the following way:</br>
         <ul class="browser-default">
-            <li>Kill       2 points</li>
-            <li>Win        5 points</li>
-            <li>Top 3      3 points</li>
-            <li>Top 5      2 points</li>
-            <li>Top 10     1 point</li>
+            <li>Kill&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2 points</li>
+            <li>Win&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5 points</li>
+            <li>Top 3&nbsp;&nbsp;&nbsp;&nbsp; 3 points</li>
+            <li>Top 5&nbsp;&nbsp;&nbsp;&nbsp; 2 points</li>
+            <li>Top 10&nbsp;&nbsp;&nbsp;1 point</li>
         </ul></br>
             Missing players penalty multiplier:</br>
             <ul class="browser-default"><li>x0.5 for every missing player
