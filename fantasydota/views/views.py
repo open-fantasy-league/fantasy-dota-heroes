@@ -35,7 +35,7 @@ def view_faq(request):
 @view_config(route_name='view_rules', renderer='../templates/rules.mako')
 def view_rules(request):
     session = DBSession()
-    return add_other_games(session, request.game, {})
+    return add_other_games(session, request.game, {'game_code': request.game})
 
 
 @view_config(route_name='change_game')
@@ -72,7 +72,7 @@ def news(request):
 @view_config(route_name="hall_of_fame", renderer="../templates/hall_of_fame.mako")
 def hall_of_fame(request):
     session = DBSession()
-    return add_other_games(session, request.game, {})
+    return add_other_games(session, request.game, {'game_code': request.game})
 
 
 @view_config(route_name="guess_the_hero", renderer="../templates/guesshero.mako")

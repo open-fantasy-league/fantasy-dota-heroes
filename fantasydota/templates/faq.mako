@@ -20,16 +20,15 @@
 When this happens you get points.<br>
     Send feedback/questions to fantasydotaeu@gmail.com or <a href="https://discord.gg/MAH7EEv" target=_blank">discord</a><br>
     Source-code available here https://github.com/ThePianoDentist/fantasy-dota-heroes (my instructions for setting up/running are abysmal, PM me for that)
+
+    It's also now a PUBG fantasy site as well! :D
 </p>
     </div>
 <h2>Are there any prizes?</h2>
     <div class="card-panel">
 <p>
-    Choice of any standard arcana for winner. Prize sponsored by <a href="https://stratz.com">Stratz Esports</a> (DotA 2 statistics & analytics).<br>
-(If points are tied, winner will be decided by wins, picks, bans in that order. For identical teams winner drawn from hat)
-<br>
-    Obviously I cannot get you IO arcana (not tradeable)<br><br>
-*Disclaimer: Although this site is still my independent project, I am currently working for Stratz-Esports.
+    Usually provide an arcana for DotA tournaments. None planned for PUBG tournaments yet.
+    Am long-term planning to move away from proper prizes, to having user profiles and earning badges/achievements from playing.
 </p>
     </div>
 <h2>Mobile/App version of site?</h2>
@@ -52,6 +51,17 @@ The least clicks possible to add extra interest to games
 <p>
 This is so that people do not just instantly fill their team with the most imba-heroes who are guarantee 1st phase pick/ban<br>
 A little bit of thought has to be put in to trade-off pick-rate with bonus points for less in demand heroes
+</p>
+    </div>
+    <h2>Why do PUBG as well as Dota heroes?</h2>
+    <div class="card-panel">
+<p>
+The problem with applying fantasy leagues from traditional sports to esports, is we don't usually have proper leagues.
+    Instead we have tournaments and tournaments. This means that each player can play a vastly different number of games,
+    makes picking teams quite weird, and heavily dependent on who can reach later stages.
+
+    By using heroes rather than players for DotA you avoid this problem.
+    Then for PUBG, the establishing tournament format, where everyone plays all rounds, you also avoid this situation.
 </p>
     </div>
     <!--<h2>Why is there a big points multiplier for main event?</h2>-->

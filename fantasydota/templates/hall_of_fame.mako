@@ -15,6 +15,7 @@
     <h2><img src="/static/images/dota/trophy.png"/> Hall of Fame</h2>
 </div>
 <div>
+    % if game_code == 'DOTA':
     <table class="card-table striped">
         <thead>
         <tr>
@@ -45,11 +46,34 @@
         </tr>
         <tr>
             <td>ESL Hamburg [Major]</td>
+            <td>Liquid92</td>
+            <td>JugOrNot</td>
+        </tr>
+        </tbody>
+    </table>
+    % elif game_code == 'PUBG':
+        <table class="card-table striped">
+        <thead>
+        <tr>
+            <th>Tournament</th>
+            <th>League Winner</th>
+            <th>Runner-up</th>
+        </tr></thead>
+        <tbody>
+        <tr>
+            <td>BEAT Invitational</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td>IEM Oakland Invitational</td>
             <td>-</td>
             <td>-</td>
         </tr>
         </tbody>
     </table>
+    %endif
+
 </div>
 
 

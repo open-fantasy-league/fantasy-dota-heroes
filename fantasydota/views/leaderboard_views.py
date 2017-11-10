@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 from pyramid.security import authenticated_userid
 from pyramid.view import view_config
 from sqlalchemy import and_
@@ -63,7 +65,11 @@ def leaderboard(request):
 
     for player in players:
         if mode == "hero":
-            player_heroes.append([player.username])
+            if game_code == "DOTA":
+                player_heroes.append([player.username])
+            else:
+                x = namedtuple('hero', ['team'])
+                player_heroes.append([x(player.team)])
         else:
             heroes = []
             if league.transfer_open:
@@ -75,7 +81,10 @@ def leaderboard(request):
                 for hero in session.query(TeamHero).filter(and_(TeamHero.user_id == player.user_id,
                                                                         TeamHero.league == league_id))\
                         .filter(TeamHero.reserve.is_(False)).all():
-                            heroes.append(hero.hero_name)
+                            if game_code == 'DOTA':
+                                heroes.append(hero.hero_name)
+                            elif game_code == 'PUBG':
+                                heroes.append(session.query(Hero).filter(Hero.id == hero.hero_id).filter(Hero.league == league.id).first())
             player_heroes.append(heroes)
 
     return_dict = {'user': luser, 'players': players, 'rank_by': rank_by, 'mode': mode, 'other_modes': other_modes, 'period': "tournament",

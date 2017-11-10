@@ -1,3 +1,4 @@
+import argparse
 import transaction
 from fantasydota.scripts.update_user_rankings import update_user_rankings
 
@@ -12,20 +13,21 @@ from fantasydota.lib.session_utils import make_session
 
 def main():
     session = make_session()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("league", type=int, help="league id")
+    args = parser.parse_args()
+    league = session.query(League).filter(League.id == args.league).first()
     with transaction.manager:
         print "Updating hero points"
-        for league in session.query(League).filter(League.status == 1).all():
-            update_hero_points(session, league)
+        update_hero_points(session, league)
         transaction.commit()
     with transaction.manager:
         print "Updating league points"
-        for league in session.query(League).filter(League.status == 1).all():
-            update_league_points(session, league)
+        update_league_points(session, league)
         transaction.commit()
     with transaction.manager:
         print "Updating user rankings"
-        for league in session.query(League).filter(League.status == 1).all():
-            update_user_rankings(session, league)
+        update_user_rankings(session, league)
         transaction.commit()
 
 if __name__ == "__main__":

@@ -136,15 +136,13 @@ ${"period=%s" % period}
                 <tr class=${"playerRow" if not user or player.username != user.username else "userRow"}>
                     <td class="positionEntry">${i+1} ${progress_arrow(i, player, rank_by) if period == "tournament" and mode != "hero" else ""}
                     </td>
-                    <td class="heroEntry" style=${"color:gold;cursor:help" if player.username in ["seni", "nkgrimreaper", "liquid92", "yuridaisuki"] else ''}
-
-            title=${"Previous-Champion"  if player.username in ["seni", "nkgrimreaper", "liquid92", "yuridaisuki"] else ''}>
+                    <td class="heroEntry">
                         <span style="vertical-align:middle">
                         ${player.username}</span>
                     % if len(player_heroes) > i:
                         <span class="hero_images">
                         % for hero in player_heroes[i]:
-                            <img src="/static/images/dota/${hero.replace(" ", "_")}_icon.png"/>
+                            <img src="/static/images/dota/${hero.replace(" ", "_")}_icon.png" title="${hero.name}"/>
                         % endfor
                         </span>
                     % endif
@@ -209,15 +207,14 @@ ${"period=%s" % period}
                 <tr class=${"playerRow" if not user or player.username != user.username else "userRow"}>
                     <td class="positionEntry">${i+1} ${progress_arrow(i, player, rank_by) if period == "tournament" and mode != "hero" else ""}
                     </td>
-                    <td class="heroEntry" style=${"color:gold;cursor:help" if player.username in ["seni", "nkgrimreaper", "liquid92", "yuridaisuki"] else ''}
+                    <td class="heroEntry">
 
-            title=${"Previous-Champion"  if player.username in ["seni", "nkgrimreaper", "liquid92", "yuridaisuki"] else ''}>
                         <span style="vertical-align:middle">
                         ${player.username}</span>
                     % if len(player_heroes) > i:
                         <span class="hero_images">
                         % for hero in player_heroes[i]:
-                            <img src="/static/images/pubg/teams/${hero.team.replace(" ", "_")}_icon.png"/>
+                            <img src="/static/images/pubg/teams/${hero.team.replace(" ", "_")}_icon.png" title="${hero.name}"/>
                         % endfor
                         </span>
                     % endif

@@ -312,6 +312,7 @@ class Result(Base):
     @staticmethod
     def result_to_value_pubg(result_str):
         position, kills = result_str.split(",")
+        position, kills = int(position), int(kills)
         score = kills * 2
         if position <= 1:
             score += 5

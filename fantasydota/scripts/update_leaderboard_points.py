@@ -5,10 +5,10 @@ from sqlalchemy import func
 from fantasydota.lib.constants import MULTIPLIER
 from fantasydota.lib.session_utils import make_session
 from fantasydota.models import Result, LeagueUser, League, LeagueUserDay, \
-    TeamHero
+    TeamHero, Game
 
 
-def add_result_to_user(userq, res, hero_count):
+def add_result_to_user(userq, res, hero_count, team_size, game_id):
     user_id = userq.user_id
     if "p" in res:
         userq.picks += 1
@@ -16,7 +16,10 @@ def add_result_to_user(userq, res, hero_count):
         userq.wins += 1
     if "b" in res:
         userq.bans += 1
-    to_add = MULTIPLIER * ((0.5 ** (5 - hero_count)) * Result.result_to_value(res))
+    if game_id == 1:
+        to_add = MULTIPLIER * ((0.5 ** (team_size - hero_count)) * Result.result_to_value(res))
+    elif game_id == 2:
+        to_add = MULTIPLIER * ((0.5 ** (team_size - hero_count)) * Result.result_to_value_pubg(res))
     print "addin %s points to %s" % (to_add, user_id)
     userq.points += to_add
 
@@ -43,8 +46,10 @@ def update_league_points(session, league):
                                                                          TeamHero.user_id == user_id)).filter(TeamHero.reserve.is_(False))\
                 .scalar()
 
-            add_result_to_user(userq, res, hero_count)
-            add_result_to_user(userq_day, res, hero_count)
+            team_size = session.query(Game.team_size).filter(Game.id == league.game).first()[0]
+            game = league.game
+            add_result_to_user(userq, res, hero_count, team_size, game)
+            add_result_to_user(userq_day, res, hero_count, team_size, game)
 
         result.applied = 2
 

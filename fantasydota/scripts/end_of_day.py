@@ -1,3 +1,4 @@
+import argparse
 import transaction
 
 from fantasydota.lib.hero import recalibrate_hero_values
@@ -67,12 +68,15 @@ def store_todays_teams(session, league):
 def main():
     with transaction.manager:
         session = make_session()
-        for league in session.query(League).filter(League.status == 1).all():
-           # set_old_rankings(session, league)
-           store_todays_teams(session, league)
+        parser = argparse.ArgumentParser()
+        parser.add_argument("league", type=int, help="league id")
+        args = parser.parse_args()
+        league = session.query(League).filter(League.id == args.league).first()
+        # set_old_rankings(session, league)
+        store_todays_teams(session, league)
 
-           league.current_day += 1
-           league.swap_open = True
+        league.current_day += 1
+        league.swap_open = True
         transaction.commit()
 
 if __name__ == "__main__":
