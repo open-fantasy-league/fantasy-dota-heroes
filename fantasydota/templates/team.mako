@@ -167,6 +167,7 @@
             <tr style="cursor: pointer">
                 <th class="heroHeader">${game.pickee}</th>
                 <th class="dummyHeader" colspan="0"></th>
+                <th class="teamHeader">Team</th>
                 <th class="heroPointsHeader">Points</th>
                 <th class="valueHeader">Value</th>
                 <th class="sellHeader">${"Sell" if not league.swap_open else "Swap"}</th>
@@ -176,6 +177,7 @@
                 <tr class="teamRow" id="${hero[0].id}TeamRow">
                     <td class="heroImg" sorttable_customkey="${hero[0].name}"><img src="/static/images/pubg/teams/${hero[0].team.replace(" ", "_")}_icon.png" title="${hero[0].team}"/></td>
                     <td class="heroEntry">${hero[0].name}</td>
+                    <td class="teamEntry">${hero[0].team}</td>
                     <td class="heroPointsEntry">${hero[0].points}</td>
                     <td class="valueEntry">${hero[0].value}</td>
                     <td class="tradeEntry">
@@ -202,6 +204,7 @@
             <tr style="cursor: pointer">
                 <th class="heroHeader">${game.pickee}</th>
                 <th class="dummyHeader" colspan="0"></th>
+                <th class="teamHeader">Team</th>
                 <th class="heroPointsHeader">Points</th>
                 <th class="valueHeader">Value</th>
                 <th class="sellHeader">${"Sell" if not league.swap_open else "Swap"}</th>
@@ -210,6 +213,7 @@
                 <tr class="reserveRow" id="${hero[0].id}ReserveRow">
                     <td class="heroImg" sorttable_customkey="${hero[0].name}"><img src="/static/images/pubg/teams/${hero[0].team.replace(" ", "_")}_icon.png" title="${hero[0].team}"/></td>
                     <td class="heroEntry">${hero[0].name}</td>
+                    <td class="teamEntry">${hero[0].team}</td>
                     <td class="heroPointsEntry">${hero[0].points}</td>
                     <td class="valueEntry">${hero[0].value}</td>
                     <td class="tradeEntry">
@@ -229,9 +233,9 @@
     <div class="card-content">
         <span class=${"messageTransOpen" if league.transfer_open != 0 else "messageTransClosed"}>
             % if league.transfer_open != 0:
-        <p>Your main team can consist of ${game.team_size} players</p>
-        <p>You can pick ${game.reserve_size} reserves. These players earn 0 points, but can be swapped into your main team for day 2</p>
-        <p>Your main team is only ever allowed to pick <strong>one player from each team</strong></p>
+        <p>Your team consists of ${game.team_size} players</p>
+        <p>Only allowed <strong>one player from each team</strong></p>
+        <p>Please <strong>ignore the reserve team stuff</strong>. That is for other tournaments (but I can't code it out before this invitational)</p>
             <p><strong>Transfer window currently open (closes ~1 hour before games start)</strong></p>
         <p>Detailed rules <a href="/rules">here</a></p>
             % else:
@@ -241,7 +245,7 @@
             % endif
         </span>
         <span>
-            <p>Tables are sortable (click table headers). Max <strong>5 heroes per team</strong> (points <a href="/rules">penalties</a> for under 5)</p>
+            <p>Tables are sortable (click table headers)</p>
         </span>
     </div>
 </div>
@@ -256,6 +260,7 @@
             <tr style="cursor: pointer">
                 <th class="heroHeader">${game.pickee}</th>
                 <th class="dummyHeader" colspan="0"></th>
+                <th class="teamHeader">Team</th>
                 <th class="heroPointsHeader">Points</th>
                 <th class="valueHeader">Value</th>
                 <th class="sellHeader">Buy</th>
@@ -265,6 +270,7 @@
                 <tr id="${hero.id}Row">
                     <td class="heroImg" sorttable_customkey="${hero.name}"><img src="/static/images/pubg/teams/${hero.team.replace(" ", "_")}_icon.png" title="${hero.team}"/></td>
                     <td class="heroEntry">${hero.name}</td>
+                    <td class="teamEntry">${hero.team}</td>
                     <td class="heroPointsEntry">${hero.points}</td>
                     <td class="valueEntry">${hero.value}</td>
                     <td class="tradeEntry">
