@@ -83,7 +83,7 @@ class Game(Base):
     pickee = Column(String(10), nullable=False)  # i.e. Hero, champion, player
     team_size = Column(Integer, nullable=False)
     reserve_size = Column(Integer, nullable=False)
-    default_league = Column(Integer, ForeignKey(League.id), index=True)
+    default_league = Column(Integer, index=True)
 
     def __init__(self, name, code, pickee, team_size, reserve_size):
         self.name = name
@@ -138,6 +138,7 @@ class LeagueUser(Base):
     old_picks_rank = Column(Integer)
     old_bans_rank = Column(Integer)
     last_change = Column(BigInteger, default=int(time.time()))
+    swap_tstamp = Column(Integer)
 
     def __init__(self, user_id, username, league, money=50.0, reserve_money=50.0):
         self.user_id = user_id
@@ -240,6 +241,7 @@ class TeamHero(Base):
     league = Column(Integer, index=True, nullable=False)
     cost = Column(Float)
     reserve = Column(Boolean, index=True)
+    active = Column(Boolean, index=True)
     UniqueConstraint('league', 'hero_id', 'user_id')
     __table_args__ = (ForeignKeyConstraint([hero_id, league],
                                            [Hero.id, Hero.league]),
@@ -252,6 +254,7 @@ class TeamHero(Base):
         self.league = league
         self.cost = cost
         self.reserve = reserve
+        self.active = not reserve
 
 
 class Sale(Base):
@@ -410,8 +413,8 @@ class HallOfFame(Base):
     id = Column(Integer, Sequence('id'), primary_key=True)
     game = Column(Integer, ForeignKey(Game.id), index=True, nullable=False)
     league = Column(Integer, nullable=False)  # no FKey because have some entries from deleted leagues
-    winner = Column(String, default="-")
-    runner_up = Column(String, default="-")
+    winner = Column(String(20), default="-")
+    runner_up = Column(String(20), default="-")
 
     def __init__(self, game, league):
         self.game = game

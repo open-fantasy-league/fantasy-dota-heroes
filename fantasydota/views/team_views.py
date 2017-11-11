@@ -7,8 +7,9 @@ from sqlalchemy import and_
 
 from fantasydota import DBSession
 from fantasydota.lib.general import add_other_games
-from fantasydota.lib.trade import buy, sell, swap_in, swap_out
+from fantasydota.lib.trade import buy, sell, swap_in, swap_out, get_swap_timestamp
 from fantasydota.models import User, League, LeagueUser, Hero, TeamHero, LeagueUserDay, Game
+from sqlalchemy import desc
 
 
 @view_config(route_name='view_team', renderer='../templates/team.mako')
@@ -18,6 +19,8 @@ def view_team(request):
     game_code = request.params.get('game')
     if not game_code:
         game_code = request.game
+        if not game_code:
+            game_code = 'DOTA'
     game = session.query(Game).filter(Game.code == game_code).first()
     if game_code == 'DOTA':
         message_type = request.params.get('message_type')
@@ -75,15 +78,16 @@ def view_team(request):
 
             team = session.query(Hero, TeamHero).filter(Hero.league == league_id).\
                 filter(and_(TeamHero.user_id == user_id, TeamHero.league == league_id)).filter(TeamHero.reserve.is_(False)).\
-                join(TeamHero).all()
+                join(TeamHero).order_by(TeamHero.active).all()
             reserve_team = session.query(Hero, TeamHero).filter(Hero.league == league_id).\
                 filter(and_(TeamHero.user_id == user_id, TeamHero.league == league_id)).filter(TeamHero.reserve.is_(True)).\
-                join(TeamHero).all()
+                join(TeamHero).order_by(TeamHero.active).all()
             username = session.query(User.username).filter(User.id == user_id).first()[0]
         heroes = session.query(Hero).filter(Hero.league == league_id).all()
 
         return_dict = {'username': username, 'userq': userq, 'team': team, 'heroes': heroes, 'message': message,
-                        'message_type': message_type, 'league': league, 'reserve_team': reserve_team, 'game': game}
+                        'message_type': message_type, 'league': league, 'reserve_team': reserve_team,
+                       'game': game}
     elif game_code == 'PUBG':
         message_type = request.params.get('message_type')
         message = request.params.get('message')
@@ -227,3 +231,16 @@ def swap_out_hero(request):
         return {"success": False, "message": "Swap window just open/closed. If your team was incomplete it has been reset to yesterday's starting lineup"}
 
     return swap_out(session, user_id, hero_id, league_id)
+
+
+@view_config(route_name="confirm_swap", renderer="json")
+def confirm_swap(request):
+    session = DBSession()
+    user_id = authenticated_userid(request)
+    if user_id is None:
+        return {"success": False, "message": "Please login to play! :)"}
+
+    league_id = int(request.params.get("league"))
+    l_user = session.query(LeagueUser).filter(LeagueUser.league == league_id).filter(LeagueUser.user_id == user_id).first()
+    l_user.swap_tstamp = get_swap_timestamp()
+    return {"success": True, "message": ""}

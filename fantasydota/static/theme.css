@@ -148,7 +148,7 @@ submit:hover  {
 .messageTransOpen {color: green}
 .messageTransClosed {color: red}
 
-.toSell {opacity: 0.5}
+.toSwap {opacity: 0.5}
 
 .positionHeader {width: 8%}
 .rankingHeader {width: 15%}

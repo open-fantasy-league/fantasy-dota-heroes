@@ -30,9 +30,9 @@
 
             </tr>
             % for hero in team:
-                <tr class="teamRow" id="${hero[0].id}TeamRow">
+                <tr class="teamRow ${'toSwap' if not hero[1].active else ''}" id="${hero[0].id}TeamRow">
                     <td class="heroImg" sorttable_customkey="${hero[0].name}"><img src="/static/images/dota/${hero[0].name.replace(" ", "_")}_icon.png" title="${hero[0].name}"/></td>
-                    <td class="heroEntry">${hero[0].name}</td>
+                    <td class="heroEntry">${'=> ' if not hero[1].active else ''}${hero[0].name}</td>
                     <td class="heroPointsEntry">${hero[0].points}</td>
                     <td class="picksEntry">${hero[0].picks}</td>
                     <td class="bansEntry">${hero[0].bans}</td>
@@ -56,6 +56,7 @@
         <span class="left"><h2>My Reserves (Credits: <span class="userReserveCredits">${round(userq.reserve_money, 1)}</span>)</h2></span>
     % else:
         <span class="left"><h2>My Reserves</h2></span>
+        <span class="right"><button type="submit" id="confirmSwaps" class="btn waves-effect waves-light">Confirm Swaps!</button></span>
     % endif
     <div id="tableContainer">
         <table class="sortable responsive-table card-table striped centered" id="reserveTable">
@@ -70,9 +71,9 @@
                 <th class="sellHeader">${"Sell" if not league.swap_open else "Swap"}</th>
             </tr>
             % for hero in reserve_team:
-                <tr class="reserveRow" id="${hero[0].id}ReserveRow">
+                <tr class="reserveRow ${'toSwap' if hero[1].active else ''}" id="${hero[0].id}ReserveRow">
                     <td class="heroImg" sorttable_customkey="${hero[0].name}"><img src="/static/images/dota/${hero[0].name.replace(" ", "_")}_icon.png" title="${hero[0].name}"/></td>
-                    <td class="heroEntry">${hero[0].name}</td>
+                    <td class="heroEntry">${'<= ' if hero[1].active else ''}${hero[0].name}</td>
                     <td class="heroPointsEntry">${hero[0].points}</td>
                     <td class="picksEntry">${hero[0].picks}</td>
                     <td class="bansEntry">${hero[0].bans}</td>
@@ -300,7 +301,7 @@
 <script>
 var transfers = ${'true' if league.transfer_open != 0 else 'false'};
 var league_id = ${league.id};
-var swaps = ${'true' if league.swap_open != 0 else "false"}
+var swaps = ${'true' if league.swap_open != 0 and not userq.swap_tstamp else "false"}
 </script>
 
 <script src="/static/trade.js"></script>

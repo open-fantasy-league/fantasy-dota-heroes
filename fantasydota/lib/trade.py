@@ -1,5 +1,6 @@
 import time
 
+import datetime
 from sqlalchemy import and_
 
 from fantasydota.lib.league import game_from_league_id
@@ -63,7 +64,7 @@ def buy(session, user_id, hero_id, league_id, reserve):
     elif session.query(TeamHero).filter(TeamHero.user_id == user_id).filter(TeamHero.league == league_id). \
             filter(TeamHero.reserve.is_(not reserve)).filter(TeamHero.hero_id == hero_id).first():
         return {"success": False, "message": "ERROR: %s already in %steam" % (game.pickee, "reserve " if reserve else "")}
-    elif hero.team in [
+    elif hero.team and hero.team in [
         session.query(Hero.team).filter(Hero.id == th.hero_id).filter(Hero.league == th.league).first()[0] for th in teamq_all
         ]:
         return {"success": False,
@@ -94,6 +95,10 @@ def swap_in(session, user_id, hero_id, league_id):
 
     l_user = session.query(LeagueUser).filter(LeagueUser.user_id == user_id).filter(LeagueUser.league == league_id).first()
 
+    if l_user.swap_tstamp:
+        return {"success": False,
+                "message": "ERROR: You have made team swaps within the last 24 hours."
+                           " You cannot make more until this 24 hour period has passed"}
     user_money = l_user.money
 
     if user_money < hero_value:
@@ -118,7 +123,10 @@ def swap_in(session, user_id, hero_id, league_id):
 
 def swap_out(session, user_id, hero_id, league_id):
     l_user = session.query(LeagueUser).filter(LeagueUser.user_id == user_id).filter(LeagueUser.league == league_id).first()
-
+    if l_user.swap_tstamp:
+        return {"success": False,
+                "message": "ERROR: You have made team swaps within the last 24 hours."
+                           " You cannot make more until this 24 hour period has passed"}
     user_money = l_user.money
 
     teamq_hero = session.query(TeamHero).filter(and_(TeamHero.user_id == user_id,
@@ -155,3 +163,10 @@ def reset_incomplete_teams(session, league):
                                                                                                  synchronize_session='fetch')
                     old_value = sum(h.cost for h in old_heroes)
                     luser.money = 50 - old_value
+
+
+def get_swap_timestamp():
+    swap_at = datetime.datetime.now()
+    swap_at += datetime.timedelta(hours=23)
+    swap_at.replace(minute=59)
+    return time.mktime(swap_at.timetuple())

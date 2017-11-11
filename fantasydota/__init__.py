@@ -42,7 +42,7 @@ def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
     settings["league_transfers"] = True  # why wont config file properly set this?
-    settings["DOTA"] = {"default_league": 5609}
+    settings["DOTA"] = {"default_league": 1}
     settings["PUBG"] = {"default_league": 1}
     sqlalchemy_url = os.path.expandvars(settings.get('sqlalchemy.url'))
     engine = create_engine(sqlalchemy_url, echo=False, pool_size=100, pool_recycle=3600)
@@ -51,7 +51,7 @@ def main(global_config, **settings):
 
     # Need https set up on local machine for secure True to work locally
     authn_policy = AuthTktAuthenticationPolicy(settings.get('authn_policy_secr'), hashalg='sha512', http_only=True,
-                                               secure=True,
+                                               #secure=True,
                                                max_age=10000000)
     authz_policy = ACLAuthorizationPolicy()
 
@@ -102,6 +102,7 @@ def main(global_config, **settings):
     config.add_route('sell_hero', '/sellHero')
     config.add_route('swap_in_hero', '/swapInHero')
     config.add_route('swap_out_hero', '/swapOutHero')
+    config.add_route('confirm_swap', '/confirmSwap')
     config.add_route('leaderboard', '/leaderboard')
     config.add_route('daily', '/daily')
     config.add_route('account_settings', '/accountSettings')

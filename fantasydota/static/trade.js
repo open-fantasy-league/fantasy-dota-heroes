@@ -84,11 +84,11 @@ else{
 }
 
 if (!swaps){
-    $("[name=swapInHero]").add("[name=swapOutHero]").each(function(){$(this).attr("disabled","true");});
+    $("[name=swapInHero]").add("[name=swapOutHero]").add("#confirmSwaps").each(function(){$(this).attr("disabled","true");});
 }
 else{
 // not sure why but when reloading page...disabled things stay disabled by default :/
-    $("[name=swapInHero]").add("[name=swapOutHero]").each(function(){$(this).removeAttr("disabled");})
+    $("[name=swapInHero]").add("[name=swapOutHero]").add("#confirmSwaps").each(function(){$(this).removeAttr("disabled");})
 
     function doTrade(event, action){
         var formID = event.data.form.attr('id');
@@ -102,7 +102,7 @@ else{
             type: "POST",
             data: formData,
             success: function(data){
-                $("[name=swapInHero]").add("[name=swapOutHero]").each(function(){$(this).removeAttr("disabled");});
+                $("[name=swapInHero]").add("[name=swapOutHero]").add("#confirmSwaps").each(function(){$(this).removeAttr("disabled");});
                 var success = data.success,
                 message = data.message;
                 if (!success){
@@ -111,25 +111,42 @@ else{
                 else{
                     sweetAlert("Transaction completed");
                     if (data.action == "sell"){
+                        var toSwap = !$("#" + data.hero + "TeamRow").hasClass('toSwap');
                         $("#" + data.hero + "TeamRow").remove();
-                        addToTeam(data.hero, true);
+                        addToTeam(data.hero, true, toSwap);
+//                        var row = $("#" + data.hero + "TeamRow");
+//                        row.addClass("activeReserve");
+//                        row.find("input[name=tradeReserve]").val(1);
+//                        var button = row.find('button');
+//                        button.attr('name', 'swapInHero');
+//                        button.text('Swap In');
                     }
                     else{
-                        $("#" + data.hero + "ReserveRow").remove();
-                        addToTeam(data.hero, false);
+//                        var row = $("#" + data.hero + "TeamRow");
+//                        if (row[0]){
+//                            row.removeClass("activeReserve");
+//                            row.find("input[name=tradeReserve]").val(0);
+//                            var button = row.find('button');
+//                            button.attr('name', 'swapOutHero');
+//                            button.text('Swap Out');
+//                        }
+//                        else{
+                            var toSwap = !$("#" + data.hero + "ReserveRow").hasClass('toSwap');
+                            $("#" + data.hero + "ReserveRow").remove();
+                            addToTeam(data.hero, false, toSwap);
                     }
                     $(".userCredits").each(function() { $(this).text(data.new_credits)});
                 }
             },
             failure: function(data){
-                $("[name=swapInHero]").add("[name=swapOutHero]").each(function(){$(this).removeAttr("disabled");})
+                $("[name=swapInHero]").add("[name=swapOutHero]").add("#confirmSwaps").each(function(){$(this).removeAttr("disabled");})
                 sweetAlert("Something went wrong. oops!");
             }
         });
     }
 
     var tradeOnclick = function tradeOnclick(event){
-            $("[name=swapInHero]").add("[name=swapOutHero]").each(function(){$(this).attr("disabled","true");});
+            $("[name=swapInHero]").add("[name=swapOutHero]").add("#confirmSwaps").each(function(){$(this).attr("disabled","true");});
             var action = event.data.form.find('button').attr('name');
             doTrade(event, action);
         }
@@ -143,8 +160,23 @@ else{
         sellBtn.click({form: form}, tradeOnclick);
     });
 
-    function addToTeam(hero, reserve){
+    function addToTeam(hero, reserve, toSwap){
         var new_row = $("#" + hero + "Row").clone();
+        if (toSwap) {
+            new_row.addClass('toSwap');
+            if (reserve){
+                var symbol = "<= ";
+                var message = "This hero is set to be swapped out, it will continue to score points until the swap occurs 24 hours after confirmation"
+            }
+            else{
+                var symbol = "=> ";
+                var message = "This hero is set to be swapped in, it will not score points until the swap occurs 24 hours after confirmation"
+            }
+            var name = new_row.find(".heroEntry");
+            name.text(symbol + name.text());
+            name.attr('title', message);
+            name.css('cursor', 'help');
+        }
         new_row.find(".tradeEntry")[0].remove();
         reserve ? new_row.attr('id', hero + "ReserveRow") : new_row.attr('id', hero + "TeamRow");
         reserve ? new_row.find("button").replaceWith('<button type="submit" name="swapInHero" class="btn waves-effect waves-light">Swap</button>') :
@@ -159,4 +191,38 @@ else{
         }
         new_row.find("button").on("click", {form: form}, function(event){tradeOnclick(event)});  // otherwise need reload page to resell
     }
+
+    $('#confirmSwaps').click(function() {
+        $("[name=swapInHero]").add("[name=swapOutHero]").add("#confirmSwaps").each(function(){$(this).attr("disabled","true");});
+        $.ajax({
+            url: "/confirmSwap?league=" + league_id,
+            type: "GET",
+            success: function(data){
+                var success = data.success,
+                message = data.message;
+                if (!success){
+                    sweetAlert(message);
+                }
+                else{
+                    sweetAlert("Swaps locked in! Your active team will update 24 hours from now, at which point you may make further swaps.");
+                }
+            },
+            failure: function(data){
+                $("[name=swapInHero]").add("[name=swapOutHero]").each(function(){$(this).removeAttr("disabled");})
+                sweetAlert("Something went wrong. oops!");
+            }
+        });
+    });
 }
+
+$('.toSwap').each(function(){
+    var name = $(this).find(".heroEntry");
+    if (name.text()[0] == "<"){
+        var message = "This hero is set to be swapped out, it will continue to score points until the swap occurs 24 hours after confirmation"
+    }
+    else{
+        var message = "This hero is set to be swapped in, it will not score points until the swap occurs 24 hours after confirmation"
+    }
+    name.attr('title', message);
+    name.css('cursor', 'help');
+})
