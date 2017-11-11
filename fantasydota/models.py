@@ -83,6 +83,7 @@ class Game(Base):
     pickee = Column(String(10), nullable=False)  # i.e. Hero, champion, player
     team_size = Column(Integer, nullable=False)
     reserve_size = Column(Integer, nullable=False)
+    default_league = Column(Integer, ForeignKey(League.id), index=True)
 
     def __init__(self, name, code, pickee, team_size, reserve_size):
         self.name = name
@@ -403,6 +404,43 @@ class HeroDay(Base):
         # kind of hack to not have to refactor leaderboard pages
         return self.hero_name
 
+
+class HallOfFame(Base):
+    __tablename__ = "hall_of_fame"
+    id = Column(Integer, Sequence('id'), primary_key=True)
+    game = Column(Integer, ForeignKey(Game.id), index=True, nullable=False)
+    league = Column(Integer, nullable=False)  # no FKey because have some entries from deleted leagues
+    winner = Column(String, default="-")
+    runner_up = Column(String, default="-")
+
+    def __init__(self, game, league):
+        self.game = game
+        self.league = league
+
+
+class UserXp(Base):
+    __tablename__ = "user_xp"
+    id = Column(Integer, Sequence('id'), primary_key=True)
+    user_id = Column(Integer, ForeignKey(User.id), index=True, nullable=False)
+    game = Column(Integer, ForeignKey(Game.id), index=True, nullable=False)
+    xp = Column(BigInteger, default=0)
+    daily_win = Column(Integer, default=0)
+    weekly_win = Column(Integer, default=0)
+    weekly_top_ten = Column(Integer, default=0)
+    ban_win = Column(Integer, default=0)
+    kill_win = Column(Integer, default=0)
+    pick_win = Column(Integer, default=0)
+    top_hero = Column(Integer, default=0)
+    top_value_hero = Column(Integer, default=0)
+    all_hero_in_draft = Column(Integer, default=0)
+    three_winning_picks = Column(Integer, default=0)
+    highest_daily_pos = Column(Integer)
+    highest_weekly_pos = Column(Integer)
+    all_time_points = Column(BigInteger, default=0)
+
+    @property
+    def level(self):
+        return self.xp / 10
 
 # Guesser stuff
 
