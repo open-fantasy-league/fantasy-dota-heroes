@@ -231,20 +231,21 @@
 
 <div class="card row">
     <div class="card-content">
-        <span class=${"messageTransOpen" if league.transfer_open != 0 else "messageTransClosed"}>
-            % if league.transfer_open != 0:
         <p>Your team consists of ${game.team_size} players</p>
         <p>Only allowed <strong>one player from each team</strong></p>
         <p>Please <strong>ignore the reserve team stuff</strong>. That is for other tournaments (but I can't code it out before this invitational)</p>
-            <p><strong>Transfer window currently open (closes ~1 hour before games start)</strong></p>
         <p>Detailed rules <a href="/rules">here</a></p>
+        <span class=${"messageTransOpen" if league.transfer_open != 0 else "messageTransClosed"}>
+            % if league.transfer_open != 0:
+            </br><p><strong>Transfer window currently open (closes ~1 hour before games start)</strong></p>
             % else:
                 <p><strong>
                 Swaps between reserves and main team only available between days. When all day's games finished
                 </strong></p>
             % endif
         </span>
-        <span>
+		<p>This is independently run by me, no offiliation with either BEAT or Moonduck, other than asking their permission to run ;)</p><p>If there are bugs/problems it is my 100% fault and no reflection on BEAT or Moonduck</p>
+        <span></br>
             <p>Tables are sortable (click table headers)</p>
         </span>
     </div>
