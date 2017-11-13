@@ -42,9 +42,8 @@ def update_league_points(session, league):
                                                             LeagueUserDay.league == userq.league,
                                                             LeagueUserDay.day == league.current_day
                                                                  )).first()
-            hero_count = session.query(func.count(TeamHero)).filter(and_(TeamHero.league == league_id,
-                                                                         TeamHero.user_id == user_id)).filter(TeamHero.reserve.is_(False))\
-                .scalar()
+            hero_count = session.query(TeamHero).filter(and_(TeamHero.league == league_id,
+                                                                         TeamHero.user_id == user_id)).filter(TeamHero.reserve.is_(False)).count()
 
             team_size = session.query(Game.team_size).filter(Game.id == league.game).first()[0]
             game = league.game

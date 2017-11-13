@@ -31,8 +31,8 @@ def view_team(request):
         class FakeUser():  # hacky quick way so unlogged in users can see the page
             username = ""
             league = league_id
-            money = 50.0
-            reserve_money = 50.0
+            money = 10 * game.team_size
+            reserve_money = 10 * game.reserve_size
             points = 0
             picks = 0
             bans = 0
@@ -60,7 +60,7 @@ def view_team(request):
                 except TypeError:
                     headers = forget(request)
                     return HTTPFound(location='/login', headers=headers)
-                user_league = LeagueUser(user_id, username, league.id)
+                user_league = LeagueUser(user_id, username, league.id, money=10*game.team_size, reserve_money=10*game.reserve_size)
                 session.add(user_league)
                 for i in range(league.days):
                     if i >= league.stage2_start:
