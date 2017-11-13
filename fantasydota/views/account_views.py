@@ -13,7 +13,7 @@ from fantasydota import DBSession
 from fantasydota.auth import get_user
 from fantasydota.lib.account import check_invalid_password
 from fantasydota.lib.general import add_other_games
-from fantasydota.models import User, LeagueUser, League, PasswordReset, LeagueUserDay
+from fantasydota.models import User, LeagueUser, League, PasswordReset, LeagueUserDay, Game
 
 
 @view_config(route_name='login', renderer='../templates/login.mako')
@@ -81,7 +81,8 @@ def register(request):
     session.add(user)
     leagues = session.query(League).all()
     for l in leagues:
-        user_league = LeagueUser(user.id, username, l.id)
+	game = session.query(Game).filter(Game.id == l.game).first()
+        user_league = LeagueUser(user.id, username, l.id, money=game.team_size * 10, reserve_money=game.reserve_size * 10)
         session.add(user_league)
         for i in range(l.days):
             if i >= l.stage2_start:

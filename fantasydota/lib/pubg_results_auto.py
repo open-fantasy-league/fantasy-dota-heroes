@@ -1,121 +1,101 @@
 results_config = [
-{'team': 'TSM', 'position': 101, 'players': [
+{'team': 'TSM', 'position': 11, 'players': [
 {'name': 'Viss', 'kills': 0},
 {'name': 'aimPR', 'kills': 0},
 {'name': 'SmaK', 'kills': 0},
 {'name': 'BreaK', 'kills': 0},
 ]},
-{'team': 'Noble', 'position': 101, 'players': [
+{'team': 'Noble', 'position': 11, 'players': [
 {'name': 'Boom', 'kills': 0},
 {'name': 'Edakulous', 'kills': 0},
 {'name': 'TCZygote', 'kills': 0},
 {'name': 'Interrogate', 'kills': 0},
 ]},
-{'team': 'Cloud9', 'position': 101, 'players': [
+{'team': 'Cloud9', 'position': 10, 'players': [
 {'name': 'Moody', 'kills': 0},
-{'name': 'Frolicer', 'kills': 0},
+{'name': 'Frolicer', 'kills': 4},
 {'name': 'Chappie', 'kills': 0},
 {'name': 'SolidFPS', 'kills': 0},
 ]},
-{'team': 'EG', 'position': 101, 'players': [
+{'team': 'EG', 'position': 11, 'players': [
 {'name': 'Goul', 'kills': 0},
 {'name': 'Pandaego', 'kills': 0},
 {'name': 'Wattz', 'kills': 0},
 {'name': 'gnomey', 'kills': 0},
 ]},
-{'team': 'TEMPO STORM', 'position': 101, 'players': [
-{'name': 'Valliate', 'kills': 0},
-{'name': 'YaBoiDre', 'kills': 0},
-{'name': 'Meluke', 'kills': 0},
-{'name': 'Sambty', 'kills': 0},
+{'team': 'TEMPO STORM', 'position': 1, 'players': [
+{'name': 'Valliate', 'kills': 4},
+{'name': 'YaBoiDre', 'kills': 4},
+{'name': 'Meluke', 'kills': 7},
+{'name': 'Sambty', 'kills': 5},
 ]},
-{'team': 'Ronin Esports', 'position': 101, 'players': [
+{'team': 'Ronin Esports', 'position': 9, 'players': [
 {'name': 'Duckk', 'kills': 0},
 {'name': 'Kraqen', 'kills': 0},
-{'name': 'Minifridgejr', 'kills': 0},
+{'name': 'Minifridgejr', 'kills': 1},
 {'name': 'notadeveloper', 'kills': 0},
 ]},
-{'team': 'Corn Shuckers', 'position': 101, 'players': [
+{'team': 'Corn Shuckers', 'position': 11, 'players': [
 {'name': 'Zanpah', 'kills': 0},
 {'name': 'EnV', 'kills': 0},
 {'name': 'PaaaRADOX', 'kills': 0},
 {'name': 'eLusive', 'kills': 0},
 ]},
-{'team': 'Gale Force eSports', 'position': 101, 'players': [
-{'name': 'benq5', 'kills': 0},
+{'team': 'Gale Force eSports', 'position': 2, 'players': [
+{'name': 'benq5', 'kills': 4},
 {'name': 'Reum', 'kills': 0},
-{'name': 'UnderCoverPie', 'kills': 0},
+{'name': 'UnderCoverPie', 'kills': 2},
 {'name': 'TheChosenZygote', 'kills': 0},
 ]},
-{'team': 'Penta Sports', 'position': 101, 'players': [
-{'name': 'Frosz', 'kills': 0},
-{'name': 'SIMSY', 'kills': 0},
-{'name': 'jeemzz', 'kills': 0},
-{'name': 'ultra', 'kills': 0},
-]},
-{'team': 'Rocket Esports', 'position': 101, 'players': [
+{'team': 'Rocket Esports', 'position': 11, 'players': [
 {'name': 'Lush', 'kills': 0},
 {'name': 'MachineGunner', 'kills': 0},
 {'name': 'Mjyoh', 'kills': 0},
 ]},
-{'team': 'EnVyUs', 'position': 101, 'players': [
-{'name': 'Czechshooter', 'kills': 0},
+{'team': 'EnVyUs', 'position': 6, 'players': [
+{'name': 'Czechshooter', 'kills': 1},
 {'name': 'Venerated', 'kills': 0},
-{'name': 'Cad3n', 'kills': 0},
+{'name': 'Cad3n', 'kills': 1},
 {'name': 'Jesselol', 'kills': 0},
 ]},
-{'team': 'OpTic Gaming', 'position': 101, 'players': [
-{'name': 'Hypoc', 'kills': 0},
-{'name': 'Bahawaka', 'kills': 0},
+{'team': 'OpTic Gaming', 'position': 4, 'players': [
+{'name': 'Hypoc', 'kills': 3},
+{'name': 'Bahawaka', 'kills': 2},
 {'name': 'Teen', 'kills': 0},
-{'name': 'Ashek', 'kills': 0},
+{'name': 'Ashek', 'kills': 1},
 ]},
-{'team': 'Rogue', 'position': 101, 'players': [
+{'team': 'Rogue', 'position': 11, 'players': [
 {'name': 'Soltek1h', 'kills': 0},
 {'name': 'AladdinLTD', 'kills': 0},
 {'name': 'KronixGG', 'kills': 0},
 {'name': 'TTfue', 'kills': 0},
 ]},
-{'team': 'Check 6', 'position': 101, 'players': [
+{'team': 'Check 6', 'position': 3, 'players': [
 {'name': 'Shaffer', 'kills': 0},
-{'name': 'Durbdawg', 'kills': 0},
-{'name': 'TheOneJ', 'kills': 0},
-{'name': 'Acidelus', 'kills': 0},
+{'name': 'Durbdawg', 'kills': 1},
+{'name': 'TheOneJ', 'kills': 3},
+{'name': 'Acidelus', 'kills': 1},
 ]},
-{'team': 'FlyQuest', 'position': 101, 'players': [
-{'name': 'Hetror', 'kills': 0},
+{'team': 'FlyQuest', 'position': 7, 'players': [
+{'name': 'Hetror', 'kills': 3},
 {'name': 'Comet', 'kills': 0},
-{'name': 'SomeThang', 'kills': 0},
-{'name': 'Blue', 'kills': 0},
+{'name': 'SomeThang', 'kills': 4},
+{'name': 'Blue', 'kills': 2},
 ]},
-{'team': 'Totality', 'position': 101, 'players': [
-{'name': 'Purdykurty', 'kills': 0},
-{'name': 'Nopnop', 'kills': 0},
-{'name': 'Daacannon', 'kills': 0},
-{'name': 'Smithy97', 'kills': 0},
-]},
-{'team': 'AffNity', 'position': 101, 'players': [
-{'name': 'Swifyque', 'kills': 0},
-{'name': 'Jutzu', 'kills': 0},
-{'name': 'Auxx', 'kills': 0},
-{'name': 'Sehcaep', 'kills': 0},
-]},
-{'team': '4S', 'position': 101, 'players': [
+{'team': '4S', 'position': 11, 'players': [
 {'name': 'Poonaegy', 'kills': 0},
 {'name': 'Grizz', 'kills': 0},
 {'name': 'Trinity_Seven', 'kills': 0},
 {'name': 'Riftt', 'kills': 0},
 {'name': 'Jehee', 'kills': 0},
 ]},
-{'team': 'MLGB', 'position': 101, 'players': [
+{'team': 'MLGB', 'position': 11, 'players': [
 {'name': 'Biggie', 'kills': 0},
 {'name': 'Therous', 'kills': 0},
 {'name': 'Tunacan', 'kills': 0},
 {'name': 'Phozhu', 'kills': 0},
 ]},
-{'team': 'ShootToKill', 'position': 101, 'players': [
-{'name': 'Didz_NA', 'kills': 0},
-{'name': 'Weiksworld', 'kills': 0},
+{'team': 'ShootToKill', 'position': 11, 'players': [
 {'name': 'AdamDids', 'kills': 0},
 {'name': 'Lgdzxhero', 'kills': 0},
 {'name': 'Uncivils', 'kills': 0},

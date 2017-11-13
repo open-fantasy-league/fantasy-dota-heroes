@@ -74,7 +74,7 @@ def buy(session, user_id, hero_id, league_id, reserve):
             l_user.reserve_money = new_credits
         else:
             l_user.money = new_credits
-        session.add(TeamHero(user_id, hero_id, league_id, hero.value, reserve))
+        session.add(TeamHero(user_id, hero_id, league_id, hero.value, reserve, hero_name = hero.name))
         session.add(Sale(l_user.id, hero_id, league_id, hero.value, hero.value, True))
     return {"success": True, "message": "%s successfully purchased" % game.pickee,
             "action": "buy", "hero": hero_id,
