@@ -254,7 +254,7 @@ $( document ).ready(function() {
         <div class="card-panel">
         <p>Results updated manually after match ends</p>
         <p><a href="https://discord.gg/MAH7EEv" target="_blank">Discord channel for suggestions/improvements</a></p>
-	                <p>This is independently run by me, no offiliation with either BEAT or Moonduck, other than asking their permission to run</p><p>If there are bugs/problems it is my 100% fault and no reflection on BEAT or Moonduck</p>
+	                <p>This is independently run by me, no offiliation IEM</p><p>If there are bugs/problems it is my 100% fault and no reflection on IEM</p>
     </div>
     % endif
 % if user:

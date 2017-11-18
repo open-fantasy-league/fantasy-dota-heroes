@@ -234,7 +234,6 @@
     <div class="card-content">
         <p>Your team consists of ${game.team_size} players</p>
         <p>Only allowed <strong>one player from each team</strong></p>
-        <p>Please <strong>ignore the reserve team stuff</strong>. That is for other tournaments (but I can't code it out before this invitational)</p>
         <p>Detailed rules <a href="/rules">here</a></p>
         <span class=${"messageTransOpen" if league.transfer_open != 0 else "messageTransClosed"}>
             % if league.transfer_open != 0:
@@ -245,7 +244,7 @@
                 </strong></p>
             % endif
         </span>
-		<p>This is independently run by me, no offiliation with either BEAT or Moonduck, other than asking their permission to run ;)</p><p>If there are bugs/problems it is my 100% fault and no reflection on BEAT or Moonduck</p>
+		<p>This is independently run by me, no offiliation with either IEM Oakland</p><p>If there are bugs/problems it is my 100% fault and no reflection on IEM</p>
         <span></br>
             <p>Tables are sortable (click table headers)</p>
         </span>
