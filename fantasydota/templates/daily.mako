@@ -269,22 +269,6 @@ $( document ).ready(function() {
                     Points
                 </a>
             </li>
-            <li class=${"active" if rank_by=="wins" else ""}>
-                <a id="winsBtn" href="/daily?rank_by=wins&mode=${mode}&${getTime(period)}">
-                    Wins
-                </a>
-            </li>
-            <li class=${"active" if rank_by=="picks" else ""}>
-                <a id="picksBtn" href="/daily?rank_by=picks&mode=${mode}&${getTime(period)}">
-                    Picks
-                </a>
-            </li>
-            <li class=${"active" if rank_by=="bans" else ""}>
-                <a id="bansBtn" href="/daily?rank_by=bans&mode=${mode}&${getTime(period)}">
-                    Bans
-                </a>
-            </li>
-
             <li>
                 <a class="dropdown-button" data-beloworigin="true" href="" data-activates="modeDropdown">${mode.title()}<i class="material-icons right">arrow_drop_down</i></a>
             </li>
