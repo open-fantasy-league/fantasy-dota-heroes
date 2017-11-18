@@ -68,8 +68,8 @@ def leaderboard(request):
             if game_code == "DOTA":
                 player_heroes.append([player.username])
             else:
-                x = namedtuple('hero', ['team'])
-                player_heroes.append([x(player.team)])
+                x = namedtuple('hero', ['team', 'name'])
+                player_heroes.append([x(player.team, player.name)])
         else:
             heroes = []
             if league.transfer_open:
@@ -144,7 +144,11 @@ def daily(request):
 
     for player in players:
         if mode == "hero":
-            player_heroes.append([player.username])
+            if game_code == "DOTA":
+                player_heroes.append([player.username])
+            else:
+                x = namedtuple('hero', ['team', 'name'])
+                player_heroes.append([x(player.team, player.name)])
         else:
             heroes = []
             if period == league.current_day:
