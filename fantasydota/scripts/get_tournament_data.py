@@ -62,11 +62,8 @@ def add_matches(session, tournament_id, tstamp_from=0):
             except KeyError:  # game crashed and they remade with all pick. need to manually
                 print "MatchID: %s no picks and bans. Need manually inserting" % match
                 continue
-            if len(picks) < 16:  # theres some weird buggy matches in there
-                print "MatchID: %s fucked up picks bans. Check if should be added" % match
-                continue
-            elif len(picks) < 20:
-                print "MatchID: %s fucked up picks bans. not 20. Check if need update" % match
+            if len(picks) < 22:
+                print "MatchID: %s fucked up picks bans. not 22. Check if need update" % match
                 continue
             day = session.query(League.current_day).filter(League.id == tournament_id).first()[0]
             try:
@@ -80,23 +77,23 @@ def add_matches(session, tournament_id, tstamp_from=0):
             for key, value in enumerate(picks):
                 key = int(key)
 
-                if key <= 3:
+                if key <= 5:
                     result_string = "b1"
-                elif key <= 7:
+                elif key <= 9:
                     result_string = "p1"
                     if value["team"] == 0 and radiant_win or value["team"] == 1 and not radiant_win:
                         result_string += "w"
                     else:
                         result_string += "l"
-                elif key <= 11:
+                elif key <= 13:
                     result_string = "b2"
-                elif key <= 15:
+                elif key <= 17:
                     result_string = "p2"
                     if value["team"] == 0 and radiant_win or value["team"] == 1 and not radiant_win:
                         result_string += "w"
                     else:
                         result_string += "l"
-                elif key <= 17:
+                elif key <= 19:
                     result_string = "b3"
                 else:
                     result_string = "p3"
