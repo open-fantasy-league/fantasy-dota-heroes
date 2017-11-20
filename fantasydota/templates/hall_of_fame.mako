@@ -49,6 +49,11 @@
             <td>Liquid92</td>
             <td>JugOrNot</td>
         </tr>
+        <tr>
+            <td>Dreamhack Winter [Major]</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
         </tbody>
     </table>
     % elif game_code == 'PUBG':
