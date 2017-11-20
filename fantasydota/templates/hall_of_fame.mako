@@ -62,13 +62,13 @@
         <tbody>
         <tr>
             <td>BEAT Invitational</td>
-            <td>-</td>
-            <td>-</td>
+            <td>Kriger</td>
+            <td>WeOwnTheSky</td>
         </tr>
         <tr>
             <td>IEM Oakland Invitational</td>
-            <td>-</td>
-            <td>-</td>
+            <td>Cav</td>
+            <td>Lukky96</td>
         </tr>
         </tbody>
     </table>

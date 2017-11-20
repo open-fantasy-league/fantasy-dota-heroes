@@ -210,6 +210,9 @@ ${"period=%s" % period}
                     <td class="heroEntry">
 
                         <span style="vertical-align:middle">
+			% if player.username == "cav":
+			<img src="/static/images/dota/trophy.png"/>
+			% endif
                         ${player.username}</span>
                     % if len(player_heroes) > i:
                         <span class="hero_images">
@@ -252,7 +255,8 @@ $( document ).ready(function() {
     </div>
     % elif game.code == "PUBG":
         <div class="card-panel">
-        <p>Results updated manually after match ends</p>
+        <p>Thanks for playing everyone! COngratulations to overall winner cav! :D</p>
+	<p> Due to IEM unexpectedly providing less detailed stats than they did in qualifiers, plus not scrolling end-game scoreboard. I can only accurately award kills points for top 12 squads. Apologies.</p>
         <p><a href="https://discord.gg/MAH7EEv" target="_blank">Discord channel for suggestions/improvements</a></p>
 	                <p>This is independently run by me, no offiliation IEM</p><p>If there are bugs/problems it is my 100% fault and no reflection on IEM</p>
     </div>
