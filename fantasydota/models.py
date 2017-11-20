@@ -359,10 +359,10 @@ class TeamHeroHistoric(Base):
                                            [Hero.id, Hero.league]),
                       {})
 
-    def __init__(self, user_id, hero_id, league, cost, day, **kwargs):
+    def __init__(self, user_id, hero_id, league, cost, day, hero_name=None, **kwargs):
         self.user_id = user_id
         self.hero_id = hero_id
-        self.hero_name = kwargs.get("hero_name", (item for item in heroes if item["id"] == hero_id).next()["name"])
+        self.hero_name = hero_name or (item for item in heroes if item["id"] == hero_id).next()["name"]
         self.league = league
         self.cost = cost
         self.day = day

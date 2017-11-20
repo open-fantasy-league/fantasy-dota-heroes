@@ -62,7 +62,7 @@ def set_old_rankings(session, league):
 def store_todays_teams(session, league):
     for th in session.query(TeamHero).filter(TeamHero.league == league.id).filter(TeamHero.reserve.is_(False)).all():
         day = league.current_day
-        session.add(TeamHeroHistoric(th.user_id, th.hero_id, th.league, th.cost, day))
+        session.add(TeamHeroHistoric(th.user_id, th.hero_id, th.league, th.cost, day, hero_name=th.hero_name))
 
 
 def main():
@@ -72,11 +72,11 @@ def main():
         parser.add_argument("league", type=int, help="league id")
         args = parser.parse_args()
         league = session.query(League).filter(League.id == args.league).first()
-        # set_old_rankings(session, league)
-        store_todays_teams(session, league)
+        set_old_rankings(session, league)
+        #store_todays_teams(session, league)
 
-        league.current_day += 1
-        league.swap_open = True
+        #league.current_day += 1
+        #league.swap_open = True
         transaction.commit()
 
 if __name__ == "__main__":
