@@ -354,7 +354,7 @@ class TeamHeroHistoric(Base):
     hero_id = Column(Integer, index=True, nullable=False)
     # commented out due to mapper exception when joining Hero and TeamHero when multiple foreign keys
     # To make it work you give join a tuple I now believe. table, then table column to join I think
-    hero_name = Column(String(100))#, ForeignKey(Hero.name))
+    hero_name = Column(String(100))
     league = Column(Integer, index=True, nullable=False)
     cost = Column(Float)
     day = Column(Integer)
@@ -445,3 +445,26 @@ class UserXp(Base):
     def level(self):
         return self.xp / 10
 
+
+class UserAchievement(Base):
+    __tablename__ = "user_achievement"
+    id = Column(Integer, Sequence('id'), primary_key=True)
+    achievement = Column(Integer, ForeignKey(Achievement.id), index=True, nullable=False)
+    user_id = Column(Integer, ForeignKey(User.id), index=True, nullable=False)
+
+    def __init__(self, achievement, user_id):
+        self.achievement = achievement
+        self.user_id = user_id
+
+
+class Achievement(Base):
+    __tablename__ = "achievement"
+    id = Column(Integer, Sequence('id'), primary_key=True)
+    game = Column(Integer, ForeignKey(Game.id), index=True, nullable=False)
+    name = Column(String(40), nullable=False)
+    description = Column(String(300), nullable=False)
+
+    def __init__(self, game, name, description):
+        self.game = game
+        self.name = name
+        self.description = description
