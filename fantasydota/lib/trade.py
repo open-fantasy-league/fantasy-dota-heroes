@@ -63,7 +63,7 @@ def buy(session, user_id, hero_id, league_id, reserve):
     elif session.query(TeamHero).filter(TeamHero.user_id == user_id).filter(TeamHero.league == league_id). \
             filter(TeamHero.reserve.is_(not reserve)).filter(TeamHero.hero_id == hero_id).first():
         return {"success": False, "message": "ERROR: %s already in %steam" % (game.pickee, "reserve " if reserve else "")}
-    elif hero.team in [
+    elif hero.team and hero.team in [
         session.query(Hero.team).filter(Hero.id == th.hero_id).filter(Hero.league == th.league).first()[0] for th in teamq_all
         ]:
         return {"success": False,
@@ -109,7 +109,7 @@ def swap_in(session, user_id, hero_id, league_id):
         return {"success": False, "message": message}
     if teamq_hero.first():
         return {"success": False, "message": "ERROR: Hero already in team"}
-    elif hero.team in [
+    elif hero.team and hero.team in [
         session.query(Hero.team).filter(Hero.id == th.hero_id).filter(Hero.league == th.league).first()[0] for th in teamq_all
         ]:
         return {"success": False,

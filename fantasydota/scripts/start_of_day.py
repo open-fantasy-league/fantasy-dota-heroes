@@ -58,12 +58,14 @@ def set_old_rankings(session, league):
         })
 
 
-def start_of_day():
+def start_of_day(league_id=None):
     session = make_session(transaction=False, autoflush=False)
-    parser = argparse.ArgumentParser()
-    parser.add_argument("league", type=int, help="league id")
-    args = parser.parse_args()
-    league = session.query(League).filter(League.id == args.league).first()
+    if not league_id:
+        parser = argparse.ArgumentParser()
+        parser.add_argument("league", type=int, help="league id")
+        args = parser.parse_args()
+        league_id = args.league
+    league = session.query(League).filter(League.id == league_id).first()
     set_old_rankings(session, league)
     league.transfer_open = False  # close league window if not already closed
     league.swap_open = False

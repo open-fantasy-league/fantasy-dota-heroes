@@ -44,7 +44,7 @@ def get_match_details(match_id):
         "key=%s&match_id=%s" % (APIKEY, match_id))
 
 
-def add_matches(session, tournament_id, tstamp_from=0):
+def add_matches(session, tournament_id, tstamp_from=0, add_match=False):
     match_list_json = get_league_match_list(tournament_id)
 
     matches = [(match["match_id"], match["series_id"]) for match in match_list_json["result"]["matches"]
@@ -65,14 +65,16 @@ def add_matches(session, tournament_id, tstamp_from=0):
             if len(picks) < 22:
                 print "MatchID: %s fucked up picks bans. not 22. Check if need update" % match
                 continue
-            day = session.query(League.current_day).filter(League.id == tournament_id).first()[0]
-            try:
-                session.add(Match(
-                    int(match_json["match_id"]), re.sub(r'\W+', '', match_json["radiant_name"]), re.sub(r'\W+', '', match_json["dire_name"]),
-                    match_json["radiant_win"], day
-                ))
-            except:
-                continue
+            if add_match:
+                day = session.query(League.current_day).filter(League.id == tournament_id).first()[0]
+                try:
+                    session.add(Match(
+                        int(match_json["match_id"]), re.sub(r'\W+', '', match_json["radiant_name"]), re.sub(r'\W+', '', match_json["dire_name"]),
+                        match_json["radiant_win"], day, tournament_id
+                    ))
+                except:
+                    print "Failed to add match: %s" % match_json["match_id"]
+                    continue
 
             for key, value in enumerate(picks):
                 key = int(key)
@@ -140,22 +142,15 @@ def add_matches_guesser(session, tournament_id, tstamp_from):
 def main():
     session = make_session()
     #session2 = make_session(False)
-    add_matches(session, 5609, 1508672372)
-
-    # for calibration for esl hamburg
-    # add_matches(session, 5616, 1505867329)
-    # add_matches(session, 5651, 1505867329)
-    # add_matches(session, 5522, 1505867329)
-    # add_matches(session, 5175, 1505867329)
-    # add_matches(session, 5562, 1505867329)
-    # add_matches(session, 4820, 1505867329)
-    # add_matches(session, 5556, 1505867329)
-    # add_matches(session, 5609, 1505867329)
-    # add_matches(session, 4669, 1505867329)
-    # add_matches(session, 4920, 1505867329)
-    # add_matches(session, 5336, 1505867329)
-    # add_matches(session, 5690, 1505867329)
-    # add_matches(session, 5609, 1505867329)
+    # dreamleague calibration
+    add_matches(session, 5572, 1509494400)
+    add_matches(session, 5637, 1509494400)
+    add_matches(session, 5627, 1509494400)
+    add_matches(session, 5850, 1509494400)
+    add_matches(session, 5690, 1509494400)
+    add_matches(session, 5562, 1509494400)
+    add_matches(session, 4820, 1509494400)
+    add_matches(session, 5504, 1509494400)
 
 if __name__ == "__main__":
     main()

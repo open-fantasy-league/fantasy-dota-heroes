@@ -229,22 +229,22 @@ def update_email_settings(request):
     return HTTPFound(location=request.route_url('account_settings', _query=params))
 
 
-@view_config(route_name='home', renderer='../templates/login.mako')
-def home(request):
-    try:
-        user = get_user(request)
-        headers = remember(request, user.id)
-        return HTTPFound("/team", headers=headers)
-    except:
-        return HTTPFound("/login")
-    # return common_context(
-    #     request.registry.settings['SOCIAL_AUTH_AUTHENTICATION_BACKENDS'],
-    #     load_strategy(request),
-    #     user=get_user(request),
-    #     plus_id=request.registry.settings.get(
-    #         'SOCIAL_AUTH_GOOGLE_PLUS_KEY'
-    #     ),
-    # )
+# @view_config(route_name='home', renderer='../templates/login.mako')
+# def home(request):
+#     try:
+#         user = get_user(request)
+#         headers = remember(request, user.id)
+#         return HTTPFound("/team", headers=headers)
+#     except:
+#         return HTTPFound("/login")
+#     # return common_context(
+#     #     request.registry.settings['SOCIAL_AUTH_AUTHENTICATION_BACKENDS'],
+#     #     load_strategy(request),
+#     #     user=get_user(request),
+#     #     plus_id=request.registry.settings.get(
+#     #         'SOCIAL_AUTH_GOOGLE_PLUS_KEY'
+#     #     ),
+#     # )
 
 
 @view_config(route_name='done')

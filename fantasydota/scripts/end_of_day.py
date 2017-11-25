@@ -11,13 +11,15 @@ def store_todays_teams(session, league):
         session.add(TeamHeroHistoric(th.user_id, th.hero_id, th.league, th.cost, day, hero_name=th.hero_name))
 
 
-def main():
+def end_of_day(league_id=None):
     with transaction.manager:
         session = make_session()
-        parser = argparse.ArgumentParser()
-        parser.add_argument("league", type=int, help="league id")
-        args = parser.parse_args()
-        league = session.query(League).filter(League.id == args.league).first()
+        if not league_id:
+            parser = argparse.ArgumentParser()
+            parser.add_argument("league", type=int, help="league id")
+            args = parser.parse_args()
+            league_id = args.league
+        league = session.query(League).filter(League.id == league_id).first()
         store_todays_teams(session, league)
 
         league.current_day += 1
@@ -25,4 +27,4 @@ def main():
         transaction.commit()
 
 if __name__ == "__main__":
-    main()
+    end_of_day()
