@@ -3,6 +3,9 @@ import json
 
 import ast
 
+from fantasydota.auth import get_user
+from fantasydota.scripts.end_of_day import end_of_day
+from fantasydota.scripts.start_of_day import start_of_day
 from pyramid.response import Response
 
 from fantasydota.lib.general import add_other_games
@@ -11,7 +14,7 @@ from pyramid.httpexceptions import (
     HTTPFound,
     HTTPForbidden)
 from pyramid.security import (
-    authenticated_userid)
+    authenticated_userid, remember)
 from pyramid.view import (
     view_config,
 )
@@ -46,6 +49,18 @@ def change_game(request):
     return response
 
 
+@view_config(route_name='start_day_req', renderer='string')
+def start_day_req(request):
+    start_of_day(league_id=3)
+    return "Started day"
+
+
+@view_config(route_name='end_day_req', renderer='string')
+def end_day_req(request):
+    end_of_day(league_id=3)
+    return "Ended day"
+
+
 @view_config(route_name="add_friend", renderer="json")
 def add_friend(request):
     session = DBSession()
@@ -73,6 +88,13 @@ def news(request):
 def hall_of_fame(request):
     session = DBSession()
     return add_other_games(session, request.game, {'game_code': request.game})
+
+
+@view_config(route_name='index', renderer='../templates/index.mako')
+def index(request):
+    session = DBSession()
+    return_dict = {}
+    return add_other_games(session, request.game, return_dict)
 
 
 def get_time_range(time_range):

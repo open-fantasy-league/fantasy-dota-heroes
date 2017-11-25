@@ -114,7 +114,7 @@ def swap_in(session, user_id, hero_id, league_id):
         return {"success": False, "message": message}
     if teamq_hero.first():
         return {"success": False, "message": "ERROR: Hero already in team"}
-    elif hero.team in [
+    elif hero.team and hero.team in [
         session.query(Hero.team).filter(Hero.id == th.hero_id).filter(Hero.league == th.league).first()[0] for th in teamq_all
         ]:
         return {"success": False,

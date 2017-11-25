@@ -77,7 +77,7 @@ ${"period=%s" % period}
 </div>
 % if game.code == 'DOTA':
 <div class="row">
-<div id="leaderboardBlock" class="col s7">
+<div id="leaderboardBlock" class="col s6">
     <nav>
     <div class="nav-wrapper teal darken-2">
         <ul class="left">
@@ -171,7 +171,7 @@ $( document ).ready(function() {
 
 })
 </script>
-<div id="matchesBlock" class="col s5">
+<div id="matchesBlock" class="col s6">
     <div class="card">
     <div class="card-content" id="matchesCard">
         <h2>Matches</h2>

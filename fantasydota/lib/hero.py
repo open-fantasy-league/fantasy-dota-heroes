@@ -8,18 +8,19 @@ from sqlalchemy import func
 
 
 def manual_overrides(hero_list):
-    treant = [hero for hero in hero_list if hero["name"] == "Treant Protector"][0]
-    treant["value"] = 20.0
-    underlord = [hero for hero in hero_list if hero["name"] == "Underlord"][0]
-    underlord["value"] = 14.0
+    # treant = [hero for hero in hero_list if hero["name"] == "Treant Protector"][0]
+    # treant["value"] = 20.0
+    # underlord = [hero for hero in hero_list if hero["name"] == "Underlord"][0]
+    # underlord["value"] = 14.0
     return hero_list
+
 
 def squeeze_values_together(hero_list):
     # this is for if unsure and would rather have things have averagish values rather than exremes
-    average_value = sum([hero["value"] for hero in hero_list])/ len(hero_list)
+    average_value = sum([hero["value"] for hero in hero_list]) / len(hero_list)
     for hero in hero_list:
-        hero["value"] -= ((hero["value"] - average_value) / 4.)
-        hero["value"] = round(hero["value"], 1)
+        hero["value"] -= ((hero["value"] - average_value) / 3.)
+        hero["value"] = min(2.0, round(hero["value"], 1))
         print "New %s: %s" % (hero["name"], hero["value"])
 
     return hero_list
@@ -84,7 +85,7 @@ def calibrate_all_hero_values_datdota(session, patch=None):
         return new_heroes_list
 
 
-def calibrate_all_hero_values(session, patch=None):
+def calibrate_all_hero_values(session, patch=None, recent_game_cutoff=1510876800):
     new_heroes_list = heroes
     for h in new_heroes_list:
         h["points"] = 0
@@ -95,12 +96,13 @@ def calibrate_all_hero_values(session, patch=None):
         results.extend(session.query(Result).filter(Result.applied.is_(False)).filter(Result.tournament_id.in_([5157, 5353])).all())
         print("Calibrating on %s" % len(results))
     else:
-        results = session.query(Result).filter(Result.applied.is_(False)).all()
+        results = session.query(Result).filter(Result.applied == 0).all()
     sum_points = 0
 
     for res in results:
         points = Result.result_to_value(res.result_str)
-        [hero for hero in new_heroes_list if hero["id"] == res.hero][0]["points"] += points
+        multiplier = 2 if res.timestamp > recent_game_cutoff else 1
+        [hero for hero in new_heroes_list if hero["id"] == res.hero][0]["points"] += (multiplier * points)
         sum_points += points
     average_points = sum_points / len(new_heroes_list)
     sum = 0
@@ -126,9 +128,7 @@ def write_calibration(new_heroes_list):
 
 
 def calibrate_value(average_points, our_points):
-    output = ((float(our_points) / float(average_points)) * 9.8 * 3 + 9.8) / 4.
-    if output < 1.0:  # dont get into negative price shenanigans
-        output = 1.0
+    output = ((float(our_points) / float(average_points)) * 10 * 3 + 10) / 4.
     return output
 
 

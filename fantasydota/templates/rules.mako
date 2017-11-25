@@ -47,7 +47,7 @@
                 Your Main team can consist of up to 5 dota heroes (you are not required to use all 5, but you incur a heavy percentage penalty for each missing hero).
             </li>
             <li>
-                Your Reserve team also consists of up to 5 heroes, worth 50 credits. These earn 0 points whilst in your reserves. But they can be swapped into your main team midway through the tournament.
+                Your Reserve team also consists of up to 4 heroes, worth 40 credits. These earn 0 points whilst in your reserves. But they can be swapped into your main team midway through the tournament.
             </li>
             <li>
             Your main team will always have a 50 credit limit. i.e. You must remove 20 credits worth of heroes from Main team, before promoting a reserve hero worth 20 credits.

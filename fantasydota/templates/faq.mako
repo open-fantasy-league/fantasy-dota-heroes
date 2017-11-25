@@ -27,8 +27,7 @@ When this happens you get points.<br>
 <h2>Are there any prizes?</h2>
     <div class="card-panel">
 <p>
-    Usually provide an arcana for DotA tournaments. None planned for PUBG tournaments yet.
-    Am long-term planning to move away from proper prizes, to having user profiles and earning badges/achievements from playing.
+    Each DotA tournament has a choice of default arcana (except IO) as main prize. None for PUBG
 </p>
     </div>
 <h2>Mobile/App version of site?</h2>

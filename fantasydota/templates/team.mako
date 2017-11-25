@@ -96,9 +96,8 @@
     <div class="card-content">
         <span class=${"messageTransOpen" if league.transfer_open != 0 else "messageTransClosed"}>
             % if league.transfer_open != 0:
-            <p><strong>NEW SYSTEM!</strong></p>
-            <p>You are given <strong>100 credits total</strong> to pick both a <strong>Main team and Reserve team</strong></p>
-            <p>Your <strong>Reserves score 0 points</strong>. However they can be <strong>swapped with main heroes each evening</strong> after games are over</p>
+            <p>50 Credits to pick Main team of 5 heroes. 40 credits for up to 4 Reserves</strong>
+        <p>Your <strong>Reserves score 0 points</strong>. However they can be <strong>swapped</strong> with main heroes every night after tournament matches finish</p>
             <p>You <strong>cannot purchase any new heroes once tournament started</strong>. You must pick Main and Reserves carefully</p>
             <p><strong>Transfer window currently open (closes ~1 hour before games start)</strong></p>
             % else:
