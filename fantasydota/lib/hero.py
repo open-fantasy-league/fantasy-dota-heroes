@@ -1,4 +1,5 @@
 import csv
+import random
 
 from fantasydota.lib.constants import DIR
 from fantasydota.lib.herolist import heroes
@@ -20,7 +21,7 @@ def squeeze_values_together(hero_list):
     average_value = sum([hero["value"] for hero in hero_list]) / len(hero_list)
     for hero in hero_list:
         hero["value"] -= ((hero["value"] - average_value) / 3.)
-        hero["value"] = min(2.0, round(hero["value"], 1))
+        hero["value"] = round(max(2.0 + random.randint(0, 9) / 10, hero["value"]), 1)
         print "New %s: %s" % (hero["name"], hero["value"])
 
     return hero_list
@@ -103,7 +104,7 @@ def calibrate_all_hero_values(session, patch=None, recent_game_cutoff=1510876800
         points = Result.result_to_value(res.result_str)
         multiplier = 2 if res.timestamp > recent_game_cutoff else 1
         [hero for hero in new_heroes_list if hero["id"] == res.hero][0]["points"] += (multiplier * points)
-        sum_points += points
+        sum_points += multiplier * points
     average_points = sum_points / len(new_heroes_list)
     sum = 0
     i = 0
