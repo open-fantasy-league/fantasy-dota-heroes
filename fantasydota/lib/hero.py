@@ -20,8 +20,8 @@ def squeeze_values_together(hero_list):
     # this is for if unsure and would rather have things have averagish values rather than exremes
     average_value = sum([hero["value"] for hero in hero_list]) / len(hero_list)
     for hero in hero_list:
-        hero["value"] -= ((hero["value"] - average_value) / 3.)
-        hero["value"] = round(max(2.0 + random.randint(0, 9) / 10, hero["value"]), 1)
+        hero["value"] -= ((hero["value"] - average_value) / 4.)
+        hero["value"] = round(max(3.0 + random.randint(0, 5) / 10, hero["value"]), 1)
         print "New %s: %s" % (hero["name"], hero["value"])
 
     return hero_list
@@ -129,7 +129,7 @@ def write_calibration(new_heroes_list):
 
 
 def calibrate_value(average_points, our_points):
-    output = ((float(our_points) / float(average_points)) * 10 * 3 + 10) / 4.
+    output = ((float(our_points) / float(average_points)) * 9.8 * 3 + 9.8) / 4.
     return output
 
 
