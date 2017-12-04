@@ -63,10 +63,14 @@ class Notification(Base):
     user = Column(Integer, ForeignKey(User.id), index=True)
     achievement = Column(Integer, ForeignKey(Achievement.id))
     seen = Column(Boolean, defult=False, index=True)
+    message = Column(String(100), nullable=False)
+    description = Column(String(300))
 
-    def __init__(self, user, achievement):
+    def __init__(self, user, achievement, message, description):
         self.achievement = achievement
         self.user = user
+        self.message = message
+        self.description = description
 
 
 class PasswordReset(Base):
@@ -105,16 +109,17 @@ class Game(Base):
         self.reserve_size = reserve_size
 
 
-class ActiveLeague(Base):
-    __tablename__ = 'active_league'
-    id = Column(Integer, Sequence('id'), primary_key=True)
-    game = Column(Integer, ForeignKey(Game.id), index=True, nullable=False)
-    league = Column(Integer, ForeignKey(League.id), index=True, nullable=False)
-    started = Column(Boolean, default=False)
-
-    def __init__(self, league, game):
-        self.league = league
-        self.game = game
+# Not necessary as using status of league
+# class ActiveLeague(Base):
+#     __tablename__ = 'active_league'
+#     id = Column(Integer, Sequence('id'), primary_key=True)
+#     game = Column(Integer, ForeignKey(Game.id), index=True, nullable=False)
+#     league = Column(Integer, ForeignKey(League.id), index=True, nullable=False)
+#     started = Column(Boolean, default=False)
+#
+#     def __init__(self, league, game):
+#         self.league = league
+#         self.game = game
 
 
 class League(Base):
@@ -122,7 +127,8 @@ class League(Base):
     id = Column(Integer, primary_key=True)  # use id that matches dota2 api
     name = Column(String(100), nullable=False)
     game = Column(Integer, ForeignKey(Game.id), index=True, nullable=False)
-    status = Column(Integer, default=0)  # 0 not started. 1 is running. 2 is ended
+    # TODO add this index on running mysql instance
+    status = Column(Integer, default=0, index=True)  # 0 not started. 1 is running. 2 is ended
     transfer_open = Column(Boolean, default=False)
     swap_open = Column(Boolean, default=False)
     current_day = Column(Integer, default=0)
@@ -491,3 +497,7 @@ class Achievement(Base):
         self.game = game
         self.name = name
         self.description = description
+
+    @property
+    def message(self):
+        return "Achievement unlocked: %s" % self.name

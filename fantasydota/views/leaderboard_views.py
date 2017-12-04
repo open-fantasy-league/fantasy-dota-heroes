@@ -7,7 +7,7 @@ from sqlalchemy import desc
 from sqlalchemy import or_
 
 from fantasydota import DBSession
-from fantasydota.lib.general import add_other_games
+from fantasydota.lib.general import all_view_wrapper
 from fantasydota.lib.herolist import heroes as herolist
 from fantasydota.models import Friend, LeagueUser, LeagueUserDay, TeamHero, League, Match, Result, TeamHeroHistoric, \
     HeroDay, Hero, Game
@@ -89,7 +89,7 @@ def leaderboard(request):
 
     return_dict = {'user': luser, 'players': players, 'rank_by': rank_by, 'mode': mode, 'other_modes': other_modes, 'period': "tournament",
             'player_heroes': player_heroes, 'league': league, 'game': game}
-    return add_other_games(session, game_code, return_dict)
+    return all_view_wrapper(return_dict, session, game_code, user_id)
 
 
 @view_config(route_name='daily', renderer='../templates/daily.mako')
@@ -202,4 +202,4 @@ def daily(request):
         match_data.append(match_dict)
     return_dict = {'user': luser, 'players': players, 'rank_by': rank_by, 'mode': mode, 'period': period, 'game': game,
             'player_heroes': player_heroes, 'league': league, 'match_data': match_data, 'other_modes': other_modes}
-    return add_other_games(session, game_code, return_dict)
+    return all_view_wrapper(return_dict, session, game_code, user_id)

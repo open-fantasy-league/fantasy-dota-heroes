@@ -6,7 +6,7 @@ from pyramid.view import view_config
 from sqlalchemy import and_
 
 from fantasydota import DBSession
-from fantasydota.lib.general import add_other_games
+from fantasydota.lib.general import all_view_wrapper
 from fantasydota.lib.trade import buy, sell, swap_in, swap_out, get_swap_timestamp
 from fantasydota.models import User, League, LeagueUser, Hero, TeamHero, LeagueUserDay, Game
 from sqlalchemy import desc
@@ -158,7 +158,7 @@ def view_team(request):
                        }
     else:
         return_dict = {'game': 'whoops'}
-    return_dict = add_other_games(session, game_code, return_dict)
+    return_dict = all_view_wrapper(return_dict, session, game_code, user_id)
     result = render('fantasydota:templates/team.mako',
                     return_dict,
                     request=request)

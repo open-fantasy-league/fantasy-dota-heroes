@@ -78,8 +78,19 @@
             <li class="col s2">
                 <a href="/hallOfFame">Hall of Fame</a>
             </li>
+                <li class="col s3">
+                <a class="dropdown-button" data-beloworigin="true" href="" data-activates="notificationDropdown">
+                    Notifications ${"(%s)" % len(notifications)}<i class="material-icons right">arrow_drop_down</i></a>
+                </li>
+                    <ul id="notificationDropdown" class="dropdown-content">
+                        % for notification in notifications:
+                            <li>${notification.message}</li>
+                        % endfor
+            </ul>
+                <a href="/accountSettings">Notifications</a>
             <li class="col s3">
                 <a href="/accountSettings">Account Settings</a>
+            </li>
             </ul></div>
         </nav>
         </div>

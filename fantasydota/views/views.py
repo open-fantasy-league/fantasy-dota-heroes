@@ -8,7 +8,7 @@ from fantasydota.scripts.end_of_day import end_of_day
 from fantasydota.scripts.start_of_day import start_of_day
 from pyramid.response import Response
 
-from fantasydota.lib.general import add_other_games
+from fantasydota.lib.general import all_view_wrapper
 from fantasydota.lib.herolist import heroes
 from pyramid.httpexceptions import (
     HTTPFound,
@@ -32,13 +32,15 @@ from fantasydota.util.random_function import add_months, bprint
 @view_config(route_name='view_faq', renderer='../templates/faq.mako')
 def view_faq(request):
     session = DBSession()
-    return add_other_games(session, request.game, {})
+    return all_view_wrapper({}, session, request.game, authenticated_userid(request))
 
 
 @view_config(route_name='view_rules', renderer='../templates/rules.mako')
 def view_rules(request):
     session = DBSession()
-    return add_other_games(session, request.game, {'game_code': request.game})
+    return all_view_wrapper(
+        {'game_code': request.game}, session, request.game, authenticated_userid(request)
+    )
 
 
 @view_config(route_name='change_game')
@@ -87,14 +89,17 @@ def news(request):
 @view_config(route_name="hall_of_fame", renderer="../templates/hall_of_fame.mako")
 def hall_of_fame(request):
     session = DBSession()
-    return add_other_games(session, request.game, {'game_code': request.game})
+    return all_view_wrapper(
+        {'game_code': request.game}, session, request.game, authenticated_userid(request)
+    )
 
 
 @view_config(route_name='index', renderer='../templates/index.mako')
 def index(request):
     session = DBSession()
-    return_dict = {}
-    return add_other_games(session, request.game, return_dict)
+    return all_view_wrapper(
+        {}, session, request.game, authenticated_userid(request)
+    )
 
 
 def get_time_range(time_range):

@@ -12,7 +12,7 @@ from sqlalchemy import func
 from fantasydota import DBSession
 from fantasydota.auth import get_user
 from fantasydota.lib.account import check_invalid_password
-from fantasydota.lib.general import add_other_games
+from fantasydota.lib.general import all_view_wrapper
 from fantasydota.models import User, LeagueUser, League, PasswordReset, LeagueUserDay, Game
 
 
@@ -42,7 +42,7 @@ def login(request):
     return_dict = {'message': message, "plus_id": request.registry.settings.get(
         'SOCIAL_AUTH_STEAM_KEY'
     )}
-    return add_other_games(session, request.game, return_dict)
+    return all_view_wrapper(return_dict, session, request.game, None)
 
 
 @view_config(route_name='logout')
@@ -211,7 +211,7 @@ def account_settings(request):
     message_type = request.params.get("message_type")
     user = session.query(User).filter(User.id == user_id).first()
     return_dict = {"user": user, "message": message, "message_type": message_type}
-    return add_other_games(session, request.game, return_dict)
+    return all_view_wrapper(return_dict, session, request.game, user_id)
 
 
 @view_config(route_name='update_email_settings')
