@@ -4,12 +4,14 @@ import transaction
 from fantasydota.lib.herolist_vals import heroes_init
 from fantasydota.lib.pubg_players import pubg_init
 
-from fantasydota.lib.session_utils import make_session
 from fantasydota.models import League, LeagueUserDay, User, LeagueUser, HeroDay, Hero, Game
 
 
 def add_league(game_id, league_id, name, days, stage1, stage2, url, session=None):
-    session = session or make_session()
+    if not session:
+        # probably a more sensible way to avoid circular import
+        from fantasydota.lib.session_utils import make_session
+        session = make_session()
     game = session.query(Game).filter(Game.id == game_id).first()
     session.add(League(game.id, league_id, name, days, stage1, stage2, url))
     session.flush()
@@ -42,6 +44,7 @@ def add_league(game_id, league_id, name, days, stage1, stage2, url, session=None
             session.add(LeagueUserDay(user.id, user.username, league_id, i, stage))
 
 if __name__ == "__main__":
+    #add_league(1, new_id, new_name, 7, 5, 9, "", session=session)
     parser = argparse.ArgumentParser()
     parser.add_argument("game", type=int, help="Game id")
     parser.add_argument("id", type=int, help="league id")

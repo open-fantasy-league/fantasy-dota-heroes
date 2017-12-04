@@ -57,22 +57,6 @@ class User(Base):
         return bcrypt.verify(password, self.password)
 
 
-class Notification(Base):
-    __tablename__ = "notification"
-    id = Column(Integer, Sequence('id'), primary_key=True)
-    user = Column(Integer, ForeignKey(User.id), index=True)
-    achievement = Column(Integer, ForeignKey(Achievement.id))
-    seen = Column(Boolean, defult=False, index=True)
-    message = Column(String(100), nullable=False)
-    description = Column(String(300))
-
-    def __init__(self, user, achievement, message, description):
-        self.achievement = achievement
-        self.user = user
-        self.message = message
-        self.description = description
-
-
 class PasswordReset(Base):
     __tablename__ = "password_reset"
     id = Column(Integer, Sequence('id'), primary_key=True)
@@ -129,7 +113,8 @@ class League(Base):
     game = Column(Integer, ForeignKey(Game.id), index=True, nullable=False)
     # TODO add this index on running mysql instance
     status = Column(Integer, default=0, index=True)  # 0 not started. 1 is running. 2 is ended
-    transfer_open = Column(Boolean, default=False)
+    # TODO change default transopen to true in mysql
+    transfer_open = Column(Boolean, default=True)
     swap_open = Column(Boolean, default=False)
     current_day = Column(Integer, default=0)
     days = Column(Integer)
@@ -457,33 +442,13 @@ class UserXp(Base):
     user_id = Column(Integer, ForeignKey(User.id), index=True, nullable=False)
     game = Column(Integer, ForeignKey(Game.id), index=True, nullable=False)
     xp = Column(BigInteger, default=0)
-    # daily_win = Column(Integer, default=0)
-    # weekly_win = Column(Integer, default=0)
-    # weekly_top_ten = Column(Integer, default=0)
-    # ban_weekly_win = Column(Integer, default=0)
-    # pick_weekly_win = Column(Integer, default=0)
-    # top_hero_points_weekly = Column(Integer, default=0)
-    # top_hero_points_per_cost_weekly = Column(Integer, default=0)
-    # all_hero_in_draft = Column(Integer, default=0)
-    # three_winning_picks = Column(Integer, default=0)
-    # highest_daily_pos = Column(Integer)
-    # highest_weekly_pos = Column(Integer)
-    # all_time_points = Column(BigInteger, default=0)
+    highest_daily_pos = Column(Integer)
+    highest_weekly_pos = Column(Integer)
+    all_time_points = Column(BigInteger, default=0)
 
     @property
     def level(self):
         return self.xp / 10
-
-
-class UserAchievement(Base):
-    __tablename__ = "user_achievement"
-    id = Column(Integer, Sequence('id'), primary_key=True)
-    achievement = Column(Integer, ForeignKey(Achievement.id), index=True, nullable=False)
-    user_id = Column(Integer, ForeignKey(User.id), index=True, nullable=False)
-
-    def __init__(self, achievement, user_id):
-        self.achievement = achievement
-        self.user_id = user_id
 
 
 class Achievement(Base):
@@ -501,3 +466,30 @@ class Achievement(Base):
     @property
     def message(self):
         return "Achievement unlocked: %s" % self.name
+
+
+class UserAchievement(Base):
+    __tablename__ = "user_achievement"
+    id = Column(Integer, Sequence('id'), primary_key=True)
+    achievement = Column(Integer, ForeignKey(Achievement.id), index=True, nullable=False)
+    user_id = Column(Integer, ForeignKey(User.id), index=True, nullable=False)
+
+    def __init__(self, achievement, user_id):
+        self.achievement = achievement
+        self.user_id = user_id
+
+
+class Notification(Base):
+    __tablename__ = "notification"
+    id = Column(Integer, Sequence('id'), primary_key=True)
+    user = Column(Integer, ForeignKey(User.id), index=True)
+    achievement = Column(Integer, ForeignKey(Achievement.id))
+    seen = Column(Boolean, default=False, index=True)
+    message = Column(String(100), nullable=False)
+    description = Column(String(300))
+
+    def __init__(self, user, achievement, message, description):
+        self.achievement = achievement
+        self.user = user
+        self.message = message
+        self.description = description

@@ -67,7 +67,7 @@ def main(global_config, **settings):
     init_social(config, Base, DBSession)  # is this the right place?
     Base.metadata.bind = engine
     Base.metadata.create_all(engine)
-    #create_tables(DBSession, settings["DOTA"]["default_league"]) #already created!
+    create_tables(DBSession)
 
     config.include('social_pyramid')
     config.scan('social_pyramid')

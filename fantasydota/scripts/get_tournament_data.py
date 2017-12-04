@@ -1,13 +1,12 @@
 import json
 import os
-import urllib2
 import re
-
 import time
-import transaction
+import urllib2
 
+import transaction
 from fantasydota.lib.session_utils import make_session
-from fantasydota.models import Result, HeroGame, ItemBuild, Match, League
+from fantasydota.models import Result, Match, League
 
 APIKEY = os.environ.get("APIKEY")
 if not APIKEY:
@@ -107,36 +106,6 @@ def add_matches(session, tournament_id, tstamp_from=0, add_match=True):
                 session.add(Result(tournament_id, value["hero_id"], int(match_json["match_id"]), result_string,
                                    match_json["start_time"], series_id, (value["team"] == 0)))
     transaction.commit()
-
-
-def add_matches_guesser(session, tournament_id, tstamp_from):
-    match_list_json = get_league_match_list(tournament_id)
-
-    matches = [(match["match_id"], match["series_id"]) for match in match_list_json["result"]["matches"]
-               if match["start_time"] > tstamp_from]
-    print "matches", matches
-    for match, series_id in matches:
-        match_json = get_match_details(match)["result"]
-        if len(match_json["players"]) < 3:
-            continue  # dont count the 1v1s
-        for player in match_json["players"]:
-            new_hero_game = HeroGame(match, player["hero_id"])
-            items = []
-            item_value_sum = 0  # we only want to choose/select builds that are guessable (i.e not boots + wand)
-            session.add(new_hero_game)
-            session.flush()
-            empty_items = 0
-            legit_items = [79, 81, 90, 96, 98, 100, 104, 201, 202, 203, 204, 205, 106, 193, 194, 110, 112, 114, 116, 117, 119, 121, 123, 125, 127, 133, 135, 139, 141, 143, 145, 147, 149, 151, 152, 154, 160, 158, 156, 164, 166, 168, 170, 172, 174, 196, 176, 206, 208, 210, 231, 226, 235, 249, 250, 252, 263]
-            for i in range(6):
-                item = player["item_%s" % i]
-                if item == 0:
-                    empty_items += 1
-                items.append(item)
-                session.add(ItemBuild(new_hero_game.id, item, i))
-            if empty_items > 1 or not any(item for item in items if item in legit_items):
-                session.rollback()
-                continue
-            session.commit()
 
 
 def main():

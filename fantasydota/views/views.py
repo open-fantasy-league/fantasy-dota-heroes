@@ -1,32 +1,21 @@
 import datetime
-import json
-
-import ast
-
-from fantasydota.auth import get_user
-from fantasydota.scripts.end_of_day import end_of_day
-from fantasydota.scripts.start_of_day import start_of_day
-from pyramid.response import Response
 
 from fantasydota.lib.general import all_view_wrapper
-from fantasydota.lib.herolist import heroes
+from fantasydota.models import (
+    DBSession,
+    Friend, User)
+from fantasydota.scripts.end_of_day import end_of_day
+from fantasydota.scripts.start_of_day import start_of_day
+from fantasydota.util.random_function import add_months
 from pyramid.httpexceptions import (
     HTTPFound,
     HTTPForbidden)
 from pyramid.security import (
-    authenticated_userid, remember)
+    authenticated_userid)
 from pyramid.view import (
     view_config,
 )
 from sqlalchemy import and_
-from sqlalchemy import desc
-from sqlalchemy import func
-
-from fantasydota.lib.items import ITEMS
-from fantasydota.models import (
-    DBSession,
-    Friend, User, GuessUser, HeroGame, ItemBuild)
-from fantasydota.util.random_function import add_months, bprint
 
 
 @view_config(route_name='view_faq', renderer='../templates/faq.mako')
