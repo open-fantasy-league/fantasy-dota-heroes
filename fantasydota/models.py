@@ -57,6 +57,18 @@ class User(Base):
         return bcrypt.verify(password, self.password)
 
 
+class Notification(Base):
+    __tablename__ = "notification"
+    id = Column(Integer, Sequence('id'), primary_key=True)
+    user = Column(Integer, ForeignKey(User.id), index=True)
+    achievement = Column(Integer, ForeignKey(Achievement.id))
+    seen = Column(Boolean, defult=False, index=True)
+
+    def __init__(self, user, achievement):
+        self.achievement = achievement
+        self.user = user
+
+
 class PasswordReset(Base):
     __tablename__ = "password_reset"
     id = Column(Integer, Sequence('id'), primary_key=True)
@@ -91,6 +103,18 @@ class Game(Base):
         self.pickee = pickee
         self.team_size = team_size
         self.reserve_size = reserve_size
+
+
+class ActiveLeague(Base):
+    __tablename__ = 'active_league'
+    id = Column(Integer, Sequence('id'), primary_key=True)
+    game = Column(Integer, ForeignKey(Game.id), index=True, nullable=False)
+    league = Column(Integer, ForeignKey(League.id), index=True, nullable=False)
+    started = Column(Boolean, default=False)
+
+    def __init__(self, league, game):
+        self.league = league
+        self.game = game
 
 
 class League(Base):
@@ -427,18 +451,18 @@ class UserXp(Base):
     user_id = Column(Integer, ForeignKey(User.id), index=True, nullable=False)
     game = Column(Integer, ForeignKey(Game.id), index=True, nullable=False)
     xp = Column(BigInteger, default=0)
-    daily_win = Column(Integer, default=0)
-    weekly_win = Column(Integer, default=0)
-    weekly_top_ten = Column(Integer, default=0)
-    ban_weekly_win = Column(Integer, default=0)
-    pick_weekly_win = Column(Integer, default=0)
-    top_hero_points_weekly = Column(Integer, default=0)
-    top_hero_points_per_cost_weekly = Column(Integer, default=0)
-    all_hero_in_draft = Column(Integer, default=0)
-    three_winning_picks = Column(Integer, default=0)
-    highest_daily_pos = Column(Integer)
-    highest_weekly_pos = Column(Integer)
-    all_time_points = Column(BigInteger, default=0)
+    # daily_win = Column(Integer, default=0)
+    # weekly_win = Column(Integer, default=0)
+    # weekly_top_ten = Column(Integer, default=0)
+    # ban_weekly_win = Column(Integer, default=0)
+    # pick_weekly_win = Column(Integer, default=0)
+    # top_hero_points_weekly = Column(Integer, default=0)
+    # top_hero_points_per_cost_weekly = Column(Integer, default=0)
+    # all_hero_in_draft = Column(Integer, default=0)
+    # three_winning_picks = Column(Integer, default=0)
+    # highest_daily_pos = Column(Integer)
+    # highest_weekly_pos = Column(Integer)
+    # all_time_points = Column(BigInteger, default=0)
 
     @property
     def level(self):
