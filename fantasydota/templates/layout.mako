@@ -36,18 +36,11 @@
     </head>
 
     <body id="mySexyBody" class="blue-grey lighten-5">
+    <main>
         <div id="topBar" class="navbar-fixed">
         <nav>
             <div class="nav-wrapper indigo darken-3">
             <ul class="left">
-            <%block name="content">
-                % if authenticated_userid(request) is None:
-                    <li id="homeLink" class="col s2">
-                        <a href="${request.route_path('login')}">Login/Create Profile</a>
-                % else:
-                    <li><a href="${request.route_path('logout')}">Logout</a></li>
-                % endif
-            </%block>
                 <li>
                     <li>
                         <a class="dropdown-button" data-beloworigin="true" href="" data-activates="gameDropdown">Game<i class="material-icons right">arrow_drop_down</i></a>
@@ -67,17 +60,22 @@
             <li class="col s1">
                 <a href="/daily">Daily</a>
             </li>
+                <li class="col s2">
+                <a class="dropdown-button" data-beloworigin="true" href="" data-activates="leagueDropdown">
+                    Week
+                    <i class="material-icons right">arrow_drop_down</i>
+                </a>
+                </li>
+                    <ul id="leagueDropdown" class="dropdown-content">
+                        % for league in leagues:
+                        <li><a href="/changeLeague?league=${league.id}">${league.name}</a></li>
+                        % endfor
+                </ul>
             </ul>
             <ul class="right">
-            <li class="col s1">
-                <a href="/rules">Rules</a>
-            </li>
-            <li class="col s1">
-                <a href="/faq">FAQ</a>
-            </li>
-            <li class="col s2">
-                <a href="/hallOfFame">Hall of Fame</a>
-            </li>
+                <li class="col s1">
+                    <a href="/rules">Rules</a>
+                </li>
                 <li class="col s2">
                 <a class="dropdown-button" data-beloworigin="true" href="" data-activates="notificationDropdown">
                     Notifications ${"(%s)" % len(notifications)}
@@ -90,10 +88,26 @@
                         % for notification in notifications:
                             <li>${notification.message}</li>
                         % endfor
-            </ul>
-            <li class="col s2">
-                <a href="/accountSettings">Account Settings</a>
-            </li>
+                </ul>
+                <%block name="content">
+                <% user_id = authenticated_userid(request) %>
+                % if authenticated_userid(request) is None:
+                    <li id="homeLink" class="col s2">
+                        <a href="${request.route_path('login')}">Login/Create Profile</a>
+                % else:
+                    <li class="col s2">
+                    <a class="dropdown-button" data-beloworigin="true" href="" data-activates="accountDropdown">
+                        Account
+                        <i class="material-icons right">arrow_drop_down</i>
+                    </a>
+                    </li>
+                        <ul id="accountDropdown" class="dropdown-content">
+                            <li><a href="${request.route_path('logout')}">Logout</a></li>
+                            <li><a href="/profile?user=${user_id}">Profile</a></li>
+                            <li><a href="/accountSettings">Settings</a></li>
+                        </ul>
+                % endif
+            </%block>
             </ul></div>
         </nav>
         </div>
@@ -112,6 +126,21 @@
         </div>
     </div>
 </div>
-
+    </main>
+    <footer class="page-footer indigo lighten-3">
+        <div class="container">
+            <div class="row">
+        <div class="col s1">
+            <a href="/faq">FAQ</a>
+        </div>
+        <div class="col s2">
+            <a href="/hallOfFame">Hall of Fame</a>
+        </div>
+                <div>
+                     DotA 2 is registered trademark of Valve corporation. PUBG is registered trademark of Bluehole corporation.
+                </div>
+            </div>
+        </div>
+    </footer>
   </body>
 </html>
