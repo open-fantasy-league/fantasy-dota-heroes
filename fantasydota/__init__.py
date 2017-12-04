@@ -1,4 +1,5 @@
 import os
+import socket
 
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
@@ -47,8 +48,9 @@ def main(global_config, **settings):
     DBSession.configure(bind=engine)
 
     # Need https set up on local machine for secure True to work locally
+    secure = socket.gethostname() == 'fantasyesport'
     authn_policy = AuthTktAuthenticationPolicy(settings.get('authn_policy_secr'), hashalg='sha512', http_only=True,
-                                               #secure=True,
+                                               secure=secure,
                                                max_age=10000000)
     authz_policy = ACLAuthorizationPolicy()
 
