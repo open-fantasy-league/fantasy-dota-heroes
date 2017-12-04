@@ -51,11 +51,15 @@ def main():
     # add_hero_player(session, 480, 66, 5609, False)
     # add_hero_player(session, 480, 32, 5609, False)
 
-    add_hero_player(session, 480, 30, 5609, True)
-    add_hero_player(session, 480, 18, 5609, True)
-    add_hero_player(session, 480, 17, 5609, True)
-    add_hero_player(session, 480, 86, 5609, True)
-    add_hero_player(session, 480, 58, 5609, True)
+    add_hero_player(session, 337, 10, 5627, False)
+    add_hero_player(session, 337, 107, 5627, False)
+    add_hero_player(session, 337, 72, 5627, False)
+    add_hero_player(session, 337, 100, 5627, False)
+    add_hero_player(session, 337, 91, 5627, False)
+    add_hero_player(session, 337, 50, 5627, True)
+    add_hero_player(session, 337, 52, 5627, True)
+    add_hero_player(session, 337, 58, 5627, True)
+    add_hero_player(session, 337, 57, 5627, True)
 
 if __name__ == "__main__":
     main()

@@ -180,9 +180,9 @@ def daily(request):
             "dire_picks": []
         }
         for result in session.query(Result).filter(Result.match_id == match.match_id).all():
-            if league.current_day < league.stage1_start:
+            if period < league.stage1_start:
                 multiplier = 1
-            elif league.current_day < league.stage2_start:
+            elif period < league.stage2_start:
                 multiplier = 2
             else:
                 multiplier = 4

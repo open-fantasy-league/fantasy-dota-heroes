@@ -138,6 +138,9 @@ ${"period=%s" % period}
                     </td>
                     <td class="heroEntry">
                         <span style="vertical-align:middle">
+                        % if i == 0:
+                          <img src="static/images/dota/trophy.png"/>
+                          % endif
                         ${player.username}</span>
                     % if len(player_heroes) > i:
                         <span class="hero_images">
@@ -248,7 +251,8 @@ $( document ).ready(function() {
 <div id="friendBlock" class="col s5">
     % if game.code == "DOTA":
     <div class="card-panel">
-	<p>2x points multiplier for finals day</p>
+    <p>2x points multiplier for day 2</p>
+	<p>4x points multiplier for finals day</p>
         <p>Results updated ~2 minutes after match ends</p>
         <p><a href="https://discord.gg/MAH7EEv" target="_blank">Discord channel for suggestions/improvements</a></p>
         <p>Statistics provided by <a href="https://www.stratz.com" target="_blank">Stratz Esports <img src="/static/images/dota/stratz_icon.png"/></a></p>

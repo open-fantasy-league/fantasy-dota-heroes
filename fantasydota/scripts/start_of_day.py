@@ -70,7 +70,10 @@ def start_of_day(league_id=None):
     league.transfer_open = False  # close league window if not already closed
     league.swap_open = False
     if league.current_day > 0:
-        reset_incomplete_teams(session, league)
+        try:
+            reset_incomplete_teams(session, league)
+        except:
+            print("couldnt reset teams")
     session.commit()
 
 
