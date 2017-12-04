@@ -94,20 +94,22 @@
 
 <div class="card row">
     <div class="card-content">
-        <span class=${"messageTransOpen" if league.transfer_open != 0 else "messageTransClosed"}>
             % if league.transfer_open != 0:
-            <p>50 Credits to pick Main team of 5 heroes. 40 credits for up to 4 Reserves</strong>
+            <p>50 Credits to pick Main team of 5 heroes (Points penalties for under 5). 40 credits for up to 4 Reserves</strong>
         <p>Your <strong>Reserves score 0 points</strong>. However they can be <strong>swapped</strong> with main heroes every night after tournament matches finish</p>
             <p>You <strong>cannot purchase any new heroes once tournament started</strong>. You must pick Main and Reserves carefully</p>
-            <p><strong>Transfer window currently open (closes ~1 hour before games start)</strong></p>
+        <span class=${"messageTransOpen" if league.transfer_open != 0 else "messageTransClosed"}>
+            <p>Transfer window currently open (closes ~1 hour before games start)</p>
+            </span>
+            <p><strong><a href="/rules">Detailed Rules</a></strong></p>
+
             % else:
                 <p><strong>
                 Swaps between reserves and main team only available between days. When all day's games finished
                 </strong></p>
             % endif
-        </span>
         <span>
-            <p>Tables are sortable (click table headers). Max <strong>5 heroes per team</strong> (points <a href="/rules">penalties</a> for under 5)</p>
+            <p>Tables are sortable (click table headers)</p>
         </span>
     </div>
 </div>

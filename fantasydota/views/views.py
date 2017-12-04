@@ -51,13 +51,13 @@ def change_game(request):
 
 @view_config(route_name='start_day_req', renderer='string')
 def start_day_req(request):
-    start_of_day(league_id=3)
+    start_of_day(league_id=5627)
     return "Started day"
 
 
 @view_config(route_name='end_day_req', renderer='string')
 def end_day_req(request):
-    end_of_day(league_id=3)
+    end_of_day(league_id=5627)
     return "Ended day"
 
 

@@ -42,7 +42,7 @@ def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
     settings["league_transfers"] = True  # why wont config file properly set this?
-    settings["DOTA"] = {"default_league": 3}
+    settings["DOTA"] = {"default_league": 5627}
     settings["PUBG"] = {"default_league": 2}
     sqlalchemy_url = os.path.expandvars(settings.get('sqlalchemy.url'))
     engine = create_engine(sqlalchemy_url, echo=False, pool_size=100, pool_recycle=3600)
@@ -109,7 +109,7 @@ def main(global_config, **settings):
     config.add_route('news', '/news')
     config.add_route('hall_of_fame', '/hallOfFame')
 
-    config.add_route('end_day_req', '/secretendofday')
-    config.add_route('start_day_req', '/secretstartofday')
+    config.add_route('end_day_req', '/endsecret')
+    config.add_route('start_day_req', '/startsecret')
     config.scan()
     return config.make_wsgi_app()

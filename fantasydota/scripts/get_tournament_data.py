@@ -44,7 +44,7 @@ def get_match_details(match_id):
         "key=%s&match_id=%s" % (APIKEY, match_id))
 
 
-def add_matches(session, tournament_id, tstamp_from=0, add_match=False):
+def add_matches(session, tournament_id, tstamp_from=0, add_match=True):
     match_list_json = get_league_match_list(tournament_id)
 
     matches = [(match["match_id"], match["series_id"]) for match in match_list_json["result"]["matches"]
@@ -143,14 +143,7 @@ def main():
     session = make_session()
     #session2 = make_session(False)
     # dreamleague calibration
-    add_matches(session, 5572, 1509494400)
-    add_matches(session, 5637, 1509494400)
-    add_matches(session, 5627, 1509494400)
-    add_matches(session, 5850, 1509494400)
-    add_matches(session, 5690, 1509494400)
-    add_matches(session, 5562, 1509494400)
-    add_matches(session, 4820, 1509494400)
-    add_matches(session, 5504, 1509494400)
+    add_matches(session, 5627, 1512057853)
 
 if __name__ == "__main__":
     main()
