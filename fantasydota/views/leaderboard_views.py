@@ -1,5 +1,6 @@
 from collections import namedtuple
 
+from fantasydota.lib.league import in_progress_league
 from pyramid.security import authenticated_userid
 from pyramid.view import view_config
 from sqlalchemy import and_
@@ -20,7 +21,7 @@ def leaderboard(request):
     game = session.query(Game).filter(Game.code == game_code).first()
     user_id = authenticated_userid(request)
     league_id = int(request.params.get("league")) if request.params.get("league") else None \
-        or request.registry.settings[game_code]["default_league"]
+        or in_progress_league(session, game.id)
     users_playing = [x[0] for x in session.query(TeamHero.user_id).filter(TeamHero.league == league_id).group_by(TeamHero.user_id).all()]
     mode = request.params.get("mode", "global")
     if mode == "friend" and not user_id:
@@ -99,7 +100,7 @@ def daily(request):
     game = session.query(Game).filter(Game.code == game_code).first()
     user_id = authenticated_userid(request)
     league_id = int(request.params.get("league")) if request.params.get("league") else None \
-        or request.registry.settings[game_code]["default_league"]
+        or in_progress_league(session, game.id)
     league = session.query(League).filter(League.id == league_id).first()
     mode = request.params.get("mode", "global")
     if mode == "friend" and not user_id:

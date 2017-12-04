@@ -1,3 +1,4 @@
+from fantasydota.lib.league import in_progress_league
 from pyramid.httpexceptions import HTTPFound
 from pyramid.renderers import render
 from pyramid.response import Response
@@ -27,7 +28,7 @@ def view_team(request):
         message = request.params.get('message')
 
         league_id = int(request.params.get("league")) if request.params.get("league") else None \
-            or request.registry.settings[game_code]["default_league"]
+            or in_progress_league(session, game.id)
 
         league = session.query(League).filter(League.id == league_id).first()
 
@@ -92,8 +93,7 @@ def view_team(request):
         message_type = request.params.get('message_type')
         message = request.params.get('message')
 
-        league_id = int(request.params.get("league")) if\
-            request.params.get("league") else request.registry.settings[game_code]["default_league"]
+        league_id = int(request.params.get("league") or in_progress_league(session, game.id).id)
 
         league = session.query(League).filter(League.id == league_id).first()
 
