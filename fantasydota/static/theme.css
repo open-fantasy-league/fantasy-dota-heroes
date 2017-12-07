@@ -33,6 +33,12 @@ p {
         border-collapse: collapse;
 }*/
 
+@media screen and (max-width: 900px) {
+    .extra{
+        display: none;
+    }
+}
+
 .font-normal {
   font-weight: 400;
 }

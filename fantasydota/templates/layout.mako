@@ -7,6 +7,7 @@
         <meta charset="utf-8">
         <meta name="description" content="${next.meta_description()}">
         <meta name="keywords" content="${next.meta_keywords()}">
+        <meta name="viewport" content="width=device-width">
 
         <title>${next.title()}</title>
 
@@ -40,19 +41,10 @@
         <div id="topBar" class="navbar-fixed">
         <nav>
             <div class="nav-wrapper indigo darken-3">
-            <ul class="left">
-                <li>
-                    <li>
-                        <a class="dropdown-button" data-beloworigin="true" href="" data-activates="gameDropdown">Game<i class="material-icons right">arrow_drop_down</i></a>
-                    </li>
-                    <ul id="gameDropdown" class="dropdown-content">
-                        % for game in other_games:
-                            <li><a href="/changeGame?game=${game.code}">${game.name}</a></li>
-                        % endfor
-                    </ul>
-                </li>
-            <li id="leagueBtn" class="col s1">
-                <a href="/team">My team</a>
+                 <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+            <ul class="left hide-on-med-and-down">
+            <li id="teamBtn" class="col s1">
+                <a href="/team">Team</a>
             </li>
             <li class="col s1">
                 <a href="/leaderboard">Leaderboard</a>
@@ -60,8 +52,23 @@
             <li class="col s1">
                 <a href="/daily">Daily</a>
             </li>
+                <li class="col s1">
+                    <a href="/rules">Rules</a>
+                </li>
+            </ul>
+            <ul class="right hide-on-med-and-down">
+                <li>
+                    <li>
+                        <a class="dropdown-button" data-beloworigin="true" href="#" data-activates="gameDropdown">Game<i class="material-icons right">arrow_drop_down</i></a>
+                    </li>
+                    <ul id="gameDropdown" class="dropdown-content">
+                        % for game in other_games:
+                            <li><a href="/changeGame?game=${game.code}">${game.name}</a></li>
+                        % endfor
+                    </ul>
+                </li>
                 <li class="col s2">
-                <a class="dropdown-button" data-beloworigin="true" href="" data-activates="leagueDropdown">
+                <a class="dropdown-button" data-beloworigin="true" href="#" data-activates="leagueDropdown">
                     Week
                     <i class="material-icons right">arrow_drop_down</i>
                 </a>
@@ -71,13 +78,8 @@
                         <li><a href="/changeLeague?league=${league.id}">${league.name}</a></li>
                         % endfor
                 </ul>
-            </ul>
-            <ul class="right">
-                <li class="col s1">
-                    <a href="/rules">Rules</a>
-                </li>
                 <li class="col s2">
-                <a class="dropdown-button" data-beloworigin="true" href="" data-activates="notificationDropdown">
+                <a class="dropdown-button" data-beloworigin="true" href="#" data-activates="notificationDropdown">
                     Notifications ${"(%s)" % len(notifications)}
                     % if len(notifications) > 1:
                         <i class="material-icons right">arrow_drop_down</i>
@@ -89,14 +91,13 @@
                             <li>${notification.message}</li>
                         % endfor
                 </ul>
-                <%block name="content">
                 <% user_id = authenticated_userid(request) %>
                 % if authenticated_userid(request) is None:
                     <li id="homeLink" class="col s2">
                         <a href="${request.route_path('login')}">Login/Create Profile</a>
                 % else:
                     <li class="col s2">
-                    <a class="dropdown-button" data-beloworigin="true" href="" data-activates="accountDropdown">
+                    <a class="dropdown-button" data-beloworigin="true" href="#" data-activates="accountDropdown">
                         Account
                         <i class="material-icons right">arrow_drop_down</i>
                     </a>
@@ -107,8 +108,75 @@
                             <li><a href="/accountSettings">Settings</a></li>
                         </ul>
                 % endif
-            </%block>
-            </ul></div>
+            </ul>
+
+            <ul class="side-nav" id="mobile-demo">
+                 <li id="leagueBtn" class="col s1">
+                    <a href="/team">Team</a>
+                </li>
+                <li class="col s1">
+                    <a href="/leaderboard">Leaderboard</a>
+                </li>
+                <li class="col s1">
+                    <a href="/daily">Daily</a>
+                </li>
+                <li class="col s1">
+                    <a href="/rules">Rules</a>
+                </li>
+                <div class="divider"></div>
+                % if len(notifications) > 1:
+                    <li class="col s2">
+                    <a class="dropdown-button" data-beloworigin="true" href="#" data-activates="notificationDropdown">
+                        Notifications ${"(%s)" % len(notifications)}
+                        <i class="material-icons right">arrow_drop_down</i>
+                    </a>
+                    </li>
+                        <ul id="notificationDropdown" class="dropdown-content">
+                            % for notification in notifications:
+                                <li>${notification.message}</li>
+                            % endfor
+                    </ul>
+                % endif
+                <% user_id = authenticated_userid(request) %>
+                % if authenticated_userid(request) is None:
+                    <li id="homeLink" class="col s2">
+                        <a href="${request.route_path('login')}">Login/Create Profile</a>
+                % else:
+                    <li class="col s2">
+                    <a class="dropdown-button" data-beloworigin="true" href="#" data-activates="accountDropdown">
+                        Account
+                        <i class="material-icons right">arrow_drop_down</i>
+                    </a>
+                    </li>
+                        <ul id="accountDropdown" class="dropdown-content">
+                            <li><a href="${request.route_path('logout')}">Logout</a></li>
+                            <li><a href="/profile?user=${user_id}">Profile</a></li>
+                            <li><a href="/accountSettings">Settings</a></li>
+                        </ul>
+                % endif
+                <li>
+                    <li>
+                        <a class="dropdown-button" data-beloworigin="true" href="#" data-activates="gameDropdown">Game<i class="material-icons right">arrow_drop_down</i></a>
+                    </li>
+                    <ul id="gameDropdown" class="dropdown-content">
+                        % for game in other_games:
+                            <li><a href="/changeGame?game=${game.code}">${game.name}</a></li>
+                        % endfor
+                    </ul>
+                </li>
+                <li class="col s2">
+                <a class="dropdown-button" data-beloworigin="true" href="#" data-activates="leagueDropdown">
+                    Week
+                    <i class="material-icons right">arrow_drop_down</i>
+                </a>
+                </li>
+                    <ul id="leagueDropdown" class="dropdown-content">
+                        % for league in leagues:
+                        <li><a href="/changeLeague?league=${league.id}">${league.name}</a></li>
+                        % endfor
+                </ul>
+            </ul>
+            </div>
         </nav>
         </div>
         <div class="main">
@@ -143,4 +211,15 @@
         </div>
     </footer>
   </body>
+
+<script>
+    function removeOverlay() {
+      $('div[id^=sidenav-overlay]').remove();
+    }
+
+    $( document ).ready(function(){
+      $('.button-collapse').sideNav();
+      $('.button-collapse').click(removeOverlay);
+    })
+</script>
 </html>

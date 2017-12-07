@@ -17,14 +17,14 @@
     <span class="left"><h2>My Team (Credits: <span class="userCredits">${round(userq.money, 1)}</span>)</h2></span>
     <span class="right"><h2>Total points: <span class="teamPoints">${userq.points}</span></h2></span>
     <div id="tableContainer">
-        <table class="sortable responsive-table card-table striped centered" id="teamTable">
+        <table class="sortable card-table striped centered" id="teamTable">
             <tr style="cursor: pointer">
                 <th class="heroHeader">Hero</th>
                 <th class="dummyHeader" colspan="0"></th>
                 <th class="heroPointsHeader">Points</th>
-                <th class="picksHeader">Picks</th>
-                <th class="bansHeader">Bans</th>
-                <th class="winsHeader">Wins</th>
+                <th class="picksHeader extra">Picks</th>
+                <th class="bansHeader extra">Bans</th>
+                <th class="winsHeader extra">Wins</th>
                 <th class="valueHeader">Value</th>
                 <th class="sellHeader">${"Sell" if not league.swap_open else "Swap"}</th>
 
@@ -34,9 +34,9 @@
                     <td class="heroImg" sorttable_customkey="${hero[0].name}"><img src="/static/images/dota/${hero[0].name.replace(" ", "_")}_icon.png" title="${hero[0].name}"/></td>
                     <td class="heroEntry">${'=> ' if not hero[1].active else ''}${hero[0].name}</td>
                     <td class="heroPointsEntry">${hero[0].points}</td>
-                    <td class="picksEntry">${hero[0].picks}</td>
-                    <td class="bansEntry">${hero[0].bans}</td>
-                    <td class="winsEntry">${hero[0].wins}</td>
+                    <td class="picksEntry extra">${hero[0].picks}</td>
+                    <td class="bansEntry extra">${hero[0].bans}</td>
+                    <td class="winsEntry extra">${hero[0].wins}</td>
                     <td class="valueEntry">${hero[0].value}</td>
                     <td class="tradeEntry">
                         <form name="tradeForm" id="${hero[0].id}TradeForm" class="tradeForm" onsubmit="return false;">
@@ -59,14 +59,14 @@
         <span class="right"><button type="submit" id="confirmSwaps" class="btn waves-effect waves-light">Confirm Swaps!</button></span>
     % endif
     <div id="tableContainer">
-        <table class="sortable responsive-table card-table striped centered" id="reserveTable">
+        <table class="sortable card-table striped centered" id="reserveTable">
             <tr style="cursor: pointer">
                 <th class="heroHeader">Hero</th>
                 <th class="dummyHeader" colspan="0"></th>
                 <th class="heroPointsHeader">Points</th>
-                <th class="picksHeader">Picks</th>
-                <th class="bansHeader">Bans</th>
-                <th class="winsHeader">Wins</th>
+                <th class="picksHeader extra">Picks</th>
+                <th class="bansHeader extra">Bans</th>
+                <th class="winsHeader extra">Wins</th>
                 <th class="valueHeader">Value</th>
                 <th class="sellHeader">${"Sell" if not league.swap_open else "Swap"}</th>
             </tr>
@@ -75,9 +75,9 @@
                     <td class="heroImg" sorttable_customkey="${hero[0].name}"><img src="/static/images/dota/${hero[0].name.replace(" ", "_")}_icon.png" title="${hero[0].name}"/></td>
                     <td class="heroEntry">${'<= ' if hero[1].active else ''}${hero[0].name}</td>
                     <td class="heroPointsEntry">${hero[0].points}</td>
-                    <td class="picksEntry">${hero[0].picks}</td>
-                    <td class="bansEntry">${hero[0].bans}</td>
-                    <td class="winsEntry">${hero[0].wins}</td>
+                    <td class="picksEntry extra">${hero[0].picks}</td>
+                    <td class="bansEntry extra">${hero[0].bans}</td>
+                    <td class="winsEntry extra">${hero[0].wins}</td>
                     <td class="valueEntry">${hero[0].value}</td>
                     <td class="tradeEntry">
                         <form name="tradeForm" id="${hero[0].id}TradeForm" class="tradeForm" onsubmit="return false;">
@@ -120,14 +120,14 @@
         <h2>Heroes</h2>
     % endif
     <div id="tableContainer">
-        <table class="sortable responsive-table card-table striped centered">
+        <table class="sortable card-table striped centered">
             <tr style="cursor: pointer">
                 <th class="heroHeader">Hero</th>
                 <th class="dummyHeader" colspan="0"></th>
                 <th class="heroPointsHeader">Points</th>
-                <th class="picksHeader">Picks</th>
-                <th class="bansHeader">Bans</th>
-                <th class="winsHeader">Wins</th>
+                <th class="picksHeader extra">Picks</th>
+                <th class="bansHeader extra">Bans</th>
+                <th class="winsHeader extra">Wins</th>
                 <th class="valueHeader">Value</th>
                 <th class="sellHeader">Buy</th>
                 <th class="sellHeader">Reserve</th>
@@ -137,9 +137,9 @@
                     <td class="heroImg" sorttable_customkey="${hero.name}"><img src="/static/images/dota/${hero.name.replace(" ", "_")}_icon.png" title="${hero.name}"/></td>
                     <td class="heroEntry">${hero.name}</td>
                     <td class="heroPointsEntry">${hero.points}</td>
-                    <td class="picksEntry">${hero.picks}</td>
-                    <td class="bansEntry">${hero.bans}</td>
-                    <td class="winsEntry">${hero.wins}</td>
+                    <td class="picksEntry extra">${hero.picks}</td>
+                    <td class="bansEntry extra">${hero.bans}</td>
+                    <td class="winsEntry extra">${hero.wins}</td>
                     <td class="valueEntry">${hero.value}</td>
                     <td class="tradeEntry">
                         <form name="tradeForm" id="${hero.id}TradeForm" class="tradeForm" onsubmit="return false;">
@@ -165,7 +165,7 @@
     <span class="left"><h2>My Team (Credits: <span class="userCredits">${round(userq.money, 1)}</span>)</h2></span>
     <span class="right"><h2>Total points: <span class="teamPoints">${userq.points}</span></h2></span>
     <div id="tableContainer">
-        <table class="sortable responsive-table card-table striped centered" id="teamTable">
+        <table class="sortable card-table striped centered" id="teamTable">
             <tr style="cursor: pointer">
                 <th class="heroHeader">${game.pickee}</th>
                 <th class="dummyHeader" colspan="0"></th>
@@ -202,7 +202,7 @@
         <span class="left"><h2>My Reserves</h2></span>
     % endif
     <div id="tableContainer">
-        <table class="sortable responsive-table card-table striped centered" id="reserveTable">
+        <table class="sortable card-table striped centered" id="reserveTable">
             <tr style="cursor: pointer">
                 <th class="heroHeader">${game.pickee}</th>
                 <th class="dummyHeader" colspan="0"></th>
@@ -258,7 +258,7 @@
         <h2>${game.pickee}s</h2>
     % endif
     <div id="tableContainer">
-        <table class="sortable responsive-table card-table striped centered">
+        <table class="sortable card-table striped centered">
             <tr style="cursor: pointer">
                 <th class="heroHeader">${game.pickee}</th>
                 <th class="dummyHeader" colspan="0"></th>
