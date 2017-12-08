@@ -31,3 +31,7 @@ def all_view_wrapper(return_dict, session, game_code, user_id):
 
 def get_game(request):
     return request.cookies.get('game', 'DOTA')
+
+
+def get_league(request):
+    return request.cookies.get('league', 1)

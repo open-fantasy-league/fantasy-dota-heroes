@@ -22,8 +22,8 @@ def end_of_day(league_id=None):
         league = session.query(League).filter(League.id == league_id).first()
         store_todays_teams(session, league)
 
+        assign_daily_achievements(session, league)
         league.current_day += 1
-        league.swap_open = True
         transaction.commit()
 
 if __name__ == "__main__":

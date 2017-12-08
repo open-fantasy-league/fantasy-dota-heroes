@@ -154,11 +154,13 @@ class LeagueUser(Base):
     old_bans_rank = Column(Integer)
     last_change = Column(BigInteger, default=int(time.time()))
     swap_tstamp = Column(Integer)
+    #late_start = Column(Boolean)
 
-    def __init__(self, user_id, username, league, money=50.0, reserve_money=50.0):
+    def __init__(self, user_id, username, league, late_start, money=50.0, reserve_money=50.0):
         self.user_id = user_id
         self.username = username
         self.league = league
+        self.late_start = late_start
         self.money = money
         self.reserve_money = reserve_money
 
@@ -455,13 +457,15 @@ class Achievement(Base):
     __tablename__ = "achievement"
     id = Column(Integer, Sequence('id'), primary_key=True)
     game = Column(Integer, ForeignKey(Game.id), index=True, nullable=False)
-    name = Column(String(40), nullable=False)
+    name = Column(String(40), nullable=False, index=True)
     description = Column(String(300), nullable=False)
+    xp = Column(Integer)
 
-    def __init__(self, game, name, description):
+    def __init__(self, game, name, description, xp):
         self.game = game
         self.name = name
         self.description = description
+        self.xp = xp
 
     @property
     def message(self):

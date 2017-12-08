@@ -17,11 +17,12 @@ from fantasydota.models import Friend, LeagueUser, LeagueUserDay, TeamHero, Leag
 @view_config(route_name='leaderboard', renderer='../templates/leaderboard.mako')
 def leaderboard(request):
     session = DBSession()
-    game_code = request.game
+    game_code = request.params.get('game', request.game)
+    league_id = int(request.params.get('league', request.league))
     game = session.query(Game).filter(Game.code == game_code).first()
     user_id = authenticated_userid(request)
-    league_id = int(request.params.get("league") or
-                    (in_progress_league(session, game.id) or next_league(session, game.id)).id)
+    # league_id = int(request.params.get("league") or
+    #                 (in_progress_league(session, game.id) or next_league(session, game.id)).id)
     users_playing = [x[0] for x in session.query(TeamHero.user_id).filter(TeamHero.league == league_id).group_by(TeamHero.user_id).all()]
     mode = request.params.get("mode", "global")
     if mode == "friend" and not user_id:
@@ -73,15 +74,15 @@ def leaderboard(request):
                 player_heroes.append([x(player.team, player.name)])
         else:
             heroes = []
-            if league.transfer_open:
-                for hero in session.query(TeamHeroHistoric).filter(
-                                and_(TeamHeroHistoric.user_id == player.user_id, TeamHeroHistoric.league == league_id)).\
-                                filter(TeamHeroHistoric.day == league.current_day - 1).all():
-                            heroes.append(hero.hero_name)
-            else:
+            # if league.transfer_open:
+            #     for hero in session.query(TeamHeroHistoric).filter(
+            #                     and_(TeamHeroHistoric.user_id == player.user_id, TeamHeroHistoric.league == league_id)).\
+            #                     filter(TeamHeroHistoric.day == league.current_day - 1).all():
+            #                 heroes.append(hero.hero_name)
+            if not league.transfer_open:
                 for hero in session.query(TeamHero).filter(and_(TeamHero.user_id == player.user_id,
                                                                         TeamHero.league == league_id))\
-                        .filter(TeamHero.reserve.is_(False)).all():
+                        .filter(TeamHero.active.is_(True)).all():
                             if game_code == 'DOTA':
                                 heroes.append(hero.hero_name)
                             elif game_code == 'PUBG':
@@ -96,11 +97,12 @@ def leaderboard(request):
 @view_config(route_name='daily', renderer='../templates/daily.mako')
 def daily(request):
     session = DBSession()
-    game_code = request.game
+    game_code = request.params.get('game', request.game)
+    league_id = int(request.params.get('league', request.league))
     game = session.query(Game).filter(Game.code == game_code).first()
     user_id = authenticated_userid(request)
-    league_id = int(request.params.get("league") or
-                    (in_progress_league(session, game.id) or next_league(session, game.id)).id)
+    # league_id = int(request.params.get("league") or
+    #                 (in_progress_league(session, game.id) or next_league(session, game.id)).id)
     league = session.query(League).filter(League.id == league_id).first()
     mode = request.params.get("mode", "global")
     if mode == "friend" and not user_id:

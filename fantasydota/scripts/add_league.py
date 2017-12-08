@@ -31,18 +31,19 @@ def add_league(game_id, league_id, name, days, stage1, stage2, url, session=None
                 stage = 0
             hero = HeroDay(add_hero["id"], add_hero["name"], league_id, i, stage, add_hero["value"])
             session.add(hero)
-    for user in session.query(User).all():
-        money = game.team_size * 10.
-        reserve_money = game.reserve_size * 10.
-        session.add(LeagueUser(user.id, user.username, league_id, money=money, reserve_money=reserve_money))
-        for i in range(days):
-            if i >= stage2:
-                stage = 2
-            elif i >= stage1:
-                stage = 1
-            else:
-                stage = 0
-            session.add(LeagueUserDay(user.id, user.username, league_id, i, stage))
+    # this isnt necessary, we do it when someone loads team page. they cant play without having loaded team page
+    # for user in session.query(User).all():
+    #     money = game.team_size * 10.
+    #     reserve_money = game.reserve_size * 10.
+    #     session.add(LeagueUser(user.id, user.username, league_id, money=money, reserve_money=reserve_money))
+    #     for i in range(days):
+    #         if i >= stage2:
+    #             stage = 2
+    #         elif i >= stage1:
+    #             stage = 1
+    #         else:
+    #             stage = 0
+    #         session.add(LeagueUserDay(user.id, user.username, league_id, i, stage))
 
 if __name__ == "__main__":
     #add_league(1, new_id, new_name, 7, 5, 9, "", session=session)

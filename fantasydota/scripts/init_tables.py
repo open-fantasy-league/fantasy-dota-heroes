@@ -19,7 +19,6 @@ def create_tables(DBSession, overwrite_empty_game_check=False):
                 ('Pick King', 'Finish the week with the most picks'),
                 ('Top Picker', 'Own the highest points scoring hero this week'),
                 ('Shrewd Investor', 'Own the highest points per cost ratio hero this week'),
-                ('Daily Win', 'Finish the day as points leader'),
                 ('Full House', 'Your whole main team is either picked or banned'),
                 ('Three of a Kind', '3 of your main team is picked')
             ]

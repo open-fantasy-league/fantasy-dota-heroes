@@ -17,18 +17,15 @@ from sqlalchemy import desc
 def view_team(request):
     session = DBSession()
     user_id = authenticated_userid(request)
-    game_code = request.params.get('game')
-    if not game_code:
-        game_code = request.game
-        if not game_code:
-            game_code = 'DOTA'
+    game_code = request.params.get('game', request.game)
+    league_id = int(request.params.get('league', request.league))  # TODO try give args to request.week so can have default for league
     game = session.query(Game).filter(Game.code == game_code).first()
     if game_code == 'DOTA':
         message_type = request.params.get('message_type')
         message = request.params.get('message')
 
-        league_id = int(request.params.get("league") or
-                        (in_progress_league(session, game.id) or next_league(session, game.id)).id)
+        # league_id = int(request.params.get("league") or
+        #                 (in_progress_league(session, game.id) or next_league(session, game.id)).id)
 
         league = session.query(League).filter(League.id == league_id).first()
 

@@ -40,6 +40,14 @@ def change_game(request):
     return response
 
 
+@view_config(route_name='change_league')
+def change_league(request):
+    # https://userlinux.net/pyramid-set-cookie-returning-httpfound.html
+    response = HTTPFound(location=request.environ['HTTP_REFERER'])
+    response.set_cookie('league', value=request.params.get('league', 1), max_age=315360000)
+    return response
+
+
 @view_config(route_name='start_day_req', renderer='string')
 def start_day_req(request):
     start_of_day(league_id=5627)
