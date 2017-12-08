@@ -1,9 +1,10 @@
 import csv
 import random
 
-from fantasydota.lib.constants import DIR
+import time
+from fantasydota.lib.constants import DIR, SECONDS_IN_WEEK
 from fantasydota.lib.herolist import heroes
-from fantasydota.models import Hero, Result
+from fantasydota.models import Hero, Result, League
 from sqlalchemy import and_
 from sqlalchemy import func
 
@@ -86,18 +87,14 @@ def calibrate_all_hero_values_datdota(session, patch=None):
         return new_heroes_list
 
 
-def calibrate_all_hero_values(session, patch=None, recent_game_cutoff=1510876800):
+def calibrate_all_hero_values(session, game_id):
     new_heroes_list = heroes
+    recent_game_cutoff = time.time() - SECONDS_IN_WEEK * 2
     for h in new_heroes_list:
         h["points"] = 0
-    if patch:
-        start_time, end_time = (1499021011, 1500857011) #get_patch_timestamps(patch)
-        results = session.query(Result).filter(Result.applied.is_(False)).\
-            filter(Result.timestamp > start_time).filter(Result.timestamp < end_time).all()
-        results.extend(session.query(Result).filter(Result.applied.is_(False)).filter(Result.tournament_id.in_([5157, 5353])).all())
-        print("Calibrating on %s" % len(results))
-    else:
-        results = session.query(Result).filter(Result.applied == 0).all()
+
+    results = session.query(Result).join(League, Result.tournament_id == League.id).\
+        filter(League.game == game_id).filter(Result.timestamp > recent_game_cutoff - SECONDS_IN_WEEK).all()
     sum_points = 0
 
     for res in results:

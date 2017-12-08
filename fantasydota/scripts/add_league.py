@@ -1,6 +1,7 @@
 import argparse
 
 import transaction
+from fantasydota.lib.hero import squeeze_values_together, calibrate_all_hero_values
 from fantasydota.lib.herolist_vals import heroes_init
 from fantasydota.lib.pubg_players import pubg_init
 
@@ -15,12 +16,12 @@ def add_league(game_id, league_id, name, days, stage1, stage2, url, session=None
     game = session.query(Game).filter(Game.id == game_id).first()
     session.add(League(game.id, league_id, name, days, stage1, stage2, url))
     session.flush()
-    hero_list = heroes_init if game_id == 1 else pubg_init
-    for add_hero in hero_list:
+    new_heroes = squeeze_values_together(calibrate_all_hero_values(session, game_id)) if game_id == 1 else pubg_init
+    for add_hero in new_heroes:
         hero = Hero(add_hero["id"], add_hero["name"], add_hero["value"], league_id, team=add_hero.get('team', None))
         session.add(hero)
         session.flush()
-    for add_hero in hero_list:
+    for add_hero in new_heroes:
         for i in range(days):
             if i >= stage2:
                 stage = 2

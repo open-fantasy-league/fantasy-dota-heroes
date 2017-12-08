@@ -43,7 +43,8 @@ def get_match_details(match_id):
         "key=%s&match_id=%s" % (APIKEY, match_id))
 
 
-def add_matches(session, tournament_id, tstamp_from=0, add_match=True):
+def add_matches(session, tournament_id, week_id=None, tstamp_from=0, add_match=True):
+    week_id = week_id or tournament_id
     match_list_json = get_league_match_list(tournament_id)
 
     matches = [(match["match_id"], match["series_id"]) for match in match_list_json["result"]["matches"]
@@ -65,11 +66,11 @@ def add_matches(session, tournament_id, tstamp_from=0, add_match=True):
                 print "MatchID: %s fucked up picks bans. not 22. Check if need update" % match
                 continue
             if add_match:
-                day = session.query(League.current_day).filter(League.id == tournament_id).first()[0]
+                day = session.query(League.current_day).filter(League.id == week_id).first()[0]
                 try:
                     session.add(Match(
                         int(match_json["match_id"]), re.sub(r'\W+', '', match_json["radiant_name"]), re.sub(r'\W+', '', match_json["dire_name"]),
-                        match_json["radiant_win"], day, tournament_id
+                        match_json["radiant_win"], day, week_id
                     ))
                 except:
                     print "Failed to add match: %s" % match_json["match_id"]
@@ -103,7 +104,7 @@ def add_matches(session, tournament_id, tstamp_from=0, add_match=True):
                     else:
                         result_string += "l"
                 print "Match is:", match_json["match_id"]
-                session.add(Result(tournament_id, value["hero_id"], int(match_json["match_id"]), result_string,
+                session.add(Result(week_id, value["hero_id"], int(match_json["match_id"]), result_string,
                                    match_json["start_time"], series_id, (value["team"] == 0)))
     transaction.commit()
 
@@ -112,7 +113,7 @@ def main():
     session = make_session()
     #session2 = make_session(False)
     # dreamleague calibration
-    add_matches(session, 5627, 1512057853)
+    add_matches(session, 5627, tstamp_from=1512057853, week_id=1)
 
 if __name__ == "__main__":
     main()
