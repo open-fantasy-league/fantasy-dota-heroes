@@ -94,6 +94,7 @@ def main(global_config, **settings):
     config.add_route("add_friend", '/addFriend')
     config.add_route('change_game', '/changeGame')
     config.add_route('change_league', '/changeLeague')
+    config.add_route('clear_notifications', '/clearNotifications')
 
     config.add_route('view_rules', '/rules')
     config.add_route('view_account', '/viewAccount')

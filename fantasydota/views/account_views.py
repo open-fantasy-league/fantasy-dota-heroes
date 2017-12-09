@@ -13,7 +13,7 @@ from fantasydota import DBSession
 from fantasydota.auth import get_user
 from fantasydota.lib.account import check_invalid_password
 from fantasydota.lib.general import all_view_wrapper
-from fantasydota.models import User, LeagueUser, League, PasswordReset, LeagueUserDay, Game
+from fantasydota.models import User, LeagueUser, League, PasswordReset, LeagueUserDay, Game, Notification
 
 
 @view_config(route_name='login', renderer='../templates/login.mako')
@@ -227,6 +227,18 @@ def update_email_settings(request):
     params = {"message": "Congratulations! Email settings successfully updated",
               "message_type": "success"}
     return HTTPFound(location=request.route_url('account_settings', _query=params))
+
+
+@view_config(route_name='clear_notifications', renderer='string')
+def update_email_settings(request):
+    session = DBSession()
+    user_id = authenticated_userid(request)
+    if not user_id:
+        return HTTPForbidden()
+    session.query(Notification).filter(Notification.user_id == user_id).update({
+        Notification.seen: True
+    })
+    return 'Marked notifications as seen'
 
 
 # @view_config(route_name='home', renderer='../templates/login.mako')

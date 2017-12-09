@@ -1,5 +1,6 @@
 from fantasydota.lib.account import assign_xp_and_weekly_achievements
 from fantasydota.models import League, Game
+from sqlalchemy import desc
 
 
 def game_from_league_id(session, league_id):
@@ -19,3 +20,7 @@ def close_league(session, game_id):
     old_league = session.query(League).filter(League.game == game_id).filter(League.status == 1).first()
     old_league.status = 2
     assign_xp_and_weekly_achievements(session, old_league)
+
+
+def order_by_all(query, table):
+    return query.order_by(desc(table.points), desc(table.wins), desc(table.picks))

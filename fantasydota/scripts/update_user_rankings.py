@@ -1,4 +1,5 @@
 import transaction
+from fantasydota.lib.league import order_by_all
 from fantasydota.lib.session_utils import make_session
 from fantasydota.models import League, LeagueUser, LeagueUserDay
 from sqlalchemy import desc
@@ -15,7 +16,7 @@ def set_user_rankings(session, league_id, day=None):
         l_query.filter(user_l.username == user.username).\
             update({user_l.wins_rank: i+1})
 
-    points_ranking = l_query.order_by(desc(user_l.points)).all()
+    points_ranking = order_by_all(l_query, user_l).all()
     for i, user in enumerate(points_ranking):
         l_query.filter(user_l.username == user.username). \
             update({user_l.points_rank: i + 1})

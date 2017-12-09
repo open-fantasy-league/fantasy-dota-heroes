@@ -1,5 +1,6 @@
 import transaction
-from fantasydota.lib.account import add_achievement
+from fantasydota.lib.account import add_achievement, team_swap_all
+from fantasydota.lib.general import match_link
 from sqlalchemy import and_
 
 from fantasydota.lib.constants import MULTIPLIER
@@ -15,31 +16,41 @@ def add_results_to_user(session, userq, userq_day, new_results, league_id, team_
                                                          TeamHero.user_id == userq.user_id)).filter(
             TeamHero.active.is_(True)).all()]
     hero_count = len(heroes)
+    match = None
     for result in new_results:
+        # This check necessary in-case multiple matches come in at once
+        # think I can get away without ordering query by match id
+        # because get_tournament_data never running in parallel
+        # not possible to get mixed results from two matches
+        if match != result.match_id:
+            picks = 0
+            bans = 0
+        match = result.match_id
         if result.hero in heroes:
             res = result.result_str
             user_id = userq.user_id
             if "p" in res:
                 picks += 1
+                userq.picks += 1
+                userq_day.picks += 1
             if "w" in res:
                 userq.wins += 1
                 userq_day.wins += 1
             if "b" in res:
                 bans += 1
+                userq.bans += 1
+                userq_day.bans += 1
             if game_id == 1:
                 to_add = MULTIPLIER * ((0.5 ** (team_size - hero_count)) * Result.result_to_value(res))
             elif game_id == 2:
                 to_add = MULTIPLIER * ((0.5 ** (team_size - hero_count)) * Result.result_to_value_pubg(res))
             print "addin %s points to %s" % (to_add, user_id)
             userq.points += to_add
-    userq.picks += picks
-    userq_day.picks += picks
-    userq.bans += bans
-    userq_day.bans += bans
-    if picks >= 3:
-        add_achievement(userq.user_id, 'Three of a Kind')
-    if picks + bans == 5:
-        add_achievement(userq.user_id, 'Full House')
+        # Despite looping over all results in match. with equals these can only be awarded once per match
+        if picks == 3:
+            add_achievement(session, userq.user_id, 'Three of a Kind', match_link(match))
+        if picks + bans == 5:
+            add_achievement(session, userq.user_id, 'Full House', match_link(match))
 
 
 def update_league_points(session, league):
@@ -61,9 +72,11 @@ def update_league_points(session, league):
 
 
 def main():
+
     with transaction.manager:
         session = make_session()
         for league in session.query(League).all():
+            team_swap_all(session, league.id)
             update_league_points(session, league)
         transaction.commit()
 

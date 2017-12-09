@@ -35,3 +35,7 @@ def get_game(request):
 
 def get_league(request):
     return request.cookies.get('league', 1)
+
+
+def match_link(match_id):
+    return 'https://stratz.com/match/%s' % match_id

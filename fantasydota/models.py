@@ -152,6 +152,7 @@ class LeagueUser(Base):
     old_wins_rank = Column(Integer)
     old_picks_rank = Column(Integer)
     old_bans_rank = Column(Integer)
+    # TODO can remove this last_change
     last_change = Column(BigInteger, default=int(time.time()))
     swap_tstamp = Column(Integer)
     #late_start = Column(Boolean)
@@ -469,7 +470,7 @@ class Achievement(Base):
 
     @property
     def message(self):
-        return "Achievement unlocked: %s" % self.name
+        return "Achievement unlocked: %s [%s]" % (self.name, self.description)
 
 
 class UserAchievement(Base):
@@ -490,10 +491,10 @@ class Notification(Base):
     achievement = Column(Integer, ForeignKey(Achievement.id))
     seen = Column(Boolean, default=False, index=True)
     message = Column(String(100), nullable=False)
-    description = Column(String(300))
+    #link = Column(String(100), default='')
 
-    def __init__(self, user, achievement, message, description):
+    def __init__(self, user, achievement, message, link=''):
         self.achievement = achievement
         self.user = user
         self.message = message
-        self.description = description
+        self.link = link

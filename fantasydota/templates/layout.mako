@@ -79,7 +79,7 @@
                         % endfor
                 </ul>
                 <li class="col s2">
-                <a class="dropdown-button" data-beloworigin="true" href="#" data-activates="notificationDropdown">
+                <a id="notificationButton" class="dropdown-button" data-beloworigin="true" href="#" data-activates="notificationDropdown">
                     Notifications ${"(%s)" % len(notifications)}
                     % if len(notifications) > 1:
                         <i class="material-icons right">arrow_drop_down</i>
@@ -126,7 +126,7 @@
                 <div class="divider"></div>
                 % if len(notifications) > 1:
                     <li class="col s2">
-                    <a class="dropdown-button" data-beloworigin="true" href="#" data-activates="notificationDropdown">
+                    <a id="mobileNotificationButton" class="dropdown-button" data-beloworigin="true" href="#" data-activates="notificationDropdown">
                         Notifications ${"(%s)" % len(notifications)}
                         <i class="material-icons right">arrow_drop_down</i>
                     </a>
@@ -221,6 +221,12 @@
     $( document ).ready(function(){
       $('.button-collapse').sideNav();
       $('.button-collapse').click(removeOverlay);
+
+      $('#notificationButton').click(function() {
+        $.get('/clearNotifications')
+      })
+
+      })
     })
 </script>
 </html>
