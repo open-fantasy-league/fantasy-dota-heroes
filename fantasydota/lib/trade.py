@@ -7,9 +7,9 @@ from fantasydota.lib.league import game_from_league_id
 from fantasydota.models import Hero, TeamHero, LeagueUser, Sale, TeamHeroHistoric
 
 
-def sell(session, user_id, hero_id, league_id, reserve):
+def sell(session, l_user, hero_id, league_id, reserve):
+    user_id = l_user.user_id
     game = game_from_league_id(session, league_id)
-    l_user = session.query(LeagueUser).filter(LeagueUser.user_id == user_id).filter(LeagueUser.league == league_id).first()
 
     user_money = l_user.reserve_money if reserve else l_user.money
 
@@ -36,7 +36,8 @@ def sell(session, user_id, hero_id, league_id, reserve):
     return {"success": False, "message": "Erm....you don't appear to be in this league. This is awkward"}
 
 
-def buy(session, user_id, hero_id, league_id, reserve):
+def buy(session, l_user, hero_id, league_id, reserve, late=None):
+    user_id = l_user.user_id
     game = game_from_league_id(session, league_id)
     hero = session.query(Hero).filter(and_(Hero.id == hero_id,
                                                        Hero.league == league_id)).first()
@@ -45,8 +46,6 @@ def buy(session, user_id, hero_id, league_id, reserve):
         filter(TeamHero.reserve.is_(reserve))
     teamq_all = teamq.all()
     teamq_hero = teamq.filter(TeamHero.hero_id == hero_id)
-
-    l_user = session.query(LeagueUser).filter(LeagueUser.user_id == user_id).filter(LeagueUser.league == league_id).first()
 
     user_money = l_user.reserve_money if reserve else l_user.money
 
@@ -74,7 +73,8 @@ def buy(session, user_id, hero_id, league_id, reserve):
             l_user.reserve_money = new_credits
         else:
             l_user.money = new_credits
-        session.add(TeamHero(user_id, hero_id, league_id, hero.value, reserve, hero_name = hero.name))
+        active = False if late else None
+        session.add(TeamHero(user_id, hero_id, league_id, hero.value, reserve, hero_name=hero.name, active=active))
         session.add(Sale(l_user.id, hero_id, league_id, hero.value, hero.value, True))
     return {"success": True, "message": "%s successfully purchased" % game.pickee,
             "action": "buy", "hero": hero_id,

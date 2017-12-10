@@ -104,8 +104,10 @@ def add_matches(session, tournament_id, week_id=None, tstamp_from=0, add_match=T
                     else:
                         result_string += "l"
                 print "Match is:", match_json["match_id"]
-                session.add(Result(week_id, value["hero_id"], int(match_json["match_id"]), result_string,
-                                   match_json["start_time"], series_id, (value["team"] == 0)))
+                session.add(Result(
+                    week_id, value["hero_id"], int(match_json["match_id"]), result_string,
+                    match_json["start_time"], series_id, (value["team"] == 0), match_json["start_time"]
+                ))
     transaction.commit()
 
 

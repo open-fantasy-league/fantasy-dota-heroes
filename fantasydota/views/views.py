@@ -99,6 +99,14 @@ def index(request):
     )
 
 
+@view_config(route_name='nopubg', renderer='../templates/temp/nopubg.mako')
+def view_rules(request):
+    session = DBSession()
+    return all_view_wrapper(
+        {'game_code': request.game}, session, request.game, authenticated_userid(request)
+    )
+
+
 def get_time_range(time_range):
     if time_range == 'week':
         date_start = datetime.datetime.now() - datetime.timedelta(days=7)

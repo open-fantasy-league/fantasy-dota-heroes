@@ -1,4 +1,6 @@
+import time
 from fantasydota.lib.league import in_progress_league, next_league
+from fantasydota.lib.team import main_team_to_active
 from pyramid.httpexceptions import HTTPFound
 from pyramid.renderers import render
 from pyramid.response import Response
@@ -165,6 +167,9 @@ def view_team(request):
         }
     else:
         return_dict = {'game': 'whoops'}
+
+    transfer_open = league.transfer_open or userq.late_start == 1
+    return_dict['transfer_open'] = transfer_open
     return_dict = all_view_wrapper(return_dict, session, game_code, user_id)
     result = render('fantasydota:templates/team.mako',
                     return_dict,
@@ -184,11 +189,16 @@ def sell_hero(request):
     hero_id = request.POST["hero"]
     league_id = request.POST["league"]
     reserve = bool(int(request.POST["reserve"]))
+    l_user = session.query(LeagueUser).filter(LeagueUser.league == league_id).filter(
+        LeagueUser.user_id == user_id).first()
     transfer_actually_open = session.query(League.transfer_open).filter(League.id == league_id).first()[0]
     if not transfer_actually_open:
-        return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
+        if l_user.late_start == 1:
+            sell(session, l_user, hero_id, league_id, reserve)
+        else:
+            return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
 
-    return sell(session, user_id, hero_id, league_id, reserve)
+    return sell(session, l_user, hero_id, league_id, reserve)
 
 
 @view_config(route_name="buy_hero", renderer="json")
@@ -201,11 +211,16 @@ def buy_hero(request):
     hero_id = int(request.POST["hero"])
     league_id = int(request.POST["league"])
     reserve = bool(int(request.POST["reserve"]))
+    l_user = session.query(LeagueUser).filter(LeagueUser.league == league_id).filter(
+        LeagueUser.user_id == user_id).first()
     transfer_actually_open = session.query(League.transfer_open).filter(League.id == league_id).first()[0]
     if not transfer_actually_open:
-        return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
+        if l_user.late_start == 1:
+            buy(session, l_user, hero_id, league_id, reserve, late=True)
+        else:
+            return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
 
-    return buy(session, user_id, hero_id, league_id, reserve)
+    return buy(session, l_user, hero_id, league_id, reserve)
 
 
 @view_config(route_name="swap_in_hero", renderer="json")
@@ -230,7 +245,6 @@ def swap_out_hero(request):
     user_id = authenticated_userid(request)
     if user_id is None:
         return {"success": False, "message": "Please login to play! :)"}
-
     hero_id = int(request.POST["hero"])
     league_id = int(request.POST["league"])
     transfer_actually_open = session.query(League.swap_open).filter(League.id == league_id).first()[0]
@@ -250,4 +264,19 @@ def confirm_swap(request):
     league_id = int(request.params.get("league"))
     l_user = session.query(LeagueUser).filter(LeagueUser.league == league_id).filter(LeagueUser.user_id == user_id).first()
     l_user.swap_tstamp = get_swap_timestamp()
-    return {"success": True, "message": ""}
+    return {"success": True, "message": "Successfully confirmed swaps"}
+
+
+@view_config(route_name="confirm_transfer", renderer="json")
+def confirm_transfer(request):
+    session = DBSession()
+    user_id = authenticated_userid(request)
+    if user_id is None:
+        return {"success": False, "message": "Please login to play! :)"}
+
+    league_id = int(request.params.get("league"))
+    l_user = session.query(LeagueUser).filter(LeagueUser.league == league_id).filter(LeagueUser.user_id == user_id).first()
+    l_user.late_start = 2
+    l_user.late_start_tstamp = time.time()
+    main_team_to_active(session, l_user)
+    return {"success": True, "message": "Successfully confirmed transfers"}

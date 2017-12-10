@@ -133,6 +133,8 @@ class League(Base):
     
 
 class LeagueUser(Base):
+    # I've got a lot of indexes here
+    # but I think they are necessary for the queries im doing
     __tablename__ = "league_user"
     id = Column(Integer, Sequence('id'), primary_key=True)
     user_id = Column(Integer, ForeignKey(User.id), index=True, nullable=False)
@@ -144,7 +146,7 @@ class LeagueUser(Base):
     picks = Column(Integer, default=0)
     bans = Column(Integer, default=0)
     wins = Column(Integer, default=0)
-    points_rank = Column(Integer)
+    points_rank = Column(Integer, index=True)
     wins_rank = Column(Integer)
     picks_rank = Column(Integer)
     bans_rank = Column(Integer)
@@ -154,8 +156,9 @@ class LeagueUser(Base):
     old_bans_rank = Column(Integer)
     # TODO can remove this last_change
     last_change = Column(BigInteger, default=int(time.time()))
-    swap_tstamp = Column(Integer)
-    late_start = Column(Boolean)
+    swap_tstamp = Column(Integer, index=True)
+    late_start = Column(Integer, nullable=False, index=True)
+    late_start_tstamp = Column(BigInteger)
 
     def __init__(self, user_id, username, league, late_start, money=50.0, reserve_money=50.0):
         self.user_id = user_id
@@ -265,14 +268,17 @@ class TeamHero(Base):
                                            [Hero.id, Hero.league]),
                       {})
 
-    def __init__(self, user_id, hero_id, league, cost, reserve, hero_name=None):
+    def __init__(self, user_id, hero_id, league, cost, reserve, hero_name=None, active=None):
         self.user_id = user_id
         self.hero_id = hero_id
         self.hero_name = hero_name or (item for item in heroes if item["id"] == hero_id).next()["name"]
         self.league = league
         self.cost = cost
         self.reserve = reserve
-        self.active = not reserve
+        # is not None check necessary as active can be True or False
+        # active is specified as False when we are doing transfers for a late starter
+        # the heroes get set as active after they confirm their team
+        self.active = active is not None or not reserve
 
 
 class Sale(Base):
@@ -306,8 +312,9 @@ class Result(Base):
     applied = Column(Integer, default=0)  # 1 is applied to heroes. 2 for leagues. 3 for battlecups
     series_id = Column(BigInteger)
     is_radiant = Column(Boolean)
+    start_tstamp = Column(BigInteger)
 
-    def __init__(self, tournament, hero, match, result_str, timestamp, series_id, is_radiant):
+    def __init__(self, tournament, hero, match, result_str, timestamp, series_id, is_radiant, start_tstamp):
         self.tournament_id = tournament
         self.hero = hero
         self.match_id = match
@@ -315,6 +322,7 @@ class Result(Base):
         self.timestamp = timestamp
         self.series_id = series_id
         self.is_radiant = is_radiant
+        self.start_tstamp = start_tstamp
 
     @staticmethod
     def result_to_value(result_str):

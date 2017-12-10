@@ -1,9 +1,9 @@
 if (!transfers){
-    $("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).attr("disabled","true");});
+    $("[name=buyHero]").add("[name=sellHero]").add("#confirmTransfers").each(function(){$(this).attr("disabled","true");});
 }
 else{
     // not sure why but when reloading page...disabled things stay disabled by default :/
-    $("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).removeAttr("disabled");})
+    $("[name=buyHero]").add("[name=sellHero]").add("#confirmTransfers").each(function(){$(this).removeAttr("disabled");})
 
     function doTrade(event, action){
         var formID = event.data.form.attr('id'),
@@ -81,6 +81,28 @@ else{
         }
         new_row.find("button").on("click", {form: form}, function(event){tradeOnclick(event)});  // otherwise need reload page to resell
     }
+
+    $('#confirmTransfers').click(function() {
+        $("[name=buyHero]").add("[name=sellHero]").add("#confirmTransfers").each(function(){$(this).attr("disabled","true");});
+        $.ajax({
+            url: "/confirmTransfers?league=" + league_id,
+            type: "GET",
+            success: function(data){
+                var success = data.success,
+                message = data.message;
+                if (!success){
+                    sweetAlert(message);
+                }
+                else{
+                    sweetAlert("Team locked in and ready to start scoring! (Note: Will not score points on matches currently in progress)");
+                }
+            },
+            failure: function(data){
+                $("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).removeAttr("disabled");})
+                sweetAlert("Something went wrong. oops!");
+            }
+        });
+    });
 }
 
 if (!swaps){

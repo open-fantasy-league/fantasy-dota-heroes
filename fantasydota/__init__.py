@@ -104,6 +104,7 @@ def main(global_config, **settings):
     config.add_route('swap_in_hero', '/swapInHero')
     config.add_route('swap_out_hero', '/swapOutHero')
     config.add_route('confirm_swap', '/confirmSwap')
+    config.add_route('confirm_transfer', '/confirmTransfer')
     config.add_route('leaderboard', '/leaderboard')
     config.add_route('daily', '/daily')
     config.add_route('account_settings', '/accountSettings')
@@ -113,5 +114,7 @@ def main(global_config, **settings):
 
     config.add_route('end_day_req', '/endsecret')
     config.add_route('start_day_req', '/startsecret')
+
+    config.add_route('nopubg', '/nopubg')
     config.scan()
     return config.make_wsgi_app()

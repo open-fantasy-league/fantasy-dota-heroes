@@ -52,8 +52,11 @@
 </div>
 
 <div class="row" id="myReserveBlock">
-    % if league.transfer_open:
+    % if transfer_open:
         <span class="left"><h2>My Reserves (Credits: <span class="userReserveCredits">${round(userq.reserve_money, 1)}</span>)</h2></span>
+        % if user.late_start == 1:
+            <span class="right"><button type="submit" id="confirmTransfers" class="btn waves-effect waves-light">Confirm Team!</button></span>
+        % endif
     % else:
         <span class="left"><h2>My Reserves</h2></span>
         <span class="right"><button type="submit" id="confirmSwaps" class="btn waves-effect waves-light">Confirm Swaps!</button></span>
@@ -94,11 +97,11 @@
 
 <div class="card row">
     <div class="card-content">
-            % if league.transfer_open != 0:
+            % if transfer_open:
             <p>50 Credits to pick Main team of 5 heroes (Points penalties for under 5). 40 credits for up to 4 Reserves</strong>
         <p>Your <strong>Reserves score 0 points</strong>. However they can be <strong>swapped</strong> with main heroes every night after tournament matches finish</p>
             <p>You <strong>cannot purchase any new heroes once tournament started</strong>. You must pick Main and Reserves carefully</p>
-        <span class=${"messageTransOpen" if league.transfer_open != 0 else "messageTransClosed"}>
+        <span class=${"messageTransOpen" if transfer_open else "messageTransClosed"}>
             <p>Transfer window currently open (closes ~1 hour before games start)</p>
             </span>
             <p><strong><a href="/rules">Detailed Rules</a></strong></p>
@@ -114,7 +117,7 @@
     </div>
 </div>
 <div id="heroesBlock" class="row">
-    % if league.transfer_open:
+    % if transfer_open:
         <h2>Heroes (Credits Available: <span class="userCredits">${round(userq.money, 1)}</span>, Reserve Credits: <span class="userReserveCredits">${round(userq.reserve_money, 1)}</span>)</h2>
     % else:
         <h2>Heroes</h2>
@@ -196,7 +199,7 @@
 </div>
 
 <div class="row" id="myReserveBlock">
-    % if league.transfer_open:
+    % if transfer_open:
         <span class="left"><h2>My Reserves (Credits: <span class="userReserveCredits">${round(userq.reserve_money, 1)}</span>)</h2></span>
     % else:
         <span class="left"><h2>My Reserves</h2></span>
@@ -236,8 +239,8 @@
         <p>Your team consists of ${game.team_size} players</p>
         <p>Only allowed <strong>one player from each team</strong></p>
         <p>Detailed rules <a href="/rules">here</a></p>
-        <span class=${"messageTransOpen" if league.transfer_open != 0 else "messageTransClosed"}>
-            % if league.transfer_open != 0:
+        <span class=${"messageTransOpen" if transfer_open else "messageTransClosed"}>
+            % if transfer_open:
             </br><p><strong>Transfer window currently open (closes ~1 hour before games start)</strong></p>
             % else:
                 <p><strong>
@@ -252,7 +255,7 @@
     </div>
 </div>
 <div id="heroesBlock" class="row">
-    % if league.transfer_open:
+    % if transfer_open:
         <h2>${game.pickee}s (Credits Available: <span class="userCredits">${round(userq.money, 1)}</span>, Reserve Credits: <span class="userReserveCredits">${round(userq.reserve_money, 1)}</span>)</h2>
     % else:
         <h2>${game.pickee}s</h2>
@@ -299,7 +302,7 @@
 % endif
 
 <script>
-var transfers = ${'true' if league.transfer_open != 0 else 'false'};
+var transfers = ${'true' if transfer_open else 'false'};
 var league_id = ${league.id};
 var swaps = ${'true' if league.swap_open != 0 and not userq.swap_tstamp else "false"}
 </script>

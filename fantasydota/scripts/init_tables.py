@@ -1,5 +1,6 @@
 import transaction
-from fantasydota.models import Game, Achievement
+from fantasydota.lib.constants import PRO_CIRCUIT_LEAGUES
+from fantasydota.models import Game, Achievement, ProCircuitTournament
 from fantasydota.scripts.add_league import add_league
 
 
@@ -27,5 +28,5 @@ def create_tables(DBSession, overwrite_empty_game_check=False):
                 session.add(new_achievement)
             add_league(1, 1, "Week 1", 7, 5, 9, "", session=session)
             for tournament in PRO_CIRCUIT_LEAGUES:
-                session.add
+                session.add(ProCircuitTournament(tournament['id'], 1, tournament['name'], tournament['major']))
             transaction.commit()

@@ -6,4 +6,8 @@ Need to:
 - add pro circuit tournaments so get data retrieves results
 - test notification/achievement system
 - make sure weekends worth double
+- handle uniques league to game, so only need to store league cookie, not game
+- add charity stuff
 - migrate user script
+- check about updating Sale so stores swaps as well
+- update rules/faq to talk about late starting
