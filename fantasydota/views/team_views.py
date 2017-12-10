@@ -170,6 +170,11 @@ def view_team(request):
 
     transfer_open = league.transfer_open or userq.late_start == 1
     return_dict['transfer_open'] = transfer_open
+
+    if userq.swap_tstamp:
+        seconds_until_swap = userq.swap_tstamp - time.time()
+        minutes = seconds_until_swap // 60
+        return_dict['time_until_swap'] = divmod(minutes, 60)
     return_dict = all_view_wrapper(return_dict, session, game_code, user_id)
     result = render('fantasydota:templates/team.mako',
                     return_dict,

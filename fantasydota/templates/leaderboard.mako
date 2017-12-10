@@ -249,6 +249,14 @@ $( document ).ready(function() {
 })
 </script>
 <div id="friendBlock" class="col s5">
+    <div class="switch">
+        <label>
+          Off
+          <input value="${'on' if show_late_start else 'off'}" type="checkbox" id="showLateStartCheckbox">
+          <span class="lever"></span>
+          Show late-starters
+        </label>
+    </div>
     % if game.code == "DOTA":
     <div class="card-panel">
     <p>2x points multiplier for day 2</p>
@@ -300,6 +308,17 @@ $( document ).ready(function() {
             );
         };
         $("#addFriendBtn").click(addFriendOnclick);
+
+        $('#showLateStartCheckbox').change( function() {
+            var showLate = this.checked ? 1 : 0;
+            var url = window.location.href;
+            if (url.indexOf('?') > -1){
+               url += '&showLate=' + showLate
+            }else{
+               url += '?showLate=' + showLate
+            }
+            window.location.href = url;
+        })
     })
     </script>
 % endif

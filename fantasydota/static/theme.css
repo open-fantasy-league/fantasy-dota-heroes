@@ -244,3 +244,7 @@ img {margin-bottom: 0px;
   -o-filter: grayscale(100%);
   filter: grayscale(100%);
  }
+
+ .matchRow {
+    cursor: pointer;
+ }

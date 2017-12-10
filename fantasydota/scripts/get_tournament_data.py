@@ -70,7 +70,7 @@ def add_matches(session, tournament_id, week_id=None, tstamp_from=0, add_match=T
                 try:
                     session.add(Match(
                         int(match_json["match_id"]), re.sub(r'\W+', '', match_json["radiant_name"]), re.sub(r'\W+', '', match_json["dire_name"]),
-                        match_json["radiant_win"], day, week_id
+                        match_json["radiant_win"], day, week_id, tournament_id
                     ))
                 except:
                     print "Failed to add match: %s" % match_json["match_id"]

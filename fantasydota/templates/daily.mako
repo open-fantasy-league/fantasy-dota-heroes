@@ -176,7 +176,7 @@ $( document ).ready(function() {
     <div class="card-content" id="matchesCard">
         <h2>Matches</h2>
         % for match in match_data:
-        <div class="section">
+        <div class="section matchRow" id="match-${match['match_id']}">
         <div class="row">
             <!--<img src="/static/images/dota/trophy.png" class=${"hide" if not match["radiant_win"] else ""} />-->
             <span class="radiantTeam">
@@ -335,6 +335,16 @@ $( document ).ready(function() {
         "belowOrigin": true,
         "hover": true
     });
+
+    $(".matchRow").each(function() {
+        var elem = $(this)
+        var id_ = elem.attr('id');
+        var match_id = id_.slice(7)
+        elem.click(function() {
+            window.open('https://stratz.com/match/' + match_id)
+        });
+    })
+    match-${match['match_id']}
 
 })
 </script>

@@ -97,20 +97,35 @@
 
 <div class="card row">
     <div class="card-content">
-            % if transfer_open:
+        % if transfer_open:
             <p>50 Credits to pick Main team of 5 heroes (Points penalties for under 5). 40 credits for up to 4 Reserves</strong>
-        <p>Your <strong>Reserves score 0 points</strong>. However they can be <strong>swapped</strong> with main heroes every night after tournament matches finish</p>
-            <p>You <strong>cannot purchase any new heroes once tournament started</strong>. You must pick Main and Reserves carefully</p>
-        <span class=${"messageTransOpen" if transfer_open else "messageTransClosed"}>
-            <p>Transfer window currently open (closes ~1 hour before games start)</p>
-            </span>
-            <p><strong><a href="/rules">Detailed Rules</a></strong></p>
-
-            % else:
+        <p><strong>Reserves score 0 points</strong>. However they can be swapped with main heroes any time during the week</p>
+            % if userq.late_start:
+                <span class="messageTransClosed">
+                    <strong><p>Transfer window closed for this week</p></strong>
+                </span>
+                <span>
+                    <p>You may still build a team and compete this week</p>
+                    <p>But it will not earn achievements, full-XP, or main leaderboard positions</p>
+                    <p>Transfer window for <a href="/team?league=${league.id + 1}">next week</a> is already open</p>
+                </span>
+            % else
+                <span class="messageTransOpen">
+                    <p>Transfer window currently open</p>
+                </span>
+        % else:
+            % if not userq.swap_tstamp:
                 <p><strong>
-                Swaps between reserves and main team only available between days. When all day's games finished
+                    There is a 12 hour delay between confirmation of swaps and their processing.
                 </strong></p>
+                <p>Further swaps are disabled during this 12 hour period</p>
+            % else:
+                <span class="messageTransClosed"><p><strong>
+                    Due to recent changes you are in swap cooldown for ${time_until_swap[0]} hours, ${time_until_swap[1]} minutes.
+                </strong></p></span>
             % endif
+        % endif
+        <p><strong><a href="/rules">Detailed Rules</a></strong></p>
         <span>
             <p>Tables are sortable (click table headers)</p>
         </span>
@@ -304,7 +319,7 @@
 <script>
 var transfers = ${'true' if transfer_open else 'false'};
 var league_id = ${league.id};
-var swaps = ${'true' if league.swap_open != 0 and not userq.swap_tstamp else "false"}
+var swaps = ${'true' if league.swap_open and not userq.swap_tstamp else "false"}
 </script>
 
 <script src="/static/trade.js"></script>

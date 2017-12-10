@@ -307,7 +307,7 @@ class Result(Base):
     match_id = Column(BigInteger, nullable=False, index=True)
     tournament_id = Column(Integer, nullable=False)
     hero = Column(Integer, nullable=False)
-    result_str = Column(String(20), nullable=False)
+    result_str = Column(String(10), nullable=False)
     timestamp = Column(Integer)
     applied = Column(Integer, default=0)  # 1 is applied to heroes. 2 for leagues. 3 for battlecups
     series_id = Column(BigInteger)
@@ -359,18 +359,20 @@ class Match(Base):
     __tablename__ = "match"
     match_id = Column(BigInteger, nullable=False, primary_key=True)
     league = Column(Integer, ForeignKey(League.id), nullable=False)
+    tournament = Column(Integer, nullable=False)
     radiant_team = Column(String(100), nullable=False)
     dire_team = Column(String(100), nullable=False)
     radiant_win = Column(Boolean, nullable=False)
     day = Column(Integer)
 
-    def __init__(self, match_id, radiant_team, dire_team, radiant_win, day, league_id):
+    def __init__(self, match_id, radiant_team, dire_team, radiant_win, day, league_id, tournament):
         self.match_id = match_id
         self.dire_team = dire_team
         self.radiant_team = radiant_team
         self.radiant_win = radiant_win
         self.day = day
         self.league = league_id
+        self.tournament = tournament
 
 
 class TeamHeroHistoric(Base):

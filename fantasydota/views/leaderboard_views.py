@@ -55,6 +55,9 @@ def leaderboard(request):
     league = session.query(League).filter(League.id == league_id).first()
     leagueq = session.query(LeagueUser).filter(LeagueUser.league == league_id).filter(LeagueUser.user_id.in_(users_playing))
     luser = leagueq.filter(LeagueUser.user_id == user_id).first()
+    show_late_start = int(request.args.get('showLate', luser.late_start if luser else 0))
+    if not show_late_start:
+        leagueq = leagueq.filter(LeagueUser.late_start == 0)
     if mode == "friend":
         players = leagueq.filter(or_(LeagueUser.user_id.in_(friends), LeagueUser.user_id == user_id)). \
             order_by(desc(rank_)).limit(100).all()
@@ -90,7 +93,7 @@ def leaderboard(request):
             player_heroes.append(heroes)
 
     return_dict = {'user': luser, 'players': players, 'rank_by': rank_by, 'mode': mode, 'other_modes': other_modes, 'period': "tournament",
-            'player_heroes': player_heroes, 'league': league, 'game': game}
+            'player_heroes': player_heroes, 'league': league, 'game': game, 'show_late_start': show_late_start}
     return all_view_wrapper(return_dict, session, game_code, user_id)
 
 
@@ -137,6 +140,10 @@ def daily(request):
     player_heroes = []
     leagueq = session.query(LeagueUserDay).filter(LeagueUserDay.day == period).filter(LeagueUserDay.league == league_id)
     luser = leagueq.filter(LeagueUserDay.user_id == user_id).first()
+    # Dont think late_start matters for daily stuff
+    # show_late_start = int(request.args.get('showLate', luser.late_start if luser else 0))
+    # if not show_late_start:
+    #     leagueq = leagueq.filter(LeagueUser.late_start == 0)
     if mode == "friend":
         players = leagueq.filter(or_(LeagueUserDay.user_id.in_(friends), LeagueUserDay.user_id == user_id)). \
             order_by(desc(rank_)).limit(100).all()
@@ -203,6 +210,8 @@ def daily(request):
                 else:
                     match_dict["dire_bans"].append(result_entry)
         match_data.append(match_dict)
-    return_dict = {'user': luser, 'players': players, 'rank_by': rank_by, 'mode': mode, 'period': period, 'game': game,
-            'player_heroes': player_heroes, 'league': league, 'match_data': match_data, 'other_modes': other_modes}
+    return_dict = {
+        'user': luser, 'players': players, 'rank_by': rank_by, 'mode': mode, 'period': period, 'game': game,
+        'player_heroes': player_heroes, 'league': league, 'match_data': match_data, 'other_modes': other_modes,
+    }
     return all_view_wrapper(return_dict, session, game_code, user_id)

@@ -1,6 +1,8 @@
 import time
 
 import datetime
+
+from fantasydota.lib.constants import SECONDS_IN_12_HOURS
 from sqlalchemy import and_
 
 from fantasydota.lib.league import game_from_league_id
@@ -173,7 +175,8 @@ def reset_incomplete_teams(session, league):
 
 
 def get_swap_timestamp():
-    swap_at = datetime.datetime.now()
-    swap_at += datetime.timedelta(hours=23)
-    swap_at.replace(minute=59)
-    return time.mktime(swap_at.timetuple())
+    # swap_at = datetime.datetime.now()
+    # swap_at += datetime.timedelta(hours=23)
+    # swap_at.replace(minute=59)
+    # return time.mktime(swap_at.timetuple())
+    return time.time() + SECONDS_IN_12_HOURS
