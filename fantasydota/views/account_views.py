@@ -42,7 +42,7 @@ def login(request):
     return_dict = {'message': message, "plus_id": request.registry.settings.get(
         'SOCIAL_AUTH_STEAM_KEY'
     )}
-    return all_view_wrapper(return_dict, session, request.game, None)
+    return all_view_wrapper(return_dict, session, request)
 
 
 @view_config(route_name='logout')
@@ -199,7 +199,7 @@ def account_settings(request):
     message_type = request.params.get("message_type")
     user = session.query(User).filter(User.id == user_id).first()
     return_dict = {"user": user, "message": message, "message_type": message_type}
-    return all_view_wrapper(return_dict, session, request.game, user_id)
+    return all_view_wrapper(return_dict, session, request)
 
 
 @view_config(route_name='update_email_settings')

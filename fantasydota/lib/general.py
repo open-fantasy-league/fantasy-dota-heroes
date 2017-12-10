@@ -1,4 +1,5 @@
 from fantasydota.models import Game, Notification, League
+from pyramid.security import authenticated_userid
 from sqlalchemy import desc
 
 
@@ -20,13 +21,17 @@ def add_notifications(return_dict, session, user_id):
     return return_dict
 
 
-def all_view_wrapper(return_dict, session, game_code, user_id):
+def all_view_wrapper(return_dict, session, request):
+    user_id = authenticated_userid(request)
+    league_id = request.league
+    game = session.query(League.game).filter(League.id == league_id).first()[0]
     if user_id:
         return_dict = add_notifications(return_dict, session, user_id)
     else:
         return_dict['notifications'] = []
-    return_dict = add_leagues_to_view(return_dict, session, game_code)
-    return add_other_games(return_dict, session, game_code)
+    return_dict = add_leagues_to_view(return_dict, session, game.code)
+    return_dict['game_code'] = game.code
+    return add_other_games(return_dict, session, game.code)
 
 
 def get_game(request):

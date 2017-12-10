@@ -76,7 +76,7 @@ def main(global_config, **settings):
     # psa.register_provider(settings, facebook.FacebookOAuth2)
 
     config.add_request_method('.auth.get_user', 'user', reify=True)  # user or username? should it start with .?
-    config.add_request_method('.lib.general.get_game', 'game', reify=True)
+    # config.add_request_method('.lib.general.get_game', 'game', reify=True)
     config.add_request_method('.lib.general.get_league', 'league', reify=True)
 
     config.add_renderer('json', custom_json_renderer())
@@ -92,7 +92,7 @@ def main(global_config, **settings):
     config.add_route('reset_password_page', '/resetPasswordPage')
     config.add_route('update_email_settings', '/updateEmailSettings')
     config.add_route("add_friend", '/addFriend')
-    config.add_route('change_game', '/changeGame')
+    #config.add_route('change_game', '/changeGame')
     config.add_route('change_league', '/changeLeague')
     config.add_route('clear_notifications', '/clearNotifications')
 

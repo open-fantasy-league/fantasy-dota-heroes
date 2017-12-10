@@ -21,14 +21,14 @@ from sqlalchemy import and_
 @view_config(route_name='view_faq', renderer='../templates/faq.mako')
 def view_faq(request):
     session = DBSession()
-    return all_view_wrapper({}, session, request.game, authenticated_userid(request))
+    return all_view_wrapper({}, session, request)
 
 
 @view_config(route_name='view_rules', renderer='../templates/rules.mako')
 def view_rules(request):
     session = DBSession()
     return all_view_wrapper(
-        {'game_code': request.game}, session, request.game, authenticated_userid(request)
+        {}, session, request
     )
 
 
@@ -87,7 +87,7 @@ def news(request):
 def hall_of_fame(request):
     session = DBSession()
     return all_view_wrapper(
-        {'game_code': request.game}, session, request.game, authenticated_userid(request)
+        {}, session, request
     )
 
 
@@ -95,7 +95,7 @@ def hall_of_fame(request):
 def index(request):
     session = DBSession()
     return all_view_wrapper(
-        {}, session, request.game, authenticated_userid(request)
+        {}, session, request
     )
 
 
@@ -103,7 +103,7 @@ def index(request):
 def view_rules(request):
     session = DBSession()
     return all_view_wrapper(
-        {'game_code': request.game}, session, request.game, authenticated_userid(request)
+        {}, session, request
     )
 
 

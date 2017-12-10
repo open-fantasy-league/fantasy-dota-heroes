@@ -19,17 +19,15 @@ from sqlalchemy import desc
 def view_team(request):
     session = DBSession()
     user_id = authenticated_userid(request)
-    game_code = request.params.get('game', request.game)
-    league_id = int(request.params.get('league', request.league))  # TODO try give args to request.week so can have default for league
-    game = session.query(Game).filter(Game.code == game_code).first()
-    if game_code == 'DOTA':
+    league_id = int(request.params.get('league', request.league))
+    league = session.query(League).filter(League.id == league_id).first()
+    game = session.query(Game).filter(Game.code == league.game).first()
+    if game.code == 'DOTA':
         message_type = request.params.get('message_type')
         message = request.params.get('message')
 
         # league_id = int(request.params.get("league") or
         #                 (in_progress_league(session, game.id) or next_league(session, game.id)).id)
-
-        league = session.query(League).filter(League.id == league_id).first()
 
         class FakeUser():  # hacky quick way so unlogged in users can see the page
             username = ""
@@ -95,14 +93,12 @@ def view_team(request):
         return_dict = {'username': username, 'userq': userq, 'team': team, 'heroes': heroes, 'message': message,
                         'message_type': message_type, 'league': league, 'reserve_team': reserve_team,
                        'game': game}
-    elif game_code == 'PUBG':
+    elif game.code == 'PUBG':
         message_type = request.params.get('message_type')
         message = request.params.get('message')
 
         league_id = int(request.params.get("league") or
                         (in_progress_league(session, game.id) or next_league(session, game.id)).id)
-
-        league = session.query(League).filter(League.id == league_id).first()
 
         class FakeUser():  # hacky quick way so unlogged in users can see the page
             username = ""
@@ -175,12 +171,12 @@ def view_team(request):
         seconds_until_swap = userq.swap_tstamp - time.time()
         minutes = seconds_until_swap // 60
         return_dict['time_until_swap'] = divmod(minutes, 60)
-    return_dict = all_view_wrapper(return_dict, session, game_code, user_id)
+    return_dict = all_view_wrapper(return_dict, session, request)
     result = render('fantasydota:templates/team.mako',
                     return_dict,
                     request=request)
     response = Response(result)
-    response.set_cookie('game', value=game_code, max_age=315360000)
+    response.set_cookie('game', value=game.code, max_age=315360000)
     return response
 
 
