@@ -24,7 +24,9 @@ def add_notifications(return_dict, session, user_id):
 def all_view_wrapper(return_dict, session, request):
     user_id = authenticated_userid(request)
     league_id = request.league
-    game = session.query(League.game).filter(League.id == league_id).first()[0]
+    # TODO can this be joined/more efficient?
+    game_id = session.query(League.game).filter(League.id == league_id).first()[0]
+    game = session.query(Game).filter(Game.id == game_id).first()
     if user_id:
         return_dict = add_notifications(return_dict, session, user_id)
     else:

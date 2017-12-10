@@ -26,13 +26,13 @@
                 <th class="bansHeader extra">Bans</th>
                 <th class="winsHeader extra">Wins</th>
                 <th class="valueHeader">Value</th>
-                <th class="sellHeader">${"Sell" if not league.swap_open else "Swap"}</th>
+                <th class="sellHeader">${"Sell" if transfer_open else "Swap"}</th>
 
             </tr>
             % for hero in team:
-                <tr class="teamRow ${'toSwap' if not hero[1].active else ''}" id="${hero[0].id}TeamRow">
+                <tr class="teamRow ${'toSwap' if not hero[1].active and not transfer_open else ''}" id="${hero[0].id}TeamRow">
                     <td class="heroImg" sorttable_customkey="${hero[0].name}"><img src="/static/images/dota/${hero[0].name.replace(" ", "_")}_icon.png" title="${hero[0].name}"/></td>
-                    <td class="heroEntry">${'=> ' if not hero[1].active else ''}${hero[0].name}</td>
+                    <td class="heroEntry">${'=> ' if not hero[1].active and not transfer_open else ''}${hero[0].name}</td>
                     <td class="heroPointsEntry">${hero[0].points}</td>
                     <td class="picksEntry extra">${hero[0].picks}</td>
                     <td class="bansEntry extra">${hero[0].bans}</td>
@@ -42,7 +42,7 @@
                         <form name="tradeForm" id="${hero[0].id}TradeForm" class="tradeForm" onsubmit="return false;">
                             <input type="hidden" value="${hero[0].id}" name="tradeHero"/>
                             <input type="hidden" value="0" name="tradeReserve"/>
-                            <button type="submit" name=${"sellHero" if not league.swap_open else "swapOutHero"} class="btn waves-effect waves-light">${"Sell" if not league.swap_open else "Swap"}</button>
+                            <button type="submit" name=${"sellHero" if transfer_open else "swapOutHero"} class="btn waves-effect waves-light">${"Sell" if transfer_open else "Swap"}</button>
                         </form>
                     </td>
                 </tr>
@@ -54,7 +54,7 @@
 <div class="row" id="myReserveBlock">
     % if transfer_open:
         <span class="left"><h2>My Reserves (Credits: <span class="userReserveCredits">${round(userq.reserve_money, 1)}</span>)</h2></span>
-        % if user.late_start == 1:
+        % if userq.late_start == 1:
             <span class="right"><button type="submit" id="confirmTransfers" class="btn waves-effect waves-light">Confirm Team!</button></span>
         % endif
     % else:
@@ -71,12 +71,12 @@
                 <th class="bansHeader extra">Bans</th>
                 <th class="winsHeader extra">Wins</th>
                 <th class="valueHeader">Value</th>
-                <th class="sellHeader">${"Sell" if not league.swap_open else "Swap"}</th>
+                <th class="sellHeader">${"Sell" if transfer_open else "Swap"}</th>
             </tr>
             % for hero in reserve_team:
-                <tr class="reserveRow ${'toSwap' if hero[1].active else ''}" id="${hero[0].id}ReserveRow">
+                <tr class="reserveRow ${'toSwap' if hero[1].active and not transfer_open else ''}" id="${hero[0].id}ReserveRow">
                     <td class="heroImg" sorttable_customkey="${hero[0].name}"><img src="/static/images/dota/${hero[0].name.replace(" ", "_")}_icon.png" title="${hero[0].name}"/></td>
-                    <td class="heroEntry">${'<= ' if hero[1].active else ''}${hero[0].name}</td>
+                    <td class="heroEntry">${'<= ' if hero[1].active and not transfer_open else ''}${hero[0].name}</td>
                     <td class="heroPointsEntry">${hero[0].points}</td>
                     <td class="picksEntry extra">${hero[0].picks}</td>
                     <td class="bansEntry extra">${hero[0].bans}</td>
@@ -86,7 +86,7 @@
                         <form name="tradeForm" id="${hero[0].id}TradeForm" class="tradeForm" onsubmit="return false;">
                             <input type="hidden" value="${hero[0].id}" name="tradeHero"/>
                             <input type="hidden" value="1" name="tradeReserve"/>
-                            <button type="submit" name=${"sellHero" if not league.swap_open else "swapInHero"} class="btn waves-effect waves-light">${"Sell" if not league.swap_open else "Swap"}</button>
+                            <button type="submit" name=${"sellHero" if transfer_open else "swapInHero"} class="btn waves-effect waves-light">${"Sell" if transfer_open else "Swap"}</button>
                         </form>
                     </td>
                 </tr>
@@ -109,10 +109,11 @@
                     <p>But it will not earn achievements, full-XP, or main leaderboard positions</p>
                     <p>Transfer window for <a href="/team?league=${league.id + 1}">next week</a> is already open</p>
                 </span>
-            % else
+            % else:
                 <span class="messageTransOpen">
                     <p>Transfer window currently open</p>
                 </span>
+            % endif
         % else:
             % if not userq.swap_tstamp:
                 <p><strong>
@@ -121,7 +122,7 @@
                 <p>Further swaps are disabled during this 12 hour period</p>
             % else:
                 <span class="messageTransClosed"><p><strong>
-                    Due to recent changes you are in swap cooldown for ${time_until_swap[0]} hours, ${time_until_swap[1]} minutes.
+                    Due to recent changes you are in swap cooldown for ${int(time_until_swap[0])} hours, ${int(time_until_swap[1])} minutes.
                 </strong></p></span>
             % endif
         % endif
@@ -190,7 +191,7 @@
                 <th class="teamHeader">Team</th>
                 <th class="heroPointsHeader">Points</th>
                 <th class="valueHeader">Value</th>
-                <th class="sellHeader">${"Sell" if not league.swap_open else "Swap"}</th>
+                <th class="sellHeader">${"Sell" if transfer_open else "Swap"}</th>
 
             </tr>
             % for hero in team:
@@ -204,7 +205,7 @@
                         <form name="tradeForm" id="${hero[0].id}TradeForm" class="tradeForm" onsubmit="return false;">
                             <input type="hidden" value="${hero[0].id}" name="tradeHero"/>
                             <input type="hidden" value="0" name="tradeReserve"/>
-                            <button type="submit" name=${"sellHero" if not league.swap_open else "swapOutHero"} class="btn waves-effect waves-light">${"Sell" if not league.swap_open else "Swap"}</button>
+                            <button type="submit" name=${"sellHero" if transfer_open else "swapOutHero"} class="btn waves-effect waves-light">${"Sell" if transfer_open else "Swap"}</button>
                         </form>
                     </td>
                 </tr>
@@ -227,7 +228,7 @@
                 <th class="teamHeader">Team</th>
                 <th class="heroPointsHeader">Points</th>
                 <th class="valueHeader">Value</th>
-                <th class="sellHeader">${"Sell" if not league.swap_open else "Swap"}</th>
+                <th class="sellHeader">${"Sell" if transfer_open else "Swap"}</th>
             </tr>
             % for hero in reserve_team:
                 <tr class="reserveRow" id="${hero[0].id}ReserveRow">
@@ -240,7 +241,7 @@
                         <form name="tradeForm" id="${hero[0].id}TradeForm" class="tradeForm" onsubmit="return false;">
                             <input type="hidden" value="${hero[0].id}" name="tradeHero"/>
                             <input type="hidden" value="1" name="tradeReserve"/>
-                            <button type="submit" name=${"sellHero" if not league.swap_open else "swapInHero"} class="btn waves-effect waves-light">${"Sell" if not league.swap_open else "Swap"}</button>
+                            <button type="submit" name=${"sellHero" if transfer_open else "swapInHero"} class="btn waves-effect waves-light">${"Sell" if transfer_open else "Swap"}</button>
                         </form>
                     </td>
                 </tr>
@@ -319,7 +320,7 @@
 <script>
 var transfers = ${'true' if transfer_open else 'false'};
 var league_id = ${league.id};
-var swaps = ${'true' if league.swap_open and not userq.swap_tstamp else "false"}
+var swaps = ${'true' if not transfer_open and league.swap_open and not userq.swap_tstamp else "false"}
 </script>
 
 <script src="/static/trade.js"></script>

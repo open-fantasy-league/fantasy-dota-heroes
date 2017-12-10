@@ -252,7 +252,7 @@ $( document ).ready(function() {
     <div class="switch">
         <label>
           Off
-          <input value="${'on' if show_late_start else 'off'}" type="checkbox" id="showLateStartCheckbox">
+          <input ${'checked=checked' if show_late_start else ''} type="checkbox" id="showLateStartCheckbox">
           <span class="lever"></span>
           Show late-starters
         </label>
@@ -312,7 +312,10 @@ $( document ).ready(function() {
         $('#showLateStartCheckbox').change( function() {
             var showLate = this.checked ? 1 : 0;
             var url = window.location.href;
-            if (url.indexOf('?') > -1){
+            if (url.indexOf('showLate') > -1){
+                url = url.replace(/(.*?)showLate=[01](.*?)/g, "$1showLate=" + showLate + "$2");
+            }
+            else if (url.indexOf('?') > -1){
                url += '&showLate=' + showLate
             }else{
                url += '?showLate=' + showLate

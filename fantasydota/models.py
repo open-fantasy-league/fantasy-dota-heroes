@@ -268,17 +268,14 @@ class TeamHero(Base):
                                            [Hero.id, Hero.league]),
                       {})
 
-    def __init__(self, user_id, hero_id, league, cost, reserve, hero_name=None, active=None):
+    def __init__(self, user_id, hero_id, league, cost, reserve, active, hero_name=None):
         self.user_id = user_id
         self.hero_id = hero_id
         self.hero_name = hero_name or (item for item in heroes if item["id"] == hero_id).next()["name"]
         self.league = league
         self.cost = cost
         self.reserve = reserve
-        # is not None check necessary as active can be True or False
-        # active is specified as False when we are doing transfers for a late starter
-        # the heroes get set as active after they confirm their team
-        self.active = active is not None or not reserve
+        self.active = active
 
 
 class Sale(Base):

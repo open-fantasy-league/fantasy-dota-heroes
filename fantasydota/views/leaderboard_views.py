@@ -19,7 +19,7 @@ def leaderboard(request):
     session = DBSession()
     league_id = int(request.params.get('league', request.league))
     league = session.query(League).filter(League.id == league_id).first()
-    game = session.query(Game).filter(Game.code == league.game).first()
+    game = session.query(Game).filter(Game.id == league.game).first()
     user_id = authenticated_userid(request)
     # league_id = int(request.params.get("league") or
     #                 (in_progress_league(session, game.id) or next_league(session, game.id)).id)
@@ -54,7 +54,7 @@ def leaderboard(request):
     player_heroes = []
     leagueq = session.query(LeagueUser).filter(LeagueUser.league == league_id).filter(LeagueUser.user_id.in_(users_playing))
     luser = leagueq.filter(LeagueUser.user_id == user_id).first()
-    show_late_start = int(request.args.get('showLate', luser.late_start if luser else 0))
+    show_late_start = int(request.params.get('showLate', luser.late_start if luser else 0))
     if not show_late_start:
         leagueq = leagueq.filter(LeagueUser.late_start == 0)
     if mode == "friend":
@@ -101,7 +101,7 @@ def daily(request):
     session = DBSession()
     league_id = int(request.params.get('league', request.league))
     league = session.query(League).filter(League.id == league_id).first()
-    game = session.query(Game).filter(Game.code == league.game).first()
+    game = session.query(Game).filter(Game.id == league.game).first()
     user_id = authenticated_userid(request)
     # league_id = int(request.params.get("league") or
     #                 (in_progress_league(session, game.id) or next_league(session, game.id)).id)
@@ -139,7 +139,7 @@ def daily(request):
     leagueq = session.query(LeagueUserDay).filter(LeagueUserDay.day == period).filter(LeagueUserDay.league == league_id)
     luser = leagueq.filter(LeagueUserDay.user_id == user_id).first()
     # Dont think late_start matters for daily stuff
-    # show_late_start = int(request.args.get('showLate', luser.late_start if luser else 0))
+    # show_late_start = int(request.params.get('showLate', luser.late_start if luser else 0))
     # if not show_late_start:
     #     leagueq = leagueq.filter(LeagueUser.late_start == 0)
     if mode == "friend":

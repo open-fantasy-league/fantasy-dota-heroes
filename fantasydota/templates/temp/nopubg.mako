@@ -1,4 +1,4 @@
-<%inherit file="layout.mako"/>
+<%inherit file="../layout.mako"/>
 
 <%def name="title()">
     No current PUBG tournaments

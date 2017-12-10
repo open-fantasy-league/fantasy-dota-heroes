@@ -85,7 +85,7 @@ else{
     $('#confirmTransfers').click(function() {
         $("[name=buyHero]").add("[name=sellHero]").add("#confirmTransfers").each(function(){$(this).attr("disabled","true");});
         $.ajax({
-            url: "/confirmTransfers?league=" + league_id,
+            url: "/confirmTransfer?league=" + league_id,
             type: "GET",
             success: function(data){
                 var success = data.success,

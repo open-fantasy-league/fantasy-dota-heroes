@@ -17,6 +17,7 @@ def sell(session, l_user, hero_id, league_id, reserve):
 
     teamq_hero = session.query(TeamHero).filter(and_(TeamHero.user_id == user_id,
                                                      TeamHero.league == league_id)).filter(TeamHero.reserve.is_(reserve))
+    print([h.hero_id for h in teamq_hero.all()])
     if teamq_hero.first():
         check_hero = teamq_hero.filter(and_(TeamHero.hero_id == hero_id))
         check_hero_res = check_hero.first()
@@ -60,6 +61,7 @@ def buy(session, l_user, hero_id, league_id, reserve, late=None):
     if len(teamq_all) >= size_limit:
         message = "ERROR: Reserves currently full" if reserve else "ERROR: Team is currently full"
         return {"success": False, "message": message}
+
     if teamq_hero.first():
         return {"success": False, "message": "ERROR: %s already in %steam" % (game.pickee, "reserve " if reserve else "")}
     elif session.query(TeamHero).filter(TeamHero.user_id == user_id).filter(TeamHero.league == league_id). \
@@ -75,8 +77,9 @@ def buy(session, l_user, hero_id, league_id, reserve, late=None):
             l_user.reserve_money = new_credits
         else:
             l_user.money = new_credits
-        active = False if late else None
-        session.add(TeamHero(user_id, hero_id, league_id, hero.value, reserve, hero_name=hero.name, active=active))
+        # if late then cant be active. if not late then may be reserve, may not be
+        active = False if late else not reserve
+        session.add(TeamHero(user_id, hero_id, league_id, hero.value, reserve, active, hero_name=hero.name))
         session.add(Sale(l_user.id, hero_id, league_id, hero.value, hero.value, True))
     return {"success": True, "message": "%s successfully purchased" % game.pickee,
             "action": "buy", "hero": hero_id,

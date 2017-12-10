@@ -32,12 +32,12 @@ def view_rules(request):
     )
 
 
-@view_config(route_name='change_game')
-def change_game(request):
-    # https://userlinux.net/pyramid-set-cookie-returning-httpfound.html
-    response = HTTPFound(location=request.environ['HTTP_REFERER'])
-    response.set_cookie('game', value=request.params.get('game', 'DOTA'), max_age=315360000)
-    return response
+# @view_config(route_name='change_game')
+# def change_game(request):
+#     # https://userlinux.net/pyramid-set-cookie-returning-httpfound.html
+#     response = HTTPFound(location=request.environ['HTTP_REFERER'])
+#     response.set_cookie('game', value=request.params.get('game', 'DOTA'), max_age=315360000)
+#     return response
 
 
 @view_config(route_name='change_league')

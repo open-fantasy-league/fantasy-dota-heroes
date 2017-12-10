@@ -1,19 +1,17 @@
 import datetime
 from urllib import quote_plus
 
+from fantasydota import DBSession
+from fantasydota.auth import get_user
+from fantasydota.lib.account import check_invalid_password
+from fantasydota.lib.general import all_view_wrapper
+from fantasydota.models import User, PasswordReset, Notification
 from passlib.handlers.bcrypt import bcrypt
 from pyramid.httpexceptions import HTTPFound, HTTPForbidden
 from pyramid.security import remember, forget, authenticated_userid
 from pyramid.view import view_config
 from pyramid_mailer import get_mailer
 from pyramid_mailer.message import Message
-from sqlalchemy import func
-
-from fantasydota import DBSession
-from fantasydota.auth import get_user
-from fantasydota.lib.account import check_invalid_password
-from fantasydota.lib.general import all_view_wrapper
-from fantasydota.models import User, LeagueUser, League, PasswordReset, LeagueUserDay, Game, Notification
 
 
 @view_config(route_name='login', renderer='../templates/login.mako')

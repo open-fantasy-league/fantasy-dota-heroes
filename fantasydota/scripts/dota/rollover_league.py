@@ -12,7 +12,9 @@ def rollover_league():
         new_name = "Week " + str(int(transfer_open_league.name.split(" ")[1]) + 1) if transfer_open_league else "Week 1"
         # stage 2 deliberately too high. only want stage1 and stage 3
         new_id = transfer_open_league.id + 1 if transfer_open_league else 1
-        close_league(session, 1)
+        # TODO so this will break for new games/non dota
+        if new_id > 2:
+            close_league(session, 1)
         session.query(League).filter(League.game == 1).filter(League.status == 0).update({League.status: 1,
                                                                                           League.transfer_open: False,
                                                                                           League.swap_open: True

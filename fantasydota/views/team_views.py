@@ -21,7 +21,7 @@ def view_team(request):
     user_id = authenticated_userid(request)
     league_id = int(request.params.get('league', request.league))
     league = session.query(League).filter(League.id == league_id).first()
-    game = session.query(Game).filter(Game.code == league.game).first()
+    game = session.query(Game).filter(Game.id == league.game).first()
     if game.code == 'DOTA':
         message_type = request.params.get('message_type')
         message = request.params.get('message')
@@ -30,25 +30,29 @@ def view_team(request):
         #                 (in_progress_league(session, game.id) or next_league(session, game.id)).id)
 
         class FakeUser():  # hacky quick way so unlogged in users can see the page
-            username = ""
-            league = league_id
-            money = 10 * game.team_size
-            reserve_money = 10 * game.reserve_size
-            points = 0
-            picks = 0
-            bans = 0
-            wins = 0
-            points_rank = None
-            wins_rank = None
-            picks_rank = None
-            bans_rank = None
+
+            def __init__(self, league):
+                self.username = ""
+                self.late_start = not league.transfer_open
+                self.league = league_id
+                self.money = 10 * game.team_size
+                self.reserve_money = 10 * game.reserve_size
+                self.points = 0
+                self.picks = 0
+                self.bans = 0
+                self.wins = 0
+                self.points_rank = None
+                self.wins_rank = None
+                self.picks_rank = None
+                self.bans_rank = None
+                self.swap_tstamp = None
 
         # dont blame me for the string check.
         # seems something weird coming out of the python pyramid auth system
         if user_id is None or user_id == 'None':
             message = "You must login to pick team"
 
-            userq = FakeUser()
+            userq = FakeUser(league)
             team = []
             username = ""
             reserve_team = []
@@ -79,7 +83,7 @@ def view_team(request):
                         stage = 0
                     session.add(LeagueUserDay(user_id, username, league.id, i, stage))
 
-                userq = FakeUser()  # so dont have to deal with a commit mid-request
+                userq = FakeUser(league)  # so dont have to deal with a commit mid-request
 
             team = session.query(Hero, TeamHero).filter(Hero.league == league_id).\
                 filter(and_(TeamHero.user_id == user_id, TeamHero.league == league_id)).filter(TeamHero.reserve.is_(False)).\
@@ -176,7 +180,7 @@ def view_team(request):
                     return_dict,
                     request=request)
     response = Response(result)
-    response.set_cookie('game', value=game.code, max_age=315360000)
+    response.set_cookie('league', value=str(league_id), max_age=315360000)
     return response
 
 
@@ -195,7 +199,7 @@ def sell_hero(request):
     transfer_actually_open = session.query(League.transfer_open).filter(League.id == league_id).first()[0]
     if not transfer_actually_open:
         if l_user.late_start == 1:
-            sell(session, l_user, hero_id, league_id, reserve)
+            return sell(session, l_user, hero_id, league_id, reserve)
         else:
             return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
 
@@ -217,7 +221,7 @@ def buy_hero(request):
     transfer_actually_open = session.query(League.transfer_open).filter(League.id == league_id).first()[0]
     if not transfer_actually_open:
         if l_user.late_start == 1:
-            buy(session, l_user, hero_id, league_id, reserve, late=True)
+            return buy(session, l_user, hero_id, league_id, reserve, late=True)
         else:
             return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
 

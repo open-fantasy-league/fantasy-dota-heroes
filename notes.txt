@@ -13,3 +13,5 @@ Need to:
 - update rules/faq to talk about late starting
 - have default league be latest week
 - handle change league reloading with query param
+- check string/int-ness of league cookie
+- sweetAlert callback to reload page when confirmTransfer
