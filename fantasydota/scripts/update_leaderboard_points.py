@@ -77,6 +77,7 @@ def main():
         session = make_session()
         for league in session.query(League).all():
             team_swap_all(session, league.id)
+            session.flush()
             update_league_points(session, league)
         transaction.commit()
 

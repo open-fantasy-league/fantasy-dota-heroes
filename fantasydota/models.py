@@ -155,7 +155,7 @@ class LeagueUser(Base):
     # TODO can remove this last_change
     last_change = Column(BigInteger, default=int(time.time()))
     swap_tstamp = Column(Integer)
-    #late_start = Column(Boolean)
+    late_start = Column(Boolean)
 
     def __init__(self, user_id, username, league, late_start, money=50.0, reserve_money=50.0):
         self.user_id = user_id
@@ -491,10 +491,24 @@ class Notification(Base):
     achievement = Column(Integer, ForeignKey(Achievement.id))
     seen = Column(Boolean, default=False, index=True)
     message = Column(String(100), nullable=False)
-    #link = Column(String(100), default='')
+    link = Column(String(100), default='')
 
     def __init__(self, user, achievement, message, link=''):
         self.achievement = achievement
         self.user = user
         self.message = message
         self.link = link
+
+
+class ProCircuitTournament(Base):
+    __tablename__ = "pro_circuit_tournament"
+    id = Column(Integer, Sequence('id'), primary_key=True)
+    game = Column(Integer, ForeignKey(Game.id), index=True, nullable=False)
+    name = Column(String(100), nullable=False)
+    major = Column(Boolean)
+
+    def __init__(self, id_, game, name, major):
+        self.id = id_
+        self.game = game
+        self.name = name
+        self.major = major

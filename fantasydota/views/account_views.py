@@ -79,19 +79,7 @@ def register(request):
 
     user = User(username, password, email)
     session.add(user)
-    leagues = session.query(League).all()
-    for l in leagues:
-	game = session.query(Game).filter(Game.id == l.game).first()
-        user_league = LeagueUser(user.id, username, l.id, money=game.team_size * 10, reserve_money=game.reserve_size * 10)
-        session.add(user_league)
-        for i in range(l.days):
-            if i >= l.stage2_start:
-                stage = 2
-            elif i >= l.stage1_start:
-                stage = 1
-            else:
-                stage = 0
-            session.add(LeagueUserDay(user.id, username, l.id, i, stage))
+    session.flush()
     headers = remember(request, user.id)
     return HTTPFound('/team', headers=headers)
 

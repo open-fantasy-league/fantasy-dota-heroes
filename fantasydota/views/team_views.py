@@ -43,7 +43,9 @@ def view_team(request):
             picks_rank = None
             bans_rank = None
 
-        if user_id is None:
+        # dont blame me for the string check.
+        # seems something weird coming out of the python pyramid auth system
+        if user_id is None or user_id == 'None':
             message = "You must login to pick team"
 
             userq = FakeUser()
@@ -60,8 +62,13 @@ def view_team(request):
                     username = session.query(User.username).filter(User.id == user_id).first()[0]
                 except TypeError:
                     headers = forget(request)
+                    print('userid: %s' % user_id)
+                    print('query %s' % session.query(User.username).filter(User.id == user_id).first())
+                    import traceback
+                    traceback.print_exc()
                     return HTTPFound(location='/login', headers=headers)
-                user_league = LeagueUser(user_id, username, league.id, money=10*game.team_size, reserve_money=10*game.reserve_size)
+                late_start = (league.status == 1)
+                user_league = LeagueUser(user_id, username, league.id, late_start, money=10*game.team_size, reserve_money=10*game.reserve_size)
                 session.add(user_league)
                 for i in range(league.days):
                     if i >= league.stage2_start:
@@ -126,7 +133,8 @@ def view_team(request):
                 except TypeError:
                     headers = forget(request)
                     return HTTPFound(location='/login', headers=headers)
-                user_league = LeagueUser(user_id, username, league.id, money=game.team_size * 10.0,
+                late_start = (league.status == 1)
+                user_league = LeagueUser(user_id, username, league.id, late_start, money=game.team_size * 10.0,
                                          reserve_money=game.reserve_size * 10.0)
                 session.add(user_league)
                 for i in range(league.days):
@@ -151,9 +159,10 @@ def view_team(request):
             username = session.query(User.username).filter(User.id == user_id).first()[0]
         heroes = session.query(Hero).filter(Hero.league == league_id).all()
 
-        return_dict = {'username': username, 'userq': userq, 'team': team, 'heroes': heroes, 'message': message,
-                'message_type': message_type, 'league': league, 'reserve_team': reserve_team, 'game': game,
-                       }
+        return_dict = {
+            'username': username, 'userq': userq, 'team': team, 'heroes': heroes, 'message': message,
+            'message_type': message_type, 'league': league, 'reserve_team': reserve_team, 'game': game,
+        }
     else:
         return_dict = {'game': 'whoops'}
     return_dict = all_view_wrapper(return_dict, session, game_code, user_id)

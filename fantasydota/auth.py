@@ -13,31 +13,31 @@ def login_required(request):
     return getattr(request, 'user', None) is not None
 
 
-def create_user_with_league(strategy, details, backend, user=None, *args, **kwargs):
-    '''
-    ran into issues with this
-    if want to use user_id in the league_user tables.
-    How does it know what the user_id is, if its trying to use the user before the commit has finished
-    decided to just make the league in the viewLeague request if needed
-    '''
-    return_dict = create_user(strategy, details, backend, user, *args, **kwargs)
-    username = kwargs.get("username", details.get("username"))
-    user_id = strategy.session_get("user_id")
-    session = DBSession()
-    leagues = session.query(League).all()
-    for l in leagues:
-        user_league = LeagueUser(user_id, username, l.id)
-        session.add(user_league)
-        for i in range(l.days):
-            if i >= l.stage2_start:
-                stage = 2
-            elif i >= l.stage1_start:
-                stage = 1
-            else:
-                stage = 0
-            session.add(LeagueUserDay(user_id,username, l.id, i, stage))
-
-    return return_dict
+# def create_user_with_league(strategy, details, backend, user=None, *args, **kwargs):
+#     '''
+#     ran into issues with this
+#     if want to use user_id in the league_user tables.
+#     How does it know what the user_id is, if its trying to use the user before the commit has finished
+#     decided to just make the league in the viewLeague request if needed
+#     '''
+#     return_dict = create_user(strategy, details, backend, user, *args, **kwargs)
+#     username = kwargs.get("username", details.get("username"))
+#     user_id = strategy.session_get("user_id")
+#     session = DBSession()
+#     leagues = session.query(League).all()
+#     for l in leagues:
+#         user_league = LeagueUser(user_id, username, l.id)
+#         session.add(user_league)
+#         for i in range(l.days):
+#             if i >= l.stage2_start:
+#                 stage = 2
+#             elif i >= l.stage1_start:
+#                 stage = 1
+#             else:
+#                 stage = 0
+#             session.add(LeagueUserDay(user_id,username, l.id, i, stage))
+#
+#     return return_dict
 
 
 def get_user(request):
