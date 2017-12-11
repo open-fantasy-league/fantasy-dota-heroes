@@ -5,6 +5,7 @@ import time
 import urllib2
 
 import transaction
+from copy import copy
 from fantasydota.lib.session_utils import make_session
 from fantasydota.models import Result, Match, League, ProCircuitTournament
 
@@ -116,9 +117,9 @@ def main():
     #session2 = make_session(False)
     # dreamleague calibration
     game_id = 1
-    week_id = session.query(League.id).filter(League.game == game_id).filter(League.status == 1).first()
-    for tournament in session.query(ProCircuitTournament).all():
-        add_matches(session, tournament.id, tstamp_from=1512057853, week_id=week_id)
+    week_id = session.query(League.id).filter(League.game == game_id).filter(League.status == 1).first()[0]
+    for tournament in [x[0] for x in session.query(ProCircuitTournament.id).all()]:
+        add_matches(session, tournament, tstamp_from=1512057853, week_id=week_id)
 
 if __name__ == "__main__":
     main()

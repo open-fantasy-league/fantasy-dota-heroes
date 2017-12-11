@@ -26,7 +26,7 @@ def add_results_to_user(session, userq, userq_day, new_results, league_id, team_
             picks = 0
             bans = 0
         match = result.match_id
-        if userq.late_start == 0 or (userq.late_start == 2 and result.start_tstamp > userq.late_start_tstamp):
+        if userq.late_start == 0 or (userq.late_start == 2 and userq.late_start_tstamp > result.start_tstamp):
             if result.hero in heroes:
                 res = result.result_str
                 user_id = userq.user_id
@@ -47,6 +47,7 @@ def add_results_to_user(session, userq, userq_day, new_results, league_id, team_
                     to_add = MULTIPLIER * ((0.5 ** (team_size - hero_count)) * Result.result_to_value_pubg(res))
                 print "addin %s points to %s" % (to_add, user_id)
                 userq.points += to_add
+                userq_day.points += to_add
         # Despite looping over all results in match. with equals these can only be awarded once per match
         if picks == 3:
             add_achievement(session, userq.user_id, 'Three of a Kind', match_link(match))
