@@ -59,7 +59,7 @@
             <ul class="right hide-on-med-and-down">
                 <li>
                     <li>
-                        <a class="dropdown-button" data-beloworigin="true" href="#" data-activates="gameDropdown">Game<i class="material-icons right">arrow_drop_down</i></a>
+                        <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="#" data-activates="gameDropdown">Game<i class="material-icons right">arrow_drop_down</i></a>
                     </li>
                     <ul id="gameDropdown" class="dropdown-content">
                         % for game in other_games:
@@ -68,7 +68,7 @@
                     </ul>
                 </li>
                 <li class="col s2">
-                <a class="dropdown-button" data-beloworigin="true" href="#" data-activates="leagueDropdown">
+                <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="#" data-activates="leagueDropdown">
                     Week
                     <i class="material-icons right">arrow_drop_down</i>
                 </a>
@@ -79,7 +79,7 @@
                         % endfor
                 </ul>
                 <li class="col s2">
-                <a id="notificationButton" class="dropdown-button" data-beloworigin="true" href="#" data-activates="notificationDropdown">
+                <a id="notificationButton" class="dropdown-button" data-hover="true" data-beloworigin="true" href="#" data-activates="notificationDropdown">
                     Notifications ${"(%s)" % len(notifications)}
                     % if len(notifications) > 1:
                         <i class="material-icons right">arrow_drop_down</i>
@@ -97,7 +97,7 @@
                         <a href="${request.route_path('login')}">Login/Create Profile</a>
                 % else:
                     <li class="col s2">
-                    <a class="dropdown-button" data-beloworigin="true" href="#" data-activates="accountDropdown">
+                    <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="#" data-activates="accountDropdown">
                         Account
                         <i class="material-icons right">arrow_drop_down</i>
                     </a>
@@ -126,7 +126,7 @@
                 <div class="divider"></div>
                 % if len(notifications) > 1:
                     <li class="col s2">
-                    <a id="mobileNotificationButton" class="dropdown-button" data-beloworigin="true" href="#" data-activates="notificationDropdown">
+                    <a id="mobileNotificationButton" class="dropdown-button" data-hover="true" data-beloworigin="true" href="#" data-activates="notificationDropdown">
                         Notifications ${"(%s)" % len(notifications)}
                         <i class="material-icons right">arrow_drop_down</i>
                     </a>
@@ -144,7 +144,7 @@
                     </li>
                 % else:
                     <li class="col s2">
-                    <a class="dropdown-button" data-beloworigin="true" href="#" data-activates="mobileAccountDropdown">
+                    <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="#" data-activates="mobileAccountDropdown">
                         Account
                         <i class="material-icons right">arrow_drop_down</i>
                     </a>
@@ -157,7 +157,7 @@
                 % endif
                 <li>
                     <li>
-                        <a class="dropdown-button" data-beloworigin="true" href="#" data-activates="mobileGameDropdown">Game<i class="material-icons right">arrow_drop_down</i></a>
+                        <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="#" data-activates="mobileGameDropdown">Game<i class="material-icons right">arrow_drop_down</i></a>
                     </li>
                     <ul id="mobileGameDropdown" class="dropdown-content">
                         % for game in other_games:
@@ -166,7 +166,7 @@
                     </ul>
                 </li>
                 <li class="col s2">
-                    <a class="dropdown-button" data-beloworigin="true" href="#" data-activates="mobileLeagueDropdown">
+                    <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="#" data-activates="mobileLeagueDropdown">
                         Week
                         <i class="material-icons right">arrow_drop_down</i>
                     </a>
@@ -223,10 +223,8 @@
       $('.button-collapse').click(removeOverlay);
 
       $('#notificationButton').click(function() {
-        $.get('/clearNotifications')
-      })
-
-      })
+        $.get('/clearNotifications');
+      });
     })
 </script>
 </html>

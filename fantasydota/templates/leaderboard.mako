@@ -102,7 +102,7 @@ ${"period=%s" % period}
                 </a>
             </li>
             <li>
-                <a class="dropdown-button" data-beloworigin="true" href="" data-activates="modeDropdown">${mode.title()}<i class="material-icons right">arrow_drop_down</i></a>
+                <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="" data-activates="modeDropdown">${mode.title()}<i class="material-icons right">arrow_drop_down</i></a>
             </li>
             <ul id="modeDropdown" class="dropdown-content">
                 <li><a href="/leaderboard?rank_by=${rank_by}&mode=${mode}">${mode.title()}</a></li>
@@ -112,7 +112,7 @@ ${"period=%s" % period}
                 % endfor
             </ul>
             <li>
-                <a class="dropdown-button" data-beloworigin="true" href="" data-activates="periodDropdown">Period<i class="material-icons right">arrow_drop_down</i></a>
+                <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="" data-activates="periodDropdown">Period<i class="material-icons right">arrow_drop_down</i></a>
             </li>
             <ul id="periodDropdown" class="dropdown-content">
                 <li><a href="/leaderboard?rank_by=${rank_by}&mode=${mode}&period=tournament">Tournament</a></li>
@@ -176,7 +176,7 @@ ${"period=%s" % period}
                 </a>
             </li>
             <li>
-                <a class="dropdown-button" data-beloworigin="true" href="" data-activates="modeDropdown">${mode.title()}<i class="material-icons right">arrow_drop_down</i></a>
+                <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="" data-activates="modeDropdown">${mode.title()}<i class="material-icons right">arrow_drop_down</i></a>
             </li>
             <ul id="modeDropdown" class="dropdown-content">
                 <li><a href="/leaderboard?rank_by=${rank_by}&mode=${mode}">${mode.title()}</a></li>
@@ -186,7 +186,7 @@ ${"period=%s" % period}
                 % endfor
             </ul>
             <li>
-                <a class="dropdown-button" data-beloworigin="true" href="" data-activates="periodDropdown">Period<i class="material-icons right">arrow_drop_down</i></a>
+                <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="" data-activates="periodDropdown">Period<i class="material-icons right">arrow_drop_down</i></a>
             </li>
             <ul id="periodDropdown" class="dropdown-content">
                 <li><a href="/leaderboard?rank_by=${rank_by}&mode=${mode}&period=tournament">Tournament</a></li>

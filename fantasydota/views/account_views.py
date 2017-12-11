@@ -5,7 +5,7 @@ from fantasydota import DBSession
 from fantasydota.auth import get_user
 from fantasydota.lib.account import check_invalid_password
 from fantasydota.lib.general import all_view_wrapper
-from fantasydota.models import User, PasswordReset, Notification
+from fantasydota.models import User, PasswordReset, Notification, UserXp, UserAchievement, Achievement
 from passlib.handlers.bcrypt import bcrypt
 from pyramid.httpexceptions import HTTPFound, HTTPForbidden
 from pyramid.security import remember, forget, authenticated_userid
@@ -78,6 +78,7 @@ def register(request):
     user = User(username, password, email)
     session.add(user)
     session.flush()
+    session.add(UserXp(user.id))
     headers = remember(request, user.id)
     return HTTPFound('/team', headers=headers)
 
@@ -221,7 +222,7 @@ def update_email_settings(request):
     user_id = authenticated_userid(request)
     if not user_id:
         return HTTPForbidden()
-    session.query(Notification).filter(Notification.user_id == user_id).update({
+    session.query(Notification).filter(Notification.user == user_id).update({
         Notification.seen: True
     })
     return 'Marked notifications as seen'
@@ -261,6 +262,22 @@ def done(request):
     #     user=get_user(request),
     #     plus_id=request.registry.settings['SOCIAL_AUTH_GOOGLE_PLUS_KEY'],
     # )
+
+
+@view_config(route_name="profile", renderer="../templates/profile.mako")
+def profile(request):
+    session = DBSession()
+    shown_user_id = request.params.get('user', authenticated_userid(request))
+    user_xp = session.query(UserXp).filter(UserXp.user_id == shown_user_id).first()
+    user_achievements = session.query(UserAchievement).filter(UserAchievement.user_id == shown_user_id).all()
+    achievements = session.query(Achievement).all()
+    shown_user = session.query(User).filter(User.id == shown_user_id).first()
+    return all_view_wrapper(
+        {
+            'user_xp': user_xp, 'user_achievements': user_achievements, 'shown_user': shown_user,
+            'achievements': achievements
+        }, session, request
+    )
 
 
 # @view_config(route_name='email_required', renderer='common:templates/home.jinja2')

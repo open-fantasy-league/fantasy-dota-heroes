@@ -50,9 +50,9 @@ def add_results_to_user(session, userq, userq_day, new_results, league_id, team_
                 userq_day.points += to_add
         # Despite looping over all results in match. with equals these can only be awarded once per match
         if picks == 3:
-            add_achievement(session, userq.user_id, 'Three of a Kind', match_link(match))
+            add_achievement(session, 'Three of a Kind', userq.user_id, match_link(match))
         if picks + bans == 5:
-            add_achievement(session, userq.user_id, 'Full House', match_link(match))
+            add_achievement(session, 'Full House', userq.user_id, match_link(match))
 
 
 def update_league_points(session, league):

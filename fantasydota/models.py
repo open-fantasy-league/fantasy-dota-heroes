@@ -450,15 +450,21 @@ class UserXp(Base):
     __tablename__ = "user_xp"
     id = Column(Integer, Sequence('id'), primary_key=True)
     user_id = Column(Integer, ForeignKey(User.id), index=True, nullable=False)
-    game = Column(Integer, ForeignKey(Game.id), index=True, nullable=False)
     xp = Column(BigInteger, default=0)
     highest_daily_pos = Column(Integer)
     highest_weekly_pos = Column(Integer)
     all_time_points = Column(BigInteger, default=0)
 
+    def __init__(self, user_id):
+        self.user_id = user_id
+
     @property
     def level(self):
-        return self.xp / 10
+        return 1 + 0.097 * (self.xp ** 0.5)
+
+    @staticmethod
+    def position_xp(position, num_players):
+        return 350 * (1 - position / num_players)
 
 
 class Achievement(Base):

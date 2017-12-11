@@ -108,6 +108,7 @@ def main(global_config, **settings):
     config.add_route('leaderboard', '/leaderboard')
     config.add_route('daily', '/daily')
     config.add_route('account_settings', '/accountSettings')
+    config.add_route('profile', '/profile')
     
     config.add_route('news', '/news')
     config.add_route('hall_of_fame', '/hallOfFame')

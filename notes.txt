@@ -4,9 +4,9 @@ Need to:
 + add message saying cant make transfers until swaps go through, hence greyed out
 + hyperlink for matches in daily
 + add pro circuit tournaments so get data retrieves results
-- test notification/achievement system
+-+ test notification/achievement system
 - make sure weekends worth double
-- handle uniques league to game, so only need to store league cookie, not game
++ handle uniques league to game, so only need to store league cookie, not game
 - add charity stuff
 - migrate user script
 - check about updating Sale so stores swaps as well
@@ -14,4 +14,6 @@ Need to:
 - have default league be latest week
 - handle change league reloading with query param
 - check string/int-ness of league cookie
-- sweetAlert callback to reload page when confirmTransfer
+- sweetAlert callback to reload page when confirmTransfer/swaps
+- profile page
+- update highest positions

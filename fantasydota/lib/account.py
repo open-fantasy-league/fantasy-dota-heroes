@@ -105,7 +105,7 @@ def swap_for_user(session, user_id):
 
 def team_swap_all(session, league_id):
     lusers = session.query(LeagueUser).filter(LeagueUser.league == league_id)\
-        .filter(LeagueUser.swap_tstamp.isnot(False)).all()
+        .filter(LeagueUser.swap_tstamp.isnot(None)).all()
     for luser in lusers:
         if luser.swap_tstamp < time.time():
             swap_for_user(session, luser.user_id)

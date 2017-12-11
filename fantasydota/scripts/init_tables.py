@@ -13,15 +13,17 @@ def create_tables(DBSession, overwrite_empty_game_check=False):
             session.add(dota)
             session.add(pubg)
             achievements = [
-                ('Daily Win', 'Finish the day as points leader', 60),
-                ('Fantasy King', 'Finish the week as points leader', 200),
-                ('Weekly Top Five', 'Finish the week 5th or higher for points', 30),
+                ('Daily Win', 'Finish the day as points leader', 110),
+                ('Fantasy King', 'Finish the week as points leader', 300),
+                ('Weekly Top Five', 'Finish the week 5th or higher for points', 40),
+                ('Win King', 'Finish the week with the most wins', 90),
                 ('Ban King', 'Finish the week with the most bans', 50),
-                ('Pick King', 'Finish the week with the most picks', 50),
-                ('Top Picker', 'Own the highest points scoring hero this week', 40),
-                ('Shrewd Investor', 'Own the highest points per cost ratio hero this week', 80),
-                ('Full House', 'Your whole main team is either picked or banned', 150),
-                ('Three of a Kind', '3 of your main team is picked', 40)
+                ('Pick King', 'Finish the week with the most picks', 75),
+                ('Top Picker', 'Own the highest points scoring hero this week', 100),
+                ('Shrewd Investor', 'Own the highest points per cost ratio hero this week', 140),
+                ('Full House', 'Your whole main team is either picked or banned', 280),
+                ('Three of a Kind', '3 of your main team is picked', 200),
+                ('HAHAHA....AHAHAHAHAHAHAHA', 'Finish week with negative points', 50)
             ]
             for achievement in achievements:
                 new_achievement = Achievement(1, achievement[0], achievement[1], achievement[2])

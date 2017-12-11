@@ -13,11 +13,14 @@
 </%def>
 
 <div>
-    <h5>Profile: ${username}</h5>
+    <h5>Profile: ${shown_user.username}</h5>
         <div class="row">
             <div class="card-panel">
-                Highest Weekly Placing:
-                Highest Daily Placing:
+                Level: ${user_xp.level or '-'}
+                Xp: ${user_xp.xp}
+                Highest Weekly Placing: ${user_xp.highest_weekly_pos or '-'}
+                Highest Daily Placing: ${user_xp.highest_daily_pos or '-'}
+                All time points
             </div>
         </div>
         <div class="row">
@@ -26,7 +29,7 @@
                     <div class="card-panel">
                         <span><strong>${achievement.name}</strong></span>
                         <span>${achievement.description}</span>
-                        <img class="banIcon" src="/static/images/dota/${achievement.name.replace(' ', '_')}_icon.png" title="${achievement.name}"/>
+                        <img class="banIcon" src="/static/images/dota/achievements/${achievement.id}.png" title="${achievement.name}"/>
                     </div>
                 </div>
             % endfor

@@ -226,7 +226,7 @@ else{
                     sweetAlert(message);
                 }
                 else{
-                    sweetAlert("Swaps locked in! Your active team will update 24 hours from now, at which point you may make further swaps.");
+                    sweetAlert("Swaps locked in! Your active team will update 12 hours from now, at which point you may make further swaps.");
                 }
             },
             failure: function(data){
@@ -240,10 +240,10 @@ else{
 $('.toSwap').each(function(){
     var name = $(this).find(".heroEntry");
     if (name.text()[0] == "<"){
-        var message = "This hero is set to be swapped out, it will continue to score points until the swap occurs 24 hours after confirmation"
+        var message = "This hero is set to be swapped out, it will continue to score points until the swap occurs 12 hours after confirmation"
     }
     else{
-        var message = "This hero is set to be swapped in, it will not score points until the swap occurs 24 hours after confirmation"
+        var message = "This hero is set to be swapped in, it will not score points until the swap occurs 12 hours after confirmation"
     }
     name.attr('title', message);
     name.css('cursor', 'help');
