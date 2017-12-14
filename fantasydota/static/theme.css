@@ -248,3 +248,11 @@ img {margin-bottom: 0px;
  .matchRow {
     cursor: pointer;
  }
+
+ .achievementBlock {
+    margin-top: 20px;
+ }
+
+ .fa-shield {
+    color: Gold;
+ }

@@ -269,7 +269,10 @@ def profile(request):
     session = DBSession()
     shown_user_id = request.params.get('user', authenticated_userid(request))
     user_xp = session.query(UserXp).filter(UserXp.user_id == shown_user_id).first()
-    user_achievements = session.query(UserAchievement).filter(UserAchievement.user_id == shown_user_id).all()
+    user_achievements = [
+        x[0] for x in session.query(UserAchievement.achievement)
+        .filter(UserAchievement.user_id == shown_user_id).all()
+    ]
     achievements = session.query(Achievement).all()
     shown_user = session.query(User).filter(User.id == shown_user_id).first()
     return all_view_wrapper(

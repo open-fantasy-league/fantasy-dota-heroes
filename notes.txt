@@ -1,12 +1,6 @@
 Need to:
-+ have transfers be open for late starters (can we have team created/transfer go through hours later like with swaps?)
-+ add toggle for leaderboards to show late starters
-+ add message saying cant make transfers until swaps go through, hence greyed out
-+ hyperlink for matches in daily
-+ add pro circuit tournaments so get data retrieves results
 -+ test notification/achievement system
 - make sure weekends worth double
-+ handle uniques league to game, so only need to store league cookie, not game
 - add charity stuff
 - migrate user script
 - check about updating Sale so stores swaps as well
@@ -17,3 +11,9 @@ Need to:
 - sweetAlert callback to reload page when confirmTransfer/swaps
 - profile page
 - update highest positions
+- dont run update script if it's already running (maybe best wait then kill incase zombie?)
+- check if need switch from waitress to gunicorn or something
+- handle days when no games
+- have users on leaderboard hyperlink to profile
+-/ have profile available on leaderboard hovers
+-/ show multiple achievements

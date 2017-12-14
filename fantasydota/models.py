@@ -460,7 +460,7 @@ class UserXp(Base):
 
     @property
     def level(self):
-        return 1 + 0.097 * (self.xp ** 0.5)
+        return int(1 + 0.097 * (self.xp ** 0.5))
 
     @staticmethod
     def position_xp(position, num_players):

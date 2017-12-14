@@ -138,9 +138,9 @@ ${"period=%s" % period}
                     </td>
                     <td class="heroEntry">
                         <span style="vertical-align:middle">
-                        % if i == 0:
+                        % if i == 0 and league.status == 2:
                           <img src="static/images/dota/trophy.png"/>
-                          % endif
+                            % endif
                         ${player.username}</span>
                     % if len(player_heroes) > i:
                         <span class="hero_images">

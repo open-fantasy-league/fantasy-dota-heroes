@@ -16,7 +16,8 @@ def add_leagues_to_view(return_dict, session, game_code):
 
 
 def add_notifications(return_dict, session, user_id):
-    notifications = session.query(Notification).filter(Notification.user == user_id).filter(Notification.seen.is_(False)).all()
+    notifications = session.query(Notification).filter(Notification.user == user_id)\
+        .filter(Notification.seen.is_(False)).order_by(desc(Notification.id)).limit(10).all()
     return_dict['notifications'] = notifications
     return return_dict
 

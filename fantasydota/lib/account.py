@@ -1,5 +1,6 @@
 import time
-from fantasydota.models import UserAchievement, Achievement, UserXp, LeagueUser, Hero, TeamHero, HeroDay, Notification
+from fantasydota.models import UserAchievement, Achievement, UserXp, LeagueUser, Hero, TeamHero, HeroDay, Notification, \
+    LeagueUserDay
 from sqlalchemy import func
 
 
@@ -89,7 +90,7 @@ def assign_xp_and_weekly_achievements(session, league):
 
 def assign_daily_achievements(session, league, day):
     luser = session.query(LeagueUser).filter(LeagueUser.league == league.id).order_by(LeagueUser.points_rank).first()
-    add_achievement(session, "Daily Winner", luser, '/leaderboard?league=%s&period=%s' % (league.id, day))
+    add_achievement(session, "Daily Win", luser.user_id, '/leaderboard?league=%s&period=%s' % (league.id, day))
 
 
 def swap_for_user(session, user_id):
@@ -110,3 +111,14 @@ def team_swap_all(session, league_id):
         if luser.swap_tstamp < time.time():
             swap_for_user(session, luser.user_id)
             luser.swap_tstamp = None
+
+
+def update_alltime_points_and_highest_daily(session, league):
+    for luser in session.query(LeagueUserDay)\
+            .filter(LeagueUserDay.league == league.id)\
+            .filter(LeagueUserDay.day == league.current_day).all():
+        user_xp = session.query(UserXp).filter(UserXp.user_id == luser.user_id).first()
+        user_xp.all_time_points += luser.points
+        user_xp.highest_daily_pos = min(user_xp.highest_daily_pos, luser.points_rank) if user_xp.highest_daily_pos \
+            else luser.points_rank
+

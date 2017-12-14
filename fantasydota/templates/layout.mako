@@ -34,6 +34,10 @@
         <link rel="stylesheet" type="text/css" href="/static/sweetalert.css">
 
 
+        <script src="https://use.fontawesome.com/93c0882ea6.js"></script>
+
+
+
     </head>
 
     <body id="mySexyBody" class="blue-grey lighten-5">
@@ -41,7 +45,7 @@
         <div id="topBar" class="navbar-fixed">
         <nav>
             <div class="nav-wrapper indigo darken-3">
-                 <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+                 <a href="#" data-activates="mobile-nav" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul class="left hide-on-med-and-down">
             <li id="teamBtn" class="col s1">
                 <a href="/team">Team</a>
@@ -79,7 +83,7 @@
                         % endfor
                 </ul>
                 <li class="col s2">
-                <a id="notificationButton" class="dropdown-button" data-hover="true" data-beloworigin="true" href="#" data-activates="notificationDropdown">
+                <a id="notificationButton" class="dropdown-button" data-constrainWidth="false" data-hover="true" data-beloworigin="true" href="#" data-activates="notificationDropdown">
                     Notifications ${"(%s)" % len(notifications)}
                     % if len(notifications) > 1:
                         <i class="material-icons right">arrow_drop_down</i>
@@ -87,8 +91,12 @@
                 </a>
                 </li>
                     <ul id="notificationDropdown" class="dropdown-content">
-                        % for notification in notifications:
-                            <li>${notification.message}</li>
+
+                        % for i, notification in enumerate(notifications):
+                            % if i == 0:
+                                <li><a class="clearNotifications center">CLEAR</a></li>
+                            % endif
+                            <li><span><p>${notification.message}</p></span></li>
                         % endfor
                 </ul>
                 <% user_id = authenticated_userid(request) %>
@@ -110,7 +118,7 @@
                 % endif
             </ul>
 
-            <ul class="side-nav" id="mobile-demo">
+            <ul class="side-nav" id="mobile-nav">
                  <li id="leagueBtn" class="col s1">
                     <a href="/team">Team</a>
                 </li>
@@ -126,15 +134,19 @@
                 <div class="divider"></div>
                 % if len(notifications) > 1:
                     <li class="col s2">
-                    <a id="mobileNotificationButton" class="dropdown-button" data-hover="true" data-beloworigin="true" href="#" data-activates="notificationDropdown">
+                    <a id="mobileNotificationButton" class="dropdown-button" data-constrainWidth='false' data-hover="true"
+                       data-beloworigin="true" href="#" data-activates="mobileNotificationDropdown">
                         Notifications ${"(%s)" % len(notifications)}
                         <i class="material-icons right">arrow_drop_down</i>
                     </a>
                     </li>
-                        <ul id="notificationDropdown" class="dropdown-content">
-                            % for notification in notifications:
-                                <li>${notification.message}</li>
-                            % endfor
+                        <ul id="mobileNotificationDropdown" class="dropdown-content">
+                        % for i, notification in enumerate(notifications):
+                            % if i == 0:
+                                <li><a class="clearNotifications center">CLEAR</a></li>
+                            % endif
+                            <li><span><p>${notification.message}</p></span></li>
+                        % endfor
                     </ul>
                 % endif
                 <% user_id = authenticated_userid(request) %>
@@ -222,9 +234,10 @@
       $('.button-collapse').sideNav();
       $('.button-collapse').click(removeOverlay);
 
-      $('#notificationButton').click(function() {
+      $('.clearNotifications').click(function() {
         $.get('/clearNotifications');
       });
+
     })
 </script>
 </html>

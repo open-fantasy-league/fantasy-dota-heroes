@@ -14,25 +14,37 @@
 
 <div>
     <h5>Profile: ${shown_user.username}</h5>
-        <div class="row">
+    <div class="row">
+        <div class="col s3">
             <div class="card-panel">
-                Level: ${user_xp.level or '-'}
-                Xp: ${user_xp.xp}
-                Highest Weekly Placing: ${user_xp.highest_weekly_pos or '-'}
-                Highest Daily Placing: ${user_xp.highest_daily_pos or '-'}
-                All time points
+                <p><strong>Level:</strong> ${user_xp.level or '-'}</p>
+                <p><strong>Xp:</strong> ${user_xp.xp}
+                <p><strong>Highest Weekly:</strong> ${user_xp.highest_weekly_pos or '-'}
+                <p><strong>Highest Daily:</strong> ${user_xp.highest_daily_pos or '-'}
+                <p><strong>All time points:</strong> ${user_xp.all_time_points}
             </div>
         </div>
-        <div class="row">
-            % for achievement in achievements:
-                <div class="col 2">
-                    <div class="card-panel">
-                        <span><strong>${achievement.name}</strong></span>
-                        <span>${achievement.description}</span>
-                        <img class="banIcon" src="/static/images/dota/achievements/${achievement.id}.png" title="${achievement.name}"/>
-                    </div>
+        <div class="col s5 card-panel">
+            <div class="row achievementBlock">
+            % for i, achievement in enumerate(achievements):
+                <div class="col s3">
+                <div class="card-image center">
+                    % if achievement.id in user_achievements:
+                    <img src="/static/images/dota/achievements/${achievement.id}.png" title="${achievement.description}"/>
+                    <i class="fa fa-shield" aria-hidden="true"></i>
+                    <span class="card-title" title="${achievement.description}"><strong>${achievement.name}</strong></span>
+                    % else:
+                    <img class="banIcon" src="/static/images/dota/achievements/${achievement.id}.png" title="${achievement.description}"/>
+                    <span class="card-title" title="${achievement.description}">${achievement.name}</span>
+                    % endif
                 </div>
+                </div>
+                % if (i + 1) % 4 == 0:
+                    </div>
+                    <div class="row">
+                % endif
             % endfor
+            </div>
         </div>
     </div>
 </div>
