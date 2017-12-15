@@ -267,7 +267,7 @@ def done(request):
 @view_config(route_name="profile", renderer="../templates/profile.mako")
 def profile(request):
     session = DBSession()
-    shown_user_id = request.params.get('user', authenticated_userid(request))
+    shown_user_id = int(request.params.get('user', authenticated_userid(request)))
     user_xp = session.query(UserXp).filter(UserXp.user_id == shown_user_id).first()
     user_achievements = [
         x[0] for x in session.query(UserAchievement.achievement)

@@ -14,8 +14,8 @@
 
 % if game.code == 'DOTA':
     <div class="row" id="myTeamBlock">
-    <span class="left"><h2>My Team (Credits: <span class="userCredits">${round(userq.money, 1)}</span>)</h2></span>
-    <span class="right"><h2>Total points: <span class="teamPoints">${userq.points}</span></h2></span>
+    <span class="left"><h2>Team (Credits: <span class="userCredits">${round(userq.money, 1)}</span>)</h2></span>
+    <span class="right"><h2>Points: <span class="teamPoints">${userq.points}</span></h2></span>
     <div id="tableContainer">
         <table class="sortable card-table striped centered" id="teamTable">
             <tr style="cursor: pointer">
@@ -53,12 +53,12 @@
 
 <div class="row" id="myReserveBlock">
     % if transfer_open:
-        <span class="left"><h2>My Reserves (Credits: <span class="userReserveCredits">${round(userq.reserve_money, 1)}</span>)</h2></span>
+        <span class="left"><h2>Reserves (Credits: <span class="userReserveCredits">${round(userq.reserve_money, 1)}</span>)</h2></span>
         % if userq.late_start == 1:
             <span class="right"><button type="submit" id="confirmTransfers" class="btn waves-effect waves-light">Confirm Team!</button></span>
         % endif
     % else:
-        <span class="left"><h2>My Reserves</h2></span>
+        <span class="left"><h2>Reserves</h2></span>
         <span class="right"><button type="submit" id="confirmSwaps" class="btn waves-effect waves-light">Confirm Swaps!</button></span>
     % endif
     <div id="tableContainer">
@@ -181,8 +181,8 @@
 </div>
 % elif game.code == 'PUBG':
     <div class="row" id="myTeamBlock">
-    <span class="left"><h2>My Team (Credits: <span class="userCredits">${round(userq.money, 1)}</span>)</h2></span>
-    <span class="right"><h2>Total points: <span class="teamPoints">${userq.points}</span></h2></span>
+    <span class="left"><h2>Team (Credits: <span class="userCredits">${round(userq.money, 1)}</span>)</h2></span>
+    <span class="right"><h2>Points: <span class="teamPoints">${userq.points}</span></h2></span>
     <div id="tableContainer">
         <table class="sortable card-table striped centered" id="teamTable">
             <tr style="cursor: pointer">
@@ -216,9 +216,9 @@
 
 <div class="row" id="myReserveBlock">
     % if transfer_open:
-        <span class="left"><h2>My Reserves (Credits: <span class="userReserveCredits">${round(userq.reserve_money, 1)}</span>)</h2></span>
+        <span class="left"><h2>Reserves (Credits: <span class="userReserveCredits">${round(userq.reserve_money, 1)}</span>)</h2></span>
     % else:
-        <span class="left"><h2>My Reserves</h2></span>
+        <span class="left"><h2>Reserves</h2></span>
     % endif
     <div id="tableContainer">
         <table class="sortable card-table striped centered" id="reserveTable">

@@ -9,10 +9,10 @@ from fantasydota.models import Result, LeagueUser, League, LeagueUserDay, \
     TeamHero, Game
 
 
-def add_results_to_user(session, userq, userq_day, new_results, league_id, team_size, game_id):
+def add_results_to_user(session, userq, userq_day, new_results, league, team_size, game_id):
     picks = 0
     bans = 0
-    heroes = [x[0] for x in session.query(TeamHero.hero_id).filter(and_(TeamHero.league == league_id,
+    heroes = [x[0] for x in session.query(TeamHero.hero_id).filter(and_(TeamHero.league == league.id,
                                                          TeamHero.user_id == userq.user_id)).filter(
             TeamHero.active.is_(True)).all()]
     hero_count = len(heroes)
@@ -42,9 +42,9 @@ def add_results_to_user(session, userq, userq_day, new_results, league_id, team_
                     userq.bans += 1
                     userq_day.bans += 1
                 if game_id == 1:
-                    to_add = MULTIPLIER * ((0.5 ** (team_size - hero_count)) * Result.result_to_value(res))
+                    to_add = league.multiplier * ((0.5 ** (team_size - hero_count)) * Result.result_to_value(res))
                 elif game_id == 2:
-                    to_add = MULTIPLIER * ((0.5 ** (team_size - hero_count)) * Result.result_to_value_pubg(res))
+                    to_add = league.multiplier * ((0.5 ** (team_size - hero_count)) * Result.result_to_value_pubg(res))
                 print "addin %s points to %s" % (to_add, user_id)
                 userq.points += to_add
                 userq_day.points += to_add
@@ -67,7 +67,7 @@ def update_league_points(session, league):
                                                              LeagueUserDay.league == userq.league,
                                                              LeagueUserDay.day == league.current_day
                                                              )).first()
-        add_results_to_user(session, userq, userq_day, new_results, league_id, team_size, game)
+        add_results_to_user(session, userq, userq_day, new_results, league, team_size, game)
 
     for res in new_results:
         res.applied = 2

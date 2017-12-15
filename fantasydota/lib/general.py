@@ -1,3 +1,4 @@
+from fantasydota.lib.league import default_league
 from fantasydota.models import Game, Notification, League
 from pyramid.security import authenticated_userid
 from sqlalchemy import desc
@@ -22,9 +23,9 @@ def add_notifications(return_dict, session, user_id):
     return return_dict
 
 
-def all_view_wrapper(return_dict, session, request):
+def all_view_wrapper(return_dict, session, request, league_id=None):
     user_id = authenticated_userid(request)
-    league_id = request.league
+    league_id = league_id or get_league(request, session)
     # TODO can this be joined/more efficient?
     game_id = session.query(League.game).filter(League.id == league_id).first()[0]
     game = session.query(Game).filter(Game.id == game_id).first()
@@ -41,8 +42,9 @@ def get_game(request):
     return request.cookies.get('game', 'DOTA')
 
 
-def get_league(request):
-    return request.cookies.get('league', 1)
+def get_league(request, session):
+
+    return request.cookies.get('league', default_league(session, 1))
 
 
 def match_link(match_id):

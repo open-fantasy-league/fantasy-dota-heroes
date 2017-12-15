@@ -77,7 +77,7 @@ def main(global_config, **settings):
 
     config.add_request_method('.auth.get_user', 'user', reify=True)  # user or username? should it start with .?
     # config.add_request_method('.lib.general.get_game', 'game', reify=True)
-    config.add_request_method('.lib.general.get_league', 'league', reify=True)
+    #config.add_request_method('.lib.general.get_league', 'league', reify=True)
 
     config.add_renderer('json', custom_json_renderer())
     config.add_static_view('static', 'static', cache_max_age=3600)

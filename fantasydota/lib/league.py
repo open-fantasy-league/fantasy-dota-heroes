@@ -16,6 +16,10 @@ def next_league(session, game_id):
     return session.query(League).filter(League.status == 0).filter(League.game == game_id).first()
 
 
+def default_league(session, game_id):
+    return in_progress_league(session, game_id) or next_league(session, game_id)
+
+
 def close_league(session, game_id):
     old_league = session.query(League).filter(League.game == game_id).filter(League.status == 1).first()
     old_league.status = 2

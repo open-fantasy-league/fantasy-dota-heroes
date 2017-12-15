@@ -8,7 +8,7 @@ from sqlalchemy import desc
 from sqlalchemy import or_
 
 from fantasydota import DBSession
-from fantasydota.lib.general import all_view_wrapper
+from fantasydota.lib.general import all_view_wrapper, get_league
 from fantasydota.lib.herolist import heroes as herolist
 from fantasydota.models import Friend, LeagueUser, LeagueUserDay, TeamHero, League, Match, Result, TeamHeroHistoric, \
     HeroDay, Hero, Game
@@ -17,7 +17,7 @@ from fantasydota.models import Friend, LeagueUser, LeagueUserDay, TeamHero, Leag
 @view_config(route_name='leaderboard', renderer='../templates/leaderboard.mako')
 def leaderboard(request):
     session = DBSession()
-    league_id = int(request.params.get('league', request.league))
+    league_id = int(request.params.get('league', get_league(request, session)))
     league = session.query(League).filter(League.id == league_id).first()
     game = session.query(Game).filter(Game.id == league.game).first()
     user_id = authenticated_userid(request)
@@ -93,13 +93,13 @@ def leaderboard(request):
 
     return_dict = {'user': luser, 'players': players, 'rank_by': rank_by, 'mode': mode, 'other_modes': other_modes, 'period': "tournament",
             'player_heroes': player_heroes, 'league': league, 'game': game, 'show_late_start': show_late_start}
-    return all_view_wrapper(return_dict, session, request)
+    return all_view_wrapper(return_dict, session, request, league_id=league_id)
 
 
 @view_config(route_name='daily', renderer='../templates/daily.mako')
 def daily(request):
     session = DBSession()
-    league_id = int(request.params.get('league', request.league))
+    league_id = int(request.params.get('league', get_league(request, session)))
     league = session.query(League).filter(League.id == league_id).first()
     game = session.query(Game).filter(Game.id == league.game).first()
     user_id = authenticated_userid(request)
@@ -162,7 +162,7 @@ def daily(request):
             if period == league.current_day:
                 for hero in session.query(TeamHero).filter(
                         and_(TeamHero.user_id == player.user_id, TeamHero.league == league_id)).\
-                        filter(TeamHero.reserve.is_(False)).all():
+                        filter(TeamHero.active.is_(True)).all():
                     if game.code == 'DOTA':
                         heroes.append(hero.hero_name)
                     elif game.code == 'PUBG':
@@ -212,4 +212,4 @@ def daily(request):
         'user': luser, 'players': players, 'rank_by': rank_by, 'mode': mode, 'period': period, 'game': game,
         'player_heroes': player_heroes, 'league': league, 'match_data': match_data, 'other_modes': other_modes,
     }
-    return all_view_wrapper(return_dict, session, request)
+    return all_view_wrapper(return_dict, session, request, league_id=league_id)

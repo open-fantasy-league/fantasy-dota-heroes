@@ -85,7 +85,6 @@ def assign_xp_and_weekly_achievements(session, league):
         if not luser.late_start:
             user_xp.highest_weekly_pos = max(user_xp.highest_weekly_pos, luser.points_rank)
         user_xp.xp += UserXp.position_xp(i, len(lusers))
-        user_xp.all_time_points += luser.points
 
 
 def assign_daily_achievements(session, league, day):

@@ -12,8 +12,8 @@ from fantasydota.models import League
 from fantasydota.lib.session_utils import make_session
 
 
-def main():
-    session = make_session()
+def update_all(session=None):
+    session = session or make_session()
     #parser = argparse.ArgumentParser()
     #parser.add_argument("league", type=int, help="league id")
     #args = parser.parse_args()
@@ -34,4 +34,4 @@ def main():
         transaction.commit()
 
 if __name__ == "__main__":
-    main()
+    update_all()

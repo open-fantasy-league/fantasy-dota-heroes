@@ -137,11 +137,11 @@ ${"period=%s" % period}
                     <td class="positionEntry">${i+1} ${progress_arrow(i, player, rank_by) if period == "tournament" and mode != "hero" else ""}
                     </td>
                     <td class="heroEntry">
-                        <span style="vertical-align:middle">
+                        <a href="${'/profile?user=%s' % player.user_id if mode != 'hero' else ''}"><span style="vertical-align:middle">
                         % if i == 0 and league.status == 2:
                           <img src="static/images/dota/trophy.png"/>
                             % endif
-                        ${player.username}</span>
+                            ${player.username}</span></a>
                     % if len(player_heroes) > i:
                         <span class="hero_images">
                         % for hero in player_heroes[i]:

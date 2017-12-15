@@ -17,7 +17,7 @@
     <div class="row">
         <div class="col s3">
             <div class="card-panel">
-                <p><strong>Level:</strong> ${user_xp.level or '-'}</p>
+                <p><strong>ePenis Size:</strong> ${user_xp.level or '-'}" inches</p>
                 <p><strong>Xp:</strong> ${user_xp.xp}
                 <p><strong>Highest Weekly:</strong> ${user_xp.highest_weekly_pos or '-'}
                 <p><strong>Highest Daily:</strong> ${user_xp.highest_daily_pos or '-'}
@@ -28,14 +28,16 @@
             <div class="row achievementBlock">
             % for i, achievement in enumerate(achievements):
                 <div class="col s3">
-                <div class="card-image center">
+                <div class="card-image center pointerCursor">
                     % if achievement.id in user_achievements:
                     <img src="/static/images/dota/achievements/${achievement.id}.png" title="${achievement.description}"/>
-                    <i class="fa fa-shield" aria-hidden="true"></i>
-                    <span class="card-title" title="${achievement.description}"><strong>${achievement.name}</strong></span>
+                    <span class="card-title" title="${achievement.description}">
+                        <i class="material-icons">info</i>${achievement.name}<i class="material-icons awardIcon">stars</i>
+                    </span>
                     % else:
                     <img class="banIcon" src="/static/images/dota/achievements/${achievement.id}.png" title="${achievement.description}"/>
-                    <span class="card-title" title="${achievement.description}">${achievement.name}</span>
+                    <span class="card-title" title="${achievement.description}">
+                        <i class="material-icons">info</i>${achievement.name}</span>
                     % endif
                 </div>
                 </div>
@@ -48,3 +50,12 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(".pointerCursor").each(function(){
+        var elem = $(this);
+        elem.click(function() {
+            swal(elem.find('img').attr('title'), '', 'info')
+        })
+    });
+</script>

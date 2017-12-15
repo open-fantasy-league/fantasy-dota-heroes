@@ -30,8 +30,9 @@
         <!-- Should move these links just to the pages where they belong -->
         <script src="/static/sorttable.js"></script>
 
-        <script src="/static/sweetalert.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="/static/sweetalert.css">
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <!--<script src="/static/sweetalert.min.js"></script>-->
+        <!--<link rel="stylesheet" type="text/css" href="/static/sweetalert.css">-->
 
 
         <script src="https://use.fontawesome.com/93c0882ea6.js"></script>
@@ -61,16 +62,7 @@
                 </li>
             </ul>
             <ul class="right hide-on-med-and-down">
-                <li>
-                    <li>
-                        <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="#" data-activates="gameDropdown">Game<i class="material-icons right">arrow_drop_down</i></a>
-                    </li>
-                    <ul id="gameDropdown" class="dropdown-content">
-                        % for game in other_games:
-                            <li><a href="/changeGame?game=${game.code}">${game.name}</a></li>
-                        % endfor
-                    </ul>
-                </li>
+                <li><a href="/profile">Profile</a></li>
                 <li class="col s2">
                 <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="#" data-activates="leagueDropdown">
                     Week
@@ -99,7 +91,6 @@
                             <li><span><p>${notification.message}</p></span></li>
                         % endfor
                 </ul>
-                <% user_id = authenticated_userid(request) %>
                 % if authenticated_userid(request) is None:
                     <li id="homeLink" class="col s2">
                         <a href="${request.route_path('login')}">Login/Create Profile</a>
@@ -112,7 +103,6 @@
                     </li>
                         <ul id="accountDropdown" class="dropdown-content">
                             <li><a href="${request.route_path('logout')}">Logout</a></li>
-                            <li><a href="/profile?user=${user_id}">Profile</a></li>
                             <li><a href="/accountSettings">Settings</a></li>
                         </ul>
                 % endif
@@ -132,6 +122,7 @@
                     <a href="/rules">Rules</a>
                 </li>
                 <div class="divider"></div>
+                <li><a href="/profile">Profile</a></li>
                 % if len(notifications) > 1:
                     <li class="col s2">
                     <a id="mobileNotificationButton" class="dropdown-button" data-constrainWidth='false' data-hover="true"
@@ -163,20 +154,9 @@
                     </li>
                         <ul id="mobileAccountDropdown" class="dropdown-content">
                             <li><a href="${request.route_path('logout')}">Logout</a></li>
-                            <li><a href="/profile?user=${user_id}">Profile</a></li>
                             <li><a href="/accountSettings">Settings</a></li>
                         </ul>
                 % endif
-                <li>
-                    <li>
-                        <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="#" data-activates="mobileGameDropdown">Game<i class="material-icons right">arrow_drop_down</i></a>
-                    </li>
-                    <ul id="mobileGameDropdown" class="dropdown-content">
-                        % for game in other_games:
-                            <li><a href="/changeGame?game=${game.code}">${game.name}</a></li>
-                        % endfor
-                    </ul>
-                </li>
                 <li class="col s2">
                     <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="#" data-activates="mobileLeagueDropdown">
                         Week
@@ -236,6 +216,7 @@
 
       $('.clearNotifications').click(function() {
         $.get('/clearNotifications');
+        window.location.reload(false);
       });
 
     })

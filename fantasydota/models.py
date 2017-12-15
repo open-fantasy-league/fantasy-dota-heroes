@@ -120,6 +120,7 @@ class League(Base):
     days = Column(Integer)
     stage1_start = Column(Integer)
     stage2_start = Column(Integer)
+    start = Column(BigInteger)
     url = Column(String(150))
 
     def __init__(self, game, id, name, days, stage1_start, stage2_start, url):
@@ -130,6 +131,10 @@ class League(Base):
         self.stage1_start = stage1_start
         self.stage2_start = stage2_start
         self.url = url
+
+    @property
+    def multiplier(self):
+        return 2 if self.current_day >= 4 else 1
     
 
 class LeagueUser(Base):
@@ -327,12 +332,12 @@ class Result(Base):
             "b1": 1,
             "b2": 2,
             "b3": 4,
-            "p1l": -6,
-            "p2l": -5,
-            "p3l": -3,
-            "p1w": 8,
-            "p2w": 10,
-            "p3w": 14,
+            "p1l": -5,
+            "p2l": -4,
+            "p3l": -2,
+            "p1w": 9,
+            "p2w": 11,
+            "p3w": 15,
         }
         return points_dict[result_str]
 

@@ -138,7 +138,9 @@ ${"period=%s" % period}
                     <td class="positionEntry">${i+1} ${progress_arrow(i, player, rank_by) if period == "tournament" else ""}
                     </td>
                     <td class="heroEntry">
+                        <a href="${'/profile?user=%s' % player.user_id if mode != 'hero' else ''}">
                         ${player.username}
+                        </a>
                     % if len(player_heroes) > i and (not league.transfer_open or league.current_day != period):
                         <span class="hero_images">
                         % for hero in player_heroes[i]:
@@ -176,7 +178,7 @@ $( document ).ready(function() {
     <div class="card-content" id="matchesCard">
         <h2>Matches</h2>
         % for match in match_data:
-        <div class="section matchRow" id="match-${match['match_id']}">
+        <div class="section pointerCursor" id="match-${match['match_id']}">
         <div class="row">
             <!--<img src="/static/images/dota/trophy.png" class=${"hide" if not match["radiant_win"] else ""} />-->
             <span class="radiantTeam">

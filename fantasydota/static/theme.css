@@ -245,7 +245,7 @@ img {margin-bottom: 0px;
   filter: grayscale(100%);
  }
 
- .matchRow {
+ .pointerCursor {
     cursor: pointer;
  }
 
@@ -253,6 +253,6 @@ img {margin-bottom: 0px;
     margin-top: 20px;
  }
 
- .fa-shield {
+ .awardIcon {
     color: Gold;
  }

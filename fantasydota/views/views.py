@@ -100,7 +100,7 @@ def index(request):
 
 
 @view_config(route_name='nopubg', renderer='../templates/temp/nopubg.mako')
-def view_rules(request):
+def nopubg(request):
     session = DBSession()
     return all_view_wrapper(
         {}, session, request

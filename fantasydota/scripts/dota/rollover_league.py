@@ -1,3 +1,4 @@
+import time
 import transaction
 from fantasydota.lib.league import close_league
 from fantasydota.lib.session_utils import make_session
@@ -17,7 +18,8 @@ def rollover_league():
             close_league(session, 1)
         session.query(League).filter(League.game == 1).filter(League.status == 0).update({League.status: 1,
                                                                                           League.transfer_open: False,
-                                                                                          League.swap_open: True
+                                                                                          League.swap_open: True,
+                                                                                          League.start: time.time()
                                                                                           })
         # recalibration occurs in add_league
         add_league(1, new_id, new_name, 7, 5, 9, "", session=session)

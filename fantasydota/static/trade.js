@@ -24,10 +24,13 @@ else{
                     var success = data.success,
                     message = data.message;
                     if (!success){
-                        sweetAlert(message);
+                        sweetAlert(message, '', 'error');
                     }
                     else{
-                        sweetAlert("Transaction completed");
+                        swal({
+                            title: "Transaction completed",
+                            icon: "success"
+                        });
                         if (data.action == "sell"){
                             reserve ? $("#" + data.hero + "ReserveRow").remove() : $("#" + data.hero + "TeamRow").remove();
                         }
@@ -39,7 +42,7 @@ else{
                 },
                 failure: function(data){
                     $("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).removeAttr("disabled");});
-                    sweetAlert("Something went wrong. oops!");
+                    sweetAlert("Something went wrong. oops!", '', 'error');
                 }
             });
         }
@@ -91,15 +94,21 @@ else{
                 var success = data.success,
                 message = data.message;
                 if (!success){
-                    sweetAlert(message);
+                    sweetAlert(message, '', 'error');
                 }
                 else{
-                    sweetAlert("Team locked in and ready to start scoring! (Note: Will not score points on matches currently in progress)");
+                    swal({
+                     title: "Team locked in and ready to start scoring!",
+                     text: "Note: Will not score points on matches currently in progress",
+                      icon: "success"
+                    }).then(function(){
+                        window.location.reload(false);
+                    });
                 }
             },
             failure: function(data){
                 $("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).removeAttr("disabled");})
-                sweetAlert("Something went wrong. oops!");
+                sweetAlert("Something went wrong. oops!", '', 'error');
             }
         });
     });
@@ -128,10 +137,13 @@ else{
                 var success = data.success,
                 message = data.message;
                 if (!success){
-                    sweetAlert(message);
+                    sweetAlert(message, '', 'error');
                 }
                 else{
-                    sweetAlert("Transaction completed");
+                    swal({
+                        title: "Transaction completed",
+                        icon: "success"
+                    });
                     if (data.action == "sell"){
                         var toSwap = !$("#" + data.hero + "TeamRow").hasClass('toSwap');
                         $("#" + data.hero + "TeamRow").remove();
@@ -162,7 +174,7 @@ else{
             },
             failure: function(data){
                 $("[name=swapInHero]").add("[name=swapOutHero]").add("#confirmSwaps").each(function(){$(this).removeAttr("disabled");})
-                sweetAlert("Something went wrong. oops!");
+                sweetAlert("Something went wrong. oops!", '', 'error');
             }
         });
     }
@@ -223,15 +235,21 @@ else{
                 var success = data.success,
                 message = data.message;
                 if (!success){
-                    sweetAlert(message);
+                    sweetAlert(message, '', 'error');
                 }
                 else{
-                    sweetAlert("Swaps locked in! Your active team will update 12 hours from now, at which point you may make further swaps.");
+                    swal({
+                    title: "Swaps locked in!",
+                     text: "Your active team will update 12 hours from now, at which point you may make further swaps",
+                      icon: "success"
+                    }).then(function(){
+                        window.location.reload(false);
+                    });
                 }
             },
             failure: function(data){
                 $("[name=swapInHero]").add("[name=swapOutHero]").each(function(){$(this).removeAttr("disabled");})
-                sweetAlert("Something went wrong. oops!");
+                sweetAlert("Something went wrong. oops!", '', 'error');
             }
         });
     });

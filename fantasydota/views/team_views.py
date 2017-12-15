@@ -9,7 +9,7 @@ from pyramid.view import view_config
 from sqlalchemy import and_
 
 from fantasydota import DBSession
-from fantasydota.lib.general import all_view_wrapper
+from fantasydota.lib.general import all_view_wrapper, get_league
 from fantasydota.lib.trade import buy, sell, swap_in, swap_out, get_swap_timestamp
 from fantasydota.models import User, League, LeagueUser, Hero, TeamHero, LeagueUserDay, Game
 from sqlalchemy import desc
@@ -19,7 +19,7 @@ from sqlalchemy import desc
 def view_team(request):
     session = DBSession()
     user_id = authenticated_userid(request)
-    league_id = int(request.params.get('league', request.league))
+    league_id = int(request.params.get('league', get_league(request, session)))
     league = session.query(League).filter(League.id == league_id).first()
     game = session.query(Game).filter(Game.id == league.game).first()
     if game.code == 'DOTA':
@@ -175,7 +175,7 @@ def view_team(request):
         seconds_until_swap = userq.swap_tstamp - time.time()
         minutes = seconds_until_swap // 60
         return_dict['time_until_swap'] = divmod(minutes, 60)
-    return_dict = all_view_wrapper(return_dict, session, request)
+    return_dict = all_view_wrapper(return_dict, session, request, league_id=league_id)
     result = render('fantasydota:templates/team.mako',
                     return_dict,
                     request=request)

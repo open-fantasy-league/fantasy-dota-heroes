@@ -19,12 +19,13 @@ def create_tables(DBSession, overwrite_empty_game_check=False):
                 ('Win King', 'Finish the week with the most wins', 90),
                 ('Ban King', 'Finish the week with the most bans', 50),
                 ('Pick King', 'Finish the week with the most picks', 75),
-                ('Top Picker', 'Own the highest points scoring hero this week', 100),
-                ('Shrewd Investor', 'Own the highest points per cost ratio hero this week', 140),
-                ('Full House', 'Your whole main team is either picked or banned', 280),
-                ('Three of a Kind', '3 of your main team is picked', 200),
-                ('HAHAHA... AHAHAHA HAHAHAHA', 'Finish week with negative points', 50)
+                ('Top Picker', 'Own the highest points scoring hero of the week', 100),
+                ('Shrewd Investor', 'Own the highest points per cost ratio hero of the week', 140),
+                ('Full House', 'Your whole main team is either picked or banned in a single game', 280),
+                ('Three of a Kind', '3 of your main team is picked in a single game', 200),
+                ('HAHAHA... AHAHAHA HAHAHAHA', 'Finish the week with negative points', 50)
             ]
+            session.flush()
             for achievement in achievements:
                 new_achievement = Achievement(1, achievement[0], achievement[1], achievement[2])
                 session.add(new_achievement)

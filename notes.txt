@@ -1,19 +1,19 @@
 Need to:
--+ test notification/achievement system
-- make sure weekends worth double
-- add charity stuff
++ test notification/achievement system
++ make sure weekends worth double
+-/ add charity stuff
 - migrate user script
 - check about updating Sale so stores swaps as well
-- update rules/faq to talk about late starting
-- have default league be latest week
++ update rules/faq to talk about late starting
++ have default league be latest week
 - handle change league reloading with query param
 - check string/int-ness of league cookie
-- sweetAlert callback to reload page when confirmTransfer/swaps
-- profile page
-- update highest positions
-- dont run update script if it's already running (maybe best wait then kill incase zombie?)
++ sweetAlert callback to reload page when confirmTransfer/swaps
++ profile page
++ update highest positions
++ dont run update script if it's already running (maybe best wait then kill incase zombie?)
 - check if need switch from waitress to gunicorn or something
-- handle days when no games
-- have users on leaderboard hyperlink to profile
++ handle days when no games
++ have users on leaderboard hyperlink to profile
 -/ have profile available on leaderboard hovers
 -/ show multiple achievements
