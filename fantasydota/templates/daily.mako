@@ -77,30 +77,27 @@ ${"period=%s" % period}
 </div>
 % if game.code == 'DOTA':
 <div class="row">
-<div id="leaderboardBlock" class="col s6">
+<div id="leaderboardBlock" class="col s12 m6">
     <nav>
     <div class="nav-wrapper teal darken-2">
         <ul class="left">
-            <li class=${"active" if rank_by=="points" else ""}>
-                <a id="pointsBtn" href="/daily?rank_by=points&mode=${mode}&${getTime(period)}">
-                    Points
-                </a>
+            <li>
+                <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="" data-activates="rankbyDropdown">${rank_by.title()}<i class="material-icons right">arrow_drop_down</i></a>
             </li>
-            <li class=${"active" if rank_by=="wins" else ""}>
-                <a id="winsBtn" href="/daily?rank_by=wins&mode=${mode}&${getTime(period)}">
-                    Wins
-                </a>
-            </li>
-            <li class=${"active" if rank_by=="picks" else ""}>
-                <a id="picksBtn" href="/daily?rank_by=picks&mode=${mode}&${getTime(period)}">
-                    Picks
-                </a>
-            </li>
-            <li class=${"active" if rank_by=="bans" else ""}>
-                <a id="bansBtn" href="/daily?rank_by=bans&mode=${mode}&${getTime(period)}">
-                    Bans
-                </a>
-            </li>
+            <ul id="rankbyDropdown" class="dropdown-content">
+                % if rank_by != "points":
+                    <li><a href="/leaderboard?rank_by=points&mode=${mode}">Points</a></li>
+                % endif
+                % if rank_by != "wins":
+                    <li><a href="/leaderboard?rank_by=wins&mode=${mode}">Wins</a></li>
+                % endif
+                % if rank_by != "picks":
+                    <li><a href="/leaderboard?rank_by=picks&mode=${mode}">Picks</a></li>
+                % endif
+                % if rank_by != "bans":
+                    <li><a href="/leaderboard?rank_by=bans&mode=${mode}">Bans</a></li>
+                % endif
+            </ul>
 
             <li>
                 <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="" data-activates="modeDropdown">${mode.title()}<i class="material-icons right">arrow_drop_down</i></a>
@@ -173,7 +170,7 @@ $( document ).ready(function() {
 
 })
 </script>
-<div id="matchesBlock" class="col s6">
+<div id="matchesBlock" class="col s12 m6">
     <div class="card">
     <div class="card-content" id="matchesCard">
         <h2>Matches</h2>

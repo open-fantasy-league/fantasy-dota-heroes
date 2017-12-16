@@ -19,3 +19,4 @@ Need to:
 -/ have profile available on leaderboard hovers
 -/ show multiple achievements
 + mobile friendly
++ group points/wins/rank/picks into one leaderboard dropdown

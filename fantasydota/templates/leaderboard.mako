@@ -72,35 +72,32 @@ ${"period=%s" % period}
 </%def>
 
 <div class="row">
-    <h2>${rank_by.title()} (${period.title() if period == "tournament" else "Day %d" % (int(period) + 1)})
+    <h2>Weekly
         <a class="right" href="${league.url}" target="_blank">${league.name}</a></h2>
 </div>
 % if game.code == 'DOTA':
 <div class="row">
-<div id="leaderboardBlock" class="col s7">
+<div id="leaderboardBlock" class="col m7 s12">
     <nav>
     <div class="nav-wrapper teal darken-2">
         <ul class="left">
-            <li class=${"active" if rank_by=="points" else ""}>
-                <a id="pointsBtn" href="/leaderboard?rank_by=points&mode=${mode}&${getTime(period)}">
-                    Points
-                </a>
+            <li>
+                <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="" data-activates="rankbyDropdown">${rank_by.title()}<i class="material-icons right">arrow_drop_down</i></a>
             </li>
-            <li class=${"active" if rank_by=="wins" else ""}>
-                <a id="winsBtn" href="/leaderboard?rank_by=wins&mode=${mode}&${getTime(period)}">
-                    Wins
-                </a>
-            </li>
-            <li class=${"active" if rank_by=="picks" else ""}>
-                <a id="picksBtn" href="/leaderboard?rank_by=picks&mode=${mode}&${getTime(period)}">
-                    Picks
-                </a>
-            </li>
-            <li class=${"active" if rank_by=="bans" else ""}>
-                <a id="bansBtn" href="/leaderboard?rank_by=bans&mode=${mode}&${getTime(period)}">
-                    Bans
-                </a>
-            </li>
+            <ul id="rankbyDropdown" class="dropdown-content">
+                % if rank_by != "points":
+                    <li><a href="/leaderboard?rank_by=points&mode=${mode}">Points</a></li>
+                % endif
+                % if rank_by != "wins":
+                    <li><a href="/leaderboard?rank_by=wins&mode=${mode}">Wins</a></li>
+                % endif
+                % if rank_by != "picks":
+                    <li><a href="/leaderboard?rank_by=picks&mode=${mode}">Picks</a></li>
+                % endif
+                % if rank_by != "bans":
+                    <li><a href="/leaderboard?rank_by=bans&mode=${mode}">Bans</a></li>
+                % endif
+            </ul>
             <li>
                 <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="" data-activates="modeDropdown">${mode.title()}<i class="material-icons right">arrow_drop_down</i></a>
             </li>
@@ -248,7 +245,7 @@ $( document ).ready(function() {
     });
 })
 </script>
-<div id="friendBlock" class="col s5">
+<div id="friendBlock" class="col s12 m5">
     <div class="switch">
         <label>
           Off
