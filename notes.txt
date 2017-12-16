@@ -6,8 +6,8 @@ Need to:
 - check about updating Sale so stores swaps as well
 + update rules/faq to talk about late starting
 + have default league be latest week
-- handle change league reloading with query param
-- check string/int-ness of league cookie
++ handle change league reloading with query param
++ check string/int-ness of league cookie
 + sweetAlert callback to reload page when confirmTransfer/swaps
 + profile page
 + update highest positions
@@ -15,5 +15,7 @@ Need to:
 - check if need switch from waitress to gunicorn or something
 + handle days when no games
 + have users on leaderboard hyperlink to profile
+- have fixed rollover times
 -/ have profile available on leaderboard hovers
 -/ show multiple achievements
++ mobile friendly

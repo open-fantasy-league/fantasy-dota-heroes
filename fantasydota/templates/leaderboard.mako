@@ -259,11 +259,10 @@ $( document ).ready(function() {
     </div>
     % if game.code == "DOTA":
     <div class="card-panel">
-    <p>2x points multiplier for day 2</p>
-	<p>4x points multiplier for finals day</p>
-        <p>Results updated ~2 minutes after match ends</p>
+    <p>2x points multiplier for weekend</p>
+        <p>League ends 6AM GMT Monday</p>
+        <p>Results updated ~1 minute after match ends</p>
         <p><a href="https://discord.gg/MAH7EEv" target="_blank">Discord channel for suggestions/improvements</a></p>
-        <p>Statistics provided by <a href="https://www.stratz.com" target="_blank">Stratz Esports <img src="/static/images/dota/stratz_icon.png"/></a></p>
     </div>
     % elif game.code == "PUBG":
         <div class="card-panel">

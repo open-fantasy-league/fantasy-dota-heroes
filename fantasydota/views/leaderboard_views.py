@@ -14,6 +14,7 @@ from fantasydota.models import Friend, LeagueUser, LeagueUserDay, TeamHero, Leag
     HeroDay, Hero, Game
 
 
+@view_config(route_name='leaderboard_optional', renderer='../templates/leaderboard.mako')
 @view_config(route_name='leaderboard', renderer='../templates/leaderboard.mako')
 def leaderboard(request):
     session = DBSession()

@@ -1,4 +1,5 @@
 import datetime
+import re
 
 from fantasydota.lib.general import all_view_wrapper
 from fantasydota.models import (
@@ -43,7 +44,7 @@ def view_rules(request):
 @view_config(route_name='change_league')
 def change_league(request):
     # https://userlinux.net/pyramid-set-cookie-returning-httpfound.html
-    response = HTTPFound(location=request.environ['HTTP_REFERER'])
+    response = HTTPFound(location=re.sub(r'(.*?)league=\d+(.*?)', r'\1\2', request.environ['HTTP_REFERER']))
     response.set_cookie('league', value=request.params.get('league', 1), max_age=315360000)
     return response
 

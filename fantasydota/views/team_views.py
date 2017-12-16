@@ -15,9 +15,11 @@ from fantasydota.models import User, League, LeagueUser, Hero, TeamHero, LeagueU
 from sqlalchemy import desc
 
 
+@view_config(route_name='view_team_optional', renderer='../templates/team.mako')
 @view_config(route_name='view_team', renderer='../templates/team.mako')
 def view_team(request):
     session = DBSession()
+    # request.matchdict.get('game')
     user_id = authenticated_userid(request)
     league_id = int(request.params.get('league', get_league(request, session)))
     league = session.query(League).filter(League.id == league_id).first()

@@ -17,7 +17,7 @@ def next_league(session, game_id):
 
 
 def default_league(session, game_id):
-    return in_progress_league(session, game_id) or next_league(session, game_id)
+    return (in_progress_league(session, game_id) or next_league(session, game_id)).id
 
 
 def close_league(session, game_id):

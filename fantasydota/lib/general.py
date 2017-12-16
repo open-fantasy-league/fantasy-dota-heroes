@@ -43,8 +43,7 @@ def get_game(request):
 
 
 def get_league(request, session):
-
-    return request.cookies.get('league', default_league(session, 1))
+    return int(request.cookies.get('league', default_league(session, 1)))
 
 
 def match_link(match_id):
