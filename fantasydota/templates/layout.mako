@@ -1,4 +1,5 @@
 <%! from pyramid.security import authenticated_userid %>
+<% user_id = authenticated_userid(request) %>
 
 ## -*- coding: utf-8 -*-
 <!DOCTYPE html>
@@ -33,9 +34,6 @@
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <!--<script src="/static/sweetalert.min.js"></script>-->
         <!--<link rel="stylesheet" type="text/css" href="/static/sweetalert.css">-->
-
-
-        <script src="https://use.fontawesome.com/93c0882ea6.js"></script>
 
 
 
@@ -91,7 +89,7 @@
                             <li><span><p>${notification.message}</p></span></li>
                         % endfor
                 </ul>
-                % if authenticated_userid(request) is None:
+                % if user_id is None:
                     <li id="homeLink" class="col s2">
                         <a href="${request.route_path('login')}">Login/Create Profile</a>
                 % else:
@@ -123,42 +121,8 @@
                 </li>
                 <div class="divider"></div>
                 <li><a href="/profile">Profile</a></li>
-                % if len(notifications) > 1:
-                    <li class="col s2">
-                    <a id="mobileNotificationButton" class="dropdown-button" data-constrainWidth='false' data-hover="true"
-                       data-beloworigin="true" href="#" data-activates="mobileNotificationDropdown">
-                        Notifications ${"(%s)" % len(notifications)}
-                        <i class="material-icons right">arrow_drop_down</i>
-                    </a>
-                    </li>
-                        <ul id="mobileNotificationDropdown" class="dropdown-content">
-                        % for i, notification in enumerate(notifications):
-                            % if i == 0:
-                                <li><a class="clearNotifications center">CLEAR</a></li>
-                            % endif
-                            <li><span><p>${notification.message}</p></span></li>
-                        % endfor
-                    </ul>
-                % endif
-                <% user_id = authenticated_userid(request) %>
-                % if authenticated_userid(request) is None:
-                    <li id="homeLink" class="col s2">
-                        <a href="${request.route_path('login')}">Login/Create Profile</a>
-                    </li>
-                % else:
-                    <li class="col s2">
-                    <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="#" data-activates="mobileAccountDropdown">
-                        Account
-                        <i class="material-icons right">arrow_drop_down</i>
-                    </a>
-                    </li>
-                        <ul id="mobileAccountDropdown" class="dropdown-content">
-                            <li><a href="${request.route_path('logout')}">Logout</a></li>
-                            <li><a href="/accountSettings">Settings</a></li>
-                        </ul>
-                % endif
                 <li class="col s2">
-                    <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="#" data-activates="mobileLeagueDropdown">
+                    <a class="dropdown-button" data-beloworigin="true" href="#" data-activates="mobileLeagueDropdown">
                         Week
                         <i class="material-icons right">arrow_drop_down</i>
                     </a>
@@ -168,6 +132,37 @@
                     <li><a href="/changeLeague?league=${league.id}">${league.name}</a></li>
                     % endfor
                 </ul>
+                <li class="col s2">
+                <a id="mobileNotificationButton" class="dropdown-button" data-constrainWidth='false'
+                   data-beloworigin="true" href="#" data-activates="mobileNotificationDropdown">
+                    Notifications ${"(%s)" % len(notifications)}
+                    <i class="material-icons right">arrow_drop_down</i>
+                </a>
+                </li>
+                    <ul id="mobileNotificationDropdown" class="dropdown-content">
+                    % for i, notification in enumerate(notifications):
+                        % if i == 0:
+                            <li><a class="clearNotifications center">CLEAR</a></li>
+                        % endif
+                        <li><span><p>${notification.message}</p></span></li>
+                    % endfor
+                </ul>
+                % if user_id is None:
+                    <li id="homeLink" class="col s2">
+                        <a href="${request.route_path('login')}">Login/Create Profile</a>
+                    </li>
+                % else:
+                    <li class="col s2">
+                    <a class="dropdown-button" data-beloworigin="true" href="#" data-activates="mobileAccountDropdown">
+                        Account
+                        <i class="material-icons right">arrow_drop_down</i>
+                    </a>
+                    </li>
+                        <ul id="mobileAccountDropdown" class="dropdown-content">
+                            <li><a href="${request.route_path('logout')}">Logout</a></li>
+                            <li><a href="/accountSettings">Settings</a></li>
+                        </ul>
+                % endif
                 </ul>
             </div>
         </nav>

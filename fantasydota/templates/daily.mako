@@ -176,79 +176,122 @@ $( document ).ready(function() {
         <h2>Matches</h2>
         % for match in match_data:
         <div class="section pointerCursor" id="match-${match['match_id']}">
-        <div class="row">
-            <!--<img src="/static/images/dota/trophy.png" class=${"hide" if not match["radiant_win"] else ""} />-->
-            <span class="radiantTeam">
-                % if match["radiant_win"]:
-                <strong>${match["radiant"]}</strong>
-                % else:
-                ${match["radiant"]}
-                % endif
-            </span>
-            <span class="direTeam right">
-                % if not match["radiant_win"]:
-                <strong>${match["dire"]}</strong>
-                % else:
-                ${match["dire"]}
-                % endif
-            </span>
-        </div>
-        <div class="row" style="margin-bottom: 0px">
-            <div class="left">
-                % for hero in match["radiant_picks"]:
-                    <span class="${'positive' if hero['points'] >= 0 else 'negative'}" style="display: inline-block; width: 32px; text-align: center;">
-                        ${'+' if hero["points"] >= 0 else '-'}${hero["points"]}
+            <div class="row">
+                <!--<img src="/static/images/dota/trophy.png" class=${"hide" if not match["radiant_win"] else ""} />-->
+                <span class="radiantTeam">
+                    % if match["radiant_win"]:
+                    <strong>${match["radiant"]}</strong>
+                    % else:
+                    ${match["radiant"]}
+                    % endif
+                </span>
+                <span class="direTeam right hide-on-small-only">
+                    % if not match["radiant_win"]:
+                    <strong>${match["dire"]}</strong>
+                    % else:
+                    ${match["dire"]}
+                    % endif
+                </span>
+            </div>
+            <div class="row" style="margin-bottom: 0px">
+                <div class="left">
+                    % for hero in match["radiant_picks"]:
+                        <span class="${'positive' if hero['points'] >= 0 else 'negative'}" style="display: inline-block; width: 32px; text-align: center;">
+                            ${'+' if hero["points"] >= 0 else '-'}${hero["points"]}
+                        </span>
+                    % endfor
+                </div>
+                <div class="right hide-on-small-only">
+                    % for hero in match["dire_picks"]:
+                        <span class="${'positive' if hero['points'] >= 0 else 'negative'}" style="display: inline-block; width: 32px; text-align: center;">
+                            ${'+' if hero["points"] >= 0 else '-'}${hero["points"]}
+                        </span>
+                    % endfor
+                </div>
+            </div>
+            <div class="row">
+                <div class="left">
+                    % for hero in match["radiant_picks"]:
+                        <img src="/static/images/dota/${hero['hero'].replace(' ', '_')}_icon.png" title="${hero['hero']}" />
+                    % endfor
+                </div>
+                <div class="right hide-on-small-only">
+                    % for hero in match["dire_picks"]:
+                        <img src="/static/images/dota/${hero['hero'].replace(' ', '_')}_icon.png" title="${hero['hero']}"/>
+                    % endfor
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 0px">
+                <div class="left">
+                    % for hero in match["radiant_bans"]:
+                        <img class="banIcon" src="/static/images/dota/${hero['hero'].replace(' ', '_')}_icon.png" title="${hero['hero']}"/>
+                    % endfor
+                </div>
+                <div class="right hide-on-small-only">
+                    % for hero in match["dire_bans"]:
+                        <img class="banIcon" src="/static/images/dota/${hero['hero'].replace(' ', '_')}_icon.png" title="${hero['hero']}"/>
+                    % endfor
+                </div>
+            </div>
+            <div class="row">
+                <div class="left">
+                    % for hero in match["radiant_bans"]:
+                        <span class="${'positive' if hero['points'] >= 0 else 'negative'}" style="display: inline-block; width: 32px; text-align: center;">
+                            ${'+' if hero["points"] >= 0 else '-'}${hero["points"]}
+                        </span>
+                    % endfor
+                </div>
+                <div class="right hide-on-small-only">
+                    % for hero in match["dire_bans"]:
+                        <span class="${'positive' if hero['points'] >= 0 else 'negative'}" style="display: inline-block; width: 32px; text-align: center;">
+                            ${'+' if hero["points"] >= 0 else '-'}${hero["points"]}
+                        </span>
+                    % endfor
+                </div>
+            </div>
+            <div name="columniseMobileView show-on-small">
+                <div class="row">
+                    <span class="direTeam left">
+                        % if not match["radiant_win"]:
+                        <strong>${match["dire"]}</strong>
+                        % else:
+                        ${match["dire"]}
+                        % endif
                     </span>
-                % endfor
+                </div>
+                <div class="row" style="margin-bottom: 0px">
+                    <div class="left">
+                        % for hero in match["dire_picks"]:
+                            <span class="${'positive' if hero['points'] >= 0 else 'negative'}" style="display: inline-block; width: 32px; text-align: center;">
+                                ${'+' if hero["points"] >= 0 else '-'}${hero["points"]}
+                            </span>
+                        % endfor
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="left">
+                        % for hero in match["dire_picks"]:
+                            <img src="/static/images/dota/${hero['hero'].replace(' ', '_')}_icon.png" title="${hero['hero']}"/>
+                        % endfor
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 0px">
+                    <div class="left">
+                        % for hero in match["dire_bans"]:
+                            <img class="banIcon" src="/static/images/dota/${hero['hero'].replace(' ', '_')}_icon.png" title="${hero['hero']}"/>
+                        % endfor
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="left">
+                        % for hero in match["dire_bans"]:
+                            <span class="${'positive' if hero['points'] >= 0 else 'negative'}" style="display: inline-block; width: 32px; text-align: center;">
+                                ${'+' if hero["points"] >= 0 else '-'}${hero["points"]}
+                            </span>
+                        % endfor
+                    </div>
+                </div>
             </div>
-            <div class="right">
-                % for hero in match["dire_picks"]:
-                    <span class="${'positive' if hero['points'] >= 0 else 'negative'}" style="display: inline-block; width: 32px; text-align: center;">
-                        ${'+' if hero["points"] >= 0 else '-'}${hero["points"]}
-                    </span>
-                % endfor
-            </div>
-        </div>
-        <div class="row">
-            <div class="left">
-                % for hero in match["radiant_picks"]:
-                    <img src="/static/images/dota/${hero['hero'].replace(' ', '_')}_icon.png" title="${hero['hero']}" />
-                % endfor
-            </div>
-            <div class="right">
-                % for hero in match["dire_picks"]:
-                    <img src="/static/images/dota/${hero['hero'].replace(' ', '_')}_icon.png" title="${hero['hero']}"/>
-                % endfor
-            </div>
-        </div>
-        <div class="row" style="margin-bottom: 0px">
-            <div class="left">
-                % for hero in match["radiant_bans"]:
-                    <img class="banIcon" src="/static/images/dota/${hero['hero'].replace(' ', '_')}_icon.png" title="${hero['hero']}"/>
-                % endfor
-            </div>
-            <div class="right">
-                % for hero in match["dire_bans"]:
-                    <img class="banIcon" src="/static/images/dota/${hero['hero'].replace(' ', '_')}_icon.png" title="${hero['hero']}"/>
-                % endfor
-            </div>
-        </div>
-        <div class="row">
-            <div class="left">
-                % for hero in match["radiant_bans"]:
-                    <span class="${'positive' if hero['points'] >= 0 else 'negative'}" style="display: inline-block; width: 32px; text-align: center;">
-                        ${'+' if hero["points"] >= 0 else '-'}${hero["points"]}
-                    </span>
-                % endfor
-            </div>
-            <div class="right">
-                % for hero in match["dire_bans"]:
-                    <span class="${'positive' if hero['points'] >= 0 else 'negative'}" style="display: inline-block; width: 32px; text-align: center;">
-                        ${'+' if hero["points"] >= 0 else '-'}${hero["points"]}
-                    </span>
-                % endfor
-            </div>
-        </div>
         </div>
         <div class="divider"></div>
         % endfor

@@ -20,3 +20,4 @@ Need to:
 -/ show multiple achievements
 + mobile friendly
 + group points/wins/rank/picks into one leaderboard dropdown
+- check cant break if not generated user day and want view leaderboards
