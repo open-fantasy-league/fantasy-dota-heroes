@@ -30,7 +30,7 @@ def sell(session, l_user, hero_id, league_id, reserve):
             else:
                 l_user.money = new_credits
             check_hero.delete()
-            session.add(Sale(l_user.id, hero_id, league_id, hero_value, hero_value, False))
+            session.add(Sale(l_user.id, hero_id, league_id, hero_value, hero_value, False, False))
             return {"success": True, "message": "%s successfully sold" % game.pickee, "action": "sell", "hero": hero_id,
                     "new_credits": new_credits}
         else:
@@ -80,7 +80,7 @@ def buy(session, l_user, hero_id, league_id, reserve, late=None):
         # if late then cant be active. if not late then may be reserve, may not be
         active = False if late else not reserve
         session.add(TeamHero(user_id, hero_id, league_id, hero.value, reserve, active, hero_name=hero.name))
-        session.add(Sale(l_user.id, hero_id, league_id, hero.value, hero.value, True))
+        session.add(Sale(l_user.id, hero_id, league_id, hero.value, hero.value, True, False))
     return {"success": True, "message": "%s successfully purchased" % game.pickee,
             "action": "buy", "hero": hero_id,
             "new_credits": new_credits}
@@ -128,6 +128,7 @@ def swap_in(session, user_id, hero_id, league_id):
         l_user.money = new_credits
         swap_hero.reserve = False
         l_user.last_change = int(time.time())
+        session.add(Sale(l_user.id, hero_id, league_id, hero.value, hero.value, True, True))
     return {"success": True, "message": "Hero successfully Added",
             "action": "buy", "hero": hero_id,
             "new_credits": new_credits}
@@ -153,6 +154,7 @@ def swap_out(session, user_id, hero_id, league_id):
             l_user.money = new_credits
             check_hero_res.reserve = 1
             l_user.last_change = int(time.time())
+            session.add(Sale(l_user.id, hero_id, league_id, check_hero_res.value, hero_value, False, True))
             return {"success": True, "message": "Hero successfully sold", "action": "sell", "hero": hero_id,
                     "new_credits": new_credits}
         else:

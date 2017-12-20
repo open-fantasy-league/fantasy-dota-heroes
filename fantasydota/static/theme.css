@@ -256,3 +256,19 @@ img {margin-bottom: 0px;
  .awardIcon {
     color: Gold;
  }
+
+@media only screen
+and (max-width: 900px)
+{
+ .leaderboardDropdown {
+    padding: 0 10px;
+ }
+ }
+
+@media only screen
+and (max-width: 900px)
+{
+ .leaderboardDropdown > i {
+    margin-left: 10px;
+ }
+ }

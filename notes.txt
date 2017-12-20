@@ -3,7 +3,7 @@ Need to:
 + make sure weekends worth double
 -/ add charity stuff
 - migrate user script
-- check about updating Sale so stores swaps as well
++ check about updating Sale so stores swaps as well
 + update rules/faq to talk about late starting
 + have default league be latest week
 + handle change league reloading with query param
@@ -15,9 +15,9 @@ Need to:
 - check if need switch from waitress to gunicorn or something
 + handle days when no games
 + have users on leaderboard hyperlink to profile
-- have fixed rollover times
++ have fixed rollover times
 -/ have profile available on leaderboard hovers
 -/ show multiple achievements
 + mobile friendly
 + group points/wins/rank/picks into one leaderboard dropdown
-- check cant break if not generated user day and want view leaderboards
++ check cant break if not generated user day and want view leaderboards

@@ -293,14 +293,16 @@ class Sale(Base):
     value = Column(Integer, nullable=False)
     cost = Column(Integer, nullable=False)
     is_buy = Column(Boolean, nullable=False)
+    is_swap = Column(Boolean, nullable=False)
 
-    def __init__(self, user, hero, league_id, value, cost, is_buy):
+    def __init__(self, user, hero, league_id, value, cost, is_buy, is_swap):
         self.user = user
         self.hero = hero
         self.league_id = league_id
         self.value = value
         self.cost = cost
         self.is_buy = is_buy
+        self.is_swap = is_swap
 
 
 class Result(Base):

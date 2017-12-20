@@ -82,7 +82,7 @@ ${"period=%s" % period}
     <div class="nav-wrapper teal darken-2">
         <ul class="left">
             <li>
-                <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="" data-activates="rankbyDropdown">${rank_by.title()}<i class="material-icons right">arrow_drop_down</i></a>
+                <a class="dropdown-button leaderboardDropdown" data-hover="true" data-beloworigin="true" href="" data-activates="rankbyDropdown">${rank_by.title()}<i class="material-icons right">arrow_drop_down</i></a>
             </li>
             <ul id="rankbyDropdown" class="dropdown-content">
                 % if rank_by != "points":
@@ -100,7 +100,7 @@ ${"period=%s" % period}
             </ul>
 
             <li>
-                <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="" data-activates="modeDropdown">${mode.title()}<i class="material-icons right">arrow_drop_down</i></a>
+                <a class="dropdown-button leaderboardDropdown" data-hover="true" data-beloworigin="true" href="" data-activates="modeDropdown">${mode.title()}<i class="material-icons right">arrow_drop_down</i></a>
             </li>
             <ul id="modeDropdown" class="dropdown-content">
                 <li><a href="/daily?rank_by=${rank_by}&mode=${mode}&${getTime(period)}">${mode.title()}</a></li>
@@ -110,7 +110,7 @@ ${"period=%s" % period}
                 % endfor
             </ul>
             <li>
-                <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="" data-activates="periodDropdown">Period<i class="material-icons right">arrow_drop_down</i></a>
+                <a class="dropdown-button leaderboardDropdown" data-hover="true" data-beloworigin="true" href="" data-activates="periodDropdown">Period<i class="material-icons right">arrow_drop_down</i></a>
             </li>
             <ul id="periodDropdown" class="dropdown-content">
                 <li><a href="/leaderboard?rank_by=${rank_by}&mode=${mode}&period=tournament">Tournament</a></li>
@@ -249,7 +249,7 @@ $( document ).ready(function() {
                     % endfor
                 </div>
             </div>
-            <div name="columniseMobileView show-on-small">
+            <div class="columniseMobileView hide-on-med-and-up">
                 <div class="row">
                     <span class="direTeam left">
                         % if not match["radiant_win"]:
@@ -349,7 +349,7 @@ $( document ).ready(function() {
                     <td class="heroEntry">
                         ${player.username}
                     % if len(player_heroes) > i and (not league.transfer_open or league.current_day != period):
-                        <span class="hero_images">
+                        <span class="hero_images left">
                         % for hero in player_heroes[i]:
                             <img src="/static/images/pubg/teams/${hero.team.replace(" ", "_")}_icon.png" title="${hero.name}" />
                         % endfor

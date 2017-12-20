@@ -82,7 +82,7 @@ ${"period=%s" % period}
     <div class="nav-wrapper teal darken-2">
         <ul class="left">
             <li>
-                <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="" data-activates="rankbyDropdown">${rank_by.title()}<i class="material-icons right">arrow_drop_down</i></a>
+                <a class="dropdown-button leaderboardDropdown" data-hover="true" data-beloworigin="true" href="" data-activates="rankbyDropdown">${rank_by.title()}<i class="material-icons right">arrow_drop_down</i></a>
             </li>
             <ul id="rankbyDropdown" class="dropdown-content">
                 % if rank_by != "points":
@@ -99,7 +99,7 @@ ${"period=%s" % period}
                 % endif
             </ul>
             <li>
-                <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="" data-activates="modeDropdown">${mode.title()}<i class="material-icons right">arrow_drop_down</i></a>
+                <a class="dropdown-button leaderboardDropdown" data-hover="true" data-beloworigin="true" href="" data-activates="modeDropdown">${mode.title()}<i class="material-icons right">arrow_drop_down</i></a>
             </li>
             <ul id="modeDropdown" class="dropdown-content">
                 <li><a href="/leaderboard?rank_by=${rank_by}&mode=${mode}">${mode.title()}</a></li>
@@ -109,7 +109,7 @@ ${"period=%s" % period}
                 % endfor
             </ul>
             <li>
-                <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="" data-activates="periodDropdown">Period<i class="material-icons right">arrow_drop_down</i></a>
+                <a class="dropdown-button leaderboardDropdown" data-hover="true" data-beloworigin="true" href="" data-activates="periodDropdown">Period<i class="material-icons right">arrow_drop_down</i></a>
             </li>
             <ul id="periodDropdown" class="dropdown-content">
                 <li><a href="/leaderboard?rank_by=${rank_by}&mode=${mode}&period=tournament">Tournament</a></li>
@@ -281,8 +281,8 @@ $( document ).ready(function() {
         </form>
     </div>
     </div>
-
-    <script>
+% endif
+        <script>
     $( document ).ready(function() {
         $(".dropdown-button").dropdown({"hover": true});
         function addFriendOnclick(){
@@ -303,7 +303,6 @@ $( document ).ready(function() {
                 }
             );
         };
-        $("#addFriendBtn").click(addFriendOnclick);
 
         $('#showLateStartCheckbox').change( function() {
             var showLate = this.checked ? 1 : 0;
@@ -318,8 +317,9 @@ $( document ).ready(function() {
             }
             window.location.href = url;
         })
+
+        $("#addFriendBtn").click(addFriendOnclick);
     })
     </script>
-% endif
 </div>
 </div>

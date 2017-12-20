@@ -193,7 +193,7 @@
             <a href="/hallOfFame">Hall of Fame</a>
         </div>
                 <div>
-                     DotA 2 is registered trademark of Valve corporation. PUBG is registered trademark of Bluehole corporation.
+                     Dota 2 is a registered trademark of Valve Corporation
                 </div>
             </div>
         </div>
