@@ -431,10 +431,10 @@ heroes = [
       "id": 110,
       "name": "Phoenix"
     },
-    # {
-    #   "id": 105,
-    #   "name": "Techies"
-    # },
+    {
+      "id": 105,
+      "name": "Techies"
+    },
     {
       "id": 111,
       "name": "Oracle"
@@ -450,5 +450,13 @@ heroes = [
     {
         "id": 114,
         "name": "Monkey King"
+    },
+    {
+        "id": 119,
+        "name": "Dark Willow"
+    },
+    {
+        "id": 120,
+        "name": "Pangolier"
     }
 ]

@@ -45,7 +45,6 @@ class User(Base):
     last_login = Column(Date, default=func.now())
     contactable = Column(Boolean, default=False)
     autofill_team = Column(Boolean, default=False)
-    daily_wins = Column(Integer, default=0)
     # TODO is_steam = Column(Boolean, default=True) # set False when called. add to below init
 
     def __init__(self, username, password="", email=""):
@@ -508,7 +507,7 @@ class Notification(Base):
     __tablename__ = "notification"
     id = Column(Integer, Sequence('id'), primary_key=True)
     user = Column(Integer, ForeignKey(User.id), index=True)
-    achievement = Column(Integer, ForeignKey(Achievement.id))
+    achievement = Column(Integer, ForeignKey(Achievement.id), nullable=True)
     seen = Column(Boolean, default=False, index=True)
     message = Column(String(100), nullable=False)
     link = Column(String(100), default='')

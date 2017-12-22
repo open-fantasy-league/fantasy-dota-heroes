@@ -22,7 +22,13 @@ def squeeze_values_together(hero_list):
     average_value = sum([hero["value"] for hero in hero_list]) / len(hero_list)
     for hero in hero_list:
         hero["value"] -= ((hero["value"] - average_value) / 4.)
-        hero["value"] = round(max(3.0 + random.randint(0, 5) / 10, hero["value"]), 1)
+        hero["value"] = round(min(
+            max(
+                3.0 + random.randint(0, 5) / 10,
+                hero["value"]
+            ),
+            25 + random.randint(0, 6) / 10
+        ), 1)
         print "New %s: %s" % (hero["name"], hero["value"])
 
     return hero_list
@@ -88,13 +94,20 @@ def calibrate_all_hero_values_datdota(session, patch=None):
 
 
 def calibrate_all_hero_values(session, game_id):
+    """
+    Take results from past 3 weeks.
+    Give double points for results in last week
+    :param session:
+    :param game_id:
+    :return:
+    """
     new_heroes_list = heroes
-    recent_game_cutoff = time.time() - SECONDS_IN_WEEK * 2
+    recent_game_cutoff = time.time() - SECONDS_IN_WEEK
     for h in new_heroes_list:
         h["points"] = 0
 
     results = session.query(Result).join(League, Result.tournament_id == League.id).\
-        filter(League.game == game_id).filter(Result.timestamp > recent_game_cutoff - SECONDS_IN_WEEK).all()
+        filter(League.game == game_id).filter(Result.timestamp > recent_game_cutoff - SECONDS_IN_WEEK * 2).all()
     sum_points = 0
 
     for res in results:
@@ -105,10 +118,13 @@ def calibrate_all_hero_values(session, game_id):
     average_points = sum_points / len(new_heroes_list)
     sum = 0
     i = 0
+    with open('calibration_overwrites.py') as f:
+        overrides = repr(f.read())
     for hero in new_heroes_list:
+        overide = overrides.get(hero['id'])
         if hero["points"] < 0:
             hero["points"] = 1
-        value = calibrate_value(average_points, hero["points"])
+        value = overide or calibrate_value(average_points, hero["points"])
         for hero_d in new_heroes_list:
             if hero_d["id"] == hero["id"]:
                 hero_d["value"] = round(value, 1)
@@ -141,3 +157,4 @@ def recalibrate_hero_values(session, league_id):
         new_calibration = calibrate_value(average_points, hero.points)
         print "new calbration: %s, from %s" % (new_calibration, hero.value)
         hero.value = round(combine_calibrations(hero.value, new_calibration), 1)
+
