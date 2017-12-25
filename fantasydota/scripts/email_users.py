@@ -1,11 +1,11 @@
-from fantasydota import DBSession
+from fantasydota.lib.session_utils import make_session
 from fantasydota.models import User
 from pyramid_mailer import Mailer
 from pyramid_mailer.message import Message
 
 
 def email_users():
-    session = DBSession()
+    session = make_session()
     for user in session.query(User).filter(User.email.isnot("")).all():
         if user.email:
             email = "testemail"#user.email
