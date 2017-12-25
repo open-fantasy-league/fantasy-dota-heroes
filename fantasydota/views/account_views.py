@@ -121,15 +121,18 @@ def forgot_password(request):
     session = DBSession()
     username = request.params.get('username').lower() if request.params.get('username') else None
     userq = session.query(User).filter(User.username == username).first()
+    return_dict = None
     if not username or not userq:
-        return {"message": "Username for password reset did not match. Please check filled in correctly"}
+        return_dict = {"message": "Username for password reset did not match. Please check filled in correctly"}
+        return all_view_wrapper(return_dict, session, request)
     elif not userq.email:
-        return {"message": "Sorry you did not have an email address associated with this account. Please email fantasydotaeu@gmail.com directly"}
-
+        return_dict = {"message": "Sorry you did not have an email address associated with this account. Please email fantasydotaeu@gmail.com directly"}
+        return all_view_wrapper(return_dict, session, request)
     guid = bcrypt.encrypt(str(userq.id))
     tries = session.query(PasswordReset).filter(PasswordReset.time > datetime.datetime.now() - datetime.timedelta(days=1)).filter(PasswordReset.user_id == userq.id).count()
     if tries > 1:
-        return {"message": "You have already tried 2 password resets today. Please email directly if still having issues"}
+        return_dict = {"message": "You have already tried 2 password resets today. Please email directly if still having issues"}
+        return all_view_wrapper(return_dict, session, request)
     try:
         session.add(PasswordReset(userq.id, guid, request.remote_addr))
         email_url = "https://www.fantasydota.eu/resetPasswordPage?u=" + str(userq.id) + "&guid="  # how not hardcode domain bit?
@@ -142,9 +145,11 @@ def forgot_password(request):
         mailer = get_mailer(request)
         mailer.send(message)
     except:
-        return {"message": "Unexpected error occurred when sending reset email"}
-    return {"message": "Instructions for password reset have been emailed to you",
-            "message_type": "success"}
+        return_dict = {"message": "Unexpected error occurred when sending reset email"}
+    if not return_dict:
+        return_dict = {"message": "Instructions for password reset have been emailed to you",
+                "message_type": "success"}
+    return all_view_wrapper(return_dict, session, request)
 
 
 @view_config(route_name='reset_password_page', renderer='../templates/reset_password.mako')
@@ -159,7 +164,8 @@ def reset_password_page(request):
         # Link is over 24 hours old
         if reset.time + datetime.timedelta(days=1) < datetime.datetime.now():
             raise HTTPForbidden()
-        return {"guid": guid, "user_id": user_id}
+        return_dict = {"guid": guid, "user_id": user_id}
+        return all_view_wrapper(return_dict, session, request)
 
 
 @view_config(route_name='reset_password')
