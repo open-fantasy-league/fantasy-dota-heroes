@@ -1,19 +1,23 @@
 import time
 
+import datetime
+
+from fantasydota.lib.constants import SECONDS_IN_12_HOURS
 from sqlalchemy import and_
 
 from fantasydota.lib.league import game_from_league_id
 from fantasydota.models import Hero, TeamHero, LeagueUser, Sale, TeamHeroHistoric
 
 
-def sell(session, user_id, hero_id, league_id, reserve):
+def sell(session, l_user, hero_id, league_id, reserve):
+    user_id = l_user.user_id
     game = game_from_league_id(session, league_id)
-    l_user = session.query(LeagueUser).filter(LeagueUser.user_id == user_id).filter(LeagueUser.league == league_id).first()
 
     user_money = l_user.reserve_money if reserve else l_user.money
 
     teamq_hero = session.query(TeamHero).filter(and_(TeamHero.user_id == user_id,
                                                      TeamHero.league == league_id)).filter(TeamHero.reserve.is_(reserve))
+    print([h.hero_id for h in teamq_hero.all()])
     if teamq_hero.first():
         check_hero = teamq_hero.filter(and_(TeamHero.hero_id == hero_id))
         check_hero_res = check_hero.first()
@@ -26,16 +30,17 @@ def sell(session, user_id, hero_id, league_id, reserve):
             else:
                 l_user.money = new_credits
             check_hero.delete()
-            session.add(Sale(l_user.id, hero_id, league_id, hero_value, hero_value, False))
+            session.add(Sale(l_user.id, hero_id, league_id, hero_value, hero_value, False, False))
             return {"success": True, "message": "%s successfully sold" % game.pickee, "action": "sell", "hero": hero_id,
                     "new_credits": new_credits}
         else:
-            return {"success": False, "message": "ERROR: Cannot sell, %s not in your team" % game.pickee}
+            return {"success": False, "message": "Cannot sell, %s not in your team" % game.pickee}
 
     return {"success": False, "message": "Erm....you don't appear to be in this league. This is awkward"}
 
 
-def buy(session, user_id, hero_id, league_id, reserve):
+def buy(session, l_user, hero_id, league_id, reserve, late=None):
+    user_id = l_user.user_id
     game = game_from_league_id(session, league_id)
     hero = session.query(Hero).filter(and_(Hero.id == hero_id,
                                                        Hero.league == league_id)).first()
@@ -45,36 +50,37 @@ def buy(session, user_id, hero_id, league_id, reserve):
     teamq_all = teamq.all()
     teamq_hero = teamq.filter(TeamHero.hero_id == hero_id)
 
-    l_user = session.query(LeagueUser).filter(LeagueUser.user_id == user_id).filter(LeagueUser.league == league_id).first()
-
     user_money = l_user.reserve_money if reserve else l_user.money
 
     if user_money < hero.value:
-        return {"success": False, "message": "ERROR: Insufficient credits"}
+        return {"success": False, "message": "Insufficient credits"}
 
     new_credits = round(user_money - hero.value, 1)
 
     size_limit = game.reserve_size if reserve else game.team_size
     if len(teamq_all) >= size_limit:
-        message = "ERROR: Reserves currently full" if reserve else "ERROR: Team is currently full"
+        message = "Reserves currently full" if reserve else "Team is currently full"
         return {"success": False, "message": message}
+
     if teamq_hero.first():
-        return {"success": False, "message": "ERROR: %s already in %steam" % (game.pickee, "reserve " if reserve else "")}
+        return {"success": False, "message": "%s already in %steam" % (game.pickee, "reserve " if reserve else "")}
     elif session.query(TeamHero).filter(TeamHero.user_id == user_id).filter(TeamHero.league == league_id). \
             filter(TeamHero.reserve.is_(not reserve)).filter(TeamHero.hero_id == hero_id).first():
-        return {"success": False, "message": "ERROR: %s already in %steam" % (game.pickee, "reserve " if reserve else "")}
+        return {"success": False, "message": "%s already in %steam" % (game.pickee, "reserve " if reserve else "")}
     elif hero.team and hero.team in [
         session.query(Hero.team).filter(Hero.id == th.hero_id).filter(Hero.league == th.league).first()[0] for th in teamq_all
         ]:
         return {"success": False,
-                "message": "ERROR: You already have a %s from %s in %steam" % (game.pickee, hero.team, "reserve " if reserve else "")}
+                "message": "You already have a %s from %s in %steam" % (game.pickee, hero.team, "reserve " if reserve else "")}
     else:
         if reserve:
             l_user.reserve_money = new_credits
         else:
             l_user.money = new_credits
-        session.add(TeamHero(user_id, hero_id, league_id, hero.value, reserve, hero_name = hero.name))
-        session.add(Sale(l_user.id, hero_id, league_id, hero.value, hero.value, True))
+        # if late then cant be active. if not late then may be reserve, may not be
+        active = False if late else not reserve
+        session.add(TeamHero(user_id, hero_id, league_id, hero.value, reserve, active, hero_name=hero.name))
+        session.add(Sale(l_user.id, hero_id, league_id, hero.value, hero.value, True, False))
     return {"success": True, "message": "%s successfully purchased" % game.pickee,
             "action": "buy", "hero": hero_id,
             "new_credits": new_credits}
@@ -96,28 +102,33 @@ def swap_in(session, user_id, hero_id, league_id):
 
     l_user = session.query(LeagueUser).filter(LeagueUser.user_id == user_id).filter(LeagueUser.league == league_id).first()
 
+    if l_user.swap_tstamp:
+        return {"success": False,
+                "message": "You have made team swaps within the last 24 hours."
+                           " You cannot make more until this 24 hour period has passed"}
     user_money = l_user.money
 
     if user_money < hero.value:
         return {"success": False,
-                "message": "ERROR: Insufficient credits. Move other hero out of team first"}
+                "message": "Insufficient credits. Move other hero out of team first"}
 
     new_credits = round(user_money - hero.value, 1)
 
     if teamq.count() >= 5:
-        message = "ERROR: Team is currently full. Move other hero out of team first"
+        message = "Team is currently full. Move other hero out of team first"
         return {"success": False, "message": message}
     if teamq_hero.first():
-        return {"success": False, "message": "ERROR: Hero already in team"}
+        return {"success": False, "message": "Hero already in team"}
     elif hero.team and hero.team in [
         session.query(Hero.team).filter(Hero.id == th.hero_id).filter(Hero.league == th.league).first()[0] for th in teamq_all
         ]:
         return {"success": False,
-                "message": "ERROR: You already have a %s from %s in main team" % (game.pickee, hero.team)}
+                "message": "You already have a %s from %s in main team" % (game.pickee, hero.team)}
     else:
         l_user.money = new_credits
         swap_hero.reserve = False
         l_user.last_change = int(time.time())
+        session.add(Sale(l_user.id, hero_id, league_id, hero.value, hero.value, True, True))
     return {"success": True, "message": "Hero successfully Added",
             "action": "buy", "hero": hero_id,
             "new_credits": new_credits}
@@ -125,7 +136,10 @@ def swap_in(session, user_id, hero_id, league_id):
 
 def swap_out(session, user_id, hero_id, league_id):
     l_user = session.query(LeagueUser).filter(LeagueUser.user_id == user_id).filter(LeagueUser.league == league_id).first()
-
+    if l_user.swap_tstamp:
+        return {"success": False,
+                "message": "You have made team swaps within the last 24 hours."
+                           " You cannot make more until this 24 hour period has passed"}
     user_money = l_user.money
 
     teamq_hero = session.query(TeamHero).filter(and_(TeamHero.user_id == user_id,
@@ -140,10 +154,11 @@ def swap_out(session, user_id, hero_id, league_id):
             l_user.money = new_credits
             check_hero_res.reserve = 1
             l_user.last_change = int(time.time())
+            session.add(Sale(l_user.id, hero_id, league_id, check_hero_res.value, hero_value, False, True))
             return {"success": True, "message": "Hero successfully sold", "action": "sell", "hero": hero_id,
                     "new_credits": new_credits}
         else:
-            return {"success": False, "message": "ERROR: Cannot sell, hero not in your team"}
+            return {"success": False, "message": "Cannot sell, hero not in your team"}
 
     return {"success": False, "message": "Erm....you don't appear to be in this league. This is awkward"}
 
@@ -162,3 +177,11 @@ def reset_incomplete_teams(session, league):
                                                                                                  synchronize_session='fetch')
                     old_value = sum(h.cost for h in old_heroes)
                     luser.money = 50 - old_value
+
+
+def get_swap_timestamp():
+    # swap_at = datetime.datetime.now()
+    # swap_at += datetime.timedelta(hours=23)
+    # swap_at.replace(minute=59)
+    # return time.mktime(swap_at.timetuple())
+    return time.time() + SECONDS_IN_12_HOURS

@@ -37,7 +37,7 @@ def add_hero_player(session, user_id, hero_id, league_id, reserve):
             return {"success": False, "message": "ERROR: Hero already in team"}
         else:
             l_user.money = new_credits
-            session.add(TeamHero(user_id, hero_id, league_id, hero_value, reserve))
+            session.add(TeamHero(user_id, hero_id, league_id, hero_value, reserve, not reserve))
             session.add(Sale(l_user.id, hero_id, league_id, hero_value, hero_value, True))
 
         transaction.commit()

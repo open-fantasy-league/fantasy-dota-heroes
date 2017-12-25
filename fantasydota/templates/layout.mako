@@ -1,4 +1,5 @@
 <%! from pyramid.security import authenticated_userid %>
+<% user_id = authenticated_userid(request) %>
 
 ## -*- coding: utf-8 -*-
 <!DOCTYPE html>
@@ -7,6 +8,7 @@
         <meta charset="utf-8">
         <meta name="description" content="${next.meta_description()}">
         <meta name="keywords" content="${next.meta_keywords()}">
+        <meta name="viewport" content="width=device-width">
 
         <title>${next.title()}</title>
 
@@ -29,37 +31,23 @@
         <!-- Should move these links just to the pages where they belong -->
         <script src="/static/sorttable.js"></script>
 
-        <script src="/static/sweetalert.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="/static/sweetalert.css">
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <!--<script src="/static/sweetalert.min.js"></script>-->
+        <!--<link rel="stylesheet" type="text/css" href="/static/sweetalert.css">-->
+
 
 
     </head>
 
     <body id="mySexyBody" class="blue-grey lighten-5">
+    <main>
         <div id="topBar" class="navbar-fixed">
         <nav>
             <div class="nav-wrapper indigo darken-3">
-            <ul class="left">
-            <%block name="content">
-                % if authenticated_userid(request) is None:
-                    <li id="homeLink" class="col s2">
-                        <a href="${request.route_path('login')}">Login/Create Profile</a>
-                % else:
-                    <li><a href="${request.route_path('logout')}">Logout</a></li>
-                % endif
-            </%block>
-                <li>
-                    <li>
-                        <a class="dropdown-button" data-beloworigin="true" href="" data-activates="gameDropdown">Game<i class="material-icons right">arrow_drop_down</i></a>
-                    </li>
-                    <ul id="gameDropdown" class="dropdown-content">
-                        % for game in other_games:
-                            <li><a href="/changeGame?game=${game.code}">${game.name}</a></li>
-                        % endfor
-                    </ul>
-                </li>
-            <li id="leagueBtn" class="col s1">
-                <a href="/team">My team</a>
+                 <a href="#" data-activates="mobile-nav" class="button-collapse"><i class="material-icons">menu</i></a>
+            <ul class="left hide-on-med-and-down">
+            <li id="teamBtn" class="col s1">
+                <a href="/team">Team</a>
             </li>
             <li class="col s1">
                 <a href="/leaderboard">Leaderboard</a>
@@ -67,20 +55,116 @@
             <li class="col s1">
                 <a href="/daily">Daily</a>
             </li>
+                <li class="col s1">
+                    <a href="/rules">Rules</a>
+                </li>
             </ul>
-            <ul class="right">
-            <li class="col s1">
-                <a href="/rules">Rules</a>
-            </li>
-            <li class="col s1">
-                <a href="/faq">FAQ</a>
-            </li>
-            <li class="col s2">
-                <a href="/hallOfFame">Hall of Fame</a>
-            </li>
-            <li class="col s3">
-                <a href="/accountSettings">Account Settings</a>
-            </ul></div>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="/profile">Profile</a></li>
+                <li class="col s2">
+                <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="#" data-activates="leagueDropdown">
+                    Week
+                    <i class="material-icons right">arrow_drop_down</i>
+                </a>
+                </li>
+                    <ul id="leagueDropdown" class="dropdown-content">
+                        % for league in leagues:
+                        <li><a href="/changeLeague?league=${league.id}">${league.name}</a></li>
+                        % endfor
+                </ul>
+                <li class="col s2">
+                <a id="notificationButton" class="dropdown-button" data-constrainWidth="false" data-hover="true" data-beloworigin="true" href="#" data-activates="notificationDropdown">
+                    Notifications ${"(%s)" % len(notifications)}
+                    % if len(notifications) > 1:
+                        <i class="material-icons right">arrow_drop_down</i>
+                    % endif
+                </a>
+                </li>
+                    <ul id="notificationDropdown" class="dropdown-content">
+
+                        % for i, notification in enumerate(notifications):
+                            % if i == 0:
+                                <li><a class="clearNotifications center">CLEAR</a></li>
+                            % endif
+                            <li><span><p>${notification.message}</p></span></li>
+                        % endfor
+                </ul>
+                % if user_id is None:
+                    <li id="homeLink" class="col s2">
+                        <a href="${request.route_path('login')}">Login/Create Profile</a>
+                % else:
+                    <li class="col s2">
+                    <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="#" data-activates="accountDropdown">
+                        Account
+                        <i class="material-icons right">arrow_drop_down</i>
+                    </a>
+                    </li>
+                        <ul id="accountDropdown" class="dropdown-content">
+                            <li><a href="${request.route_path('logout')}">Logout</a></li>
+                            <li><a href="/accountSettings">Settings</a></li>
+                        </ul>
+                % endif
+            </ul>
+
+            <ul class="side-nav" id="mobile-nav">
+                 <li id="leagueBtn" class="col s1">
+                    <a href="/team">Team</a>
+                </li>
+                <li class="col s1">
+                    <a href="/leaderboard">Leaderboard</a>
+                </li>
+                <li class="col s1">
+                    <a href="/daily">Daily</a>
+                </li>
+                <li class="col s1">
+                    <a href="/rules">Rules</a>
+                </li>
+                <div class="divider"></div>
+                <li><a href="/profile">Profile</a></li>
+                <li class="col s2">
+                    <a class="dropdown-button" data-beloworigin="true" href="#" data-activates="mobileLeagueDropdown">
+                        Week
+                        <i class="material-icons right">arrow_drop_down</i>
+                    </a>
+                </li>
+                <ul id="mobileLeagueDropdown" class="dropdown-content">
+                    % for league in leagues:
+                    <li><a href="/changeLeague?league=${league.id}">${league.name}</a></li>
+                    % endfor
+                </ul>
+                <li class="col s2">
+                <a id="mobileNotificationButton" class="dropdown-button" data-constrainWidth='false'
+                   data-beloworigin="true" href="#" data-activates="mobileNotificationDropdown">
+                    Notifications ${"(%s)" % len(notifications)}
+                    <i class="material-icons right">arrow_drop_down</i>
+                </a>
+                </li>
+                    <ul id="mobileNotificationDropdown" class="dropdown-content">
+                    % for i, notification in enumerate(notifications):
+                        % if i == 0:
+                            <li><a class="clearNotifications center">CLEAR</a></li>
+                        % endif
+                        <li><span><p>${notification.message}</p></span></li>
+                    % endfor
+                </ul>
+                % if user_id is None:
+                    <li id="homeLink" class="col s2">
+                        <a href="${request.route_path('login')}">Login/Create Profile</a>
+                    </li>
+                % else:
+                    <li class="col s2">
+                    <a class="dropdown-button" data-beloworigin="true" href="#" data-activates="mobileAccountDropdown">
+                        Account
+                        <i class="material-icons right">arrow_drop_down</i>
+                    </a>
+                    </li>
+                        <ul id="mobileAccountDropdown" class="dropdown-content">
+                            <li><a href="${request.route_path('logout')}">Logout</a></li>
+                            <li><a href="/accountSettings">Settings</a></li>
+                        </ul>
+                % endif
+                </ul>
+            </div>
         </nav>
         </div>
         <div class="main">
@@ -98,6 +182,38 @@
         </div>
     </div>
 </div>
-
+    </main>
+    <footer class="page-footer indigo lighten-3">
+        <div class="container">
+            <div class="row">
+        <div class="col s1">
+            <a href="/faq">FAQ</a>
+        </div>
+        <div class="col s2">
+            <a href="/hallOfFame">Hall of Fame</a>
+        </div>
+                <div>
+                     Dota 2 is a registered trademark of Valve Corporation
+                </div>
+            </div>
+        </div>
+    </footer>
   </body>
+
+<script>
+    function removeOverlay() {
+      $('div[id^=sidenav-overlay]').remove();
+    }
+
+    $( document ).ready(function(){
+      $('.button-collapse').sideNav();
+      $('.button-collapse').click(removeOverlay);
+
+      $('.clearNotifications').click(function() {
+        $.get('/clearNotifications');
+        window.location.reload(false);
+      });
+
+    })
+</script>
 </html>

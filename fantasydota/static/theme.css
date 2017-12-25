@@ -2,6 +2,17 @@
 body {
     font-family: 'Roboto', sans-serif;
 }
+
+body {
+display: flex;
+min-height: 100vh;
+flex-direction: column;
+}
+
+main {
+flex: 1 0 auto;
+}
+
 h1,
 h2 {
     font-size: 2.2em;
@@ -21,6 +32,12 @@ p {
 
         border-collapse: collapse;
 }*/
+
+@media screen and (max-width: 900px) {
+    .extra{
+        display: none;
+    }
+}
 
 .font-normal {
   font-weight: 400;
@@ -148,7 +165,7 @@ submit:hover  {
 .messageTransOpen {color: green}
 .messageTransClosed {color: red}
 
-.toSell {opacity: 0.5}
+.toSwap {opacity: 0.5}
 
 .positionHeader {width: 8%}
 .rankingHeader {width: 15%}
@@ -226,4 +243,32 @@ img {margin-bottom: 0px;
   -ms-filter: grayscale(100%);
   -o-filter: grayscale(100%);
   filter: grayscale(100%);
+ }
+
+ .pointerCursor {
+    cursor: pointer;
+ }
+
+ .achievementBlock {
+    margin-top: 20px;
+ }
+
+ .awardIcon {
+    color: Gold;
+ }
+
+@media only screen
+and (max-width: 900px)
+{
+ .leaderboardDropdown {
+    padding: 0 10px;
+ }
+ }
+
+@media only screen
+and (max-width: 900px)
+{
+ .leaderboardDropdown > i {
+    margin-left: 10px;
+ }
  }

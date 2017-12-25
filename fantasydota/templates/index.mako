@@ -21,7 +21,7 @@
         <div class="col5 right">
 
             <div class="card-panel">
-                <a href="/team?game=PUBG">PUBG</a>
+                <a href="/nopubg">PUBG</a>
             </div>
         </div>
     </div>

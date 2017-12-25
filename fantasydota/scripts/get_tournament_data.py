@@ -1,13 +1,13 @@
 import json
 import os
-import urllib2
 import re
-
 import time
-import transaction
+import urllib2
 
+import transaction
+from copy import copy
 from fantasydota.lib.session_utils import make_session
-from fantasydota.models import Result, HeroGame, ItemBuild, Match, League
+from fantasydota.models import Result, Match, League, ProCircuitTournament
 
 APIKEY = os.environ.get("APIKEY")
 if not APIKEY:
@@ -44,7 +44,8 @@ def get_match_details(match_id):
         "key=%s&match_id=%s" % (APIKEY, match_id))
 
 
-def add_matches(session, tournament_id, tstamp_from=0, add_match=True):
+def add_matches(session, tournament_id, week_id=None, tstamp_from=0, add_match=True):
+    week_id = week_id or tournament_id
     match_list_json = get_league_match_list(tournament_id)
 
     matches = [(match["match_id"], match["series_id"]) for match in match_list_json["result"]["matches"]
@@ -66,11 +67,11 @@ def add_matches(session, tournament_id, tstamp_from=0, add_match=True):
                 print "MatchID: %s fucked up picks bans. not 22. Check if need update" % match
                 continue
             if add_match:
-                day = session.query(League.current_day).filter(League.id == tournament_id).first()[0]
+                day = session.query(League.current_day).filter(League.id == week_id).first()[0]
                 try:
                     session.add(Match(
                         int(match_json["match_id"]), re.sub(r'\W+', '', match_json["radiant_name"]), re.sub(r'\W+', '', match_json["dire_name"]),
-                        match_json["radiant_win"], day, tournament_id
+                        match_json["radiant_win"], day, week_id, tournament_id
                     ))
                 except:
                     print "Failed to add match: %s" % match_json["match_id"]
@@ -104,46 +105,31 @@ def add_matches(session, tournament_id, tstamp_from=0, add_match=True):
                     else:
                         result_string += "l"
                 print "Match is:", match_json["match_id"]
-                session.add(Result(tournament_id, value["hero_id"], int(match_json["match_id"]), result_string,
-                                   match_json["start_time"], series_id, (value["team"] == 0)))
+                session.add(Result(
+                    week_id, value["hero_id"], int(match_json["match_id"]), result_string,
+                    match_json["start_time"], series_id, (value["team"] == 0), match_json["start_time"]
+                ))
     transaction.commit()
-
-
-def add_matches_guesser(session, tournament_id, tstamp_from):
-    match_list_json = get_league_match_list(tournament_id)
-
-    matches = [(match["match_id"], match["series_id"]) for match in match_list_json["result"]["matches"]
-               if match["start_time"] > tstamp_from]
-    print "matches", matches
-    for match, series_id in matches:
-        match_json = get_match_details(match)["result"]
-        if len(match_json["players"]) < 3:
-            continue  # dont count the 1v1s
-        for player in match_json["players"]:
-            new_hero_game = HeroGame(match, player["hero_id"])
-            items = []
-            item_value_sum = 0  # we only want to choose/select builds that are guessable (i.e not boots + wand)
-            session.add(new_hero_game)
-            session.flush()
-            empty_items = 0
-            legit_items = [79, 81, 90, 96, 98, 100, 104, 201, 202, 203, 204, 205, 106, 193, 194, 110, 112, 114, 116, 117, 119, 121, 123, 125, 127, 133, 135, 139, 141, 143, 145, 147, 149, 151, 152, 154, 160, 158, 156, 164, 166, 168, 170, 172, 174, 196, 176, 206, 208, 210, 231, 226, 235, 249, 250, 252, 263]
-            for i in range(6):
-                item = player["item_%s" % i]
-                if item == 0:
-                    empty_items += 1
-                items.append(item)
-                session.add(ItemBuild(new_hero_game.id, item, i))
-            if empty_items > 1 or not any(item for item in items if item in legit_items):
-                session.rollback()
-                continue
-            session.commit()
 
 
 def main():
     session = make_session()
     #session2 = make_session(False)
     # dreamleague calibration
-    add_matches(session, 5627, 1512057853)
+    game_id = 1
+    week_id = session.query(League.id).filter(League.game == game_id).filter(League.status == 1).first()[0]
+    tournaments = [x[0] for x in session.query(ProCircuitTournament.id).all()]
+    PRO_CIRCUIT_LEAGUES = [
+        {'id': 5627, 'name': 'Dreamleague 8', 'major': True},
+        {'id': 5850, 'name': 'Summit 8', 'major': False},
+        {'id': 5688, 'name': 'Captains Draft 4', 'major': False},
+        {'id': 5504, 'name': 'MDL Macau', 'major': False},
+        {'id': 5637, 'name': 'Perfect World Master', 'major': False},
+    ]
+    tournaments.extend([x['id'] for x in PRO_CIRCUIT_LEAGUES])
+    tournaments.extend([5562, 9579, 8055, 5572, 5616, 9579, 5562, 5651, 4820])
+    for tournament in list(set(tournaments)):
+        add_matches(session, tournament, tstamp_from=1511806059, week_id=week_id)
 
 if __name__ == "__main__":
     main()

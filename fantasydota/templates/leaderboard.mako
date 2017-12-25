@@ -72,37 +72,34 @@ ${"period=%s" % period}
 </%def>
 
 <div class="row">
-    <h2>${rank_by.title()} (${period.title() if period == "tournament" else "Day %d" % (int(period) + 1)})
+    <h2>Weekly
         <a class="right" href="${league.url}" target="_blank">${league.name}</a></h2>
 </div>
 % if game.code == 'DOTA':
 <div class="row">
-<div id="leaderboardBlock" class="col s7">
+<div id="leaderboardBlock" class="col m7 s12">
     <nav>
     <div class="nav-wrapper teal darken-2">
         <ul class="left">
-            <li class=${"active" if rank_by=="points" else ""}>
-                <a id="pointsBtn" href="/leaderboard?rank_by=points&mode=${mode}&${getTime(period)}">
-                    Points
-                </a>
-            </li>
-            <li class=${"active" if rank_by=="wins" else ""}>
-                <a id="winsBtn" href="/leaderboard?rank_by=wins&mode=${mode}&${getTime(period)}">
-                    Wins
-                </a>
-            </li>
-            <li class=${"active" if rank_by=="picks" else ""}>
-                <a id="picksBtn" href="/leaderboard?rank_by=picks&mode=${mode}&${getTime(period)}">
-                    Picks
-                </a>
-            </li>
-            <li class=${"active" if rank_by=="bans" else ""}>
-                <a id="bansBtn" href="/leaderboard?rank_by=bans&mode=${mode}&${getTime(period)}">
-                    Bans
-                </a>
-            </li>
             <li>
-                <a class="dropdown-button" data-beloworigin="true" href="" data-activates="modeDropdown">${mode.title()}<i class="material-icons right">arrow_drop_down</i></a>
+                <a class="dropdown-button leaderboardDropdown" data-hover="true" data-beloworigin="true" href="" data-activates="rankbyDropdown">${rank_by.title()}<i class="material-icons right">arrow_drop_down</i></a>
+            </li>
+            <ul id="rankbyDropdown" class="dropdown-content">
+                % if rank_by != "points":
+                    <li><a href="/leaderboard?rank_by=points&mode=${mode}">Points</a></li>
+                % endif
+                % if rank_by != "wins":
+                    <li><a href="/leaderboard?rank_by=wins&mode=${mode}">Wins</a></li>
+                % endif
+                % if rank_by != "picks":
+                    <li><a href="/leaderboard?rank_by=picks&mode=${mode}">Picks</a></li>
+                % endif
+                % if rank_by != "bans":
+                    <li><a href="/leaderboard?rank_by=bans&mode=${mode}">Bans</a></li>
+                % endif
+            </ul>
+            <li>
+                <a class="dropdown-button leaderboardDropdown" data-hover="true" data-beloworigin="true" href="" data-activates="modeDropdown">${mode.title()}<i class="material-icons right">arrow_drop_down</i></a>
             </li>
             <ul id="modeDropdown" class="dropdown-content">
                 <li><a href="/leaderboard?rank_by=${rank_by}&mode=${mode}">${mode.title()}</a></li>
@@ -112,7 +109,7 @@ ${"period=%s" % period}
                 % endfor
             </ul>
             <li>
-                <a class="dropdown-button" data-beloworigin="true" href="" data-activates="periodDropdown">Period<i class="material-icons right">arrow_drop_down</i></a>
+                <a class="dropdown-button leaderboardDropdown" data-hover="true" data-beloworigin="true" href="" data-activates="periodDropdown">Period<i class="material-icons right">arrow_drop_down</i></a>
             </li>
             <ul id="periodDropdown" class="dropdown-content">
                 <li><a href="/leaderboard?rank_by=${rank_by}&mode=${mode}&period=tournament">Tournament</a></li>
@@ -137,11 +134,11 @@ ${"period=%s" % period}
                     <td class="positionEntry">${i+1} ${progress_arrow(i, player, rank_by) if period == "tournament" and mode != "hero" else ""}
                     </td>
                     <td class="heroEntry">
-                        <span style="vertical-align:middle">
-                        % if i == 0:
+                        <a href="${'/profile?user=%s' % player.user_id if mode != 'hero' else ''}"><span style="vertical-align:middle">
+                        % if i == 0 and league.status == 2:
                           <img src="static/images/dota/trophy.png"/>
-                          % endif
-                        ${player.username}</span>
+                            % endif
+                            ${player.username}</span></a>
                     % if len(player_heroes) > i:
                         <span class="hero_images">
                         % for hero in player_heroes[i]:
@@ -176,7 +173,7 @@ ${"period=%s" % period}
                 </a>
             </li>
             <li>
-                <a class="dropdown-button" data-beloworigin="true" href="" data-activates="modeDropdown">${mode.title()}<i class="material-icons right">arrow_drop_down</i></a>
+                <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="" data-activates="modeDropdown">${mode.title()}<i class="material-icons right">arrow_drop_down</i></a>
             </li>
             <ul id="modeDropdown" class="dropdown-content">
                 <li><a href="/leaderboard?rank_by=${rank_by}&mode=${mode}">${mode.title()}</a></li>
@@ -186,7 +183,7 @@ ${"period=%s" % period}
                 % endfor
             </ul>
             <li>
-                <a class="dropdown-button" data-beloworigin="true" href="" data-activates="periodDropdown">Period<i class="material-icons right">arrow_drop_down</i></a>
+                <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="" data-activates="periodDropdown">Period<i class="material-icons right">arrow_drop_down</i></a>
             </li>
             <ul id="periodDropdown" class="dropdown-content">
                 <li><a href="/leaderboard?rank_by=${rank_by}&mode=${mode}&period=tournament">Tournament</a></li>
@@ -248,14 +245,21 @@ $( document ).ready(function() {
     });
 })
 </script>
-<div id="friendBlock" class="col s5">
+<div id="friendBlock" class="col s12 m5">
+    <div class="switch">
+        <label>
+          Off
+          <input ${'checked=checked' if show_late_start else ''} type="checkbox" id="showLateStartCheckbox">
+          <span class="lever"></span>
+          Show late-starters
+        </label>
+    </div>
     % if game.code == "DOTA":
     <div class="card-panel">
-    <p>2x points multiplier for day 2</p>
-	<p>4x points multiplier for finals day</p>
-        <p>Results updated ~2 minutes after match ends</p>
+    <p>2x points multiplier for weekend</p>
+        <p>League ends 6AM GMT Monday</p>
+        <p>Results updated ~1 minute after match ends</p>
         <p><a href="https://discord.gg/MAH7EEv" target="_blank">Discord channel for suggestions/improvements</a></p>
-        <p>Statistics provided by <a href="https://www.stratz.com" target="_blank">Stratz Esports <img src="/static/images/dota/stratz_icon.png"/></a></p>
     </div>
     % elif game.code == "PUBG":
         <div class="card-panel">
@@ -277,8 +281,8 @@ $( document ).ready(function() {
         </form>
     </div>
     </div>
-
-    <script>
+% endif
+        <script>
     $( document ).ready(function() {
         $(".dropdown-button").dropdown({"hover": true});
         function addFriendOnclick(){
@@ -299,9 +303,23 @@ $( document ).ready(function() {
                 }
             );
         };
+
+        $('#showLateStartCheckbox').change( function() {
+            var showLate = this.checked ? 1 : 0;
+            var url = window.location.href;
+            if (url.indexOf('showLate') > -1){
+                url = url.replace(/(.*?)showLate=[01](.*?)/g, "$1showLate=" + showLate + "$2");
+            }
+            else if (url.indexOf('?') > -1){
+               url += '&showLate=' + showLate
+            }else{
+               url += '?showLate=' + showLate
+            }
+            window.location.href = url;
+        })
+
         $("#addFriendBtn").click(addFriendOnclick);
     })
     </script>
-% endif
 </div>
 </div>

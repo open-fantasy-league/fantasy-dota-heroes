@@ -1,15 +1,13 @@
 import datetime
-import json
+import re
 
-import ast
-
-from fantasydota.auth import get_user
+from fantasydota.lib.general import all_view_wrapper
+from fantasydota.models import (
+    DBSession,
+    Friend, User)
 from fantasydota.scripts.end_of_day import end_of_day
 from fantasydota.scripts.start_of_day import start_of_day
-from pyramid.response import Response
-
-from fantasydota.lib.general import add_other_games
-from fantasydota.lib.herolist import heroes
+from fantasydota.util.random_function import add_months
 from pyramid.httpexceptions import (
     HTTPFound,
     HTTPForbidden)
@@ -19,33 +17,35 @@ from pyramid.view import (
     view_config,
 )
 from sqlalchemy import and_
-from sqlalchemy import desc
-from sqlalchemy import func
-
-from fantasydota.lib.items import ITEMS
-from fantasydota.models import (
-    DBSession,
-    Friend, User, GuessUser, HeroGame, ItemBuild)
-from fantasydota.util.random_function import add_months, bprint
 
 
 @view_config(route_name='view_faq', renderer='../templates/faq.mako')
 def view_faq(request):
     session = DBSession()
-    return add_other_games(session, request.game, {})
+    return all_view_wrapper({}, session, request)
 
 
 @view_config(route_name='view_rules', renderer='../templates/rules.mako')
 def view_rules(request):
     session = DBSession()
-    return add_other_games(session, request.game, {'game_code': request.game})
+    return all_view_wrapper(
+        {}, session, request
+    )
 
 
-@view_config(route_name='change_game')
-def change_game(request):
+# @view_config(route_name='change_game')
+# def change_game(request):
+#     # https://userlinux.net/pyramid-set-cookie-returning-httpfound.html
+#     response = HTTPFound(location=request.environ['HTTP_REFERER'])
+#     response.set_cookie('game', value=request.params.get('game', 'DOTA'), max_age=315360000)
+#     return response
+
+
+@view_config(route_name='change_league')
+def change_league(request):
     # https://userlinux.net/pyramid-set-cookie-returning-httpfound.html
-    response = HTTPFound(location=request.environ['HTTP_REFERER'])
-    response.set_cookie('game', value=request.params.get('game', 'DOTA'), max_age=315360000)
+    response = HTTPFound(location=re.sub(r'(.*?)league=\d+(.*?)', r'\1\2', request.environ['HTTP_REFERER']))
+    response.set_cookie('league', value=request.params.get('league', 1), max_age=315360000)
     return response
 
 
@@ -87,7 +87,25 @@ def news(request):
 @view_config(route_name="hall_of_fame", renderer="../templates/hall_of_fame.mako")
 def hall_of_fame(request):
     session = DBSession()
-    return add_other_games(session, request.game, {'game_code': request.game})
+    return all_view_wrapper(
+        {}, session, request
+    )
+
+
+@view_config(route_name='index', renderer='../templates/index.mako')
+def index(request):
+    session = DBSession()
+    return all_view_wrapper(
+        {}, session, request
+    )
+
+
+@view_config(route_name='nopubg', renderer='../templates/temp/nopubg.mako')
+def nopubg(request):
+    session = DBSession()
+    return all_view_wrapper(
+        {}, session, request
+    )
 
 
 @view_config(route_name='index', renderer='../templates/index.mako')

@@ -19,7 +19,7 @@
         Points are allocated in the following way:</br>
         <ul class="browser-default">
             <li>Ban       1 points</li>
-            <li>Pick      2 points</li>
+            <li>Pick      3 points</li>
             <li>Win       6 points</li>
             <li>Loss     -8 points</li>
         </ul></br>
@@ -28,20 +28,18 @@
             <li>2nd Phase Pick/Ban/Win +1 point</li>
             <li>3rd Phase Pick/Ban/Win +3 point</li>
             </br>
-                <li>(Picks and wins stack. A 3rd phase pick will win earn 14 points total!)</li>
+                <li>(Picks and wins stack. A 3rd phase pick will win earn 15 points total!)</li>
                             </br>
                 <li>(Win/Loss applies to picked heroes, but not banned heroes.)</li>
         </ul>
             Missing heroes penalty multiplier:</br>
             <ul class="browser-default"><li>x0.5 for every missing hero  (to prevent people abusing half-empty teams of best heroes)
             </li></ul>
-            Main event multiplier:</br>
-            <ul class="browser-default"><li>x2 points for second day matches
+            Weekend multiplier:</br>
+            <ul class="browser-default"><li>x2 points for Saturday and Sunday matches
             </li>
             </ul>
-            <ul class="browser-default"><li>x4 points for final day matches
-            </li>
-            </ul>
+        <p>Weekly Leagues roll-over at 6AM GMT Monday (1AM EST)</p>
     </div>
     <h2>Team</h2>
     <div class="card-panel">
@@ -50,13 +48,16 @@
                 Your Main team can consist of up to 5 dota heroes (you are not required to use all 5, but you incur a heavy percentage penalty for each missing hero).
             </li>
             <li>
-                Your Reserve team also consists of up to 4 heroes, worth 40 credits. These earn 0 points whilst in your reserves. But they can be swapped into your main team midway through the tournament.
+                Your Reserve team also consists of up to 4 heroes, worth 40 credits. These earn 0 points whilst in your reserves. However they can be swapped into main team at any point.
             </li>
             <li>
             Your main team will always have a 50 credit limit. i.e. You must remove 20 credits worth of heroes from Main team, before promoting a reserve hero worth 20 credits.
             </li>
             <li>
-            Hero values will remain static throughout the tournament.
+            There is a 12 hour delay before your swaps go through. This prevents abuse of swapping as drafts/games occurring.
+            </li>
+            <li>
+                If the week has already started you can still pick a team and earn points, however you will not be eligible for the main achievements and receive reduced XP.
             </li>
         </ul>
     </div>

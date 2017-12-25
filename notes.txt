@@ -1,23 +1,25 @@
-insert into game() VALUES (1, "DotA 2", "DOTA", "Hero", 5, 5);
-
-insert into game() VALUES (2, "PUBG", "PUBG", "Player", 4, 2);
-
-ALTER TABLE league ADD COLUMN game INT DEFAULT 1;
-ALTER TABLE league ADD FOREIGN KEY game_fk(game) REFERENCES game(id) ON DELETE CASCADE;
-
-ALTER TABLE hero ADD COLUMN team varchar(100);
-
-ALTER TABLE `match` ADD COLUMN league INT DEFAULT 5609;
-ALTER TABLE `match` ADD FOREIGN KEY league_fk(league) REFERENCES league(id) ON DELETE CASCADE;
-
-
-alter table team_hero drop foreign key team_hero_ibfk_2;
-alter table team_hero_historic drop foreign key team_hero_historic_ibfk_2;
-alter table hero_day drop foreign key hero_day_ibfk_1;
-
-
-ALTER TABLE team_hero ADD FOREIGN KEY hero_fk(hero_id, league) REFERENCES hero(id, league) ON DELETE CASCADE;
-ALTER TABLE team_hero_historic ADD FOREIGN KEY team_hero_historic_hero_fk(hero_id, league) REFERENCES hero(id, league) ON DELETE CASCADE;
-ALTER TABLE hero_day ADD FOREIGN KEY hero_day_hero_fk(hero_id, league) REFERENCES hero(id, league) ON DELETE CASCADE;
-
-alter table sale drop foreign key sale_ibfk_2;
+Need to:
++ test notification/achievement system
++ make sure weekends worth double
+-/ add charity stuff
++ migrate user script
++ check about updating Sale so stores swaps as well
++ update rules/faq to talk about late starting
++ have default league be latest week
++ handle change league reloading with query param
++ check string/int-ness of league cookie
++ sweetAlert callback to reload page when confirmTransfer/swaps
++ profile page
++ update highest positions
++ dont run update script if it's already running (maybe best wait then kill incase zombie?)
+- check if need switch from waitress to gunicorn or something
++ handle days when no games
++ have users on leaderboard hyperlink to profile
++ have fixed rollover times
+-/ have profile available on leaderboard hovers
+-/ show multiple achievements
++ mobile friendly
++ group points/wins/rank/picks into one leaderboard dropdown
++ check cant break if not generated user day and want view leaderboards
+- see if can store non pro circuit games for better calibration
++ add pangolier and dark willow and techies just in-case get added?

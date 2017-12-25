@@ -1,19 +1,18 @@
 import datetime
 from urllib import quote_plus
 
+from fantasydota import DBSession
+from fantasydota.auth import get_user
+from fantasydota.lib.account import check_invalid_password
+from fantasydota.lib.general import all_view_wrapper
+from fantasydota.models import User, PasswordReset, Notification, UserXp, UserAchievement, Achievement
+from fantasydota.scripts.email_users import email_users
 from passlib.handlers.bcrypt import bcrypt
 from pyramid.httpexceptions import HTTPFound, HTTPForbidden
 from pyramid.security import remember, forget, authenticated_userid
 from pyramid.view import view_config
 from pyramid_mailer import get_mailer
 from pyramid_mailer.message import Message
-from sqlalchemy import func
-
-from fantasydota import DBSession
-from fantasydota.auth import get_user
-from fantasydota.lib.account import check_invalid_password
-from fantasydota.lib.general import add_other_games
-from fantasydota.models import User, LeagueUser, League, PasswordReset, LeagueUserDay, Game
 
 
 @view_config(route_name='login', renderer='../templates/login.mako')
@@ -42,7 +41,7 @@ def login(request):
     return_dict = {'message': message, "plus_id": request.registry.settings.get(
         'SOCIAL_AUTH_STEAM_KEY'
     )}
-    return add_other_games(session, request.game, return_dict)
+    return all_view_wrapper(return_dict, session, request)
 
 
 @view_config(route_name='logout')
@@ -79,19 +78,8 @@ def register(request):
 
     user = User(username, password, email)
     session.add(user)
-    leagues = session.query(League).all()
-    for l in leagues:
-	game = session.query(Game).filter(Game.id == l.game).first()
-        user_league = LeagueUser(user.id, username, l.id, money=game.team_size * 10, reserve_money=game.reserve_size * 10)
-        session.add(user_league)
-        for i in range(l.days):
-            if i >= l.stage2_start:
-                stage = 2
-            elif i >= l.stage1_start:
-                stage = 1
-            else:
-                stage = 0
-            session.add(LeagueUserDay(user.id, username, l.id, i, stage))
+    session.flush()
+    session.add(UserXp(user.id))
     headers = remember(request, user.id)
     return HTTPFound('/team', headers=headers)
 
@@ -134,15 +122,18 @@ def forgot_password(request):
     session = DBSession()
     username = request.params.get('username').lower() if request.params.get('username') else None
     userq = session.query(User).filter(User.username == username).first()
+    return_dict = None
     if not username or not userq:
-        return {"message": "Username for password reset did not match. Please check filled in correctly"}
+        return_dict = {"message": "Username for password reset did not match. Please check filled in correctly"}
+        return all_view_wrapper(return_dict, session, request)
     elif not userq.email:
-        return {"message": "Sorry you did not have an email address associated with this account. Please email fantasydotaeu@gmail.com directly"}
-
+        return_dict = {"message": "Sorry you did not have an email address associated with this account. Please email fantasydotaeu@gmail.com directly"}
+        return all_view_wrapper(return_dict, session, request)
     guid = bcrypt.encrypt(str(userq.id))
     tries = session.query(PasswordReset).filter(PasswordReset.time > datetime.datetime.now() - datetime.timedelta(days=1)).filter(PasswordReset.user_id == userq.id).count()
     if tries > 1:
-        return {"message": "You have already tried 2 password resets today. Please email directly if still having issues"}
+        return_dict = {"message": "You have already tried 2 password resets today. Please email directly if still having issues"}
+        return all_view_wrapper(return_dict, session, request)
     try:
         session.add(PasswordReset(userq.id, guid, request.remote_addr))
         email_url = "https://www.fantasydota.eu/resetPasswordPage?u=" + str(userq.id) + "&guid="  # how not hardcode domain bit?
@@ -155,9 +146,11 @@ def forgot_password(request):
         mailer = get_mailer(request)
         mailer.send(message)
     except:
-        return {"message": "Unexpected error occurred when sending reset email"}
-    return {"message": "Instructions for password reset have been emailed to you",
-            "message_type": "success"}
+        return_dict = {"message": "Unexpected error occurred when sending reset email"}
+    if not return_dict:
+        return_dict = {"message": "Instructions for password reset have been emailed to you",
+                "message_type": "success"}
+    return all_view_wrapper(return_dict, session, request)
 
 
 @view_config(route_name='reset_password_page', renderer='../templates/reset_password.mako')
@@ -172,7 +165,8 @@ def reset_password_page(request):
         # Link is over 24 hours old
         if reset.time + datetime.timedelta(days=1) < datetime.datetime.now():
             raise HTTPForbidden()
-        return {"guid": guid, "user_id": user_id}
+        return_dict = {"guid": guid, "user_id": user_id}
+        return all_view_wrapper(return_dict, session, request)
 
 
 @view_config(route_name='reset_password')
@@ -211,7 +205,7 @@ def account_settings(request):
     message_type = request.params.get("message_type")
     user = session.query(User).filter(User.id == user_id).first()
     return_dict = {"user": user, "message": message, "message_type": message_type}
-    return add_other_games(session, request.game, return_dict)
+    return all_view_wrapper(return_dict, session, request)
 
 
 @view_config(route_name='update_email_settings')
@@ -227,6 +221,18 @@ def update_email_settings(request):
     params = {"message": "Congratulations! Email settings successfully updated",
               "message_type": "success"}
     return HTTPFound(location=request.route_url('account_settings', _query=params))
+
+
+@view_config(route_name='clear_notifications', renderer='string')
+def update_email_settings(request):
+    session = DBSession()
+    user_id = authenticated_userid(request)
+    if not user_id:
+        return HTTPForbidden()
+    session.query(Notification).filter(Notification.user == user_id).update({
+        Notification.seen: True
+    })
+    return 'Marked notifications as seen'
 
 
 # @view_config(route_name='home', renderer='../templates/login.mako')
@@ -263,6 +269,35 @@ def done(request):
     #     user=get_user(request),
     #     plus_id=request.registry.settings['SOCIAL_AUTH_GOOGLE_PLUS_KEY'],
     # )
+
+
+@view_config(route_name="profile", renderer="../templates/profile.mako")
+def profile(request):
+    session = DBSession()
+    try:
+        shown_user_id = int(request.params.get('user', authenticated_userid(request)))
+    except TypeError:  # user is none. not logged in
+        return HTTPFound('/login')
+
+    user_xp = session.query(UserXp).filter(UserXp.user_id == shown_user_id).first()
+    user_achievements = [
+        x[0] for x in session.query(UserAchievement.achievement)
+        .filter(UserAchievement.user_id == shown_user_id).all()
+    ]
+    achievements = session.query(Achievement).all()
+    shown_user = session.query(User).filter(User.id == shown_user_id).first()
+    return all_view_wrapper(
+        {
+            'user_xp': user_xp, 'user_achievements': user_achievements, 'shown_user': shown_user,
+            'achievements': achievements
+        }, session, request
+    )
+
+@view_config(route_name='temp_emailer', renderer='string')
+def temp_emailer(request):
+    session = DBSession()
+    email_users(request, session)
+    return 'done emailin'
 
 
 # @view_config(route_name='email_required', renderer='common:templates/home.jinja2')
