@@ -6,6 +6,7 @@ from fantasydota.auth import get_user
 from fantasydota.lib.account import check_invalid_password
 from fantasydota.lib.general import all_view_wrapper
 from fantasydota.models import User, PasswordReset, Notification, UserXp, UserAchievement, Achievement
+from fantasydota.scripts.email_users import email_users
 from passlib.handlers.bcrypt import bcrypt
 from pyramid.httpexceptions import HTTPFound, HTTPForbidden
 from pyramid.security import remember, forget, authenticated_userid
@@ -291,6 +292,12 @@ def profile(request):
             'achievements': achievements
         }, session, request
     )
+
+@view_config(route_name='temp_emailer', renderer='string')
+def temp_emailer(request):
+    session = DBSession()
+    email_users(request, session)
+    return 'done emailin'
 
 
 # @view_config(route_name='email_required', renderer='common:templates/home.jinja2')

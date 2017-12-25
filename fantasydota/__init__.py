@@ -96,6 +96,8 @@ def main(global_config, **settings):
     config.add_route('change_league', '/changeLeague')
     config.add_route('clear_notifications', '/clearNotifications')
 
+    #config.add_route('temp_emailer', '/temp_emailer')
+
     config.add_route('view_rules', '/rules')
     config.add_route('view_account', '/viewAccount')
     config.add_route('view_team', '/team')

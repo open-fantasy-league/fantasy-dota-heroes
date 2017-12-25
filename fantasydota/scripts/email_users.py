@@ -1,15 +1,15 @@
 from fantasydota.lib.session_utils import make_session
 from fantasydota.models import User
-from pyramid_mailer import Mailer
+from pyramid_mailer import get_mailer
 from pyramid_mailer.message import Message
 
 
-def email_users():
-    session = make_session()
-    for user in session.query(User).filter(User.email.isnot("")).all():
+def email_users(request, session=None):
+    session = session or make_session()
+    for user in session.query(User).limit(10).all():
         if user.email:
             email = "testemail"#user.email
-            mailer = Mailer()
+            mailer = get_mailer(request)
             message = Message(subject="Fantasy Hero Dota New System",
                               sender="Fantasy Dota EU",
                               recipients=[email],
