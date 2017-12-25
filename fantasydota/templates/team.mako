@@ -113,6 +113,7 @@
                 <span class="messageTransOpen">
                     <p>Transfer window currently open</p>
                 </span>
+                <p>It closes Monday 6AM GMT when week becomes active and points start being earned</p>
             % endif
         % else:
             % if not userq.swap_tstamp:
