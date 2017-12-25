@@ -1,7 +1,10 @@
+import ast
 import csv
 import random
 
 import time
+
+import os
 from fantasydota.lib.constants import DIR, SECONDS_IN_WEEK
 from fantasydota.lib.herolist import heroes
 from fantasydota.models import Hero, Result, League
@@ -118,8 +121,8 @@ def calibrate_all_hero_values(session, game_id):
     average_points = sum_points / len(new_heroes_list)
     sum = 0
     i = 0
-    with open('calibration_overwrites.py') as f:
-        overrides = repr(f.read())
+    with open(os.path.join(os.path.dirname(__file__)) + '/calibration_overwrites.py') as f:
+        overrides = ast.literal_eval(f.read())
     for hero in new_heroes_list:
         overide = overrides.get(hero['id'])
         if hero["points"] < 0:

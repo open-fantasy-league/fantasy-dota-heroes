@@ -118,8 +118,18 @@ def main():
     # dreamleague calibration
     game_id = 1
     week_id = session.query(League.id).filter(League.game == game_id).filter(League.status == 1).first()[0]
-    for tournament in [x[0] for x in session.query(ProCircuitTournament.id).all()]:
-        add_matches(session, tournament, tstamp_from=1512057853, week_id=week_id)
+    tournaments = [x[0] for x in session.query(ProCircuitTournament.id).all()]
+    # PRO_CIRCUIT_LEAGUES = [
+    #     {'id': 1, 'name': 'test', 'major': True},
+    #     {'id': 5627, 'name': 'Dreamleague 8', 'major': True},
+    #     {'id': 5850, 'name': 'Summit 8', 'major': False},
+    #     {'id': 5688, 'name': 'Captains Draft 4', 'major': False},
+    #     {'id': 5504, 'name': 'MDL Macau', 'major': False},
+    #     {'id': 5637, 'name': 'Perfect World Master', 'major': False},
+    # ]
+    tournaments.extend([5562, 9579, 8055, 5572, 5616, 9579, 5562, 5651, 4820])
+    for tournament in tournaments:
+        add_matches(session, tournament, tstamp_from=1511806059, week_id=week_id)
 
 if __name__ == "__main__":
     main()

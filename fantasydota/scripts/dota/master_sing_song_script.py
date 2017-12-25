@@ -37,7 +37,7 @@ def super_duper_updaterooney():
         print("it's a new day!")
         end_of_day(week_id)
     for tournament in [x[0] for x in session.query(ProCircuitTournament.id).all()]:
-        add_matches(session, tournament, tstamp_from=1512057853, week_id=week_id)
+        add_matches(session, tournament, tstamp_from=1514786400, week_id=week_id)
     update_all(session)
 
 if __name__ == "__main__":
