@@ -44,7 +44,7 @@ def get_match_details(match_id):
         "key=%s&match_id=%s" % (APIKEY, match_id))
 
 
-def add_matches(session, tournament_id, week_id=None, tstamp_from=0, add_match=True):
+def add_matches(session, tournament_id, week_id=None, tstamp_from=0, add_match=True, set_applied_already=False):
     week_id = week_id or tournament_id
     match_list_json = get_league_match_list(tournament_id)
 
@@ -105,10 +105,18 @@ def add_matches(session, tournament_id, week_id=None, tstamp_from=0, add_match=T
                     else:
                         result_string += "l"
                 print "Match is:", match_json["match_id"]
-                session.add(Result(
-                    week_id, value["hero_id"], int(match_json["match_id"]), result_string,
-                    match_json["start_time"], series_id, (value["team"] == 0), match_json["start_time"]
-                ))
+                # For if need to add results for calibration purposes. but dont want included in leagues
+                if set_applied_already:
+                    session.add(Result(
+                        week_id, value["hero_id"], int(match_json["match_id"]), result_string,
+                        match_json["start_time"], series_id, (value["team"] == 0), match_json["start_time"],
+                        applied=2
+                    ))
+                else:
+                    session.add(Result(
+                        week_id, value["hero_id"], int(match_json["match_id"]), result_string,
+                        match_json["start_time"], series_id, (value["team"] == 0), match_json["start_time"]
+                    ))
     transaction.commit()
 
 
@@ -117,7 +125,12 @@ def main():
     #session2 = make_session(False)
     # dreamleague calibration
     game_id = 1
-    week_id = session.query(League.id).filter(League.game == game_id).filter(League.status == 1).first()[0]
+    try:
+        set_applied_already = False
+        week_id = session.query(League.id).filter(League.game == game_id).filter(League.status == 1).first()[0]
+    except:
+        set_applied_already = True
+        week_id = session.query(League.id).filter(League.game == game_id).filter(League.status == 0).first()[0]
     tournaments = [x[0] for x in session.query(ProCircuitTournament.id).all()]
     PRO_CIRCUIT_LEAGUES = [
         {'id': 5627, 'name': 'Dreamleague 8', 'major': True},
@@ -129,7 +142,8 @@ def main():
     tournaments.extend([x['id'] for x in PRO_CIRCUIT_LEAGUES])
     tournaments.extend([5562, 9579, 8055, 5572, 5616, 9579, 5562, 5651, 4820])
     for tournament in list(set(tournaments)):
-        add_matches(session, tournament, tstamp_from=1511806059, week_id=week_id)
+        add_matches(session, tournament, tstamp_from=1511806059, week_id=week_id,
+                    set_applied_already=set_applied_already)
 
 if __name__ == "__main__":
     main()

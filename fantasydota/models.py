@@ -317,7 +317,7 @@ class Result(Base):
     is_radiant = Column(Boolean)
     start_tstamp = Column(BigInteger)
 
-    def __init__(self, tournament, hero, match, result_str, timestamp, series_id, is_radiant, start_tstamp):
+    def __init__(self, tournament, hero, match, result_str, timestamp, series_id, is_radiant, start_tstamp, applied=0):
         self.tournament_id = tournament
         self.hero = hero
         self.match_id = match
@@ -326,6 +326,7 @@ class Result(Base):
         self.series_id = series_id
         self.is_radiant = is_radiant
         self.start_tstamp = start_tstamp
+        self.applied = applied
 
     @staticmethod
     def result_to_value(result_str):
