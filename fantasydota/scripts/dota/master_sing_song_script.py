@@ -27,20 +27,18 @@ def super_duper_updaterooney():
     now = datetime.datetime.utcnow()
     # We are in pre-week 1. where can pick team for first week, but games havent started yet
     if not week:
-        if False:# now.weekday() == 1 and now.hour >= 6
+        if now.weekday() == 0 and now.hour >= 6:
             print("rolling over league")
             rollover_league()
-            week = session.query(League).filter(League.game == game_id).filter(League.status == 1).first()
-        else:
-            return
+        return
     week_id = week.id
-    if now.weekday() == 1 and now.hour >= 6 and False: #(not week or week.current_day > 1):
+    if now.weekday() == 0 and now.hour >= 6 and (not week or week.current_day > 1):
     #if time_since_week_start > SECONDS_IN_WEEK:
         print("rolling over league")
         rollover_league()
         week = session.query(League).filter(League.game == game_id).filter(League.status == 1).first()
         week_id = week.id
-    elif week and now.weekday() > (week.current_day + 1) and now.hour >= 6: # days are 0 indexed
+    elif week and now.weekday() > week.current_day and now.hour >= 6:
         print("it's a new day!")
         end_of_day(week_id)
     for tournament in [x[0] for x in session.query(ProCircuitTournament.id).all()]:

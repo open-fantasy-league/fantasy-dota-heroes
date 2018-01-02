@@ -293,13 +293,6 @@ def profile(request):
         }, session, request
     )
 
-@view_config(route_name='temp_emailer', renderer='string')
-def temp_emailer(request):
-    session = DBSession()
-    email_users(request, session)
-    return 'done emailin'
-
-
 # @view_config(route_name='email_required', renderer='common:templates/home.jinja2')
 # def email_required(request):
 #     strategy = load_strategy(request)
