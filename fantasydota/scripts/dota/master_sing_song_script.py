@@ -48,6 +48,6 @@ def super_duper_updaterooney():
     update_all(session)
 
 if __name__ == "__main__":
-    fp = open('/tmp/fdota.pid', 'w')
-    check_not_already_running(fp)
-    super_duper_updaterooney()
+    with open('/tmp/fdota.pid', 'w') as fp:
+        check_not_already_running(fp)
+        super_duper_updaterooney()

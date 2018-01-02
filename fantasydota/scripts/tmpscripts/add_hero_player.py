@@ -38,7 +38,7 @@ def add_hero_player(session, user_id, hero_id, league_id, reserve):
         else:
             l_user.money = new_credits
             session.add(TeamHero(user_id, hero_id, league_id, hero_value, reserve, not reserve))
-            session.add(Sale(l_user.id, hero_id, league_id, hero_value, hero_value, True))
+            session.add(Sale(l_user.id, hero_id, league_id, hero_value, hero_value, True, False))
 
         transaction.commit()
 
@@ -51,15 +51,10 @@ def main():
     # add_hero_player(session, 480, 66, 5609, False)
     # add_hero_player(session, 480, 32, 5609, False)
 
-    add_hero_player(session, 337, 10, 5627, False)
-    add_hero_player(session, 337, 107, 5627, False)
-    add_hero_player(session, 337, 72, 5627, False)
-    add_hero_player(session, 337, 100, 5627, False)
-    add_hero_player(session, 337, 91, 5627, False)
-    add_hero_player(session, 337, 50, 5627, True)
-    add_hero_player(session, 337, 52, 5627, True)
-    add_hero_player(session, 337, 58, 5627, True)
-    add_hero_player(session, 337, 57, 5627, True)
+    add_hero_player(session, 351, 103, 1, False)
+    add_hero_player(session, 351, 12, 1, False)
+    add_hero_player(session, 351, 120, 1, False)
+    add_hero_player(session, 351, 45, 1, True)
 
 if __name__ == "__main__":
     main()
