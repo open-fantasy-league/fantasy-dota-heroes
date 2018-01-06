@@ -154,7 +154,7 @@ def swap_out(session, user_id, hero_id, league_id):
             l_user.money = new_credits
             check_hero_res.reserve = 1
             l_user.last_change = int(time.time())
-            session.add(Sale(l_user.id, hero_id, league_id, check_hero_res.value, hero_value, False, True))
+            session.add(Sale(l_user.id, hero_id, league_id, hero_value, hero_value, False, True))
             return {"success": True, "message": "Hero successfully sold", "action": "sell", "hero": hero_id,
                     "new_credits": new_credits}
         else:
