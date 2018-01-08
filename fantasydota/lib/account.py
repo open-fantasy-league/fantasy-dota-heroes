@@ -29,12 +29,12 @@ def add_achievement(session, achievement_name, user_id, link):
 
 def check_top(session, league_id, valid_users, max_col, rank_by, achievement_name):
     subq = session.query(func.max(max_col).label('m')).subquery()
-    tops = session.query(Hero).join(subq, subq.c.ml == max_col).all()
+    tops = session.query(Hero).join(subq, subq.c.m == max_col).all()
     for t in tops:
         users_to_add = []
         for th in session.query(TeamHero).filter(TeamHero.league == league_id)\
             .filter(TeamHero.active.is_(True))\
-            .filter(TeamHero.hero_id == t.hero_id).all():
+            .filter(TeamHero.hero_id == t.id).all():
                 users_to_add.append(th.user_id)
         for user_id in set(users_to_add) & valid_users:
             add_achievement(
@@ -45,10 +45,10 @@ def check_top(session, league_id, valid_users, max_col, rank_by, achievement_nam
 
 def check_top_value_picker(session, league_id, valid_users):
     subq = session.query(func.max(Hero.points / Hero.value).label('mp')).subquery()
-    top = session.query(Hero).join(subq, subq.c.ml == Hero.points / Hero.value).all()
+    top = session.query(Hero).join(subq, subq.c.mp == Hero.points / Hero.value).first()
     for th in session.query(TeamHero).filter(TeamHero.league == league_id)\
         .filter(TeamHero.active.is_(True))\
-        .filter(TeamHero.hero_id == top.hero_id).all():
+        .filter(TeamHero.hero_id == top.id).all():
         if th.user_id in valid_users:
             add_achievement(session, 'Shrewd Investor', th.user_id, '/team?league=%s')
 
@@ -78,9 +78,9 @@ def assign_xp_and_weekly_achievements(session, league):
     check_top_value_picker(session, league.id, valid_users)
     for i, luser in enumerate(lusers):
         if i == 0:
-            add_achievement(session, "Fantasy King", luser, '/leaderboard?league=%s' % league.id)
+            add_achievement(session, "Fantasy King", luser.user_id, '/leaderboard?league=%s' % league.id)
         if i < 5:
-            add_achievement(session, "Weekly Top Five", luser, '/leaderboard?league=%s' % league.id)
+            add_achievement(session, "Weekly Top Five", luser.user_id, '/leaderboard?league=%s' % league.id)
         user_xp = session.query(UserXp).filter(UserXp.user_id == luser.user_id).first()
         if not luser.late_start:
             user_xp.highest_weekly_pos = max(user_xp.highest_weekly_pos, luser.points_rank)
