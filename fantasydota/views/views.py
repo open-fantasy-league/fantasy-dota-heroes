@@ -1,7 +1,7 @@
 import datetime
 import re
 
-from fantasydota.lib.general import all_view_wrapper
+from fantasydota.lib.general import all_view_wrapper, add_other_games
 from fantasydota.models import (
     DBSession,
     Friend, User)
