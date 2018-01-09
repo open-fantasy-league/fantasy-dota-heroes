@@ -26,7 +26,7 @@ def add_results_to_user(session, userq, userq_day, new_results, league, team_siz
             picks = 0
             bans = 0
         match = result.match_id
-        if userq.late_start == 0 or (userq.late_start == 2 and userq.late_start_tstamp > result.start_tstamp):
+        if userq.late_start == 0 or (userq.late_start == 2 and userq.late_start_tstamp < result.start_tstamp):
             if result.hero in heroes:
                 res = result.result_str
                 user_id = userq.user_id
