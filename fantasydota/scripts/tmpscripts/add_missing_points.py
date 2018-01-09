@@ -13,7 +13,7 @@ def add_missing_points():
         league = session.query(League).filter(League.id == league_id).first()
         for userq in session.query(LeagueUser).filter(LeagueUser.league == 2).filter(LeagueUser.late_start == 2).all():
             print(userq.username)
-            """new_results = session.query(Result).filter(Result.applied == 2). \
+            new_results = session.query(Result).filter(Result.applied == 2). \
                 filter(Result.tournament_id == league_id).filter(Result.timestamp < 1515536315).filter(Result.start_tstamp > userq.late_start_tstamp).all()
 
             team_size = session.query(Game.team_size).filter(Game.id == league.game).first()[0]
@@ -26,7 +26,7 @@ def add_missing_points():
 
             for res in new_results:
                 res.applied = 2
-            """
+            
 
         transaction.commit()
     return
