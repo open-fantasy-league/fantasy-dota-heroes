@@ -181,7 +181,7 @@ def daily(request):
             player_heroes.append(heroes)
 
     match_data = []
-    matches = session.query(Match).filter(Match.day == period).all() if game.code == 'DOTA' else []
+    matches = session.query(Match).filter(Match.day == period).filter(Match.league == league_id).all() if game.code == 'DOTA' else []
     for match in reversed(matches):  # we want to show most recent matches at the top
         match_dict = {
             "radiant": match.radiant_team, "dire": match.dire_team, "radiant_win": match.radiant_win,
