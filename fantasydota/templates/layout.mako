@@ -210,8 +210,7 @@
       $('.button-collapse').click(removeOverlay);
 
       $('.clearNotifications').click(function() {
-        $.get('/clearNotifications');
-        window.location.reload(false);
+        $.get('/clearNotifications', function(){window.location.reload(false);});
       });
 
     })

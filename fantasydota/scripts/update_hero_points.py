@@ -32,12 +32,12 @@ def update_hero_points(session, league):
 
         if league.game == 1:
             print "Would add %s to hero points", Result.result_to_value(res)
-            heroq.points += MULTIPLIER * Result.result_to_value(res)
-            herod.points += MULTIPLIER * Result.result_to_value(res)
+            heroq.points += league.multiplier * Result.result_to_value(res)
+            herod.points += league.multiplier * Result.result_to_value(res)
         elif league.game == 2:
             print "Would add %s to hero points", Result.result_to_value_pubg(res)
-            heroq.points += MULTIPLIER * Result.result_to_value_pubg(res)
-            herod.points += MULTIPLIER * Result.result_to_value_pubg(res)
+            heroq.points += league.multiplier * Result.result_to_value_pubg(res)
+            herod.points += league.multiplier * Result.result_to_value_pubg(res)
         result.applied = 1
 
 
