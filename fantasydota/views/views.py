@@ -108,13 +108,6 @@ def nopubg(request):
     )
 
 
-@view_config(route_name='index', renderer='../templates/index.mako')
-def index(request):
-    session = DBSession()
-    return_dict = {}
-    return add_other_games(session, request.game, return_dict)
-
-
 def get_time_range(time_range):
     if time_range == 'week':
         date_start = datetime.datetime.now() - datetime.timedelta(days=7)
