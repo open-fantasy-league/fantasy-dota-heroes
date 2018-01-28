@@ -120,6 +120,8 @@ def main(global_config, **settings):
     config.add_route('end_day_req', '/endsecret')
     config.add_route('start_day_req', '/startsecret')
 
+    config.add_route('hero', '/api/dota/hero')
+
     config.add_route('nopubg', '/nopubg')
     config.scan()
     return config.make_wsgi_app()
