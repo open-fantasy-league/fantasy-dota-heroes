@@ -526,6 +526,7 @@ class ProCircuitTournament(Base):
     game = Column(Integer, ForeignKey(Game.id), index=True, nullable=False)
     name = Column(String(100), nullable=False)
     major = Column(Boolean)
+    finished = Column(Boolean, default=False, index=True)
 
     def __init__(self, id_, game, name, major):
         self.id = id_

@@ -41,7 +41,8 @@ def super_duper_updaterooney():
     elif week and now.weekday() > week.current_day and now.hour >= 6:
         print("it's a new day!")
         end_of_day(week_id)
-    for tournament in [x[0] for x in session.query(ProCircuitTournament.id).all()]:
+    for tournament in [x[0] for x in session.query(ProCircuitTournament.id).
+            filter(ProCircuitTournament.finished.is_(False)).all()]:
         add_matches(session, tournament, tstamp_from=1514786400, week_id=week_id)
     update_all(session)
 
