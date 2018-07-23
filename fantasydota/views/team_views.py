@@ -10,7 +10,7 @@ from sqlalchemy import and_
 
 from fantasydota import DBSession
 from fantasydota.lib.general import all_view_wrapper, get_league
-from fantasydota.lib.trade import buy, sell, swap_in, swap_out, get_swap_timestamp
+from fantasydota.lib.trade import buy, sell, get_swap_timestamp
 from fantasydota.models import User, League, LeagueUser, Hero, TeamHero, LeagueUserDay, Game
 from sqlalchemy import desc
 
@@ -24,151 +24,76 @@ def view_team(request):
     league_id = int(request.params.get('league', get_league(request, session)))
     league = session.query(League).filter(League.id == league_id).first()
     game = session.query(Game).filter(Game.id == league.game).first()
-    if game.code == 'DOTA':
-        message_type = request.params.get('message_type')
-        message = request.params.get('message')
+    message_type = request.params.get('message_type')
+    message = request.params.get('message')
 
-        # league_id = int(request.params.get("league") or
-        #                 (in_progress_league(session, game.id) or next_league(session, game.id)).id)
+    # league_id = int(request.params.get("league") or
+    #                 (in_progress_league(session, game.id) or next_league(session, game.id)).id)
 
-        class FakeUser():  # hacky quick way so unlogged in users can see the page
+    class FakeUser():  # hacky quick way so unlogged in users can see the page
 
-            def __init__(self, league):
-                self.username = ""
-                self.late_start = not league.transfer_open
-                self.league = league_id
-                self.money = 10 * game.team_size
-                self.reserve_money = 10 * game.reserve_size
-                self.points = 0
-                self.picks = 0
-                self.bans = 0
-                self.wins = 0
-                self.points_rank = None
-                self.wins_rank = None
-                self.picks_rank = None
-                self.bans_rank = None
-                self.swap_tstamp = None
+        def __init__(self, league):
+            self.username = ""
+            self.late_start = not league.transfer_open
+            self.league = league_id
+            self.money = 10 * game.team_size
+            self.points = 0
+            self.picks = 0
+            self.bans = 0
+            self.wins = 0
+            self.points_rank = None
+            self.wins_rank = None
+            self.picks_rank = None
+            self.bans_rank = None
+            self.swap_tstamp = None
+            self.remaining_transfers = 10
 
-        # dont blame me for the string check.
-        # seems something weird coming out of the python pyramid auth system
-        if user_id is None or user_id == 'None':
-            message = "You must login to pick team"
+    # dont blame me for the string check.
+    # seems something weird coming out of the python pyramid auth system
+    if user_id is None or user_id == 'None':
+        message = "You must login to pick team"
 
-            userq = FakeUser(league)
-            team = []
-            username = ""
-            reserve_team = []
-        else:
-
-            userq = session.query(LeagueUser).filter(and_(
-                LeagueUser.league == league.id, LeagueUser.user_id == user_id
-            )).first()
-            if not userq:
-                try:
-                    username = session.query(User.username).filter(User.id == user_id).first()[0]
-                except TypeError:
-                    headers = forget(request)
-                    print('userid: %s' % user_id)
-                    print('query %s' % session.query(User.username).filter(User.id == user_id).first())
-                    import traceback
-                    traceback.print_exc()
-                    return HTTPFound(location='/login', headers=headers)
-                late_start = (league.status == 1)
-                user_league = LeagueUser(user_id, username, league.id, late_start, money=10*game.team_size, reserve_money=10*game.reserve_size)
-                session.add(user_league)
-                for i in range(league.days):
-                    if i >= league.stage2_start:
-                        stage = 2
-                    elif i >= league.stage1_start:
-                        stage = 1
-                    else:
-                        stage = 0
-                    session.add(LeagueUserDay(user_id, username, league.id, i, stage))
-
-                userq = FakeUser(league)  # so dont have to deal with a commit mid-request
-
-            team = session.query(Hero, TeamHero).filter(Hero.league == league_id).\
-                filter(and_(TeamHero.user_id == user_id, TeamHero.league == league_id)).filter(TeamHero.reserve.is_(False)).\
-                join(TeamHero).order_by(TeamHero.active).all()
-            reserve_team = session.query(Hero, TeamHero).filter(Hero.league == league_id).\
-                filter(and_(TeamHero.user_id == user_id, TeamHero.league == league_id)).filter(TeamHero.reserve.is_(True)).\
-                join(TeamHero).order_by(TeamHero.active).all()
-            username = session.query(User.username).filter(User.id == user_id).first()[0]
-        heroes = session.query(Hero).filter(Hero.league == league_id).all()
-
-        return_dict = {'username': username, 'userq': userq, 'team': team, 'heroes': heroes, 'message': message,
-                        'message_type': message_type, 'league': league, 'reserve_team': reserve_team,
-                       'game': game}
-    elif game.code == 'PUBG':
-        message_type = request.params.get('message_type')
-        message = request.params.get('message')
-
-        league_id = int(request.params.get("league") or
-                        (in_progress_league(session, game.id) or next_league(session, game.id)).id)
-
-        class FakeUser():  # hacky quick way so unlogged in users can see the page
-            username = ""
-            league = league_id
-            money = 50.0 if game == 'dota' else 40.0
-            reserve_money = 50.0 if game == 'dota' else 20.0
-            points = 0
-            picks = 0
-            bans = 0
-            wins = 0
-            points_rank = None
-            wins_rank = None
-            picks_rank = None
-            bans_rank = None
-
-        if user_id is None:
-            message = "You must login to pick team"
-
-            userq = FakeUser()
-            team = []
-            username = ""
-            reserve_team = []
-        else:
-            userq = session.query(LeagueUser).filter(and_(
-                LeagueUser.league == league.id, LeagueUser.user_id == user_id
-            )).first()
-            if not userq:
-                try:
-                    username = session.query(User.username).filter(User.id == user_id).first()[0]
-                except TypeError:
-                    headers = forget(request)
-                    return HTTPFound(location='/login', headers=headers)
-                late_start = (league.status == 1)
-                user_league = LeagueUser(user_id, username, league.id, late_start, money=game.team_size * 10.0,
-                                         reserve_money=game.reserve_size * 10.0)
-                session.add(user_league)
-                for i in range(league.days):
-                    if i >= league.stage2_start:
-                        stage = 2
-                    elif i >= league.stage1_start:
-                        stage = 1
-                    else:
-                        stage = 0
-                    session.add(LeagueUserDay(user_id, username, league.id, i, stage))
-
-                userq = FakeUser()  # so dont have to deal with a commit mid-request
-
-            team = session.query(Hero, TeamHero).filter(Hero.league == league_id). \
-                filter(and_(TeamHero.user_id == user_id, TeamHero.league == league_id)).filter(
-                TeamHero.reserve.is_(False)). \
-                join(TeamHero).all()
-            reserve_team = session.query(Hero, TeamHero).filter(Hero.league == league_id). \
-                filter(and_(TeamHero.user_id == user_id, TeamHero.league == league_id)).filter(
-                TeamHero.reserve.is_(True)). \
-                join(TeamHero).all()
-            username = session.query(User.username).filter(User.id == user_id).first()[0]
-        heroes = session.query(Hero).filter(Hero.league == league_id).all()
-
-        return_dict = {
-            'username': username, 'userq': userq, 'team': team, 'heroes': heroes, 'message': message,
-            'message_type': message_type, 'league': league, 'reserve_team': reserve_team, 'game': game,
-        }
+        userq = FakeUser(league)
+        team = []
+        username = ""
+        reserve_team = []
     else:
-        return_dict = {'game': 'whoops'}
+
+        userq = session.query(LeagueUser).filter(and_(
+            LeagueUser.league == league.id, LeagueUser.user_id == user_id
+        )).first()
+        if not userq:
+            try:
+                username = session.query(User.username).filter(User.id == user_id).first()[0]
+            except TypeError:
+                headers = forget(request)
+                print('userid: %s' % user_id)
+                print('query %s' % session.query(User.username).filter(User.id == user_id).first())
+                import traceback
+                traceback.print_exc()
+                return HTTPFound(location='/login', headers=headers)
+            late_start = (league.status == 1)
+            user_league = LeagueUser(user_id, username, league.id, late_start, money=10*game.team_size, reserve_money=10*game.reserve_size)
+            session.add(user_league)
+            for i in range(league.days):
+                if i >= league.stage2_start:
+                    stage = 2
+                elif i >= league.stage1_start:
+                    stage = 1
+                else:
+                    stage = 0
+                session.add(LeagueUserDay(user_id, username, league.id, i, stage))
+
+            userq = FakeUser(league)  # so dont have to deal with a commit mid-request
+
+        team = session.query(Hero, TeamHero).filter(Hero.league == league_id).\
+            filter(and_(TeamHero.user_id == user_id, TeamHero.league == league_id)).join(TeamHero).order_by(TeamHero.reserve)\
+            .order_by(desc(TeamHero.active)).all()
+    heroes = session.query(Hero).filter(Hero.league == league_id).all()
+
+    return_dict = {'username': userq.username, 'userq': userq, 'team': team, 'heroes': heroes, 'message': message,
+                    'message_type': message_type, 'league': league,
+                   'game': game}
 
     transfer_open = league.transfer_open or userq.late_start == 1
     return_dict['transfer_open'] = transfer_open
@@ -195,17 +120,16 @@ def sell_hero(request):
 
     hero_id = request.POST["hero"]
     league_id = request.POST["league"]
-    reserve = bool(int(request.POST["reserve"]))
     l_user = session.query(LeagueUser).filter(LeagueUser.league == league_id).filter(
         LeagueUser.user_id == user_id).first()
-    transfer_actually_open = session.query(League.transfer_open).filter(League.id == league_id).first()[0]
-    if not transfer_actually_open:
-        if l_user.late_start == 1:
-            return sell(session, l_user, hero_id, league_id, reserve)
-        else:
-            return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
+    league = session.query(League).filter(League.id == league_id).first()
+    started = league.status > 0
+    if l_user.swap_tstamp:
+        return {"success": False,
+                "message": "You have already made transfers within the last hour"
+                           " You cannot make more until this hour period has passed"}
 
-    return sell(session, l_user, hero_id, league_id, reserve)
+    return sell(session, l_user, hero_id, league_id, started=started)
 
 
 @view_config(route_name="buy_hero", renderer="json")
@@ -217,61 +141,19 @@ def buy_hero(request):
 
     hero_id = int(request.POST["hero"])
     league_id = int(request.POST["league"])
-    reserve = bool(int(request.POST["reserve"]))
     l_user = session.query(LeagueUser).filter(LeagueUser.league == league_id).filter(
         LeagueUser.user_id == user_id).first()
-    transfer_actually_open = session.query(League.transfer_open).filter(League.id == league_id).first()[0]
-    if not transfer_actually_open:
-        if l_user.late_start == 1:
-            return buy(session, l_user, hero_id, league_id, reserve, late=True)
-        else:
-            return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
+    league = session.query(League).filter(League.id == league_id).first()
+    started = league.status > 0
+    # if not transfer_actually_open:
+    #     else:
+    #         return {"success": False, "message": "Transfer window just open/closed. Please reload page"}
+    if l_user.swap_tstamp:
+        return {"success": False,
+                "message": "You already have pending transfers."
+                           " You must wait the hour transfer cooldown"}
 
-    return buy(session, l_user, hero_id, league_id, reserve)
-
-
-@view_config(route_name="swap_in_hero", renderer="json")
-def swap_in_hero(request):
-    session = DBSession()
-    user_id = authenticated_userid(request)
-    if user_id is None:
-        return {"success": False, "message": "Please login to play! :)"}
-
-    hero_id = int(request.POST["hero"])
-    league_id = int(request.POST["league"])
-    transfer_actually_open = session.query(League.swap_open).filter(League.id == league_id).first()[0]
-    if not transfer_actually_open:
-        return {"success": False, "message": "Swap window just open/closed. If your team was incomplete it has been reset to yesterday's starting lineup"}
-
-    return swap_in(session, user_id, hero_id, league_id)
-
-
-@view_config(route_name="swap_out_hero", renderer="json")
-def swap_out_hero(request):
-    session = DBSession()
-    user_id = authenticated_userid(request)
-    if user_id is None:
-        return {"success": False, "message": "Please login to play! :)"}
-    hero_id = int(request.POST["hero"])
-    league_id = int(request.POST["league"])
-    transfer_actually_open = session.query(League.swap_open).filter(League.id == league_id).first()[0]
-    if not transfer_actually_open:
-        return {"success": False, "message": "Swap window just open/closed. If your team was incomplete it has been reset to yesterday's starting lineup"}
-
-    return swap_out(session, user_id, hero_id, league_id)
-
-
-@view_config(route_name="confirm_swap", renderer="json")
-def confirm_swap(request):
-    session = DBSession()
-    user_id = authenticated_userid(request)
-    if user_id is None:
-        return {"success": False, "message": "Please login to play! :)"}
-
-    league_id = int(request.params.get("league"))
-    l_user = session.query(LeagueUser).filter(LeagueUser.league == league_id).filter(LeagueUser.user_id == user_id).first()
-    l_user.swap_tstamp = get_swap_timestamp()
-    return {"success": True, "message": "Successfully confirmed swaps"}
+    return buy(session, l_user, hero_id, league_id, started=started)
 
 
 @view_config(route_name="confirm_transfer", renderer="json")
@@ -282,8 +164,12 @@ def confirm_transfer(request):
         return {"success": False, "message": "Please login to play! :)"}
 
     league_id = int(request.params.get("league"))
-    l_user = session.query(LeagueUser).filter(LeagueUser.league == league_id).filter(LeagueUser.user_id == user_id).first()
-    l_user.late_start = 2
-    l_user.late_start_tstamp = time.time()
-    main_team_to_active(session, l_user)
+    l_user = session.query(LeagueUser).filter(LeagueUser.league == league_id).filter(
+        LeagueUser.user_id == user_id).first()
+    sold_heroes = session.query(TeamHero).filter(and_(TeamHero.user_id == user_id,
+                                                     TeamHero.league == league_id)).filter(TeamHero.reserve.is_(True)).count()
+    if sold_heroes > l_user.remaining_transfers:
+        return {"success": False, "message": "You have insufficient remaining transfers to perform this change"}
+    l_user.swap_tstamp = get_swap_timestamp()
     return {"success": True, "message": "Successfully confirmed transfers"}
+

@@ -1,5 +1,5 @@
 import transaction
-from fantasydota.lib.account import add_achievement, team_swap_all
+from fantasydota.lib.account import add_achievement, process_transfers
 from fantasydota.lib.general import match_link
 from sqlalchemy import and_
 
@@ -78,7 +78,7 @@ def main():
     with transaction.manager:
         session = make_session()
         for league in session.query(League).all():
-            team_swap_all(session, league.id)
+            process_transfers(session, league.id)
             session.flush()
             update_league_points(session, league)
         transaction.commit()

@@ -32,6 +32,7 @@
         <script src="/static/sorttable.js"></script>
 
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
         <!--<script src="/static/sweetalert.min.js"></script>-->
         <!--<link rel="stylesheet" type="text/css" href="/static/sweetalert.css">-->
 
@@ -61,17 +62,6 @@
             </ul>
             <ul class="right hide-on-med-and-down">
                 <li><a href="/profile">Profile</a></li>
-                <li class="col s2">
-                <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="#" data-activates="leagueDropdown">
-                    Week
-                    <i class="material-icons right">arrow_drop_down</i>
-                </a>
-                </li>
-                    <ul id="leagueDropdown" class="dropdown-content">
-                        % for league in leagues:
-                        <li><a href="/changeLeague?league=${league.id}">${league.name}</a></li>
-                        % endfor
-                </ul>
                 <li class="col s2">
                 <a id="notificationButton" class="dropdown-button" data-constrainWidth="false" data-hover="true" data-beloworigin="true" href="#" data-activates="notificationDropdown">
                     Notifications ${"(%s)" % len(notifications)}
@@ -122,17 +112,6 @@
                 <div class="divider"></div>
                 <li><a href="/profile">Profile</a></li>
                 <li class="col s2">
-                    <a class="dropdown-button" data-beloworigin="true" href="#" data-activates="mobileLeagueDropdown">
-                        Week
-                        <i class="material-icons right">arrow_drop_down</i>
-                    </a>
-                </li>
-                <ul id="mobileLeagueDropdown" class="dropdown-content">
-                    % for league in leagues:
-                    <li><a href="/changeLeague?league=${league.id}">${league.name}</a></li>
-                    % endfor
-                </ul>
-                <li class="col s2">
                 <a id="mobileNotificationButton" class="dropdown-button" data-constrainWidth='false'
                    data-beloworigin="true" href="#" data-activates="mobileNotificationDropdown">
                     Notifications ${"(%s)" % len(notifications)}
@@ -174,9 +153,6 @@
             <div class="content">
                 <div>
                     <!--<h1><span class="font-semi-bold">${next.title()}</h1>-->
-                    <div class="row">
-                    <p>Weekly Dota leagues have been paused. I will bring back leagues for individual tournaments some time before TI8.  Currently rewriting site/making improvements in scala.</p>
-                    </div>
                     <div class="container">
                         ${next.body()}
                     </div>

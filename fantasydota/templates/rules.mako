@@ -36,28 +36,19 @@
             <ul class="browser-default"><li>x0.5 for every missing hero  (to prevent people abusing half-empty teams of best heroes)
             </li></ul>
             Weekend multiplier:</br>
-            <ul class="browser-default"><li>x2 points for Saturday and Sunday matches
+            <ul class="browser-default"><li>x2 points for Main event matches. x3 points for grand finals day!
             </li>
             </ul>
-        <p>Weekly Leagues roll-over at 6AM GMT Monday (1AM EST)</p>
     </div>
     <h2>Team</h2>
     <div class="card-panel">
         <ul class="browser-default">
             <li>
-                Your Main team can consist of up to 5 dota heroes (you are not required to use all 5, but you incur a heavy percentage penalty for each missing hero).
+                Your team can consist of up to 5 dota heroes (you are not required to use all 5, but you incur a heavy percentage penalty for each missing hero).
             </li>
             <li>
-                Your Reserve team also consists of up to 4 heroes, worth 40 credits. These earn 0 points whilst in your reserves. However they can be swapped into main team at any point.
-            </li>
-            <li>
-            Your main team will always have a 50 credit limit. i.e. You must remove 20 credits worth of heroes from Main team, before promoting a reserve hero worth 20 credits.
-            </li>
-            <li>
-            There is a 12 hour delay before your swaps go through. This prevents abuse of swapping as drafts/games occurring.
-            </li>
-            <li>
-                If the week has already started you can still pick a team and earn points, however you will not be eligible for the main achievements and receive reduced XP.
+            You get 10 potential hero transfers to be used whenever you like throughout the tournament.
+            There is a 1 hour delay before your mid-tournament transfers go through. This prevents abuse of transferring as drafts/games occurring.
             </li>
         </ul>
     </div>

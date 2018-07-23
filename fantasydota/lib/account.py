@@ -92,23 +92,16 @@ def assign_daily_achievements(session, league, day):
     add_achievement(session, "Daily Win", luser.user_id, '/leaderboard?league=%s&period=%s' % (league.id, day))
 
 
-def swap_for_user(session, user_id):
-    for th in session.query(TeamHero).filter(TeamHero.user_id == user_id).all():
-        th.active = not th.reserve
-    # TODO the efficient update doesnt work simply
-    # because it's checking boolean-ness of class attribute, not query result
-    # session.query(TeamHero).filter(TeamHero.user_id == user_id).update({
-    #     TeamHero.active: not TeamHero.reserve
-    # })
-    # maybe simplest soln is just use inactive, not active
-
-
-def team_swap_all(session, league_id):
-    lusers = session.query(LeagueUser).filter(LeagueUser.league == league_id)\
+def process_transfers(session, league_id):
+    lusers = session.query(LeagueUser).filter(LeagueUser.league == league_id) \
         .filter(LeagueUser.swap_tstamp.isnot(None)).all()
     for luser in lusers:
         if luser.swap_tstamp < time.time():
-            swap_for_user(session, luser.user_id)
+            for th in session.query(TeamHero).filter(TeamHero.user_id == luser.user_id).all():
+                if th.reserve:
+                    session.delete(th)
+                else:
+                    th.active = True
             luser.swap_tstamp = None
 
 
