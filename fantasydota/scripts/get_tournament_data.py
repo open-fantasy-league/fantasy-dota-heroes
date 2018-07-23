@@ -3,6 +3,7 @@ import os
 import re
 import time
 import urllib2
+import traceback
 
 import transaction
 from copy import copy
@@ -19,7 +20,8 @@ def dont_piss_off_valve_but_account_for_sporadic_failures(req_url):
     print("requesting {0}".format(req_url))
     fuck = True  # no idea why this failing. im waiting long enough to not piss off valve?
     sleep_time = 1
-    while fuck:
+    fucks_given = 5
+    while fuck and fucks_given:
         try:
             response = urllib2.urlopen(req_url)
             time.sleep(sleep_time)
@@ -27,6 +29,8 @@ def dont_piss_off_valve_but_account_for_sporadic_failures(req_url):
         except:
             sleep_time += 30  # incase script breaks dont want to spam
             print "Why the fuck are you fucking failing you fucker"
+            traceback.print_exc()
+            fucks_given -= 1
             continue
     data = json.load(response)
     return data

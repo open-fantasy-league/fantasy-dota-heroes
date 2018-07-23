@@ -174,6 +174,9 @@
             <div class="content">
                 <div>
                     <!--<h1><span class="font-semi-bold">${next.title()}</h1>-->
+                    <div class="row">
+                    <p>Weekly Dota leagues have been paused. I will bring back leagues for individual tournaments some time before TI8.  Currently rewriting site/making improvements in scala.</p>
+                    </div>
                     <div class="container">
                         ${next.body()}
                     </div>
