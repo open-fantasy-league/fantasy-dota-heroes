@@ -55,9 +55,6 @@ def leaderboard(request):
     player_heroes = []
     leagueq = session.query(LeagueUser).filter(LeagueUser.league == league_id).filter(LeagueUser.user_id.in_(users_playing))
     luser = leagueq.filter(LeagueUser.user_id == user_id).first()
-    show_late_start = int(request.params.get('showLate', luser.late_start if luser else 0))
-    if not show_late_start:
-        leagueq = leagueq.filter(LeagueUser.late_start == 0)
     if mode == "friend":
         players = leagueq.filter(or_(LeagueUser.user_id.in_(friends), LeagueUser.user_id == user_id)). \
             order_by(desc(rank_)).limit(100).all()
@@ -82,7 +79,7 @@ def leaderboard(request):
             #                     and_(TeamHeroHistoric.user_id == player.user_id, TeamHeroHistoric.league == league_id)).\
             #                     filter(TeamHeroHistoric.day == league.current_day - 1).all():
             #                 heroes.append(hero.hero_name)
-            if not league.transfer_open:
+            if league.status > 0:
                 for hero in session.query(TeamHero).filter(and_(TeamHero.user_id == player.user_id,
                                                                         TeamHero.league == league_id))\
                         .filter(TeamHero.active.is_(True)).all():
@@ -93,7 +90,7 @@ def leaderboard(request):
             player_heroes.append(heroes)
 
     return_dict = {'user': luser, 'players': players, 'rank_by': rank_by, 'mode': mode, 'other_modes': other_modes, 'period': "tournament",
-            'player_heroes': player_heroes, 'league': league, 'game': game, 'show_late_start': show_late_start}
+            'player_heroes': player_heroes, 'league': league, 'game': game}
     return all_view_wrapper(return_dict, session, request, league_id=league_id)
 
 
@@ -116,8 +113,7 @@ def daily(request):
         if user_id:
             friends.append(user_id)
 
-    period = int(request.params.get("period") or
-                 (league.current_day if not league.transfer_open else league.current_day - 1))
+    period = int(request.params.get("period", league.current_day))
 
     rank_by = request.params.get("rank_by")
     rank_by = rank_by if rank_by in ("points", "wins", "picks", "bans") else "points"

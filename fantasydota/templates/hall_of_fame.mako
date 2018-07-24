@@ -51,7 +51,7 @@
         </tr>
         <tr>
             <td>Dreamhack Winter [Major]</td>
-            <td>-</td>
+            <td>Misanthrope</td>
             <td>-</td>
         </tr>
         </tbody>

@@ -99,11 +99,7 @@
     </div>
 </div>
 <div id="heroesBlock" class="row">
-    % if transfer_open:
-        <h2>Heroes (Credits Available: <span class="userCredits">${round(userq.money, 1)}</span>)</h2>
-    % else:
-        <h2>Heroes</h2>
-    % endif
+    <h2>Heroes (Credits Available: <span class="userCredits">${round(userq.money, 1)}</span>)</h2>
     <div id="tableContainer">
         <table class="sortable card-table striped centered">
             <tr style="cursor: pointer">

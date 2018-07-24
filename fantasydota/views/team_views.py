@@ -34,7 +34,6 @@ def view_team(request):
 
         def __init__(self, league):
             self.username = ""
-            self.late_start = not league.transfer_open
             self.league = league_id
             self.money = 10 * game.team_size
             self.points = 0
@@ -72,8 +71,7 @@ def view_team(request):
                 import traceback
                 traceback.print_exc()
                 return HTTPFound(location='/login', headers=headers)
-            late_start = (league.status == 1)
-            user_league = LeagueUser(user_id, username, league.id, late_start, money=10*game.team_size, reserve_money=10*game.reserve_size)
+            user_league = LeagueUser(user_id, username, league.id, False, money=10*game.team_size, reserve_money=10*game.reserve_size)
             session.add(user_league)
             for i in range(league.days):
                 if i >= league.stage2_start:
@@ -94,9 +92,6 @@ def view_team(request):
     return_dict = {'username': userq.username, 'userq': userq, 'team': team, 'heroes': heroes, 'message': message,
                     'message_type': message_type, 'league': league,
                    'game': game}
-
-    transfer_open = league.transfer_open or userq.late_start == 1
-    return_dict['transfer_open'] = transfer_open
 
     if userq.swap_tstamp:
         seconds_until_swap = userq.swap_tstamp - time.time()
