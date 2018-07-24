@@ -27,12 +27,13 @@ def update_all(session=None):
         print "Updating league points"
         process_transfers(session, league.id)
         session.flush()
-        update_league_points(session, league)
+        new_results = update_league_points(session, league)
         transaction.commit()
-    with transaction.manager:
-        print "Updating user rankings"
-        update_user_rankings(session, league)
-        transaction.commit()
+    if new_results:
+        with transaction.manager:
+            print "Updating user rankings"
+            update_user_rankings(session, league)
+            transaction.commit()
 
 if __name__ == "__main__":
     update_all()

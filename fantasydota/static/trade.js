@@ -30,7 +30,12 @@ function doTrade(event, action, cancel){
                 var success = data.success,
                 message = data.message;
                 if (!success){
-                    sweetAlert(message, '', 'error');
+                    sweetAlert(message, '', 'error').then(function(){
+                        if (data.reload){
+                            location.reload();
+                        }
+                    }
+                    );
                 }
                 else{
                     swal({

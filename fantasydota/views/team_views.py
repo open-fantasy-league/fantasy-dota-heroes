@@ -46,6 +46,7 @@ def view_team(request):
             self.bans_rank = None
             self.swap_tstamp = None
             self.remaining_transfers = 10
+            self.voided_transfers = False
 
     # dont blame me for the string check.
     # seems something weird coming out of the python pyramid auth system
@@ -124,6 +125,12 @@ def sell_hero(request):
                 "message": "You have already made transfers within the last hour"
                            " You cannot make more until this hour period has passed"}
 
+    if l_user.voided_transfers:
+        l_user.voided_transfers = False
+        return {"success": False, "message": "Hero value recalibration just occurred. "
+                                             "Therefore your pending transfers have been reset. Apologies.",
+                "reload": True}
+
     return sell(session, l_user, hero_id, league_id, started=started)
 
 
@@ -148,6 +155,12 @@ def buy_hero(request):
                 "message": "You already have pending transfers."
                            " You must wait the hour transfer cooldown"}
 
+    if l_user.voided_transfers:
+        l_user.voided_transfers = False
+        return {"success": False, "message": "Hero value recalibration just occurred. "
+                                             "Therefore your pending transfers have been reset. Apologies.",
+                "reload": True}
+
     return buy(session, l_user, hero_id, league_id, started=started)
 
 
@@ -163,8 +176,15 @@ def confirm_transfer(request):
         LeagueUser.user_id == user_id).first()
     sold_heroes = session.query(TeamHero).filter(and_(TeamHero.user_id == user_id,
                                                      TeamHero.league == league_id)).filter(TeamHero.reserve.is_(True)).count()
+    if l_user.voided_transfers:
+        l_user.voided_transfers = False
+        return {"success": False, "message": "Hero value recalibration occurred before confirm transfers went through. "
+                                             "Therefore your pending transfers have been reset. Apologies.",
+                "reload": True}
     if sold_heroes > l_user.remaining_transfers:
         return {"success": False, "message": "You have insufficient remaining transfers to perform this change"}
+    else:
+        l_user.remaining_transfers -= sold_heroes
     l_user.swap_tstamp = get_swap_timestamp()
     return {"success": True, "message": "Successfully confirmed transfers"}
 

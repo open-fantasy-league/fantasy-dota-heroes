@@ -164,6 +164,7 @@ class LeagueUser(Base):
     late_start = Column(Integer, nullable=False, index=True)
     late_start_tstamp = Column(BigInteger)
     remaining_transfers = Column(Integer, default=10)
+    voided_transfers = Column(Boolean, default=False)
 
     def __init__(self, user_id, username, league, late_start, money=50.0, reserve_money=50.0):
         self.user_id = user_id
