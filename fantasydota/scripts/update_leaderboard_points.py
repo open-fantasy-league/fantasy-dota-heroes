@@ -1,5 +1,5 @@
 import transaction
-from fantasydota.lib.account import add_achievement, team_swap_all
+from fantasydota.lib.account import add_achievement, process_transfers
 from fantasydota.lib.general import match_link
 from sqlalchemy import and_
 
@@ -59,18 +59,19 @@ def update_league_points(session, league):
     league_id = league.id
     new_results = session.query(Result).filter(Result.applied == 1). \
         filter(Result.tournament_id == league_id).all()
-
-    for userq in session.query(LeagueUser).filter(LeagueUser.league == league_id).all():
-        team_size = session.query(Game.team_size).filter(Game.id == league.game).first()[0]
-        game = league.game
-        userq_day = session.query(LeagueUserDay).filter(and_(LeagueUserDay.user_id == userq.user_id,
-                                                             LeagueUserDay.league == userq.league,
-                                                             LeagueUserDay.day == league.current_day
-                                                             )).first()
-        add_results_to_user(session, userq, userq_day, new_results, league, team_size, game)
+    if new_results:
+        for userq in session.query(LeagueUser).filter(LeagueUser.league == league_id).all():
+            team_size = session.query(Game.team_size).filter(Game.id == league.game).first()[0]
+            game = league.game
+            userq_day = session.query(LeagueUserDay).filter(and_(LeagueUserDay.user_id == userq.user_id,
+                                                                 LeagueUserDay.league == userq.league,
+                                                                 LeagueUserDay.day == league.current_day
+                                                                 )).first()
+            add_results_to_user(session, userq, userq_day, new_results, league, team_size, game)
 
     for res in new_results:
         res.applied = 2
+    return new_results  # this is kind of side-effecty but rewriting in scala anyway
 
 
 def main():
@@ -78,7 +79,7 @@ def main():
     with transaction.manager:
         session = make_session()
         for league in session.query(League).all():
-            team_swap_all(session, league.id)
+            process_transfers(session, league.id)
             session.flush()
             update_league_points(session, league)
         transaction.commit()

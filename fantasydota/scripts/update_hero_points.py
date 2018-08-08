@@ -1,6 +1,5 @@
 import transaction
 
-from fantasydota.lib.constants import MULTIPLIER
 from fantasydota.lib.session_utils import make_session
 from fantasydota.models import Hero, Result, League, HeroDay
 from sqlalchemy import and_

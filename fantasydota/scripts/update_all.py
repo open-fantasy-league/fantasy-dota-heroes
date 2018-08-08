@@ -1,6 +1,7 @@
 import argparse
 import transaction
-from fantasydota.lib.account import team_swap_all
+
+from fantasydota.lib.account import process_transfers
 from fantasydota.scripts.update_user_rankings import update_user_rankings
 
 from fantasydota.scripts.update_leaderboard_points import update_league_points
@@ -24,14 +25,15 @@ def update_all(session=None):
         transaction.commit()
     with transaction.manager:
         print "Updating league points"
-        team_swap_all(session, league.id)
+        process_transfers(session, league.id)
         session.flush()
-        update_league_points(session, league)
+        new_results = update_league_points(session, league)
         transaction.commit()
-    with transaction.manager:
-        print "Updating user rankings"
-        update_user_rankings(session, league)
-        transaction.commit()
+    if new_results:
+        with transaction.manager:
+            print "Updating user rankings"
+            update_user_rankings(session, league)
+            transaction.commit()
 
 if __name__ == "__main__":
     update_all()

@@ -246,18 +246,9 @@ $( document ).ready(function() {
 })
 </script>
 <div id="friendBlock" class="col s12 m5">
-    <div class="switch">
-        <label>
-          Off
-          <input ${'checked=checked' if show_late_start else ''} type="checkbox" id="showLateStartCheckbox">
-          <span class="lever"></span>
-          Show late-starters
-        </label>
-    </div>
     % if game.code == "DOTA":
     <div class="card-panel">
-    <p>2x points multiplier for weekend</p>
-        <p>League ends 6AM GMT Monday</p>
+    <p>2x points multiplier for main event. 3x for grand finals day</p>
         <p>Results updated ~1 minute after match ends</p>
         <p><a href="https://discord.gg/MAH7EEv" target="_blank">Discord channel for suggestions/improvements</a></p>
     </div>

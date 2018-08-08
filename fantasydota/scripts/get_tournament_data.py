@@ -198,7 +198,7 @@ def main():
     except:
         set_applied_already = True
         week_id = session.query(League.id).filter(League.game == game_id).filter(League.status == 0).first()[0]
-    tournaments = [x[0] for x in session.query(ProCircuitTournament.id).all()]
+    #tournaments = [x[0] for x in session.query(ProCircuitTournament.id).all()]
     # PRO_CIRCUIT_LEAGUES = [
     #     {'id': 5627, 'name': 'Dreamleague 8', 'major': True},
     #     {'id': 5850, 'name': 'Summit 8', 'major': False},
@@ -208,6 +208,7 @@ def main():
     # ]
     # tournaments.extend([x['id'] for x in PRO_CIRCUIT_LEAGUES])
     #tournaments.extend([5562, 9579, 8055, 5572, 5616, 9579, 5562, 5651, 4820])
+    tournaments = [10145, 5562, 10087, 9836, 4127, 10061]  # TI8 calibration tournaments
     for tournament in list(set(tournaments)):
         add_matches(session, tournament, tstamp_from=1511806059, week_id=week_id,
                     set_applied_already=set_applied_already)

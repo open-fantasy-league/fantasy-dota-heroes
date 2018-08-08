@@ -138,7 +138,7 @@ ${"period=%s" % period}
                         <a href="${'/profile?user=%s' % player.user_id if mode != 'hero' else ''}">
                         ${player.username}
                         </a>
-                    % if len(player_heroes) > i and (not league.transfer_open or league.current_day != period):
+                    % if len(player_heroes) > i and (league.status > 0):
                         <span class="hero_images">
                         % for hero in player_heroes[i]:
                             <img src="/static/images/dota/${hero.replace(" ", "_")}_icon.png" title="${hero}" />
@@ -348,7 +348,7 @@ $( document ).ready(function() {
                     </td>
                     <td class="heroEntry">
                         ${player.username}
-                    % if len(player_heroes) > i and (not league.transfer_open or league.current_day != period):
+                    % if len(player_heroes) > i and league.status > 0:
                         <span class="hero_images left">
                         % for hero in player_heroes[i]:
                             <img src="/static/images/pubg/teams/${hero.team.replace(" ", "_")}_icon.png" title="${hero.name}" />

@@ -163,6 +163,8 @@ class LeagueUser(Base):
     swap_tstamp = Column(Integer, index=True)
     late_start = Column(Integer, nullable=False, index=True)
     late_start_tstamp = Column(BigInteger)
+    remaining_transfers = Column(Integer, default=10)
+    voided_transfers = Column(Boolean, default=False)
 
     def __init__(self, user_id, username, league, late_start, money=50.0, reserve_money=50.0):
         self.user_id = user_id
@@ -278,7 +280,7 @@ class TeamHero(Base):
         self.hero_name = hero_name or (item for item in heroes if item["id"] == hero_id).next()["name"]
         self.league = league
         self.cost = cost
-        self.reserve = reserve
+        self.reserve = reserve  # reserve means to sell
         self.active = active
 
 

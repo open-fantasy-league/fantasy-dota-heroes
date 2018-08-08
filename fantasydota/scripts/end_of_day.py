@@ -28,7 +28,6 @@ def end_of_day(league_id=None):
                 .filter(LeagueUserDay.day == league.current_day)\
                 .filter(LeagueUserDay.points != 0).first():
             assign_daily_achievements(session, league, league.current_day)
-        league.current_day += 1
         transaction.commit()
 
 if __name__ == "__main__":

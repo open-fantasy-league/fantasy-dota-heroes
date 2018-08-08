@@ -39,11 +39,11 @@ def all_view_wrapper(return_dict, session, request, league_id=None):
 
 
 def get_game(request):
-    return request.cookies.get('game', 'DOTA')
+    return 'DOTA'  # request.cookies.get('game', 'DOTA')
 
 
 def get_league(request, session):
-    return int(request.cookies.get('league', default_league(session, 1)))
+    return 9870  # int(request.cookies.get('league', default_league(session, 5562)))
 
 
 def match_link(match_id):

@@ -165,7 +165,7 @@ submit:hover  {
 .messageTransOpen {color: green}
 .messageTransClosed {color: red}
 
-.toSwap {opacity: 0.5}
+.toTransfer {opacity: 0.5}
 
 .positionHeader {width: 8%}
 .rankingHeader {width: 15%}

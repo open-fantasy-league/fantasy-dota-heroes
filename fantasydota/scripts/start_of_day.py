@@ -1,7 +1,6 @@
 import argparse
 
 from fantasydota.lib.session_utils import make_session
-from fantasydota.lib.trade import reset_incomplete_teams
 from fantasydota.models import League, LeagueUser, LeagueUserDay
 
 
@@ -67,13 +66,9 @@ def start_of_day(league_id=None):
         league_id = args.league
     league = session.query(League).filter(League.id == league_id).first()
     set_old_rankings(session, league)
-    league.transfer_open = False  # close league window if not already closed
-    league.swap_open = False
-    if league.current_day > 0:
-        try:
-            reset_incomplete_teams(session, league)
-        except:
-            print("couldnt reset teams")
+    league.current_day += 1
+    # league.transfer_open = False  # close league window if not already closed
+    # league.swap_open = False
     session.commit()
 
 

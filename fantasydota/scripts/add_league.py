@@ -18,16 +18,7 @@ def add_league(game_id, league_id, name, days, stage1, stage2, url, session=None
     session.add(League(game.id, league_id, name, days, stage1, stage2, url))
     session.flush()
     if game_id == 1:
-        try:
-            new_heroes = squeeze_values_together(calibrate_all_hero_values(session, game_id))
-        except ZeroDivisionError:
-            # initializing databases. nothing to learn on
-            if session.query(Result).join(League, Result.tournament_id == League.id)\
-                    .filter(League.game == game_id)\
-                    .filter(Result.timestamp > time.time() - 2 * SECONDS_IN_WEEK).count() == 0:
-                new_heroes = heroes_init
-            else:
-                raise
+        new_heroes = heroes_init
     else:
         new_heroes = pubg_init
     for add_hero in new_heroes:

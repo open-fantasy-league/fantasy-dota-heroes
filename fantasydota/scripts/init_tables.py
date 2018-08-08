@@ -29,7 +29,7 @@ def create_tables(DBSession, overwrite_empty_game_check=False):
             for achievement in achievements:
                 new_achievement = Achievement(1, achievement[0], achievement[1], achievement[2])
                 session.add(new_achievement)
-            add_league(1, 1, "Week 1", 7, 5, 9, "", session=session)
+            add_league(1, 5562, "Pro dota cup", 7, 5, 9, "", session=session)
             for tournament in PRO_CIRCUIT_LEAGUES:
                 session.add(ProCircuitTournament(tournament['id'], 1, tournament['name'], tournament['major']))
             transaction.commit()
