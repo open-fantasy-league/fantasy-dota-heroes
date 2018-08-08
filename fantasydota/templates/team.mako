@@ -29,7 +29,7 @@
 </%def>
 
 <div class="row" id="myTeamBlock">
-    <span class="left"><h2>Team (Credits: <span class="userCredits">${round(userq.money, 1)}</span>)</h2></span>
+    <span class="left"><h2>Team</h2></span>
     <span class="right"><h2>Points: <span class="teamPoints">${userq.points}</span></h2></span>
     <div id="tableContainer">
         <table class="sortable card-table striped centered" id="teamTable">
@@ -78,19 +78,19 @@
         <p>50 Credits to pick a team of 5 heroes (Points penalties for under 5)</p>
         % if league.status > 0:
             You have ${userq.remaining_transfers} remaining available transfers (Transfers will not count until 'Confirm Transfers' pressed)
+            % if not userq.swap_tstamp:
+                <p><strong>
+                    There is a 1 hour delay between confirmation of transfers and their processing (to prevent cheating/unfair advantages).
+                </strong></p>
+                <p>Further transfers are disabled during this hour period,
+                however your old team does continue scoring points until transfers processed</p>
+            % else:
+                <span class="messageTransClosed"><p><strong>
+                    Due to recent changes you are in transfer cooldown for ${int(time_until_swap[0])} hours, ${int(time_until_swap[1])} minutes.
+                </strong></p></span>
+            % endif
         % else:
-            Once the tournament starts you will have 10 extra transfers you can make
-        % endif
-        % if not userq.swap_tstamp:
-            <p><strong>
-                There is a 1 hour delay between confirmation of transfers and their processing (to prevent cheating/unfair advantages).
-            </strong></p>
-            <p>Further transfers are disabled during this hour period,
-            however your old team does continue scoring points until transfers processed</p>
-        % else:
-            <span class="messageTransClosed"><p><strong>
-                Due to recent changes you are in transfer cooldown for ${int(time_until_swap[0])} hours, ${int(time_until_swap[1])} minutes.
-            </strong></p></span>
+            Once the tournament starts you will have 10 extra transfers you can make (You can make infinity changes before first game)
         % endif
         <p><strong><a href="/rules">Detailed Rules</a></strong></p>
         <span>
