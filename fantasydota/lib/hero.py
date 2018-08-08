@@ -24,13 +24,13 @@ def squeeze_values_together(hero_list):
     # this is for if unsure and would rather have things have averagish values rather than exremes
     average_value = sum([hero["value"] for hero in hero_list]) / len(hero_list)
     for hero in hero_list:
-        hero["value"] -= ((hero["value"] - average_value) / 4.)
+        hero["value"] -= ((hero["value"] - average_value) / 2.)
         hero["value"] = round(min(
             max(
                 3.0 + random.randint(0, 5) / 10,
                 hero["value"]
             ),
-            25 + random.randint(0, 6) / 10
+            24 + random.randint(0, 6) / 10
         ), 1)
         print "New %s: %s" % (hero["name"], hero["value"])
 
@@ -115,7 +115,7 @@ def calibrate_all_hero_values(session, game_id):
 
     for res in results:
         points = Result.result_to_value(res.result_str)
-        multiplier = 2 if res.timestamp > recent_game_cutoff else 1
+        multiplier = 2 if res.tournament_id == 10145 else 1#res.timestamp > recent_game_cutoff else 1
         [hero for hero in new_heroes_list if hero["id"] == res.hero][0]["points"] += (multiplier * points)
         sum_points += multiplier * points
     average_points = sum_points / len(new_heroes_list)

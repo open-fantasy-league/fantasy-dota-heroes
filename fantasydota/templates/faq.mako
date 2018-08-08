@@ -22,7 +22,7 @@ When this occurs you gain points.</p>
 <h2>Are there any prizes?</h2>
     <div class="card-panel">
 <p>
-   There is first prize of a Crystal Maiden arcana for the points winner over the whole tournament. Even if you don't win, you still earn XP to grow your e-penus from completing achievements, as well as based upon final standings of tournaments.
+   There is first prize of a Crystal Maiden or Pudge arcana for the points winner over the whole tournament.
 </p>
     </div>
 <h2>Aren't there already fantasy dota games?</h2>
