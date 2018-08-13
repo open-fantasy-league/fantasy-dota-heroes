@@ -9,7 +9,7 @@ from fantasydota.lib.trade import buy
 from fantasydota.models import User, UserXp, LeagueUser, League, LeagueUserDay
 from fantasydota.scripts.get_tournament_data import dont_piss_off_valve_but_account_for_sporadic_failures
 
-THREAD_URL = "https://www.reddit.com/r/DotA2/comments/96tu37/understanding_openai_five_a_simplified_dissection.json"
+THREAD_URL = "https://www.reddit.com/r/DotA2/comments/96yrmt/need_players_for_ti8_hero_fantasy_dota_league.json"
 
 
 def main():
@@ -24,6 +24,7 @@ def main():
         for post in posts:
             p_data = post["data"]
             body = p_data.get("body", "")
+            body = body.replace(" and ", ",")
             name = p_data.get("name", "")
             if not body or not name or any(user.username == name for user in users):
                 continue
