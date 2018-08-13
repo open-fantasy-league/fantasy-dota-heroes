@@ -23,14 +23,15 @@ def dont_piss_off_valve_but_account_for_sporadic_failures(req_url):
     fucks_given = 5
     while fuck and fucks_given:
         try:
-            response = urllib2.urlopen(req_url)
-            time.sleep(sleep_time)
+            req = urllib2.Request(req_url, headers={'User-Agent': 'ubuntu:fantasydotaheroes:v1.0.0 (by /u/LePianoDentist)'})
+            response = urllib2.urlopen(req)
             fuck = False
         except:
             sleep_time += 30  # incase script breaks dont want to spam
             print "Why the fuck are you fucking failing you fucker"
             traceback.print_exc()
             fucks_given -= 1
+            time.sleep(sleep_time)
             continue
     data = json.load(response)
     return data
