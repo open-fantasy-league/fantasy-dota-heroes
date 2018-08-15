@@ -65,7 +65,7 @@ def start_of_day(league_id=None):
         args = parser.parse_args()
         league_id = args.league
     league = session.query(League).filter(League.id == league_id).first()
-    set_old_rankings(session, league)
+    # set_old_rankings(session, league)
     league.current_day += 1
     # league.transfer_open = False  # close league window if not already closed
     # league.swap_open = False
@@ -73,7 +73,7 @@ def start_of_day(league_id=None):
 
 
 def main():
-    start_of_day()
+    start_of_day(9870)
 
 if __name__ == "__main__":
     main()
