@@ -24,8 +24,8 @@ def main():
         for post in posts:
             p_data = post["data"]
             body = p_data.get("body", "")
-            body = body.replace(" and ", ",")
-            name = p_data.get("name", "")
+            body = body.replace(", and ", ",")
+            name = p_data.get("author", "")
             if not body or not name or any(user.username == name for user in users):
                 continue
 
@@ -47,8 +47,7 @@ def main():
                         stage = 0
                     session.add(LeagueUserDay(new_user.id, name, league.id, i, stage))
                 session.flush()
-                choices = [regex.sub('', c.lower()) for c in
-                           re.findall('(.*?)[,$]', body)]
+                choices = regex.sub('', body.lower()).split(',')
                 for k, v in heroes_simple.items():
                     if v in choices:
                         buy(session, user_league, k, 9870, started=False)

@@ -150,7 +150,7 @@ def calibrate_value(average_points, our_points):
 
 
 def combine_calibrations(older_value, newer_value):
-    return (newer_value + older_value * 5) / 6.
+    return (newer_value + older_value * 9) / 10.
 
 
 def recalibrate_hero_values(session, league_id):
@@ -158,6 +158,6 @@ def recalibrate_hero_values(session, league_id):
     average_points = float(session.query(func.avg(Hero.points)).filter(Hero.league == league_id).scalar())
     for hero in heroes:
         new_calibration = calibrate_value(average_points, hero.points)
-        print "new calbration: %s, from %s" % (new_calibration, hero.value)
+        print "new calbration: %s, from %s" % (round(combine_calibrations(hero.value, new_calibration), 1), hero.value)
         hero.value = round(combine_calibrations(hero.value, new_calibration), 1)
 

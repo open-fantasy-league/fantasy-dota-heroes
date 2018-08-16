@@ -18,7 +18,7 @@ def update_all(session=None):
     #parser = argparse.ArgumentParser()
     #parser.add_argument("league", type=int, help="league id")
     #args = parser.parse_args()
-    league = session.query(League).filter(League.status == 1).first()
+    league = session.query(League).filter(League.id == 9870).first()
     with transaction.manager:
         print "Updating hero points"
         update_hero_points(session, league)

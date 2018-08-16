@@ -60,7 +60,7 @@ def buy(session, l_user, hero_id, league_id, started=False):
 
     user_money = l_user.money
 
-    if user_money < hero.value:
+    if (user_money - hero.value) < -0.000001:
         return {"success": False, "message": "Insufficient credits"}
 
     new_credits = round(user_money - hero.value, 1)
