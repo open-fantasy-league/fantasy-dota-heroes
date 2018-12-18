@@ -14,7 +14,7 @@ function doTrade(event, action, cancel){
         "hero": event.data.form.find('input[name=tradeHero]').val(),
         "league": league_id,
     };
-    if (action == "sellHero" && sellCounter + 1 >= remainingTransfers){
+    if (action == "sellHero" && sellCounter >= remainingTransfers){
         swal({
                 title: "You do not have sufficient remaining transfers to perform any more changes",
                 icon: "error"
