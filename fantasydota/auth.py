@@ -1,8 +1,7 @@
 from pyramid.events import subscriber, BeforeRender
-from social_core.pipeline.user import create_user
 from social_pyramid.utils import backends
 
-from .models import DBSession, User, UserXp
+from .models import DBSession, User
 
 
 def login_user(backend, user, user_social_auth):
@@ -11,25 +10,6 @@ def login_user(backend, user, user_social_auth):
 
 def login_required(request):
     return getattr(request, 'user', None) is not None
-
-
-# def create_user_with_xp(strategy, details, backend, user=None, *args, **kwargs):
-#     '''
-#     ran into issues with this
-#     if want to use user_id in the league_user tables.
-#     How does it know what the user_id is, if its trying to use the user before the commit has finished
-#     decided to just make the league in the viewLeague request if needed
-#     '''
-#     return_dict = create_user(strategy, details, backend, user, *args, **kwargs)
-#     user_id = strategy.session_get("user_id")
-#     session = DBSession()
-#     session.add(UserXp(user_id))
-#     return return_dict
-
-
-def create_userxp_tables(strategy, details, backend, user=None, *args, **kwargs):
-    session = DBSession()
-    session.add(UserXp(user.id))
 
 
 def get_user(request):

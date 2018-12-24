@@ -1,6 +1,6 @@
 import datetime
-import json
 from pyramid.renderers import JSON
+
 
 def custom_json_renderer():
     """
@@ -16,12 +16,3 @@ def custom_json_renderer():
     json_renderer.add_adapter(datetime.datetime, datetime_adapter)
     json_renderer.add_adapter(datetime.time, time_adapter)
     return json_renderer
-
-import decimal, datetime
-
-def alchemyencoder(obj):
-    """JSON encoder function for SQLAlchemy special classes."""
-    if isinstance(obj, datetime.date):
-        return obj.isoformat()
-    elif isinstance(obj, decimal.Decimal):
-        return float(obj)

@@ -5,8 +5,7 @@ from fantasydota import DBSession
 from fantasydota.auth import get_user
 from fantasydota.lib.account import check_invalid_password
 from fantasydota.lib.general import all_view_wrapper
-from fantasydota.models import User, PasswordReset, Notification, UserXp, UserAchievement, Achievement
-from fantasydota.scripts.email_users import email_users
+from fantasydota.models import User, PasswordReset, Notification
 from passlib.handlers.bcrypt import bcrypt
 from pyramid.httpexceptions import HTTPFound, HTTPForbidden
 from pyramid.security import remember, forget, authenticated_userid
@@ -79,7 +78,6 @@ def register(request):
     user = User(username, password, email)
     session.add(user)
     session.flush()
-    session.add(UserXp(user.id))
     headers = remember(request, user.id)
     return HTTPFound('/team', headers=headers)
 
@@ -292,18 +290,3 @@ def profile(request):
             'achievements': achievements
         }, session, request
     )
-
-# @view_config(route_name='email_required', renderer='common:templates/home.jinja2')
-# def email_required(request):
-#     strategy = load_strategy(request)
-#     partial_token = request.GET.get('partial_token')
-#     partial = strategy.partial_load(partial_token)
-#     return common_context(
-#         request.registry.settings['SOCIAL_AUTH_AUTHENTICATION_BACKENDS'],
-#         strategy,
-#         user=get_user(request),
-#         plus_id=request.registry.settings['SOCIAL_AUTH_GOOGLE_PLUS_KEY'],
-#         email_required=True,
-#         partial_backend_name=partial.backend,
-#         partial_token=partial_token
-#     )

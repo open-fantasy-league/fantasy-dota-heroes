@@ -1,144 +1,137 @@
-var sellCounter = $('i:contains("remove_circle")').length;
-if (transferCooldown){
+var toSell = [];
+var toBuy = [];
+
+function disableButtons(){
     $("[name=buyHero]").add("[name=sellHero]").add("#confirmTransfers").each(function(){$(this).attr("disabled","true");});
 }
-else{
-    // not sure why but when reloading page...disabled things stay disabled by default :/
+
+function undisableButtons(){
     $("[name=buyHero]").add("[name=sellHero]").add("#confirmTransfers").each(function(){$(this).removeAttr("disabled");})
 }
 
-function doTrade(event, action, cancel){
-    var formID = event.data.form.attr('id'),
-    tradeUrl = (action == "buyHero") ? "/buyHero" : "/sellHero";
-    var formData = {
-        "hero": event.data.form.find('input[name=tradeHero]').val(),
-        "league": league_id,
-    };
-    if (action == "sellHero" && sellCounter >= remainingTransfers){
-        swal({
-                title: "You do not have sufficient remaining transfers to perform any more changes",
-                icon: "error"
-            });
+userCanTransfer ? undisableButtons() : disableButtons()
+
+function doTrade(event, action){
+    disableButtons();
+    var heroId = event.data.attr('data-heroId');
+    var cancel = false;
+    if (action == "buyHero"){
+        if (toSell.contains(heroId)){
+            toSell.remove(heroId);
+            cancel = true;
+        }
+        else{
+            toBuy.append(heroId)
+        }
     }
     else{
-        $.ajax({
-            url: tradeUrl,
-            type: "POST",
-            data: formData,
-            success: function(data){
-                $("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).removeAttr("disabled");});
-                var success = data.success,
-                message = data.message;
-                if (!success){
-                    sweetAlert(message, '', 'error').then(function(){
-                        if (data.reload){
-                            location.reload();
-                        }
-                    }
-                    );
+        if (toBuy.contains(heroId)){
+            toBuy.remove(heroId);
+            cancel = true;
+        }
+        else{
+            toSell.append(heroId)
+        }
+    }
+    $.getJson({
+        url: apiBaseUrl + "transfers/league" + leagueId + "/user/" + userId,
+        type: "POST",
+        data: {"toSell": toSell, "toBuy": toBuy, "isCheck": true},
+        success: function(data){
+            var success = data.success,
+            message = data.message;
+            if (!success){
+                sweetAlert(message, '', 'error');
+            }
+            else{
+                if (data.action == "sell"){
+                    removeFromTeam(heroId, cancel);
                 }
                 else{
-                    swal({
-                        title: "Transaction completed",
-                        icon: "success"
-                    });
-                    if (data.action == "sell"){
-                        removeFromTeam(data.hero, cancel);
-                    }
-                    else{
-                        addToTeam(data.hero, cancel);
-                    }
-                    $(".userCredits").each(function(){$(this).text(data.new_credits)});
+                    addToTeam(heroId, cancel);
                 }
-            },
-            failure: function(data){
-                $("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).removeAttr("disabled");});
-                sweetAlert("Something went wrong. oops!", '', 'error');
+                $(".userCredits").each(function(){$(this).text(data.new_credits)});
+                undisableButtons();
+                swal({
+                 title: "Transfer valid",
+                 text: "Remember to click Confirm Transfers to process changes",
+                  icon: "success"
+                });
             }
-        });
-    }
+        },
+        failure: function(data){
+            undisableButtons();
+            sweetAlert("Something went wrong. oops!", '', 'error');
+        }
+    });
 }
 
 var tradeOnclick = function tradeOnclick(event){
-        $("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).attr("disabled","true");});
+        disableButtons();
         console.log(event.data)
-        var button = event.data.form.find('button');
+        var button = $(event.currentTarget);
         var action = button.attr('name');
-        var cancel = button.attr('data-cancel')
-        console.log(cancel)
-        doTrade(event, action, cancel)
+        doTrade(event, action)
     }
 
-$(".tradeForm").each(function (){
-    var form = $(this);
-    var buyBtn = form.find('button[name=buyHero]');
-    var sellBtn = form.find('button[name=sellHero]');
-
-    buyBtn.click({form: form}, tradeOnclick);
-    sellBtn.click({form: form}, tradeOnclick);
+$('button[name=buyHero]').add('button[name=sellHero]').each(function (key, btn){
+    btn.click(tradeOnclick);
 });
 
 function addToTeam(hero, cancel){
     if (cancel){
         var oldRow = $("#" + hero + "TeamRow");
+        var btn = oldRow.find("button");
         var heroEntry = oldRow.find(".heroEntry");
         heroEntry.find('i').remove();
         oldRow.removeClass("toTransfer");
-        oldRow.find("button").replaceWith('<button type="submit" name="sellHero" class="btn waves-effect waves-light">Sell</button>');
-        var form = oldRow.find(".tradeForm");
-        $("#" + hero + "TeamRow").find("button").on("click", {form: form}, function(event){tradeOnclick(event)});  // otherwise need reload page to resell
-        sellCounter = sellCounter - 1;
+        btn.attr('name', 'sellHero');
+        btn.text('Sell');
+        btn.on("click", function(event){tradeOnclick(event)});  // otherwise need reload page to resell
     }
     else{
         var new_row = $("#" + hero + "Row").clone();
         new_row.attr('id', hero + "TeamRow");
-        if (leagueStarted){
-            var heroEntry = new_row.find(".heroEntry");
-            var plannedSale = heroEntry.find('i');
-            heroEntry.prepend('<i class="material-icons">add_circle</i>')
-            new_row.addClass("toTransfer");
-            new_row.find("button").replaceWith('<button type="submit" name="sellHero" class="btn waves-effect waves-light" data-cancel="data-cancel">Cancel</button>');
-        }
-        else{
-            new_row.find("button").replaceWith('<button type="submit" name="sellHero" class="btn waves-effect waves-light">Sell</button>');
-        }
-        var form = new_row.find(".tradeForm");
-        var teamRow = $(".teamRow")
+        var heroEntry = new_row.find(".heroEntry");
+        var plannedSale = heroEntry.find('i');
+        heroEntry.prepend('<i class="material-icons">add_circle</i>')
+        new_row.addClass("toTransfer");
+        var btn = new_row.find("button");
+        btn.attr('name', 'sellHero');
+        btn.text('Cancel');
+        var teamRow = $(".teamRow");
         if (teamRow.length != 0) {
             teamRow.last().after(new_row);
         }
         else{
             $("#teamTable").find("tbody").append(new_row);
         }
-        new_row.find("button").on("click", {form: form}, function(event){tradeOnclick(event)});  // otherwise need reload page to resell
+        btn.on("click", function(event){tradeOnclick(event)});  // otherwise need reload page to resell
     }
 }
 
 function removeFromTeam(hero, cancel){
-    if (leagueStarted){
-        var oldRow = $("#" + hero + "TeamRow");
-        var heroEntry = oldRow.find(".heroEntry");
-        if (cancel){
-            oldRow.remove()
-        }
-        else{
-            heroEntry.prepend('<i class="material-icons">remove_circle</i>')
-            oldRow.addClass("toTransfer");
-            oldRow.find("button").replaceWith('<button type="submit" name="buyHero" class="btn waves-effect waves-light" data-cancel="data-cancel">Cancel</button>');
-            oldRow.find("button").on("click", {form: oldRow.find('.tradeForm')}, function(event){tradeOnclick(event)});  // otherwise need reload page to resell
-            sellCounter = sellCounter + 1;
-        }
+    var oldRow = $("#" + hero + "TeamRow");
+    var heroEntry = oldRow.find(".heroEntry");
+    if (cancel){
+        oldRow.remove();
     }
     else{
-        $("#" + hero + "TeamRow").remove();
+        heroEntry.prepend('<i class="material-icons">remove_circle</i>')
+        var btn = oldRow.find("button");
+        oldRow.addClass("toTransfer");
+        btn.attr('name', 'buyHero');
+        btn.text('Buy');
+        btn.on("click", function(event){tradeOnclick(event)});  // otherwise need reload page to resell
     }
 }
 
 $('#confirmTransfers').click(function() {
-    $("[name=buyHero]").add("[name=sellHero]").add("#confirmTransfers").each(function(){$(this).attr("disabled","true");});
-    $.ajax({
-        url: "/confirmTransfer?league=" + league_id,
-        type: "GET",
+    disableButtons()
+    $.getJson({
+        url: apiBaseUrl + "transfers/league" + leagueId + "/user/" + userId,
+        type: "POST",
+        data: {"toSell": toSell, "toBuy": toBuy, "isCheck": false},
         success: function(data){
             var success = data.success,
             message = data.message;
@@ -156,7 +149,7 @@ $('#confirmTransfers').click(function() {
             }
         },
         failure: function(data){
-            $("[name=buyHero]").add("[name=sellHero]").each(function(){$(this).removeAttr("disabled");})
+            undisableButtons()
             sweetAlert("Something went wrong. oops!", '', 'error');
         }
     });

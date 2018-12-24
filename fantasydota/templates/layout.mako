@@ -32,6 +32,7 @@
         <script src="/static/sorttable.js"></script>
 
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script>var apiBaseUrl = "${api_base_url}"</script>
 
         <!--<script src="/static/sweetalert.min.js"></script>-->
         <!--<link rel="stylesheet" type="text/css" href="/static/sweetalert.css">-->
@@ -180,6 +181,8 @@
   </body>
 
 <script>
+var leagueId = ${league_id};
+var userId = ${user_id if user_id else "null"};
     function removeOverlay() {
       $('div[id^=sidenav-overlay]').remove();
     }
