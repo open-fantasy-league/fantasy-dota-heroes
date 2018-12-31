@@ -47,7 +47,7 @@
         </table>
     </div>
 
-    <span class="right"><button type="submit" id="confirmTransfers" class="btn waves-effect waves-light">Confirm Team!</button></span>
+    <span class="right"><button type="submit" id="confirmTransfers" disabled="true" class="btn waves-effect waves-light">Confirm Team!</button></span>
 </div>
 
 <div class="card row">
@@ -87,9 +87,8 @@
     </div>
 </div>
 <script>
-    var leagueId = ${league_id};
-    leagueId = 1;
-userId = 4;
+    var leagueId = 1;
+var userId = 4;
 </script>
-<script src="/static/team.js"></script>
 <script src="/static/trade.js"></script>
+<script src="/static/team.js"></script>

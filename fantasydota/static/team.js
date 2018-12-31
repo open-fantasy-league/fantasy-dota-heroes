@@ -1,12 +1,11 @@
-var userCanTransfer
-var teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&scheduledTransfers&stats"
+var userCanTransfer;
+var teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&scheduledTransfers&stats";
 console.log(teamUrl)
 var heroes;
-$.ajax({url: apiBaseUrl + "pickees/league/" + leagueId + "/stats/",
+$.ajax({url: apiBaseUrl + "pickees/leagues/" + leagueId + "/stats/",
             type: "GET",
             dataType: "json",
             success: function(data){
-                userCanTransfer = (data.transferScheduled == null);
                 var r = new Array(), j = -1;
                 heroes = data;
                 $.each(data, function(key, hero) {
@@ -18,7 +17,7 @@ $.ajax({url: apiBaseUrl + "pickees/league/" + leagueId + "/stats/",
                 r[++j] = 'Row';
                 r[++j] = '" id="';
                 r[++j] = id;
-                r[++j] = '"><td class="heroImg" sorttable_customkey="';
+                r[++j] = 'Row"><td class="heroImg" sorttable_customkey="';
                 r[++j] = hero.name;
                 r[++j] = '"><img src="';
                 r[++j] = imgSrc;
@@ -37,11 +36,9 @@ $.ajax({url: apiBaseUrl + "pickees/league/" + leagueId + "/stats/",
                 r[++j] = '</td><td class="valueEntry">';
                 r[++j] = hero.cost;
                 r[++j] = '</td><td class="tradeEntry">';
-                if (userCanTransfer){
-                    r[++j] = '<button type="submit" name="buyHero" class="btn waves-effect waves-light" data-heroId="';
-                    r[++j] = id;
-                    r[++j] = '">Buy</button>';
-                }
+                r[++j] = '<button type="submit" name="buyHero" class="btn waves-effect waves-light" disabled="true" data-heroId="';
+                r[++j] = id;
+                r[++j] = '">Buy</button>';
                 r[++j] = '</td></tr>';
                 })
                 console.log(r.join(''))
@@ -50,27 +47,29 @@ $.ajax({url: apiBaseUrl + "pickees/league/" + leagueId + "/stats/",
             failure: function(data){
                 sweetAlert("Something went wrong. oops!", '', 'error');
             }
-        }).then(getTeam())
-function getTeam(){
+        }).then(getTeamThenSetup)
+
+function getTeamThenSetup(){
     $.ajax({url: teamUrl,
             dataType: "json",
             type: "GET",
             success: function(data){
                 userCanTransfer = (data.leagueUser.transferScheduledTime == null);
+                console.log("usercanTransfer:" + userCanTransfer)
                 var r = new Array(), j = -1;
                 $.each(data.team, function(key, hero) {
                     var id = hero.externalId;
-                    console.log(heroes)
+                    console.log(hero)
                     console.log(id)
                     var heroInfo = heroes.find(function(h){return h.externalId == id})
                     var imgSrc = "/static/images/dota/" + hero.name.replace(" ", "_") + "_icon.png";
                     var transferSymbol;
                     var transferClass = '';
-                    if (data.scheduledTransfers.filter(function(t){return t.isBuy && t.externalId == id})){
+                    if (data.scheduledTransfers.includes(function(t){return t.isBuy && t.externalId == id})){
                         transferSymbol = '<i class="material-icons">add_circle</i>'
                         transferClass = "toTransfer transferIn"
                     }
-                    else if (data.scheduledTransfers.filter(function(t){return !t.isBuy && t.externalId == id})){
+                    else if (data.scheduledTransfers.includes(function(t){return !t.isBuy && t.externalId == id})){
                         transferSymbol = '<i class="material-icons">remove_circle</i>'
                         transferClass = "toTransfer transferOut"
                     }
@@ -78,7 +77,7 @@ function getTeam(){
                 r[++j] = transferClass;
                 r[++j] = '" id="';
                 r[++j] = id;
-                r[++j] = '"><td class="heroImg" sorttable_customkey="';
+                r[++j] = 'TeamRow"><td class="heroImg" sorttable_customkey="';
                 r[++j] = hero.name;
                 r[++j] = '"><img src="';
                 r[++j] = imgSrc;
@@ -98,11 +97,9 @@ function getTeam(){
                 r[++j] = '</td><td class="valueEntry">';
                 r[++j] = hero.cost;
                 r[++j] = '</td><td class="tradeEntry">';
-                if (userCanTransfer){
-                    r[++j] = '<button type="submit" name="sellHero" class="btn waves-effect waves-light" data-heroId="';
-                    r[++j] = hero.id;
-                    r[++j] = '">Sell</button>';
-                }
+                r[++j] = '<button type="submit" name="sellHero" class="btn waves-effect waves-light" disabled="true" data-heroId="';
+                r[++j] = id;
+                r[++j] = '">Sell</button>';
                 r[++j] = '</td></tr>';
                 })
                 $("#teamTable").find("tbody").html(r.join(''));
@@ -110,24 +107,5 @@ function getTeam(){
             failure: function(data){
                 sweetAlert("Something went wrong. oops!", '', 'error');
             }
-        });
-        }
-/*
-% for hero in heroes:
-                <tr id="${hero.id}Row">
-                    <td class="heroImg" sorttable_customkey="${hero.name}"><img src="/static/images/dota/${hero.name.replace(" ", "_")}_icon.png" title="${hero.name}"/></td>
-                    <td class="heroEntry">${hero.name}</td>
-                    <td class="heroPointsEntry">${hero.points}</td>
-                    <td class="picksEntry extra">${hero.picks}</td>
-                    <td class="bansEntry extra">${hero.bans}</td>
-                    <td class="winsEntry extra">${hero.wins}</td>
-                    <td class="valueEntry">${hero.value}</td>
-                    <td class="tradeEntry">
-                        <form name="tradeForm" id="${hero.id}TradeForm" class="tradeForm" onsubmit="return false;">
-                            <input type="hidden" value="${hero.id}" name="tradeHero"/>
-                            <button type="submit" name="buyHero" class="btn waves-effect waves-light">Buy</button>
-                        </form>
-                    </td>
-                </tr>
-            % endfor
-*/
+        }).then(setup);
+}

@@ -9,74 +9,70 @@ function undisableButtons(){
     $("[name=buyHero]").add("[name=sellHero]").add("#confirmTransfers").each(function(){$(this).removeAttr("disabled");})
 }
 
-userCanTransfer ? undisableButtons() : disableButtons()
-
-function doTrade(event, action){
+var tradeOnclick = function tradeOnclick(event){
+    console.log("tradeonclick")
     disableButtons();
-    var heroId = event.data.attr('data-heroId');
+    var button = $(event.currentTarget);
+    var action = button.attr('name');
+    var heroId = button.attr('data-heroId');
+    doTrade(event, action, heroId)
+}
+
+function doTrade(event, action, heroId){
+    disableButtons();
+    var toSellOriginal = toSell.slice()
+    var toBuyOriginal = toBuy.slice()
     var cancel = false;
     if (action == "buyHero"){
-        if (toSell.contains(heroId)){
-            toSell.remove(heroId);
+        var ind = toSell.indexOf(heroId);
+        if (ind > -1){
+            toSell.splice(ind, 1);
             cancel = true;
         }
         else{
-            toBuy.append(heroId)
+            toBuy.push(heroId)
         }
     }
     else{
-        if (toBuy.contains(heroId)){
-            toBuy.remove(heroId);
+        var ind = toBuy.indexOf(heroId);
+        if (ind > -1){
+            toBuy.splice(ind, 1);
             cancel = true;
         }
         else{
-            toSell.append(heroId)
+            toSell.push(heroId)
         }
     }
-    $.getJson({
-        url: apiBaseUrl + "transfers/league" + leagueId + "/user/" + userId,
+    $.ajax({
+        url: apiBaseUrl + "transfers/leagues/" + leagueId + "/users/" + userId,
+        dataType: "json",
         type: "POST",
-        data: {"toSell": toSell, "toBuy": toBuy, "isCheck": true},
+        data: {"sell": toSell, "buy": toBuy, "isCheck": true},
         success: function(data){
-            var success = data.success,
-            message = data.message;
-            if (!success){
-                sweetAlert(message, '', 'error');
+            console.log(data)
+            if (action == "sellHero"){
+                removeFromTeam(heroId, cancel);
             }
             else{
-                if (data.action == "sell"){
-                    removeFromTeam(heroId, cancel);
-                }
-                else{
-                    addToTeam(heroId, cancel);
-                }
-                $(".userCredits").each(function(){$(this).text(data.new_credits)});
-                undisableButtons();
-                swal({
-                 title: "Transfer valid",
-                 text: "Remember to click Confirm Transfers to process changes",
-                  icon: "success"
-                });
+                addToTeam(heroId, cancel);
             }
-        },
-        failure: function(data){
+            $(".userCredits").each(function(){$(this).text(data.updatedMoney)});
             undisableButtons();
-            sweetAlert("Something went wrong. oops!", '', 'error');
+            swal({
+             title: "Transfer valid",
+             text: "Remember to click Confirm Transfers to process changes",
+              icon: "success"
+            });
+        },
+        error: function(jqxhr, textStatus, errorThrown){
+            console.log("hmmm")
+            toSell = toSellOriginal;
+            toBuy = toBuyOriginal;
+            undisableButtons();
+            sweetAlert(jqxhr.responseText, '', 'error');
         }
     });
 }
-
-var tradeOnclick = function tradeOnclick(event){
-        disableButtons();
-        console.log(event.data)
-        var button = $(event.currentTarget);
-        var action = button.attr('name');
-        doTrade(event, action)
-    }
-
-$('button[name=buyHero]').add('button[name=sellHero]').each(function (key, btn){
-    btn.click(tradeOnclick);
-});
 
 function addToTeam(hero, cancel){
     if (cancel){
@@ -87,7 +83,7 @@ function addToTeam(hero, cancel){
         oldRow.removeClass("toTransfer");
         btn.attr('name', 'sellHero');
         btn.text('Sell');
-        btn.on("click", function(event){tradeOnclick(event)});  // otherwise need reload page to resell
+        btn.off('click').click(tradeOnclick);  // otherwise need reload page to resell
     }
     else{
         var new_row = $("#" + hero + "Row").clone();
@@ -106,11 +102,12 @@ function addToTeam(hero, cancel){
         else{
             $("#teamTable").find("tbody").append(new_row);
         }
-        btn.on("click", function(event){tradeOnclick(event)});  // otherwise need reload page to resell
+        btn.off('click').click(tradeOnclick);  // otherwise need reload page to resell
     }
 }
 
 function removeFromTeam(hero, cancel){
+    console.log("removing from team")
     var oldRow = $("#" + hero + "TeamRow");
     var heroEntry = oldRow.find(".heroEntry");
     if (cancel){
@@ -122,23 +119,26 @@ function removeFromTeam(hero, cancel){
         oldRow.addClass("toTransfer");
         btn.attr('name', 'buyHero');
         btn.text('Buy');
-        btn.on("click", function(event){tradeOnclick(event)});  // otherwise need reload page to resell
+        btn.off('click').click(tradeOnclick);  // otherwise need reload page to resell
+        console.log(btn)
     }
 }
 
-$('#confirmTransfers').click(function() {
-    disableButtons()
-    $.getJson({
-        url: apiBaseUrl + "transfers/league" + leagueId + "/user/" + userId,
-        type: "POST",
-        data: {"toSell": toSell, "toBuy": toBuy, "isCheck": false},
-        success: function(data){
-            var success = data.success,
-            message = data.message;
-            if (!success){
-                sweetAlert(message, '', 'error');
-            }
-            else{
+function setup(){
+    console.log(userCanTransfer)
+    userCanTransfer ? undisableButtons() : disableButtons();
+    $('button[name=buyHero]').add('button[name=sellHero]').each(function (key, btn){
+        $(this).click(tradeOnclick);
+    });
+
+    $('#confirmTransfers').click(function() {
+        disableButtons()
+        $.ajax({
+            url: apiBaseUrl + "transfers/leagues/" + leagueId + "/users/" + userId,
+            dataType: "json",
+            type: "POST",
+            data: {"sell": toSell, "buy": toBuy, "isCheck": false},
+            success: function(data){
                 swal({
                  title: "Transfers locked in!",
                  text: "Note: Your new heroes will start scoring points one hour from now",
@@ -146,11 +146,11 @@ $('#confirmTransfers').click(function() {
                 }).then(function(){
                     window.location.reload(false);
                 });
+            },
+            error: function(jqxhr, textStatus, errorThrown){
+                undisableButtons();
+                sweetAlert(jqxhr.responseText, '', 'error');
             }
-        },
-        failure: function(data){
-            undisableButtons()
-            sweetAlert("Something went wrong. oops!", '', 'error');
-        }
+        });
     });
-});
+}

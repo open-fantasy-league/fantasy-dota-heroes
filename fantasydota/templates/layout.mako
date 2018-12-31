@@ -181,8 +181,8 @@
   </body>
 
 <script>
-var leagueId = ${league_id};
-var userId = ${user_id if user_id else "null"};
+//var leagueId = ${league_id};
+//var userId = ${user_id if user_id else "null"};
     function removeOverlay() {
       $('div[id^=sidenav-overlay]').remove();
     }
