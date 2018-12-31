@@ -123,34 +123,3 @@ function removeFromTeam(hero, cancel){
         console.log(btn)
     }
 }
-
-function setup(){
-    console.log(userCanTransfer)
-    userCanTransfer ? undisableButtons() : disableButtons();
-    $('button[name=buyHero]').add('button[name=sellHero]').each(function (key, btn){
-        $(this).click(tradeOnclick);
-    });
-
-    $('#confirmTransfers').click(function() {
-        disableButtons()
-        $.ajax({
-            url: apiBaseUrl + "transfers/leagues/" + leagueId + "/users/" + userId,
-            dataType: "json",
-            type: "POST",
-            data: {"sell": toSell, "buy": toBuy, "isCheck": false},
-            success: function(data){
-                swal({
-                 title: "Transfers locked in!",
-                 text: "Note: Your new heroes will start scoring points one hour from now",
-                  icon: "success"
-                }).then(function(){
-                    window.location.reload(false);
-                });
-            },
-            error: function(jqxhr, textStatus, errorThrown){
-                undisableButtons();
-                sweetAlert(jqxhr.responseText, '', 'error');
-            }
-        });
-    });
-}

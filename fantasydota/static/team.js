@@ -54,8 +54,15 @@ function getTeamThenSetup(){
             dataType: "json",
             type: "GET",
             success: function(data){
-                userCanTransfer = (data.leagueUser.transferScheduledTime == null);
-                console.log("usercanTransfer:" + userCanTransfer)
+                userCanTransfer = (league.transferOpen && data.leagueUser.transferScheduledTime == null);
+                console.log("usercanTransfer:" + userCanTransfer);
+                $("#remainingTransfers").text(data.leagueUser.remainingTransfers);
+                if (data.leagueUser.changeTstamp){
+                    $("#messageTransferCooldown").style('visible', 'default');
+                }
+                if (!league.started){
+                    $("#infinityTransfersUntilStartMessage").style('visible', 'default');
+                }
                 var r = new Array(), j = -1;
                 $.each(data.team, function(key, hero) {
                     var id = hero.externalId;
@@ -108,4 +115,39 @@ function getTeamThenSetup(){
                 sweetAlert("Something went wrong. oops!", '', 'error');
             }
         }).then(setup);
+}
+
+function setup(){
+    console.log(userCanTransfer)
+    userCanTransfer ? undisableButtons() : disableButtons();
+    $('button[name=buyHero]').add('button[name=sellHero]').each(function (key, btn){
+        $(this).click(tradeOnclick);
+    });
+
+    $('#confirmTransfers').click(function() {
+        disableButtons()
+        $.ajax({
+            url: apiBaseUrl + "transfers/leagues/" + leagueId + "/users/" + userId,
+            dataType: "json",
+            type: "POST",
+            data: {"sell": toSell, "buy": toBuy, "isCheck": false},
+            success: function(data){
+                swal({
+                 title: "Transfers locked in!",
+                 text: "Note: Your new heroes will start scoring points one hour from now",
+                  icon: "success"
+                }).then(function(){
+                    window.location.reload(false);
+                });
+            },
+            error: function(jqxhr, textStatus, errorThrown){
+                undisableButtons();
+                sweetAlert(jqxhr.responseText, '', 'error');
+            }
+        });
+    });
+}
+
+function setupInfoText(){
+
 }

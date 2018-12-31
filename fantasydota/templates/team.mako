@@ -59,10 +59,10 @@
         </strong></p>
         <p>Further transfers are disabled during this hour period,
         however your old team does continue scoring points until transfers processed</p></span>
-        <span class="messageTransClosed" id="messageTransferCooldown"><p><strong>
+        <span class="messageTransClosed" id="messageTransferCooldown" style="visible:none"><p><strong>
             Due to recent changes you are in transfer cooldown.
         </strong></p></span>
-        <span id="infinityTransfersUntilStartMessage">Once the tournament starts you will have 10 extra transfers you can make (You can make infinity changes before first game)</span>
+        <span id="infinityTransfersUntilStartMessage" style="visible:none">Once the tournament starts you will have 10 extra transfers you can make (You can make infinity changes before first game)</span>
         <p><strong><a href="/rules">Detailed Rules</a></strong></p>
         <span>
             <p>Tables are sortable (click table headers)</p>
