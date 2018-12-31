@@ -57,6 +57,8 @@ function getTeamThenSetup(){
                 userCanTransfer = (league.transferOpen && data.leagueUser.transferScheduledTime == null);
                 console.log("usercanTransfer:" + userCanTransfer);
                 $("#remainingTransfers").text(data.leagueUser.remainingTransfers);
+                $(".userCredits").text(data.leagueUser.money);
+                $(".userPoints").text(data.leagueUser.stats.points);
                 if (data.leagueUser.changeTstamp){
                     $("#messageTransferCooldown").style('visible', 'default');
                 }

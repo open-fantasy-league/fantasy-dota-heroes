@@ -30,7 +30,7 @@
 
 <div class="row" id="myTeamBlock">
     <span class="left"><h2>Team</h2></span>
-    <span class="right"><h2>Points: <span class="teamPoints"></span></h2></span>
+    <span class="right"><h2>Points: <span class="userPoints"></span></h2></span>
     <div id="tableContainer">
         <table class="sortable card-table striped centered" id="teamTable">
             <tr style="cursor: pointer" id="teamTableHeader">

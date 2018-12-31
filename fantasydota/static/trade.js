@@ -57,6 +57,7 @@ function doTrade(event, action, heroId){
                 addToTeam(heroId, cancel);
             }
             $(".userCredits").each(function(){$(this).text(data.updatedMoney)});
+            $("#remainingTransfers").text(data.remainingTransfers);
             undisableButtons();
             swal({
              title: "Transfer valid",
