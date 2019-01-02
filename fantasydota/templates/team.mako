@@ -53,16 +53,17 @@
 <div class="card row">
     <div class="card-content">
         <p>50 Credits to pick a team of 5 heroes (Points penalties for under 5)</p>
-        You have <span id="remainingTransfers"></span> remaining available transfers (Transfers will not count until 'Confirm Transfers' pressed)
+        <span id="remainingTransfersSection" style="display:none">You have <span id="remainingTransfers"></span> remaining available transfers (Transfers will not count until 'Confirm Transfers' pressed)
+        </span>
         <span id="transferDelayMessage"><p><strong>
             There is a 1 hour delay between confirmation of transfers and their processing (to prevent cheating/unfair advantages).
         </strong></p>
         <p>Further transfers are disabled during this hour period,
         however your old team does continue scoring points until transfers processed</p></span>
-        <span class="messageTransClosed" id="messageTransferCooldown" style="visible:none"><p><strong>
+        <span class="messageTransClosed" id="messageTransferCooldown" style="display:none"><p><strong>
             Due to recent changes you are in transfer cooldown.
         </strong></p></span>
-        <span id="infinityTransfersUntilStartMessage" style="visible:none">Once the tournament starts you will have 10 extra transfers you can make (You can make infinity changes before first game)</span>
+        <span id="infinityTransfersUntilStartMessage" style="display:none">Once the tournament starts you will have 10 extra transfers you can make (You can make infinity changes before first game)</span>
         <p><strong><a href="/rules">Detailed Rules</a></strong></p>
         <span>
             <p>Tables are sortable (click table headers)</p>

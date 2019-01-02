@@ -2,68 +2,82 @@ var userCanTransfer;
 var teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&scheduledTransfers&stats";
 console.log(teamUrl)
 var heroes;
-$.ajax({url: apiBaseUrl + "pickees/leagues/" + leagueId + "/stats/",
-            type: "GET",
-            dataType: "json",
-            success: function(data){
-                var r = new Array(), j = -1;
-                heroes = data;
-                $.each(data, function(key, hero) {
-                    teamTableHeader.appendAfter
-                    var id = hero.externalId;
-                    var imgSrc = "/static/images/dota/" + hero.name.replace(" ", "_") + "_icon.png";
-                r[++j] = '<tr class="';
-                r[++j] = id;
-                r[++j] = 'Row';
-                r[++j] = '" id="';
-                r[++j] = id;
-                r[++j] = 'Row"><td class="heroImg" sorttable_customkey="';
-                r[++j] = hero.name;
-                r[++j] = '"><img src="';
-                r[++j] = imgSrc;
-                r[++j] = '" title="';
-                r[++j] = hero.name;
-                r[++j] = '"/></td><td class="heroEntry">';
-                r[++j] = hero.name;
-                r[++j] = '</td><td class="heroPointsEntry">';
-                r[++j] = hero.stats.points;
-                r[++j] = '</td><td class="picksEntry extra">';
-                r[++j] = hero.stats.picks;
-                r[++j] = '</td><td class="bansEntry extra">';
-                r[++j] = hero.stats.bans;
-                r[++j] = '</td><td class="winsEntry extra">';
-                r[++j] = hero.stats.wins;
-                r[++j] = '</td><td class="valueEntry">';
-                r[++j] = hero.cost;
-                r[++j] = '</td><td class="tradeEntry">';
-                r[++j] = '<button type="submit" name="buyHero" class="btn waves-effect waves-light" disabled="true" data-heroId="';
-                r[++j] = id;
-                r[++j] = '">Buy</button>';
-                r[++j] = '</td></tr>';
-                })
-                console.log(r.join(''))
-                $("#heroesTable").find("tbody").html(r.join(''));
-            },
-            failure: function(data){
-                sweetAlert("Something went wrong. oops!", '', 'error');
+$.ajax({url: apiBaseUrl + "leagues/" + leagueId,
+    dataType: "json",
+    type: "GET",
+    success: function(data){
+        league = data;
+        console.log(league)
+    }
+}).then(getPickees)
+
+function getPickees(){
+    $.ajax({url: apiBaseUrl + "pickees/leagues/" + leagueId + "/stats/",
+                type: "GET",
+                dataType: "json",
+                success: function(data){
+                    var r = new Array(), j = -1;
+                    heroes = data;
+                    $.each(data, function(key, hero) {
+                        var id = hero.externalId;
+                        var imgSrc = "/static/images/dota/" + hero.name.replace(" ", "_") + "_icon.png";
+                    r[++j] = '<tr class="';
+                    r[++j] = id;
+                    r[++j] = 'Row';
+                    r[++j] = '" id="';
+                    r[++j] = id;
+                    r[++j] = 'Row"><td class="heroImg" sorttable_customkey="';
+                    r[++j] = hero.name;
+                    r[++j] = '"><img src="';
+                    r[++j] = imgSrc;
+                    r[++j] = '" title="';
+                    r[++j] = hero.name;
+                    r[++j] = '"/></td><td class="heroEntry">';
+                    r[++j] = hero.name;
+                    r[++j] = '</td><td class="heroPointsEntry">';
+                    r[++j] = hero.stats.points;
+                    r[++j] = '</td><td class="picksEntry extra">';
+                    r[++j] = hero.stats.picks;
+                    r[++j] = '</td><td class="bansEntry extra">';
+                    r[++j] = hero.stats.bans;
+                    r[++j] = '</td><td class="winsEntry extra">';
+                    r[++j] = hero.stats.wins;
+                    r[++j] = '</td><td class="valueEntry">';
+                    r[++j] = hero.cost;
+                    r[++j] = '</td><td class="tradeEntry">';
+                    r[++j] = '<button type="submit" name="buyHero" class="btn waves-effect waves-light" disabled="true" data-heroId="';
+                    r[++j] = id;
+                    r[++j] = '">Buy</button>';
+                    r[++j] = '</td></tr>';
+                    })
+                    console.log(r.join(''))
+                    $("#heroesTable").find("tbody").html(r.join(''));
+                },
+                failure: function(data){
+                    sweetAlert("Something went wrong. oops!", '', 'error');
+                }
+            }).then(getTeamThenSetup);
             }
-        }).then(getTeamThenSetup)
 
 function getTeamThenSetup(){
     $.ajax({url: teamUrl,
             dataType: "json",
             type: "GET",
             success: function(data){
+                console.log(data)
                 userCanTransfer = (league.transferOpen && data.leagueUser.transferScheduledTime == null);
                 console.log("usercanTransfer:" + userCanTransfer);
-                $("#remainingTransfers").text(data.leagueUser.remainingTransfers);
+                if (data.leagueUser.remainingTransfers != null){
+                    $("#remainingTransfersSection").css('display', 'initial');
+                    $("#remainingTransfers").text(data.leagueUser.remainingTransfers);
+                }
                 $(".userCredits").text(data.leagueUser.money);
-                $(".userPoints").text(data.leagueUser.stats.points);
+                $(".userPoints").text(data.stats.points);
                 if (data.leagueUser.changeTstamp){
-                    $("#messageTransferCooldown").style('visible', 'default');
+                    $("#messageTransferCooldown").css('display', 'initial');
                 }
                 if (!league.started){
-                    $("#infinityTransfersUntilStartMessage").style('visible', 'default');
+                    $("#infinityTransfersUntilStartMessage").css('display', 'initial');
                 }
                 var r = new Array(), j = -1;
                 $.each(data.team, function(key, hero) {
@@ -148,8 +162,4 @@ function setup(){
             }
         });
     });
-}
-
-function setupInfoText(){
-
 }

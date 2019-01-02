@@ -184,7 +184,7 @@
 //var leagueId = ${league_id};
 //var userId = ${user_id if user_id else "null"};
     var league;
-    function getLeagueInfo(){
+    var getLeagueInfo = function getLeagueInfo(){
         $.ajax({url: apiBaseUrl + "/leagues/" + leagueId,
             dataType: "json",
             type: "GET",
@@ -192,13 +192,12 @@
                 league = data;
             }
         })
-    }
+    };
     function removeOverlay() {
       $('div[id^=sidenav-overlay]').remove();
     }
 
     $( document ).ready(function(){
-      getLeagueInfo();
       $('.button-collapse').sideNav();
       $('.button-collapse').click(removeOverlay);
 
