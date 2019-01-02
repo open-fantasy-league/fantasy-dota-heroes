@@ -8,6 +8,10 @@ $.ajax({url: apiBaseUrl + "leagues/" + leagueId,
 }).then(makeLeaderboard)
 
 function makeLeaderboard(){
+    var leaderBoardUrl = apiBaseUrl + "/leagues/" + leagueId + "/rankings/" + rankBy + "?team";
+    if (period != "tournament" && period != "0"){
+        leaderBoardUrl = leaderBoardUrl + "&period=" + period
+    }
     $("#leagueLink").attr('href', league.url);
     $("#leagueLink").text(league.name);
     var periodDropdown = $("#periodDropdown");
@@ -78,7 +82,9 @@ function fillMatches(){
                         var radiantBans = entry.results.filter(function(x){return x.isTeamOne && x.stats.bans})
                         var direPicks = entry.results.filter(function(){return !x.isTeamOne && x.stats.picks})
                         var direBans = entry.results.filter(function(x){return !x.isTeamOne && x.stats.bans})
-                        r[j++] = '<div class="section pointerCursor><div class="row"><span class="radiantTeam">"
+                        r[j++] = '<div class="section pointerCursor matchRow" id="match-";
+                        r[j++] = match.id;
+                        r[j++] = '><div class="row"><span class="radiantTeam">"
                         if (match.isTeamOneVictory){
                             r[j++] = '<strong>';
                             r[j++] = match.teamOne;
@@ -210,6 +216,15 @@ function fillMatches(){
                         r[j++] = '</div></div></div></div><div class="divider"></div>';
                     }
                 }
+    })
+    $("#matchesContainer").html(r.join(''));
+    $(".matchRow").each(function() {
+        var elem = $(this)
+        var id_ = elem.attr('id');
+        var match_id = id_.slice(7)
+        elem.click(function() {
+            window.open(statsSitePrefix + match_id)
+        });
     })
 }
 

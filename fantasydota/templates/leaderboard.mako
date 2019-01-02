@@ -26,26 +26,26 @@
             </li>
             <ul id="rankbyDropdown" class="dropdown-content">
                 % if rank_by != "points":
-                    <li><a href="/leaderboard?rank_by=points&mode=${mode}">Points</a></li>
+                    <li><a href="/leaderboard?rank_by=points&mode=${mode}&period=${period}">Points</a></li>
                 % endif
                 % if rank_by != "wins":
-                    <li><a href="/leaderboard?rank_by=wins&mode=${mode}">Wins</a></li>
+                    <li><a href="/leaderboard?rank_by=wins&mode=${mode}&period=${period}">Wins</a></li>
                 % endif
                 % if rank_by != "picks":
-                    <li><a href="/leaderboard?rank_by=picks&mode=${mode}">Picks</a></li>
+                    <li><a href="/leaderboard?rank_by=picks&mode=${mode}&period=${period}">Picks</a></li>
                 % endif
                 % if rank_by != "bans":
-                    <li><a href="/leaderboard?rank_by=bans&mode=${mode}">Bans</a></li>
+                    <li><a href="/leaderboard?rank_by=bans&mode=${mode}&period=${period}">Bans</a></li>
                 % endif
             </ul>
             <li>
                 <a class="dropdown-button leaderboardDropdown" data-hover="true" data-beloworigin="true" href="" data-activates="modeDropdown">${mode.title()}<i class="material-icons right">arrow_drop_down</i></a>
             </li>
             <ul id="modeDropdown" class="dropdown-content">
-                <li><a href="/leaderboard?rank_by=${rank_by}&mode=${mode}">${mode.title()}</a></li>
+                <li><a href="/leaderboard?rank_by=${rank_by}&mode=${mode}&period=${period}">${mode.title()}</a></li>
                 <li class="divider"></li>
                 % for m in other_modes:
-                    <li><a href="/leaderboard?rank_by=${rank_by}&mode=${m}">${m.title()}</a></li>
+                    <li><a href="/leaderboard?rank_by=${rank_by}&mode=${m}&period=${period}">${m.title()}</a></li>
                 % endfor
             </ul>
             <li>
@@ -74,6 +74,7 @@
 <script>
 var rankBy = "${rank_by}";
 var mode = "${mode}";
+var period = "${period}";
 $( document ).ready(function() {
     $(".dropdown-button").dropdown({
         "belowOrigin": true,
@@ -103,7 +104,7 @@ $( document ).ready(function() {
 % endif
         <script>
     $( document ).ready(function() {
-        $(".dropdown-button").dropdown({"hover": true});
+        //$(".dropdown-button").dropdown({"hover": true});
         function addFriendOnclick(){
             $.ajax({
                     url: "/addFriend",

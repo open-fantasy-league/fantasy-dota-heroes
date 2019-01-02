@@ -52,17 +52,16 @@
                 <a href="/team">Team</a>
             </li>
             <li class="col s1">
-                <a href="/leaderboard">Leaderboard</a>
+                <a href="/leaderboard?period=tournament">Leaderboard</a>
             </li>
             <li class="col s1">
-                <a href="/daily">Daily</a>
+                <a class="dailyLink" href="/leaderboard?period=1">Daily</a>
             </li>
                 <li class="col s1">
                     <a href="/rules">Rules</a>
                 </li>
             </ul>
             <ul class="right hide-on-med-and-down">
-                <li><a href="/profile">Profile</a></li>
                 <li class="col s2">
                 <a id="notificationButton" class="dropdown-button" data-constrainWidth="false" data-hover="true" data-beloworigin="true" href="#" data-activates="notificationDropdown">
                     Notifications ${"(%s)" % len(notifications)}
@@ -102,16 +101,15 @@
                     <a href="/team">Team</a>
                 </li>
                 <li class="col s1">
-                    <a href="/leaderboard">Leaderboard</a>
+                    <a href="/leaderboard?period=tournament">Leaderboard</a>
                 </li>
                 <li class="col s1">
-                    <a href="/daily">Daily</a>
+                    <a class="dailyLink" href="/leaderboard?period=1">Daily</a>
                 </li>
                 <li class="col s1">
                     <a href="/rules">Rules</a>
                 </li>
                 <div class="divider"></div>
-                <li><a href="/profile">Profile</a></li>
                 <li class="col s2">
                 <a id="mobileNotificationButton" class="dropdown-button" data-constrainWidth='false'
                    data-beloworigin="true" href="#" data-activates="mobileNotificationDropdown">
@@ -200,7 +198,7 @@
     $( document ).ready(function(){
       $('.button-collapse').sideNav();
       $('.button-collapse').click(removeOverlay);
-
+      $('.dailyLink').attr('href', "/leaderboard?period=" + league.currentPeriod.value);
       $('.clearNotifications').click(function() {
         $.get('/clearNotifications', function(){window.location.reload(false);});
       });
