@@ -61,11 +61,6 @@
 
     <div id="tableContainer">
         <table id="leaderboardTable" class="card-table striped centered">
-            <tr>
-                <th class="positionHeader">Position</th>
-                <th class="playerHeader">Player</th>
-                <th class="rankingHeader">${rank_by.title()}</th>
-            </tr>
             <tbody></tbody>
         </table>
     </div>

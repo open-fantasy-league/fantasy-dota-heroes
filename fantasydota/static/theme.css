@@ -168,7 +168,7 @@ submit:hover  {
 .toTransfer {opacity: 0.5}
 
 .positionHeader {width: 8%}
-.rankingHeader {width: 15%}
+.rankingHeader {width: 15%; text-transform: capitalize}
 
 .hero_images {float:right;
                             margin-right:6px;
