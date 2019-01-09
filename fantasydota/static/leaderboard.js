@@ -58,7 +58,7 @@ function makeLeaderboard(){
                         r[++j] = player.username;
                         r[++j] = '</span><span class="hero_images">';
                         $.each(player.team, function(key2, hero){
-                            var imgSrc = "/static/images/dota/" + hero.name.replace(" ", "_") + "_icon.png";
+                            var imgSrc = "/static/images/dota/" + hero.name.replace(/ /g, "_") + "_icon.png";
                             r[++j] = '<img src="';
                             r[++j] = imgSrc;
                             r[++j] = '" title="';

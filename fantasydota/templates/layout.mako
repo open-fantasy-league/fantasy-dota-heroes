@@ -34,10 +34,10 @@
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script>var apiBaseUrl = "${api_base_url}"
 
-            //var leagueId = ${league_id};
-            //var userId = ${user_id if user_id else "null"};
-            var leagueId = 1;
-            var userId = 3;
+            var leagueId = ${league_id};
+            var userId = ${user_id if user_id else "null"};
+            //var leagueId = 1;
+            //var userId = 3;
             var league;
             var getLeagueInfo = function getLeagueInfo(){
                 return $.ajax({url: apiBaseUrl + "leagues/" + leagueId,

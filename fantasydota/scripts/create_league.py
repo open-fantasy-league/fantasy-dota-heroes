@@ -1,13 +1,16 @@
 import urllib2
 
-from fantasydota.lib import herodict
-from fantasydota.scripts.get_dota_results import INTERNAL_API_URL
+import json
+from fantasydota.lib.herodict import herodict
+from fantasydota.lib.calibration import calibrate_all_hero_values
+from fantasydota.lib.constants import API_URL
 
 
 def create_league(name, tournament_id, url):
 
     data = {
         'name': name,
+        'apiKey': 'A',
         'tournamentId': tournament_id,
         'gameId': 1,
         'pickeeDescription': 'Hero',
@@ -24,14 +27,43 @@ def create_league(name, tournament_id, url):
         "url": url
     }
     pickees = []
+    hero_values = calibrate_all_hero_values([9870], 0)
     for id, name in herodict.items():
-        pickees.append({"id": id, "name": name, "value": 20.0})
+        #pickees.append({"id": id, "name": name, "value": 9.0})#hero_values[id]})
+        pickees.append({"id": id, "name": name, "value": hero_values[id]})
     data['pickees'] = pickees
 
-    req = urllib2.Request(
-        INTERNAL_API_URL, data=data, headers={'User-Agent': 'ubuntu:fantasydotaheroes:v1.0.0 (by /u/LePianoDentist)'}
-    )
-    response = urllib2.urlopen(req)
+    try:
+        req = urllib2.Request(
+            API_URL + "leagues/", data=json.dumps(data), headers={
+                'User-Agent': 'ubuntu:fantasydotaheroes:v1.0.0 (by /u/LePianoDentist)',
+                "Content-Type": "application/json"
+            }
+        )
+        response = urllib2.urlopen(req)
+        print(response.read())
+    except urllib2.HTTPError as e:
+        print(e.read())
+    try:
+        req = urllib2.Request(
+            API_URL + "leagues/1", data=json.dumps({'transferOpen': True}), headers={
+                'User-Agent': 'ubuntu:fantasydotaheroes:v1.0.0 (by /u/LePianoDentist)',
+                "Content-Type": "application/json"
+            }
+        )
+        response = urllib2.urlopen(req)
+        print(response.read())
+    except urllib2.HTTPError as e:
+        print(e.read())
+
+    # req = urllib2.Request(
+    #     API_URL + "leagues/1/startPeriod", data=json.dumps(data), headers={
+    #         'User-Agent': 'ubuntu:fantasydotaheroes:v1.0.0 (by /u/LePianoDentist)',
+    #         "Content-Type": "application/json"
+    #     }
+    # )
+    # response = urllib2.urlopen(req)
+    # print(response.read())
 
 
 if __name__ == "__main__":

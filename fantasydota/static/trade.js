@@ -18,6 +18,12 @@ var tradeOnclick = function tradeOnclick(event){
     doTrade(event, action, heroId)
 }
 
+var pleaseLogInClick = function pleaseLogInClick(){
+    swal('Please log in to pick a team!', '', 'error').then(function(){
+        window.location.href = '/login';
+    });
+}
+
 function doTrade(event, action, heroId){
     disableButtons();
     var toSellOriginal = toSell.slice()

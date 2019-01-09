@@ -36,13 +36,12 @@
             <tr style="cursor: pointer" id="teamTableHeader">
                 <th class="heroHeader">Hero</th>
                 <th class="dummyHeader" colspan="0"></th>
-                <th class="heroPointsHeader">Points</th>
-                <th class="picksHeader extra">Picks</th>
-                <th class="bansHeader extra">Bans</th>
-                <th class="winsHeader extra">Wins</th>
-                <th class="valueHeader">Value</th>
+                <th class="heroPointsHeader sorttable_numeric">Points</th>
+                <th class="picksHeader extra sorttable_numeric">Picks</th>
+                <th class="bansHeader extra sorttable_numeric">Bans</th>
+                <th class="winsHeader extra sorttable_numeric">Wins</th>
+                <th class="valueHeader sorttable_numeric">Value</th>
                 <th class="sellHeader">Sell</th>
-
             </tr>
         </table>
     </div>
@@ -52,6 +51,7 @@
 
 <div class="card row">
     <div class="card-content">
+        <p><span id="pleaseLogIn" style="display:none" class="messageTransClosed"><strong>Please log in or register to pick a team</strong></span></p>
         <p>50 Credits to pick a team of 5 heroes (Points penalties for under 5)</p>
         <span id="remainingTransfersSection" style="display:none">You have <span id="remainingTransfers"></span> remaining available transfers (Transfers will not count until 'Confirm Transfers' pressed)
         </span>
@@ -77,19 +77,15 @@
             <tr style="cursor: pointer" id="heroesTableHeader">
                 <th class="heroHeader">Hero</th>
                 <th class="dummyHeader" colspan="0"></th>
-                <th class="heroPointsHeader">Points</th>
-                <th class="picksHeader extra">Picks</th>
-                <th class="bansHeader extra">Bans</th>
-                <th class="winsHeader extra">Wins</th>
-                <th class="valueHeader">Value</th>
+                <th class="heroPointsHeader sorttable_numeric">Points</th>
+                <th class="picksHeader extra sorttable_numeric">Picks</th>
+                <th class="bansHeader extra sorttable_numeric">Bans</th>
+                <th class="winsHeader extra sorttable_numeric">Wins</th>
+                <th class="valueHeader sorttable_numeric">Value</th>
                 <th class="sellHeader">Buy</th>
             </tr>
         </table>
     </div>
 </div>
-<script>
-    var leagueId = 1;
-var userId = 4;
-</script>
 <script src="/static/trade.js"></script>
 <script src="/static/team.js"></script>
