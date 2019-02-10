@@ -12,7 +12,6 @@
     Rules page for fantasy dota
 </%def>
 
-% if game_code == 'DOTA':
 <div>
     <h2>Scoring</h2>
     <div class="card-panel">
@@ -32,9 +31,7 @@
                             </br>
                 <li>(Win/Loss applies to picked heroes, but not banned heroes.)</li>
         </ul>
-            Missing heroes penalty multiplier:</br>
-            <ul class="browser-default"><li>x0.5 for every missing hero  (to prevent people abusing half-empty teams of best heroes)
-            </li></ul>
+            Only teams of 5 heroes will score points
             Weekend multiplier:</br>
             <ul class="browser-default"><li>x2 points for Main event matches. x3 points for grand finals day!
             </li>
@@ -44,52 +41,12 @@
     <div class="card-panel">
         <ul class="browser-default">
             <li>
-                Your team can consist of up to 5 dota heroes (you are not required to use all 5, but you incur a heavy percentage penalty for each missing hero).
+                Your team must consist of 5 dota heroes
             </li>
             <li>
-            You get 10 potential hero transfers to be used whenever you like throughout the tournament.
+            You get 5 potential hero transfers to be used whenever you like throughout the tournament, as well as one wildcard, to reset your team and go back to 50 credits
             There is a 1 hour delay before your mid-tournament transfers go through. This prevents abuse of transferring as drafts/games occurring.
             </li>
         </ul>
     </div>
 </div>
-%elif game_code == 'PUBG':
-<div>
-    <h2>Scoring</h2>
-    <div class="card-panel">
-        Points are allocated in the following way:</br>
-        <ul class="browser-default">
-            <li>Kill&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2 points</li>
-            <li>Win&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5 points</li>
-            <li>Top 3&nbsp;&nbsp;&nbsp;&nbsp; 3 points</li>
-            <li>Top 5&nbsp;&nbsp;&nbsp;&nbsp; 2 points</li>
-            <li>Top 10&nbsp;&nbsp;&nbsp;1 point</li>
-        </ul></br>
-            Missing players penalty multiplier:</br>
-            <ul class="browser-default"><li>x0.5 for every missing player
-            </li></ul>
-    </br>
-        Points are weighted heavily towards kills over position because that seems fun to me.
-    </br>
-        Points system has to be simple until PUBG has available data API's or replay systems.
-    </div>
-    <h2>Team</h2>
-    <div class="card-panel">
-        <ul class="browser-default">
-            <li>
-                Your Main team can consist of up to 4 players (You can pick under 4, but will incur a 50% points penalty for each missing player. Hint: Just pick 4!)
-            </li>
-            <li>
-                Your Reserve team also consists of up to 2 players. These earn 0 points whilst in your reserves. But they can be swapped into your main team between tournament days.
-            </li>
-            <li>
-                You are only allowed one player from each PUBG team in your main team. You can have a second TSM, Liquid etc player in your reserves, however you can only swap him in for the other TSM, Liquid player in main team.
-            </li>
-            <li>
-            The credit values do not really mean anything right now. However for future tournaments, players may be assigned different values based on their perceived ability.
-            </li>
-        </ul>
-    </div>
-</div>
-
-%endif

@@ -13,7 +13,7 @@
 </%def>
 
 <div class="row">
-    <h2>Weekly
+    <h2>${"Tournament: {}".format(rank_by.title()) if period == 0 else "Day {}: {}".format(period, rank_by.title())}
         <a class="right" id="leagueLink" target="_blank"></a></h2>
 </div>
 <div class="row">
@@ -52,7 +52,7 @@
                 <a class="dropdown-button leaderboardDropdown" data-hover="true" data-beloworigin="true" href="" data-activates="periodDropdown">Period<i class="material-icons right">arrow_drop_down</i></a>
             </li>
             <ul id="periodDropdown" class="dropdown-content">
-                <li><a href="/leaderboard?rank_by=${rank_by}&mode=${mode}&period=tournament">Tournament</a></li>
+                <li><a href="/leaderboard?rank_by=${rank_by}&mode=${mode}&period=0">Tournament</a></li>
                 <li class="divider"></li>
             </ul>
         </ul>
@@ -69,7 +69,8 @@
 <script>
 var rankBy = "${rank_by}";
 var mode = "${mode}";
-var period = "${period}";
+var period = ${period};
+
 $( document ).ready(function() {
     $(".dropdown-button").dropdown({
         "belowOrigin": true,
@@ -78,25 +79,25 @@ $( document ).ready(function() {
 })
 </script>
     <script src="/static/leaderboard.js"></script>
-<div id="friendBlock" class="col s12 m5">
-    <div class="card-panel">
-    <p>2x points multiplier for main event. 3x for grand finals day</p>
-        <p>Results updated ~1 minute after match ends</p>
-        <p><a href="https://discord.gg/MAH7EEv" target="_blank">Discord channel for suggestions/improvements</a></p>
-    </div>
-% if user:
-    <div class="card">
-    <div class="card-content">
-        <p>
-            Add friends usernames to compete in tables against them
-        </p>
-        <form name="addFriendForm" onsubmit="return false;">
-            <input type="text" name="newFriend" placeholder="New friend..."/>
-            <button type="submit" id="addFriendBtn" class="btn waves-effect waves-light">Add</button>
-        </form>
-    </div>
-    </div>
-% endif
+    % if not period:
+    <div id="friendBlock" class="col s12 m5">
+        <div class="card-panel">
+        <p>2x points multiplier for main event. 3x for grand finals day</p>
+            <p>Results updated ~1 minute after match ends</p>
+            <p><a href="https://discord.gg/MAH7EEv" target="_blank">Discord channel for suggestions/improvements</a></p>
+        </div>
+    % if user_id:
+        <div class="card">
+        <div class="card-content">
+            <p>
+                Add friends usernames to compete in tables against them
+            </p>
+            <form name="addFriendForm" onsubmit="return false;">
+                <input type="text" name="newFriend" placeholder="New friend..."/>
+                <button type="submit" id="addFriendBtn" class="btn waves-effect waves-light">Add</button>
+            </form>
+        </div>
+        </div>
         <script>
     $( document ).ready(function() {
         //$(".dropdown-button").dropdown({"hover": true});
@@ -122,13 +123,16 @@ $( document ).ready(function() {
         $("#addFriendBtn").click(addFriendOnclick);
     })
     </script>
-    <div id="matchesBlock" class="col s12 m6">
-    <div class="card">
-    <div class="card-content" id="matchesCard">
-        <h2>Matches</h2>
-        <div id="matchesContainer"></div>
-    </div>
-    </div>
-</div>
+        % endif
+    % else:
+        <div id="matchesBlock" class="col s12 m5">
+        <div class="card">
+        <div class="card-content" id="matchesCard">
+            <h2>Matches</h2>
+            <div id="matchesContainer"></div>
+        </div>
+        </div>
+        </div>
+    % endif
 </div>
 </div>

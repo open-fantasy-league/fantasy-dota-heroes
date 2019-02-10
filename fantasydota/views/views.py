@@ -15,14 +15,16 @@ from sqlalchemy import and_
 @view_config(route_name='view_faq', renderer='../templates/faq.mako')
 def view_faq(request):
     session = DBSession()
-    return all_view_wrapper({}, session, request)
+    user_id = authenticated_userid(request)
+    return all_view_wrapper({}, session, user_id)
 
 
 @view_config(route_name='view_rules', renderer='../templates/rules.mako')
 def view_rules(request):
     session = DBSession()
+    user_id = authenticated_userid(request)
     return all_view_wrapper(
-        {}, session, request
+        {}, session, user_id
     )
 
 
@@ -47,6 +49,7 @@ def add_friend(request):
 @view_config(route_name='index', renderer='../templates/index.mako')
 def index(request):
     session = DBSession()
+    user_id = authenticated_userid(request)
     return all_view_wrapper(
-        {}, session, request
+        {}, session, user_id
     )

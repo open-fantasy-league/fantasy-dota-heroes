@@ -2,11 +2,11 @@ var toSell = [];
 var toBuy = [];
 
 function disableButtons(){
-    $("[name=buyHero]").add("[name=sellHero]").add("#confirmTransfers").each(function(){$(this).attr("disabled","true");});
+    $("[name=buyHero]").add("[name=sellHero]").add("#confirmTransfers").add("#useWildcard").each(function(){$(this).attr("disabled","true");});
 }
 
 function undisableButtons(){
-    $("[name=buyHero]").add("[name=sellHero]").add("#confirmTransfers").each(function(){$(this).removeAttr("disabled");})
+    $("[name=buyHero]").add("[name=sellHero]").add("#confirmTransfers").add("#useWildcard").each(function(){$(this).removeAttr("disabled");})
 }
 
 var tradeOnclick = function tradeOnclick(event){
@@ -26,8 +26,8 @@ var pleaseLogInClick = function pleaseLogInClick(){
 
 function doTrade(event, action, heroId){
     disableButtons();
-    var toSellOriginal = toSell.slice()
-    var toBuyOriginal = toBuy.slice()
+    var toSellOriginal = toSell.slice();
+    var toBuyOriginal = toBuy.slice();
     var cancel = false;
     if (action == "buyHero"){
         var ind = toSell.indexOf(heroId);
@@ -50,8 +50,9 @@ function doTrade(event, action, heroId){
         }
     }
     $.ajax({
-        url: apiBaseUrl + "transfers/leagues/" + leagueId + "/users/" + userId,
+        url: '/transfer_proxy',
         dataType: "json",
+
         type: "POST",
         data: {"sell": toSell, "buy": toBuy, "isCheck": true},
         success: function(data){

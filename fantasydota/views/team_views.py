@@ -1,4 +1,11 @@
-from fantasydota.lib.constants import DEFAULT_LEAGUE
+import urllib2
+
+import json
+from fantasydota.lib.constants import DEFAULT_LEAGUE, API_URL
+from fantasydota.local_settings import FANTASY_API_KEY
+from fantasydota.models import User
+from pyramid.httpexceptions import HTTPFound, HTTPBadRequest, HTTPInternalServerError
+from pyramid.response import Response
 from pyramid.security import authenticated_userid
 from pyramid.view import view_config
 
@@ -10,11 +17,32 @@ from fantasydota.lib.general import all_view_wrapper
 def view_team(request):
     session = DBSession()
     user_id = authenticated_userid(request)
-    league_id = int(request.params.get('league', DEFAULT_LEAGUE))
+    return_dict = {'league_id': int(request.params.get('league', DEFAULT_LEAGUE))}
 
-    return_dict = {'user_id': user_id, 'league_id': league_id}
-
-    return_dict = all_view_wrapper(return_dict, session, request)
-    print(return_dict)
+    return_dict = all_view_wrapper(return_dict, session, user_id)
     return return_dict
 
+
+@view_config(route_name='transfer_proxy', renderer='json')
+def transfer_proxy(request):
+    user_id = authenticated_userid(request)
+    league_id = int(request.params.get('league', DEFAULT_LEAGUE))
+    in_ = request.POST
+    print(in_.getall('buy[]'))
+    print(in_)
+    out = {'buy': in_.getall('buy[]'), 'sell': in_.getall('sell[]'),
+           'isCheck': in_.get('isCheck'), 'wildcard': in_.get('wildcard', False)}
+    url = API_URL + "transfers/leagues/" + str(league_id) + "/users/" + str(user_id)
+    try:
+        req = urllib2.Request(
+            url, data=json.dumps(out), headers={
+                'apiKey': FANTASY_API_KEY,
+                'User-Agent': 'ubuntu:fantasydotaheroes:v1.0.0 (by /u/LePianoDentist)',
+                "Content-Type": "application/json"
+            }
+        )
+        response = urllib2.urlopen(req)
+        return json.loads(response.read())
+    except urllib2.HTTPError as e:
+        text = e.read()
+        return Response(text, status=e.code)

@@ -114,4 +114,5 @@ herodict = {
     114: "Monkey King",
     119: "Dark Willow",
     120: "Pangolier",
+    121: "Grimstroke",
 }

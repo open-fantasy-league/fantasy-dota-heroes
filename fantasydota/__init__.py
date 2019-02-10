@@ -94,6 +94,7 @@ def main(global_config, **settings):
 
     config.add_route('view_rules', '/rules')
     config.add_route('view_team', '/team')
+    config.add_route('transfer_proxy', '/transfer_proxy')
     config.add_route('leaderboard', '/leaderboard')
     config.add_route('account_settings', '/accountSettings')
     config.add_route('profile', '/profile')

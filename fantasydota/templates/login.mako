@@ -45,7 +45,7 @@
                     </button>
                 </div>
                 <div class="input-field col s4">
-                <a onclick="forgotPassword()" href="#">Forgotten password?</a>
+                <a href="/forgot_password">Forgotten password?</a>
                 </div>
             </form>
         </div>
@@ -80,9 +80,3 @@
         </form>
     </div>
 </div>
-
-<script>
-function forgotPassword(){
-    window.location.href = "/forgotPassword?username=" + $("input[name=username]").val();
-}
-</script>

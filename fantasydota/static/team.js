@@ -2,14 +2,15 @@ var userCanTransfer;
 var teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&scheduledTransfers&stats";
 console.log(teamUrl)
 var heroes;
-$.ajax({url: apiBaseUrl + "leagues/" + leagueId,
-    dataType: "json",
-    type: "GET",
-    success: function(data){
-        league = data;
-        console.log(league)
-    }
-}).then(getPickees)
+getLeagueInfo().then(getPickees)
+//$.ajax({url: apiBaseUrl + "leagues/" + leagueId,
+//    dataType: "json",
+//    type: "GET",
+//    success: function(data){
+//        league = data;
+//        console.log(league)
+//    }
+//}).then(getPickees)
 
 function getPickees(){
     $.ajax({url: apiBaseUrl + "pickees/leagues/" + leagueId + "/stats/",
@@ -18,8 +19,10 @@ function getPickees(){
                 success: function(data){
                     var r = new Array(), j = -1;
                     heroes = data;
+                    console.log("herrrooes")
+                    console.log(heroes)
                     $.each(data, function(key, hero) {
-                        var id = hero.externalId;
+                        var id = hero.id;
                         var imgSrc = "/static/images/dota/" + hero.name.replace(/ /g, "_") + "_icon.png";
                     r[++j] = '<tr class="';
                     r[++j] = id;
@@ -54,7 +57,7 @@ function getPickees(){
                     $("#heroesTable").find("tbody").html(r.join(''));
                     console.log(document.getElementById("heroesTable"))
                 },
-                failure: function(data){
+                error: function(data){
                     sweetAlert("Something went wrong. oops!", '', 'error');
                 }
             }).then(getTeamThenSetup);
@@ -91,18 +94,19 @@ function getTeamThenSetup(){
                     }
                     var r = new Array(), j = -1;
                     $.each(data.team, function(key, hero) {
-                        var id = hero.externalId;
+                    console.log(hero)
+                        var id = hero.id;
                         console.log(hero)
                         console.log(id)
-                        var heroInfo = heroes.find(function(h){return h.externalId == id})
+                        var heroInfo = heroes.find(function(h){return h.id == id})
                         var imgSrc = "/static/images/dota/" + hero.name.replace(/ /g, "_") + "_icon.png";
                         var transferSymbol;
                         var transferClass = '';
-                        if (data.scheduledTransfers.includes(function(t){return t.isBuy && t.externalId == id})){
+                        if (data.scheduledTransfers.includes(function(t){return t.isBuy && t.id == id})){
                             transferSymbol = '<i class="material-icons">add_circle</i>'
                             transferClass = "toTransfer transferIn"
                         }
-                        else if (data.scheduledTransfers.includes(function(t){return !t.isBuy && t.externalId == id})){
+                        else if (data.scheduledTransfers.includes(function(t){return !t.isBuy && t.id == id})){
                             transferSymbol = '<i class="material-icons">remove_circle</i>'
                             transferClass = "toTransfer transferOut"
                         }
@@ -137,8 +141,23 @@ function getTeamThenSetup(){
                     })
                     $("#teamTable").find("tbody").html(r.join(''));
                 },
-                failure: function(data){
-                    sweetAlert("Something went wrong. oops!", '', 'error');
+                error: function(jqxhr, textStatus, errorThrown){
+                console.log(jqxhr.responseText)
+                    if (jqxhr.responseText.startsWith("User does not exist on api")){
+                        console.log("ahaha")
+                        console.log(username)
+                        // need to add user first
+                         $.ajax({url: apiBaseUrl + "users/",
+                                dataType: "json",
+                                type: "POST",
+                                contentType: "application/json",
+                                data: JSON.stringify({"username": username, "userId": userId}),
+                                dataType: "json"
+                                }).then(getTeamThenSetup)  // this time the call should work
+                    }
+                    else{
+                        sweetAlert("Something went wrong. oops!", '', 'error');
+                        }
                 }
             }).then(setup);
         }
@@ -154,20 +173,78 @@ function setup(){
     $('#confirmTransfers').click(function() {
         disableButtons()
         $.ajax({
-            url: apiBaseUrl + "transfers/leagues/" + leagueId + "/users/" + userId,
+            url: "/transfer_proxy",
             dataType: "json",
             type: "POST",
             data: {"sell": toSell, "buy": toBuy, "isCheck": false},
             success: function(data){
                 swal({
                  title: "Transfers locked in!",
-                 text: "Note: Your new heroes will start scoring points one hour from now",
+                 text: league.started ? "Note: Your new heroes will start scoring points one hour from now" : "You can make as many changes as you like until league start",
                   icon: "success"
                 }).then(function(){
                     window.location.reload(false);
                 });
             },
             error: function(jqxhr, textStatus, errorThrown){
+                undisableButtons();
+                sweetAlert(jqxhr.responseText, '', 'error');
+            }
+        });
+    });
+
+    $('#useWildcard').click(function() {
+        var toSellOriginal = toSell.slice();
+        var toBuyOriginal = toBuy.slice();
+        disableButtons();
+        if (toSell.length > 0){
+            sweetAlert('Cannot use wildcard and sell heroes at same time', '', 'error');
+        }
+        $.ajax({
+            url: '/transfer_proxy',
+            dataType: "json",
+            type: "POST",
+            data: {"sell": [], "buy": [], "isCheck": true, "wildcard": true},
+            success: function(data){
+                swal({
+                icon: 'warning',
+                 title: "Are you sure you want to use wildcard?",
+                 buttons: {cancel: true, confirm: true},
+                 text: "(only available once)",
+                }).then(function(result){
+                    if (result){
+                            $.ajax({
+                                url: '/transfer_proxy',
+                                dataType: "json",
+                                type: "POST",
+                                data: {"sell": [], "buy": [], "isCheck": false, "wildcard": true},
+                                success: function(data){
+                                    swal({
+                                     title: "Wildcard applied. Please purchase a new team",
+                                      icon: "success"
+                                    }).then(function(){
+                                        window.location.reload(false);
+                                    });
+                                },
+                                error: function(jqxhr, textStatus, errorThrown){
+                                    toSell = toSellOriginal;
+                                    toBuy = toBuyOriginal;
+                                    undisableButtons();
+                                    sweetAlert(jqxhr.responseText, '', 'error');
+                                }
+                            });
+                    }
+                    else{
+                        console.log("erm we cancelled")
+                        toSell = toSellOriginal;
+                        toBuy = toBuyOriginal;
+                        undisableButtons();
+                    }
+                });
+            },
+            error: function(jqxhr, textStatus, errorThrown){
+                toSell = toSellOriginal;
+                toBuy = toBuyOriginal;
                 undisableButtons();
                 sweetAlert(jqxhr.responseText, '', 'error');
             }

@@ -36,15 +36,18 @@
 
             var leagueId = ${league_id};
             var userId = ${user_id if user_id else "null"};
-            //var leagueId = 1;
-            //var userId = 3;
+            var username = "${user.username if user else ""}";
+            console.log(username)
             var league;
+            var currentPeriod;
             var getLeagueInfo = function getLeagueInfo(){
                 return $.ajax({url: apiBaseUrl + "leagues/" + leagueId,
                     dataType: "json",
                     type: "GET",
                     success: function(data){
                         league = data;
+                        currentPeriod = league.currentPeriod ? league.currentPeriod.value : 1;
+                        $('.dailyLink').attr('href', "/leaderboard?period=" + currentPeriod);
                     }
                 })
             };
@@ -68,7 +71,7 @@
                 <a href="/team">Team</a>
             </li>
             <li class="col s1">
-                <a href="/leaderboard?period=tournament">Leaderboard</a>
+                <a href="/leaderboard?period=0">Leaderboard</a>
             </li>
             <li class="col s1">
                 <a class="dailyLink" href="/leaderboard?period=1">Daily</a>
@@ -117,7 +120,7 @@
                     <a href="/team">Team</a>
                 </li>
                 <li class="col s1">
-                    <a href="/leaderboard?period=tournament">Leaderboard</a>
+                    <a href="/leaderboard?period=0">Leaderboard</a>
                 </li>
                 <li class="col s1">
                     <a class="dailyLink" href="/leaderboard?period=1">Daily</a>
@@ -202,8 +205,9 @@
     $( document ).ready(function(){
       $('.button-collapse').sideNav();
       $('.button-collapse').click(removeOverlay);
-      getLeagueInfo().then(function(){
-      $('.dailyLink').attr('href', "/leaderboard?period=" + league.currentPeriod.value);})
+      /*getLeagueInfo().then(function(){
+      var currentPeriod = league.currentPeriod ? league.currentPeriod.value : 1;
+      $('.dailyLink').attr('href', "/leaderboard?period=" + currentPeriod);})*/
       $('.clearNotifications').click(function() {
         $.get('/clearNotifications', function(){window.location.reload(false);});
       });

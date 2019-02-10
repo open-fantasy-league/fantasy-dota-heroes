@@ -27,7 +27,7 @@ def create_league(name, tournament_id, url):
         "url": url
     }
     pickees = []
-    hero_values = calibrate_all_hero_values([9870], 0)
+    hero_values = calibrate_all_hero_values([10548, 9862, 10482, 10547, 10603, 10440, 10560], 0)
     for id, name in herodict.items():
         #pickees.append({"id": id, "name": name, "value": 9.0})#hero_values[id]})
         pickees.append({"id": id, "name": name, "value": hero_values[id]})

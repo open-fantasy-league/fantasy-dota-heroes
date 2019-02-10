@@ -29,7 +29,7 @@ def result_to_points(stage, ban, win):
         elif win:
             return 15
         else:
-            return -5
+            return -1
 
 
 def update_hero_calibration_dict(match, hero_calibration_dict=None, **kwargs):

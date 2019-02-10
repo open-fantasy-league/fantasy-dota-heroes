@@ -1,21 +1,12 @@
-$.ajax({url: apiBaseUrl + "leagues/" + leagueId,
-    dataType: "json",
-    type: "GET",
-    success: function(data){
-        league = data;
-        console.log(league)
-    }
-}).then(makeLeaderboard)
+getLeagueInfo().then(makeLeaderboard);
 
 function makeLeaderboard(){
     var leaderBoardUrl = apiBaseUrl + "leagues/" + leagueId + "/rankings/" + rankBy + "?team";
-    if (period != "tournament" && period != "0"){
+    if (period != 0){
         leaderBoardUrl = leaderBoardUrl + "&period=" + period;
     }
     $("#leagueLink").attr('href', league.url);
     $("#leagueLink").text(league.name);
-    var periodDropdown = $("#periodDropdown");
-    var periodHtml = "";
     var r = new Array(), j = -1;
     for(var i=1; i<=league.currentPeriod.value; i++){
         r[++j] = '<li><a href="/leaderboard?rank_by=';
@@ -24,17 +15,17 @@ function makeLeaderboard(){
         r[++j] = mode;
         r[++j] = "&period=";
         r[++j] = i;
-        r[++j] = '>Day';
+        r[++j] = '">Day ';
         r[++j] = i;
         r[++j] = '</a></li>';
     }
-    periodDropdown.append(r.join(''));
-    console.log($("#leaderboardTable").find("tbody"))
+    $("#periodDropdown").append(r.join(''));
     $.ajax({url: leaderBoardUrl,
                 type: "GET",
                 dataType: "json",
                 success: function(data){
                     var r = new Array(), j = -1;
+                    var tfoot = new Array(), k = -1;
                     console.log(data)
                     r[++j] = '<tr><th class="positionHeader">Position</th><th class="playerHeader">Player</th><th class="rankingHeader">';
                     r[++j] = rankBy;
@@ -42,44 +33,56 @@ function makeLeaderboard(){
                     $.each(data.rankings, function(key, player) {
                         console.log(key)
                         console.log(player)
-                        console.log(userId)
-                        var isUser = (player.externalId === userId);
-                        r[++j] = '<tr class="';
-                        r[++j] = isUser ? 'userRow' : 'playerRow';
-                        r[++j] = '"><td class="positionEntry">';
-                        r[++j] = player.rank;
-                        if (period == "tournament"){
-                            r[++j] = progress_arrow(player);
+                        var isUser = (player.id === userId);
+                        appendBothUserRows(isUser, r, tfoot, j++, k++,'<tr class="');
+                        appendBothUserRows(isUser, r, tfoot, j++, k++, isUser ? 'userRow' : 'playerRow');
+                        if (userId != null){
+                            tfoot[k++] = ' outsideRanks';
                         }
-                        r[++j] = '</td><td class="heroEntry"><span style="vertical-align:middle">';
+                        appendBothUserRows(isUser, r, tfoot, j++, k++,'"><td class="positionEntry">');
+                        appendBothUserRows(isUser, r, tfoot, j++, k++,player.rank);
+                        if (period == 0){
+                            appendBothUserRows(isUser, r, tfoot, j++, k++, progress_arrow(player));
+                        }
+                        appendBothUserRows(isUser, r, tfoot, j++, k++, '</td><td class="heroEntry"><span style="vertical-align:middle">');
                         if (league.ended && key == 0){
                             r[++j] = '<img src="static/images/dota/trophy.png"/>';
                         }
-                        r[++j] = player.username;
-                        r[++j] = '</span><span class="hero_images">';
+                        appendBothUserRows(isUser, r, tfoot, j++, k++,player.username);
+                        appendBothUserRows(isUser, r, tfoot, j++, k++,'</span><span class="hero_images">');
                         $.each(player.team, function(key2, hero){
                             var imgSrc = "/static/images/dota/" + hero.name.replace(/ /g, "_") + "_icon.png";
-                            r[++j] = '<img src="';
-                            r[++j] = imgSrc;
-                            r[++j] = '" title="';
-                            r[++j] = hero.name;
-                            r[++j] = '"/>';
+                            appendBothUserRows(isUser, r, tfoot, j++, k++,'<img src="');
+                            appendBothUserRows(isUser, r, tfoot, j++, k++,imgSrc);
+                            appendBothUserRows(isUser, r, tfoot, j++, k++,'" title="');
+                            appendBothUserRows(isUser, r, tfoot, j++, k++,hero.name)
+                            appendBothUserRows(isUser, r, tfoot, j++, k++,'"/>');
                         })
-                        r[++j] = '</span></td><td class="rankingEntry">';
-                        r[++j] = player.value;
-                        r[++j] = '</td></tr>';
+                        appendBothUserRows(isUser, r, tfoot, j++, k++,'</span></td><td class="rankingEntry">');
+                        appendBothUserRows(isUser, r, tfoot, j++, k++,player.value);
+                        appendBothUserRows(isUser, r, tfoot, j++, k++,'</td></tr>');
                     })
-                    $("#leaderboardTable").find("tbody").html(r.join(''));
+                    $("#leaderboardTable").find("tbody").html(r.concat(tfoot).join(''));
                 },
-                failure: function(data){
+                error: function(data){
                     sweetAlert("Something went wrong. oops!", '', 'error');
                 }
             }).then(fillMatches);
         }
 
+function appendBothUserRows(isUser, r, tfoot, j, k, html){
+    r[j] = html;
+    if (isUser){
+        tfoot[k] = html;
+    }
+}
+
 function fillMatches(){
-    var resultsUrl = apiBaseUrl + "results/" + leagueId + "?";
-    if (period != "tournament" && period != "0"){
+    if (period == 0){
+        return
+    }
+    var resultsUrl = apiBaseUrl + "results/leagues/" + leagueId + "?";
+    if (period != 0){
         resultsUrl = resultsUrl + "&period=" + period;
     }
 
@@ -120,6 +123,7 @@ function fillMatches(){
                             r[j++] = pick.stats.points >= 0 ? 'positive' : 'negative';
                             r[j++] = '"style="display: inline-block; width: 32px; text-align: center;">';
                             r[j++] = pick.stats.points >= 0 ? '+' : '-';
+                            r[j++] = pick.stats.points;
                             r[j++] = '</span>';
                         })
                         r[j++] = '</div><div class="right hide-on-small-only">';
@@ -128,11 +132,12 @@ function fillMatches(){
                             r[j++] = pick.stats.points >= 0 ? 'positive' : 'negative';
                             r[j++] = '"style="display: inline-block; width: 32px; text-align: center;">';
                             r[j++] = pick.stats.points >= 0 ? '+' : '-';
+                            r[j++] = pick.stats.points;
                             r[j++] = '</span>';
                         })
                         r[j++] = '</div></div><div class="row"><div class="left">';
                         $.each(radiantPicks, function(key2, pick){
-                            var imgSrc = "/static/images/dota/" + pick.pickee.name.replace(" ", "_") + "_icon.png";
+                            var imgSrc = "/static/images/dota/" + pick.pickee.name.replace(/ /g, "_") + "_icon.png";
                             r[j++] = '<img src="';
                             r[j++] = imgSrc;
                             r[j++] = '" title="';
@@ -141,7 +146,7 @@ function fillMatches(){
                         })
                         r[j++] = '</div><div class="right hide-on-small-only">';
                         $.each(direPicks, function(key2, pick){
-                            var imgSrc = "/static/images/dota/" + pick.pickee.name.replace(" ", "_") + "_icon.png";
+                            var imgSrc = "/static/images/dota/" + pick.pickee.name.replace(/ /g, "_") + "_icon.png";
                             r[j++] = '<img src="';
                             r[j++] = imgSrc;
                             r[j++] = '" title="';
@@ -150,7 +155,7 @@ function fillMatches(){
                         })
                         r[j++] = '</div></div><div class="row" style="margin-bottom: 0px"><div class="left">';
                         $.each(radiantBans, function(key2, pick){
-                            var imgSrc = "/static/images/dota/" + pick.pickee.name.replace(" ", "_") + "_icon.png";
+                            var imgSrc = "/static/images/dota/" + pick.pickee.name.replace(/ /g, "_") + "_icon.png";
                             r[j++] = '<img class="banIcon" src="';
                             r[j++] = imgSrc;
                             r[j++] = '" title="';
@@ -159,7 +164,7 @@ function fillMatches(){
                         })
                         r[j++] = '</div><div class="right hide-on-small-only">';
                         $.each(direBans, function(key2, pick){
-                            var imgSrc = "/static/images/dota/" + pick.pickee.name.replace(" ", "_") + "_icon.png";
+                            var imgSrc = "/static/images/dota/" + pick.pickee.name.replace(/ /g, "_") + "_icon.png";
                             r[j++] = '<img class="banIcon" src="';
                             r[j++] = imgSrc;
                             r[j++] = '" title="';
@@ -172,6 +177,7 @@ function fillMatches(){
                             r[j++] = pick.stats.points >= 0 ? 'positive' : 'negative';
                             r[j++] = '"style="display: inline-block; width: 32px; text-align: center;">';
                             r[j++] = pick.stats.points >= 0 ? '+' : '-';
+                            r[j++] = pick.stats.points;
                             r[j++] = '</span>';
                         })
                         r[j++] = '</div><div class="right hide-on-small-only">';
@@ -180,6 +186,7 @@ function fillMatches(){
                             r[j++] = pick.stats.points >= 0 ? 'positive' : 'negative';
                             r[j++] = '"style="display: inline-block; width: 32px; text-align: center;">';
                             r[j++] = pick.stats.points >= 0 ? '+' : '-';
+                            r[j++] = pick.stats.points;
                             r[j++] = '</span>';
                         })
                         r[j++] = '</div></div><div class="columniseMobileView hide-on-med-and-up"><div class="row"><span class="direTeam left">';
@@ -197,11 +204,12 @@ function fillMatches(){
                             r[j++] = pick.stats.points >= 0 ? 'positive' : 'negative';
                             r[j++] = '"style="display: inline-block; width: 32px; text-align: center;">';
                             r[j++] = pick.stats.points >= 0 ? '+' : '-';
+                            r[j++] = pick.stats.points;
                             r[j++] = '</span>';
                         })
                         r[j++] = '</div></div><div class="row"><div class="left">';
                         $.each(direPicks, function(key2, pick){
-                            var imgSrc = "/static/images/dota/" + pick.pickee.name.replace(" ", "_") + "_icon.png";
+                            var imgSrc = "/static/images/dota/" + pick.pickee.name.replace(/ /g, "_") + "_icon.png";
                             r[j++] = '<img src="';
                             r[j++] = imgSrc;
                             r[j++] = '" title="';
@@ -210,7 +218,7 @@ function fillMatches(){
                         })
                         r[j++] = '</div></div><div class="row" style="margin-bottom: 0px"><div class="left">';
                         $.each(direBans, function(key2, pick){
-                            var imgSrc = "/static/images/dota/" + pick.pickee.name.replace(" ", "_") + "_icon.png";
+                            var imgSrc = "/static/images/dota/" + pick.pickee.name.replace(/ /g, "_") + "_icon.png";
                             r[j++] = '<img class="banIcon" src="';
                             r[j++] = imgSrc;
                             r[j++] = '" title="';
@@ -223,6 +231,7 @@ function fillMatches(){
                             r[j++] = pick.stats.points >= 0 ? 'positive' : 'negative';
                             r[j++] = '"style="display: inline-block; width: 32px; text-align: center;">';
                             r[j++] = pick.stats.points >= 0 ? '+' : '-';
+                            r[j++] = pick.stats.points;
                             r[j++] = '</span>';
                         })
                         r[j++] = '</div></div></div></div><div class="divider"></div>';
@@ -247,13 +256,13 @@ function progress_arrow(player){
         if (diff == 0){
                 return " <span>&#8660;</span>";
         }
-        else if (diff < -5){
+        else if (diff > 5){
                 return ' <span class="upMyArrow">&#8657;</span>';
                 }
-        else if (diff > 5){
+        else if (diff < -5){
                 return ' <span class="downMyArrow">&#8659;</span>';
                 }
-        else if (diff < 0){
+        else if (diff > 0){
                 return ' <span class="supMyArrow">&#8663;</span>';
                 }
         else {

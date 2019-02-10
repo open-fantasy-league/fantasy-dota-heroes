@@ -24,23 +24,24 @@ def login(request):
             username = username.lower()
             # Think now have steam accounts. can have different accounts but same name
             userq = session.query(User).filter(User.username == username).all()
-            for user in userq:
-                if user.validate_password(request.params.get('password')):
-                    headers = remember(request, user.id)
-                    user.last_login = datetime.datetime.now()
-                    return HTTPFound('/team', headers=headers)
-                else:
-                    headers = forget(request)
-                    message = "Password did not match stored value for %s" % user.username
             if not userq:
                 message = "Username not recognised"
+            else:
+                for user in userq:
+                    if user.validate_password(request.params.get('password')):
+                        headers = remember(request, user.id)
+                        user.last_login = datetime.datetime.now()
+                        return HTTPFound('/team', headers=headers)
+                else:
+                    headers = forget(request)
+                    message = "Password was incorrect"
         else:
-            message = 'Oops! SOmething went wrong'
+            message = 'Must specify username'
             headers = forget(request)
     return_dict = {'message': message, "plus_id": request.registry.settings.get(
         'SOCIAL_AUTH_STEAM_KEY'
     )}
-    return all_view_wrapper(return_dict, session, request)
+    return all_view_wrapper(return_dict, session)
 
 
 @view_config(route_name='logout')
@@ -115,23 +116,24 @@ def change_password(request):
     return HTTPFound(location=request.route_url('account_settings', _query=params))
 
 
-@view_config(route_name='forgot_password', renderer='../templates/login.mako')
+@view_config(route_name='forgot_password', renderer='../templates/reset_password_email.mako')
 def forgot_password(request):
     session = DBSession()
     username = request.params.get('username').lower() if request.params.get('username') else None
-    userq = session.query(User).filter(User.username == username).first()
+    email = request.params.get('email').lower() if request.params.get('email') else None
+    userq = session.query(User).filter(User.username == username).filter(User.email == email).first()
     return_dict = None
     if not username or not userq:
-        return_dict = {"message": "Username for password reset did not match. Please check filled in correctly"}
-        return all_view_wrapper(return_dict, session, request)
+        return_dict = {"message": "Username and email for password reset did not match. Please check filled in correctly"}
+        return all_view_wrapper(return_dict, session)
     elif not userq.email:
         return_dict = {"message": "Sorry you did not have an email address associated with this account. Please email fantasydotaeu@gmail.com directly"}
-        return all_view_wrapper(return_dict, session, request)
+        return all_view_wrapper(return_dict, session)
     guid = bcrypt.encrypt(str(userq.id))
     tries = session.query(PasswordReset).filter(PasswordReset.time > datetime.datetime.now() - datetime.timedelta(days=1)).filter(PasswordReset.user_id == userq.id).count()
     if tries > 1:
         return_dict = {"message": "You have already tried 2 password resets today. Please email directly if still having issues"}
-        return all_view_wrapper(return_dict, session, request)
+        return all_view_wrapper(return_dict, session)
     try:
         session.add(PasswordReset(userq.id, guid, request.remote_addr))
         email_url = "https://www.fantasydota.eu/resetPasswordPage?u=" + str(userq.id) + "&guid="  # how not hardcode domain bit?
@@ -148,7 +150,7 @@ def forgot_password(request):
     if not return_dict:
         return_dict = {"message": "Instructions for password reset have been emailed to you",
                 "message_type": "success"}
-    return all_view_wrapper(return_dict, session, request)
+    return all_view_wrapper(return_dict, session, userq.user_id)
 
 
 @view_config(route_name='reset_password_page', renderer='../templates/reset_password.mako')
@@ -163,8 +165,8 @@ def reset_password_page(request):
         # Link is over 24 hours old
         if reset.time + datetime.timedelta(days=1) < datetime.datetime.now():
             raise HTTPForbidden()
-        return_dict = {"guid": guid, "user_id": user_id}
-        return all_view_wrapper(return_dict, session, request)
+        return_dict = {"guid": guid}
+        return all_view_wrapper(return_dict, session, user_id)
 
 
 @view_config(route_name='reset_password')
@@ -201,9 +203,8 @@ def account_settings(request):
         return HTTPFound('/login')
     message = request.params.get("message")
     message_type = request.params.get("message_type")
-    user = session.query(User).filter(User.id == user_id).first()
-    return_dict = {"user": user, "message": message, "message_type": message_type}
-    return all_view_wrapper(return_dict, session, request)
+    return_dict = {"message": message, "message_type": message_type}
+    return all_view_wrapper(return_dict, session, user_id)
 
 
 @view_config(route_name='update_email_settings')
@@ -267,26 +268,3 @@ def done(request):
     #     user=get_user(request),
     #     plus_id=request.registry.settings['SOCIAL_AUTH_GOOGLE_PLUS_KEY'],
     # )
-
-
-@view_config(route_name="profile", renderer="../templates/profile.mako")
-def profile(request):
-    session = DBSession()
-    try:
-        shown_user_id = int(request.params.get('user', authenticated_userid(request)))
-    except TypeError:  # user is none. not logged in
-        return HTTPFound('/login')
-
-    user_xp = session.query(UserXp).filter(UserXp.user_id == shown_user_id).first()
-    user_achievements = [
-        x[0] for x in session.query(UserAchievement.achievement)
-        .filter(UserAchievement.user_id == shown_user_id).all()
-    ]
-    achievements = session.query(Achievement).all()
-    shown_user = session.query(User).filter(User.id == shown_user_id).first()
-    return all_view_wrapper(
-        {
-            'user_xp': user_xp, 'user_achievements': user_achievements, 'shown_user': shown_user,
-            'achievements': achievements
-        }, session, request
-    )

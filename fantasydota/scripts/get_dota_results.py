@@ -2,17 +2,21 @@ import json
 import urllib2
 from collections import namedtuple
 
-import time
-
 import datetime
+
+import os
 from fantasydota.lib.constants import API_URL, DEFAULT_LEAGUE
 from fantasydota.lib.match import iterate_matches, BANS, STAGE_2_MAX, STAGE_1_MAX, result_to_points
 
-API_RESULTS_URL = API_URL + "results"
-Result = namedtuple('Result', 'hero_id is_team_one points ban win')
-
 
 def add_match_to_api(match, tournament_id=None):
+    FE_APIKEY = os.environ.get("FE_APIKEY")
+    if not FE_APIKEY:
+        print "Set your fantasy esport APIKEY environment variable"
+
+    api_results_url = API_URL + "results"
+    Result = namedtuple('Result', 'hero_id is_team_one points ban win')
+
     match_id = int(match['match_id'])
     picks = match.get("picks_bans", [])
     if len(picks) < 22:
@@ -57,15 +61,10 @@ def add_match_to_api(match, tournament_id=None):
         'startTstamp': datetime.datetime.fromtimestamp(match['start_time']).strftime('%Y-%m-%d %H:%M:%S'),
         'pickees': pickees
     })
-    url = API_RESULTS_URL + "/" + str(DEFAULT_LEAGUE)
+    url = api_results_url + "/" + str(DEFAULT_LEAGUE)
     print(url)
     try:
-        req = urllib2.Request(
-            url, data=data, headers={
-                'User-Agent': 'ubuntu:fantasydotaheroes:v1.0.0 (by /u/LePianoDentist)',
-                "Content-Type": "application/json"
-            }
-        )
+        req = urllib2.Request(url, data=data, headers={'apiKey': FE_APIKEY, "Content-Type": "application/json"})
         response = urllib2.urlopen(req)
         print(response.read())
     except urllib2.HTTPError as e:
@@ -73,7 +72,7 @@ def add_match_to_api(match, tournament_id=None):
 
 
 def main():
-    iterate_matches(9870, add_match_to_api, tstamp_from=1534332914)
+    iterate_matches(10733, add_match_to_api, tstamp_from=1534332914)
 
 if __name__ == "__main__":
     main()

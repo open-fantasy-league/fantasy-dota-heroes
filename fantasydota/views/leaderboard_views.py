@@ -13,7 +13,7 @@ def leaderboard(request):
     league_id = int(request.params.get('league', DEFAULT_LEAGUE))
     user_id = authenticated_userid(request)
     mode = request.params.get("mode", "global")
-    period = int(request.params.get("period", 0)) or "tournament"
+    period = int(request.params.get("period", 0))
     if mode == "friend" and not user_id:
         mode = "global"
     other_modes = ['global', 'friend', 'hero']
@@ -26,6 +26,6 @@ def leaderboard(request):
     rank_by = request.params.get("rank_by")
     rank_by = rank_by if rank_by in ("points", "wins", "picks", "bans") else "points"
 
-    return_dict = {'user_id': user_id, 'rank_by': rank_by, 'mode': mode, 'other_modes': other_modes, 'period': period,
+    return_dict = {'rank_by': rank_by, 'mode': mode, 'other_modes': other_modes, 'period': period,
             'league_id': league_id}
-    return all_view_wrapper(return_dict, session, request)
+    return all_view_wrapper(return_dict, session, user_id)

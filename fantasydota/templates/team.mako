@@ -12,22 +12,6 @@
     League page for fantasy dota game.
 </%def>
 
-<%def name="getTransferStatus(teamHero)">
-    % if not teamHero.active:
-        toTransfer transferIn
-    % elif teamHero.reserve:
-        toTransfer transferOut
-    % endif
-</%def>
-
-<%def name="getTransferSymbol(teamHero)">
-    % if not teamHero.active:
-        <i class="material-icons">add_circle</i>
-    % elif teamHero.reserve:
-        <i class="material-icons">remove_circle</i>
-    % endif
-</%def>
-
 <div class="row" id="myTeamBlock">
     <span class="left"><h2>Team</h2></span>
     <span class="right"><h2>Points: <span class="userPoints"></span></h2></span>
@@ -45,16 +29,17 @@
             </tr>
         </table>
     </div>
-
+    <span class="left"><button type="submit" id="useWildcard" disabled="true" title="Wildcard sells entire team and resets to 50 credits" class="btn waves-effect waves-light">Use Wildcard</button></span>
     <span class="right"><button type="submit" id="confirmTransfers" disabled="true" class="btn waves-effect waves-light">Confirm Team!</button></span>
 </div>
 
 <div class="card row">
     <div class="card-content">
         <p><span id="pleaseLogIn" style="display:none" class="messageTransClosed"><strong>Please log in or register to pick a team</strong></span></p>
-        <p>50 Credits to pick a team of 5 heroes (Points penalties for under 5)</p>
+        <p>50 Credits to pick a team of 5 heroes</p>
         <span id="remainingTransfersSection" style="display:none">You have <span id="remainingTransfers"></span> remaining available transfers (Transfers will not count until 'Confirm Transfers' pressed)
         </span>
+        <span style="display:none">Wildcard sells entire team and resets to 50 credits</span>
         <span id="transferDelayMessage"><p><strong>
             There is a 1 hour delay between confirmation of transfers and their processing (to prevent cheating/unfair advantages).
         </strong></p>
