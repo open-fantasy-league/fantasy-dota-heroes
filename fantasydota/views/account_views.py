@@ -4,6 +4,7 @@ from urllib import quote_plus
 from fantasydota import DBSession
 from fantasydota.auth import get_user
 from fantasydota.lib.account import check_invalid_password
+from fantasydota.lib.constants import FESPORT_ACCOUNT
 from fantasydota.lib.general import all_view_wrapper
 from fantasydota.models import User, PasswordReset, Notification
 from passlib.handlers.bcrypt import bcrypt
@@ -23,9 +24,10 @@ def login(request):
         if username:
             username = username.lower()
             # Think now have steam accounts. can have different accounts but same name
-            userq = session.query(User).filter(User.username == username).all()
+            userq = session.query(User).filter(User.username == username).\
+                filter(User.account_type == FESPORT_ACCOUNT).all()
             if not userq:
-                message = "Username not recognised"
+                message = "Username not recognised (did you previously log in through steam or reddit?)"
             else:
                 for user in userq:
                     if user.validate_password(request.params.get('password')):
@@ -57,7 +59,8 @@ def register(request):
     password = request.params.get('password')
     confirm_password = request.params.get('confirm_password')
     email = request.params.get('email')
-    user = session.query(User).filter(User.username == username).first()
+    user = session.query(User).filter(User.username == username).\
+        filter(User.account_type == FESPORT_ACCOUNT).first()
     if user:
         params = {"message": "Username already in use"}
         return HTTPFound(location=request.route_url('login', _query=params))
@@ -76,7 +79,7 @@ def register(request):
     if pword_invalid_check:
         return HTTPFound(location=request.route_url('login', _query=pword_invalid_check))
 
-    user = User(username, password, email)
+    user = User(username, 0, password, email)
     session.add(user)
     session.flush()
     headers = remember(request, user.id)
@@ -121,7 +124,8 @@ def forgot_password(request):
     session = DBSession()
     username = request.params.get('username').lower() if request.params.get('username') else None
     email = request.params.get('email').lower() if request.params.get('email') else None
-    userq = session.query(User).filter(User.username == username).filter(User.email == email).first()
+    userq = session.query(User).filter(User.username == username).filter(User.email == email).\
+        filter(User.account_type == FESPORT_ACCOUNT).first()
     return_dict = None
     if not username or not userq:
         return_dict = {"message": "Username and email for password reset did not match. Please check filled in correctly"}

@@ -1,3 +1,4 @@
+from fantasydota.lib.constants import FESPORT_ACCOUNT
 from passlib.handlers.bcrypt import bcrypt
 from sqlalchemy import BigInteger
 from sqlalchemy import (
@@ -39,12 +40,15 @@ class User(Base):
     last_login = Column(Date, default=func.now())
     contactable = Column(Boolean, default=False)
     autofill_team = Column(Boolean, default=False)
-    # TODO is_steam = Column(Boolean, default=True) # set False when called. add to below init
+    account_type = Column(Integer, default=FESPORT_ACCOUNT, index=True)
+    # 0 is regular. 1 steam, 2 reddit
+    # unique on account_type 0 and username
 
-    def __init__(self, username, password="", email=""):
+    def __init__(self, username, account_type, password="", email=""):
         self.username = username
         self.password = bcrypt.encrypt(password)
         self.email = email
+        self.account_type = account_type
 
     def validate_password(self, password):
         return bcrypt.verify(password, self.password)
