@@ -13,7 +13,7 @@ def add_notifications(return_dict, session, user_id):
 
 def all_view_wrapper(return_dict, session, user_id=None):
     return_dict['user_id'] = user_id
-    return_dict['user'] = session.query(User.username).filter(User.id == user_id).first()
+    return_dict['user'] = session.query(User).filter(User.id == user_id).first()
     if user_id:
         return_dict = add_notifications(return_dict, session, user_id)
     else:

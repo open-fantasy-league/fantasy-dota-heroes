@@ -27,7 +27,7 @@
             </h2>
         </div>
         <div class="row">
-            <form action="${request.route_path('login')}" method="POST" id="recoverPasswordForm">
+            <form action="${request.route_path('forgot_password')}" method="POST" id="recoverPasswordForm">
                 <div class="input-field col s4">
                     <input type="text" name="username" placeholder="Username">
                 </div>

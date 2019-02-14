@@ -56,11 +56,12 @@ def update_hero_calibration_dict(match, hero_calibration_dict=None, **kwargs):
         hero_calibration_dict[value["hero_id"]] += result_to_points(stage, ban, win)
 
 
-def iterate_matches(tournament_id, func, tstamp_from=0, **kwargs):
+def iterate_matches(tournament_id, func, tstamp_from=0, excluded_match_ids=None, **kwargs):
+    excluded_match_ids = excluded_match_ids or []
     match_list_json = get_league_match_list(tournament_id)
 
     matches = [(match["match_id"], match["series_id"]) for match in match_list_json["result"]["matches"]
-               if match["start_time"] > tstamp_from]
+               if match["start_time"] >= tstamp_from and match["match_id"] not in excluded_match_ids]
     print "matches", matches
     for match, series_id in matches:
         kwargs['tournament_id'] = tournament_id

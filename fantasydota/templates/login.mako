@@ -45,7 +45,7 @@
                     </button>
                 </div>
                 <div class="input-field col s4">
-                <a href="/forgot_password">Forgotten password?</a>
+                <a href="/forgotPassword">Forgotten password?</a>
                 </div>
             </form>
         </div>

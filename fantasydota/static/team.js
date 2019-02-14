@@ -86,7 +86,9 @@ function getTeamThenSetup(){
                     }
                     $(".userCredits").text(data.leagueUser.money);
                     $(".userPoints").text(data.stats.points);
-                    if (data.leagueUser.changeTstamp){
+                    console.log("data.leagueUser")
+                    console.log(data.leagueUser);
+                    if (data.leagueUser.transferScheduledTime){
                         $("#messageTransferCooldown").css('display', 'initial');
                     }
                     if (!league.started){
