@@ -39,14 +39,15 @@ class User(Base):
     registered_on = Column(Date, default=func.now())
     last_login = Column(Date, default=func.now())
     contactable = Column(Boolean, default=False)
-    autofill_team = Column(Boolean, default=False)
     account_type = Column(Integer, default=FESPORT_ACCOUNT, index=True)
+    ip_address = Column(String(30))
     # 0 is regular. 1 steam, 2 reddit
     # unique on account_type 0 and username
 
-    def __init__(self, username, account_type, password="", email=""):
+    def __init__(self, username, account_type, ip_address, password="", email=""):
         self.username = username
         self.password = bcrypt.encrypt(password)
+        self.ip_address = ip_address
         self.email = email
         self.account_type = account_type
 

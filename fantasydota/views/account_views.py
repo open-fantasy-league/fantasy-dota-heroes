@@ -79,7 +79,7 @@ def register(request):
     if pword_invalid_check:
         return HTTPFound(location=request.route_url('login', _query=pword_invalid_check))
 
-    user = User(username, 0, password, email)
+    user = User(username, 0, request.remote_addr, password, email)
     session.add(user)
     session.flush()
     headers = remember(request, user.id)
