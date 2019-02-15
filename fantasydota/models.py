@@ -44,7 +44,7 @@ class User(Base):
     # 0 is regular. 1 steam, 2 reddit
     # unique on account_type 0 and username
 
-    def __init__(self, username, account_type, ip_address, password="", email=""):
+    def __init__(self, username, password="", email="", ip_address=None, account_type=0):
         self.username = username
         self.password = bcrypt.encrypt(password)
         self.ip_address = ip_address

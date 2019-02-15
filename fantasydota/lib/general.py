@@ -1,3 +1,6 @@
+import urllib2
+
+import json
 from fantasydota.lib.constants import DEFAULT_LEAGUE, API_URL
 from fantasydota.models import Notification, User
 from pyramid.security import authenticated_userid
@@ -22,3 +25,14 @@ def all_view_wrapper(return_dict, session, user_id=None):
     return_dict['api_base_url'] = API_URL
     return_dict['league_id'] = return_dict.get('league_id', DEFAULT_LEAGUE)
     return return_dict
+
+
+def post_api_json(url, data, fe_api_key=None):
+    print("in postapijson")
+    try:
+        req = urllib2.Request(url, data=json.dumps(data),
+                              headers={'apiKey': fe_api_key, "Content-Type": "application/json"})
+        response = urllib2.urlopen(req)
+        print(response.read())
+    except urllib2.HTTPError as e:
+        print(e.read())
