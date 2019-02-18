@@ -22,7 +22,7 @@ When this occurs you gain points.</p>
 <h2>Are there any prizes?</h2>
     <div class="card-panel">
 <p>
-   Hell yeah! First prize is crystal maiden arcana.
+   Hell yeah! but not much. First prize wins 3 random treasures/chests I have lying around in my inventory
 </p>
     </div>
 <h2>Aren't there already fantasy dota games?</h2>

@@ -20,7 +20,7 @@
             <li>Ban       1 points</li>
             <li>Pick      3 points</li>
             <li>Win       6 points</li>
-            <li>Loss     -8 points</li>
+            <li>Loss     -10 points</li>
         </ul></br>
             Bonus points:</br>
             <ul class="browser-default">

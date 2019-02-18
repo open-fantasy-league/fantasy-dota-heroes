@@ -1,5 +1,6 @@
 var toSell = [];
 var toBuy = [];
+var wildcard = false;
 
 function disableButtons(){
     $("[name=buyHero]").add("[name=sellHero]").add("#confirmTransfers").add("#useWildcard").each(function(){$(this).attr("disabled","true");});
@@ -54,7 +55,7 @@ function doTrade(event, action, heroId){
         dataType: "json",
 
         type: "POST",
-        data: {"sell": toSell, "buy": toBuy, "isCheck": true},
+        data: {"sell": toSell, "buy": toBuy, "isCheck": true, "wildcard": wildcard},
         success: function(data){
             console.log(data)
             if (action == "sellHero"){

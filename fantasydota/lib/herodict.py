@@ -88,7 +88,7 @@ herodict = {
     88: "Nyx Assassin",
     89: "Naga Siren",
     90: "Keeper of the Light",
-    91: "Io",
+    #91: "Io",
     92: "Visage",
     93: "Slark",
     94: "Medusa",

@@ -11,6 +11,7 @@ from fantasydota.lib.constants import DEFAULT_LEAGUE
 from fantasydota.lib.general import post_api_json
 from fantasydota.lib.herodict import herodict
 from fantasydota.lib.session_utils import make_session
+from fantasydota.lib.valve_requests import dont_piss_off_valve_but_account_for_sporadic_failures
 from fantasydota.models import User
 
 THREAD_URL = "https://www.reddit.com/r/DotA2/comments/96yrmt/need_players_for_ti8_hero_fantasy_dota_league.json"
@@ -26,10 +27,9 @@ def main():
     post_api_json_wkey = partial(post_api_json, fe_api_key=FE_APIKEY)
 
     regex = re.compile('[^a-zA-Z]')
-    #data = dont_piss_off_valve_but_account_for_sporadic_failures(THREAD_URL)
-    #posts = data[1]["data"]["children"]
-    heroes_simple = {k: regex.sub('', v.lower()) for k, v in herodict.items()}
-    posts = [FAKE]
+    data = dont_piss_off_valve_but_account_for_sporadic_failures(THREAD_URL)
+    posts = data[1]["data"]["children"]
+    heroes_simple = {k: regex.sub('', v.lower()).replace(' ', '') for k, v in herodict.items()}
     for post in posts:
         p_data = post["data"]
         body = p_data.get("body", "")
@@ -53,9 +53,7 @@ def main():
                 session.add(new_user)
                 session.flush()
                 new_user_id = new_user.id
-                print(body.lower())
-                #import pdb; pdb.set_trace()
-                choices = [m.strip().lower() for m in matches.groups()]
+                choices = [m.replace(' ', '').lower() for m in matches.groups()]
                 post_api_json_wkey(API_ADD_USER_URL, {'userId': new_user_id, 'username': name})
                 API_JOIN_LEAGUE_URL = "{}users/{}/join/{}".format(API_URL, new_user_id, DEFAULT_LEAGUE)
                 API_BUY_URL = "{}transfers/leagues/{}/users/{}".format(API_URL, DEFAULT_LEAGUE, new_user_id)

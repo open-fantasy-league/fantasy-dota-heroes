@@ -95,6 +95,15 @@ function getTeamThenSetup(){
                         $("#infinityTransfersUntilStartMessage").css('display', 'initial');
                     }
                     var r = new Array(), j = -1;
+                    $.each(data.scheduledTransfers, function(key, t){
+                        console.log(t)
+                        if (t.isBuy) {
+                            var buying = {'name': t.pickeeName, 'isBuy': true, 'id': t.pickeeId};
+                            data.team.push(buying);
+                            console.log(data.team)
+                        }
+                    });
+                    console.log(data.team)
                     $.each(data.team, function(key, hero) {
                     console.log(hero)
                         var id = hero.id;
@@ -104,7 +113,8 @@ function getTeamThenSetup(){
                         var imgSrc = "/static/images/dota/" + hero.name.replace(/ /g, "_") + "_icon.png";
                         var transferSymbol;
                         var transferClass = '';
-                        if (data.scheduledTransfers.includes(function(t){return t.isBuy && t.id == id})){
+                        if (hero.isBuy){
+                        //if (data.scheduledTransfers.includes(function(t){return t.isBuy && t.id == id})){
                             transferSymbol = '<i class="material-icons">add_circle</i>'
                             transferClass = "toTransfer transferIn"
                         }
@@ -178,7 +188,7 @@ function setup(){
             url: "/transfer_proxy",
             dataType: "json",
             type: "POST",
-            data: {"sell": toSell, "buy": toBuy, "isCheck": false},
+            data: {"sell": toSell, "buy": toBuy, "isCheck": false, "wildcard": wildcard},
             success: function(data){
                 swal({
                  title: "Transfers locked in!",
@@ -206,7 +216,7 @@ function setup(){
             url: '/transfer_proxy',
             dataType: "json",
             type: "POST",
-            data: {"sell": [], "buy": [], "isCheck": true, "wildcard": true},
+            data: {"sell": toSell, "buy": toBuy, "isCheck": true, "wildcard": true},
             success: function(data){
                 swal({
                 icon: 'warning',
@@ -215,28 +225,18 @@ function setup(){
                  text: "(only available once)",
                 }).then(function(result){
                     if (result){
-                            $.ajax({
-                                url: '/transfer_proxy',
-                                dataType: "json",
-                                type: "POST",
-                                data: {"sell": [], "buy": [], "isCheck": false, "wildcard": true},
-                                success: function(data){
-                                    swal({
-                                     title: "Wildcard applied. Please purchase a new team",
-                                      icon: "success"
-                                    }).then(function(){
-                                        window.location.reload(false);
-                                    });
-                                },
-                                error: function(jqxhr, textStatus, errorThrown){
-                                    toSell = toSellOriginal;
-                                    toBuy = toBuyOriginal;
-                                    undisableButtons();
-                                    sweetAlert(jqxhr.responseText, '', 'error');
-                                }
-                            });
+                        wildcard = true;
+                        $(".userCredits").each(function(){$(this).text(data.updatedMoney)});
+                        $("[id$=TeamRow]").remove();
+                        swal({
+                         title: "Money refunded and team reset. Pick a new team and remember to confirm",
+                         text: "(reload page to roll-back wildcard)",
+                          icon: "success"
+                        })
+                        undisableButtons();
                     }
                     else{
+                        wildcard = false;
                         console.log("erm we cancelled")
                         toSell = toSellOriginal;
                         toBuy = toBuyOriginal;
