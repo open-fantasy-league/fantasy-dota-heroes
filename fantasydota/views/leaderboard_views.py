@@ -16,7 +16,7 @@ def leaderboard(request):
     period = int(request.params.get("period", 0))
     if mode == "friend" and not user_id:
         mode = "global"
-    other_modes = ['global', 'friend', 'hero']
+    other_modes = ['global'] #, 'friend', 'hero']
     other_modes.remove(mode)
     if mode == "friend":
         friends = [kek[0] for kek in session.query(Friend.friend).filter(Friend.user_id == user_id).all()]

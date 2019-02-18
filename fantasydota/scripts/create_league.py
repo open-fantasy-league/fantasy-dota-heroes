@@ -25,34 +25,38 @@ def create_league(name, tournament_id, url):
         'startingMoney': 50.0,
         'transferWildcard': True,
         "transferBlockedDuringPeriod": False,
-        "transferDelayMinutes": 10,
+        "transferDelayMinutes": 60,
         "extraStats": ["wins", "picks", "bans"],
         "periods": [
-            {"start": "2002-02-18 03:00", "end": "2002-02-18 04:00", "multiplier": 1},
-            {"start": "2002-02-18 04:30", "end": "2002-02-18 05:00", "multiplier": 1},
-            {"start": "2002-02-02 04:05", "end": "2002-02-02 04:05", "multiplier": 2.2}
+            {"start": "2018-02-20 02:00", "end": "2018-02-20 16:00", "multiplier": 1},
+            {"start": "2018-02-21 02:00", "end": "2018-02-21 16:00", "multiplier": 1},
+            {"start": "2018-02-22 02:00", "end": "2018-02-22 15:00", "multiplier": 2},
+            {"start": "2018-02-23 02:00", "end": "2018-02-23 16:00", "multiplier": 2},
+            {"start": "2018-02-24 05:00", "end": "2018-02-24 15:00", "multiplier": 3}
         ],
-        "url": url
+        "url": url,
+        "noWildcardForLateRegister": True,
+        "applyPointsAtStartTime": False
     }
     pickees = []
-    # katowice_calib = [10560, 10575, 10733, 10681, 10532]
-    # hero_values = calibrate_all_hero_values(katowice_calib, 1549241783)
-    # for id, name in herodict.items():
-    #     #pickees.append({"id": id, "name": name, "value": 9.0})#hero_values[id]})
-    #     pickees.append({"id": id, "name": name, "value": hero_values[id]})
-    # data['pickees'] = pickees
-    #
-    # try:
-    #     req = urllib2.Request(
-    #         API_URL + "leagues/", data=json.dumps(data), headers={
-    #             'User-Agent': 'ubuntu:fantasydotaheroes:v1.0.0 (by /u/LePianoDentist)',
-    #             "Content-Type": "application/json"
-    #         }
-    #     )
-    #     response = urllib2.urlopen(req)
-    #     print(response.read())
-    # except urllib2.HTTPError as e:
-    #     print(e.read())
+    katowice_calib = [10560, 10575, 10733, 10681, 10532]
+    hero_values = calibrate_all_hero_values(katowice_calib, 1549241783)
+    for id, name in herodict.items():
+        #pickees.append({"id": id, "name": name, "value": 9.0})#hero_values[id]})
+        pickees.append({"id": id, "name": name, "value": hero_values[id]})
+    data['pickees'] = pickees
+
+    try:
+        req = urllib2.Request(
+            API_URL + "leagues/", data=json.dumps(data), headers={
+                'User-Agent': 'ubuntu:fantasydotaheroes:v1.0.0 (by /u/LePianoDentist)',
+                "Content-Type": "application/json"
+            }
+        )
+        response = urllib2.urlopen(req)
+        print(response.read())
+    except urllib2.HTTPError as e:
+        print(e.read())
     try:
         req = urllib2.Request(
             API_URL + "leagues/" + str(DEFAULT_LEAGUE), data=json.dumps({'transferOpen': True, 'transferDelayMinutes': 10}), headers={
@@ -77,4 +81,4 @@ def create_league(name, tournament_id, url):
 
 
 if __name__ == "__main__":
-    create_league("ESL Katowice", 10424, "https://liquipedia.net/dota2/ESL_One/Katowice/2019")
+    create_league("MDL Macau", 10560, "https://liquipedia.net/dota2/Mars_Dota_2_League/Macau/2019")

@@ -86,7 +86,7 @@ $( document ).ready(function() {
             <p>Results updated ~1 minute after match ends</p>
             <p><a href="https://discord.gg/MAH7EEv" target="_blank">Discord channel for suggestions/improvements</a></p>
         </div>
-    % if user_id:
+    % if user_id and False:
         <div class="card">
         <div class="card-content">
             <p>

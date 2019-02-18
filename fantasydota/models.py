@@ -87,37 +87,6 @@ class Friend(Base):
     # Is some fucking fuckhead going to break this by adding themselves as a friend?
         # should also make user/friend be a unique pair. so cant friend twice
 
-    # @staticmethod
-    # def result_to_value(result_str):
-    #     points_dict = {
-    #         "b1": 1,
-    #         "b2": 2,
-    #         "b3": 4,
-    #         "p1l": -5,
-    #         "p2l": -4,
-    #         "p3l": -2,
-    #         "p1w": 9,
-    #         "p2w": 11,
-    #         "p3w": 15,
-    #     }
-    #     return points_dict[result_str]
-    #
-    # @staticmethod
-    # def result_to_value_pubg(result_str):
-    #     position, kills = result_str.split(",")
-    #     position, kills = int(position), int(kills)
-    #     score = kills * 2
-    #     if position <= 1:
-    #         score += 5
-    #     elif position <= 3:
-    #         score += 3
-    #     elif position <= 5:
-    #         score += 2
-    #     elif position <= 10:
-    #         score += 1
-    #     return score
-
-
 class Notification(Base):
     __tablename__ = "notification"
     id = Column(Integer, Sequence('id'), primary_key=True)

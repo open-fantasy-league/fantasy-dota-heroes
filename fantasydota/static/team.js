@@ -94,6 +94,9 @@ function getTeamThenSetup(){
                     if (!league.started){
                         $("#infinityTransfersUntilStartMessage").css('display', 'initial');
                     }
+                    if (!data.leagueUser.usedWildcard){
+                        $("#useWildcard").css('display', 'initial');
+                    }
                     var r = new Array(), j = -1;
                     $.each(data.scheduledTransfers, function(key, t){
                         console.log(t)
