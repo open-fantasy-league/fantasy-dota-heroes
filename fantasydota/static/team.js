@@ -1,6 +1,5 @@
 var userCanTransfer;
 var teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&scheduledTransfers&stats";
-console.log(teamUrl)
 var heroes;
 getLeagueInfo().then(getPickees)
 //$.ajax({url: apiBaseUrl + "leagues/" + leagueId,
@@ -19,8 +18,6 @@ function getPickees(){
                 success: function(data){
                     var r = new Array(), j = -1;
                     heroes = data;
-                    console.log("herrrooes")
-                    console.log(heroes)
                     $.each(data, function(key, hero) {
                         var id = hero.id;
                         var imgSrc = "/static/images/dota/" + hero.name.replace(/ /g, "_") + "_icon.png";
@@ -53,9 +50,7 @@ function getPickees(){
                     r[++j] = '">Buy</button>';
                     r[++j] = '</td></tr>';
                     })
-                    console.log(r.join(''))
                     $("#heroesTable").find("tbody").html(r.join(''));
-                    console.log(document.getElementById("heroesTable"))
                 },
                 error: function(data){
                     sweetAlert("Something went wrong. oops!", '', 'error');
@@ -77,41 +72,34 @@ function getTeamThenSetup(){
                 dataType: "json",
                 type: "GET",
                 success: function(data){
-                    console.log(data)
                     userCanTransfer = (league.transferOpen && data.leagueUser.transferScheduledTime == null);
-                    console.log("usercanTransfer:" + userCanTransfer);
-                    if (data.leagueUser.remainingTransfers != null){
+                    if (data.leagueUser.remainingTransfers != null && league.started){
                         $("#remainingTransfersSection").css('display', 'initial');
                         $("#remainingTransfers").text(data.leagueUser.remainingTransfers);
                     }
                     $(".userCredits").text(data.leagueUser.money);
                     $(".userPoints").text(data.stats.points);
-                    console.log("data.leagueUser")
-                    console.log(data.leagueUser);
                     if (data.leagueUser.transferScheduledTime){
                         $("#messageTransferCooldown").css('display', 'initial');
                     }
                     if (!league.started){
                         $("#infinityTransfersUntilStartMessage").css('display', 'initial');
                     }
-                    if (!data.leagueUser.usedWildcard){
+                    else{
+                      $("#transferDelayMessage").css('display', 'initial');
+                    }
+                    if (!data.leagueUser.usedWildcard && league.started){
                         $("#useWildcard").css('display', 'initial');
                     }
                     var r = new Array(), j = -1;
                     $.each(data.scheduledTransfers, function(key, t){
-                        console.log(t)
                         if (t.isBuy) {
                             var buying = {'name': t.pickeeName, 'isBuy': true, 'id': t.pickeeId};
                             data.team.push(buying);
-                            console.log(data.team)
                         }
                     });
-                    console.log(data.team)
                     $.each(data.team, function(key, hero) {
-                    console.log(hero)
                         var id = hero.id;
-                        console.log(hero)
-                        console.log(id)
                         var heroInfo = heroes.find(function(h){return h.id == id})
                         var imgSrc = "/static/images/dota/" + hero.name.replace(/ /g, "_") + "_icon.png";
                         var transferSymbol;
@@ -157,10 +145,7 @@ function getTeamThenSetup(){
                     $("#teamTable").find("tbody").html(r.join(''));
                 },
                 error: function(jqxhr, textStatus, errorThrown){
-                console.log(jqxhr.responseText)
                     if (jqxhr.responseText.startsWith("User does not exist on api")){
-                        console.log("ahaha")
-                        console.log(username)
                         // need to add user first
                          $.ajax({url: apiBaseUrl + "users/",
                                 dataType: "json",
@@ -179,7 +164,6 @@ function getTeamThenSetup(){
 }
 
 function setup(){
-    console.log(userCanTransfer)
     userCanTransfer ? undisableButtons() : disableButtons();
     $('button[name=buyHero]').add('button[name=sellHero]').each(function (key, btn){
         $(this).click(tradeOnclick);
@@ -240,7 +224,6 @@ function setup(){
                     }
                     else{
                         wildcard = false;
-                        console.log("erm we cancelled")
                         toSell = toSellOriginal;
                         toBuy = toBuyOriginal;
                         undisableButtons();

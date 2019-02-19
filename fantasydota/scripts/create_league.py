@@ -16,7 +16,7 @@ def create_league(name, tournament_id, url):
 
     data = {
         'name': name,
-        'apiKey': '0624325d-f1fd-4878-8676-ea257809d2b1',
+        'apiKey': FE_APIKEY,
         'tournamentId': tournament_id,
         'gameId': 1,
         'pickeeDescription': 'Hero',

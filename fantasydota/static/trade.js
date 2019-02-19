@@ -57,7 +57,6 @@ function doTrade(event, action, heroId){
         type: "POST",
         data: {"sell": toSell, "buy": toBuy, "isCheck": true, "wildcard": wildcard},
         success: function(data){
-            console.log(data)
             if (action == "sellHero"){
                 removeFromTeam(heroId, cancel);
             }
@@ -75,7 +74,6 @@ function doTrade(event, action, heroId){
             });
         },
         error: function(jqxhr, textStatus, errorThrown){
-            console.log("hmmm")
             toSell = toSellOriginal;
             toBuy = toBuyOriginal;
             undisableButtons();
@@ -130,6 +128,5 @@ function removeFromTeam(hero, cancel){
         btn.attr('name', 'buyHero');
         btn.text('Buy');
         btn.off('click').click(tradeOnclick);  // otherwise need reload page to resell
-        console.log(btn)
     }
 }
