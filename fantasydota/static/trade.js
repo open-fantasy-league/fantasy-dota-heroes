@@ -69,8 +69,9 @@ function doTrade(event, action, heroId){
             undisableButtons();
             swal({
              title: "Transfer valid",
-             text: "Remember to click Confirm Transfers to process changes",
-              icon: "success"
+             text: "Confirm Transfers to process changes",
+              icon: "success",
+              timer: 1600
             });
         },
         error: function(jqxhr, textStatus, errorThrown){

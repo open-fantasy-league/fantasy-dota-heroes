@@ -16,16 +16,19 @@ def create_league(name, tournament_id, url):
 
     data = {
         'name': name,
-        'apiKey': '3c7bfa1b-3a75-49e9-ae64-f0c6b042c0db',
+        'apiKey': '0624325d-f1fd-4878-8676-ea257809d2b1',
         'tournamentId': tournament_id,
         'gameId': 1,
         'pickeeDescription': 'Hero',
         'periodDescription': 'Day',
-        'transferLimit': 5,
         'startingMoney': 50.0,
-        'transferWildcard': True,
-        "transferBlockedDuringPeriod": False,
-        "transferDelayMinutes": 60,
+        'transferInfo': {
+            'transferWildcard': True,
+            "transferBlockedDuringPeriod": False,
+            "transferDelayMinutes": 60,
+            "noWildcardForLateRegister": True,
+            'transferLimit': 5
+        },
         "extraStats": ["wins", "picks", "bans"],
         "periods": [
             {"start": "2018-02-20 02:00", "end": "2018-02-20 16:00", "multiplier": 1},
@@ -35,7 +38,6 @@ def create_league(name, tournament_id, url):
             {"start": "2018-02-24 05:00", "end": "2018-02-24 15:00", "multiplier": 3}
         ],
         "url": url,
-        "noWildcardForLateRegister": True,
         "applyPointsAtStartTime": False
     }
     pickees = []

@@ -30,7 +30,7 @@ When this occurs you gain points.</p>
 <p>
 Yeah there's the official stuff, and other third party stuff.<br>
 My problem with these is being based on pro players, I have to keep track of what teams are playing on what days,
-who's been knocked out, which Chinese Dota players are good etc.<br>
+who's been knocked out, etc.<br>
 I find this system to be a lot easier to get into.
 </p>
     </div>
