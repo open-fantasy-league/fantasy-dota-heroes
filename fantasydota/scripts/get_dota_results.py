@@ -89,7 +89,7 @@ def main():
     # that highest startTstamp finished first
     excluded_matches = get_already_stored_matches()
     print(excluded_matches)
-    iterate_matches(10424, add_match_to_api, excluded_match_ids=excluded_matches, tstamp_from=1534332914)
+    iterate_matches(10560, add_match_to_api, excluded_match_ids=excluded_matches, tstamp_from=1550625199)
 
 if __name__ == "__main__":
     main()

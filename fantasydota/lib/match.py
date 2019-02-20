@@ -53,7 +53,10 @@ def update_hero_calibration_dict(match, hero_calibration_dict=None, **kwargs):
             stage = 2
         else:
             stage = 1
-        hero_calibration_dict[value["hero_id"]] += result_to_points(stage, ban, win)
+        try:
+            hero_calibration_dict[value["hero_id"]] += result_to_points(stage, ban, win)
+        except KeyError:
+            pass
 
 
 def iterate_matches(tournament_id, func, tstamp_from=0, excluded_match_ids=None, **kwargs):
