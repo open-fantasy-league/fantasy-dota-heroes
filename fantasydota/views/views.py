@@ -28,6 +28,14 @@ def view_rules(request):
     )
 
 
+@view_config(route_name="hall_of_fame", renderer="../templates/hall_of_fame.mako")
+def hall_of_fame(request):
+    session = DBSession()
+    return all_view_wrapper(
+        {}, session, request
+    )
+
+
 @view_config(route_name="add_friend", renderer="json")
 def add_friend(request):
     session = DBSession()
