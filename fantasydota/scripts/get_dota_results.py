@@ -27,32 +27,39 @@ def get_matches(tournament_id, tstamp_from=0, excluded_match_ids=None):
     matches = [(match["match_id"], match["series_id"]) for match in match_list_json["result"]["matches"]
                if match["start_time"] >= tstamp_from and match["match_id"] not in excluded_match_ids]
     print "matches", matches
-    all_pick_remakes = set()
-    missing_22 = set()
-    saved_matches = {}
+    saved_ap_remade_matches = {}
+    saved_m22_matches = {}
+
     for match, series_id in matches:
         result = get_match_details(match)["result"]
         match_id = result['match_id']
         if check_if_was_allpick_remade(result):
-            saved_matches[match_id] = result
-            all_pick_remakes.add(match_id)
+            saved_ap_remade_matches[
+                frozenset([p['hero_id'] for p in result['players']] +
+                          [result.get('radiant_name', 'rad'), result.get('dire_name', 'dire')])
+            ] = result
         elif not check_22_picks(result):
-            missing_22.add(match_id)
-            saved_matches[str(match_id) + 'm22'] = result
+            saved_m22_matches[
+                frozenset([p['hero_id'] for p in result['players']] +
+                          [result.get('radiant_name', 'rad'), result.get('dire_name', 'dire')])
+            ] = result
         else:
-            saved_matches[match_id] = result
+            # saved_matches[
+            #     frozenset([p['hero_id'] for p in result['players']] +
+            #               [result.get('radiant_name', 'rad'), result.get('dire_name', 'dire')])
+            # ] = result
             add_match_to_api(result, tournament_id=tournament_id)
-    for match_id in all_pick_remakes.intersection(missing_22):
-        print("match {} was all-pick remade".format(match_id))
-        base_result = saved_matches[match_id]
-        m22_result = saved_matches[str(match_id) + 'm22']
+    for pick_ban_tuple in set(saved_ap_remade_matches.keys()).intersection(set(saved_m22_matches.keys())):
+        print("match {} was all-pick remade".format(pick_ban_tuple))
+        base_result = saved_ap_remade_matches[pick_ban_tuple]
+        m22_result = saved_m22_matches[pick_ban_tuple]
         base_result['radiant_win'] = m22_result['radiant_win']
 
-    for match_id in missing_22.difference(all_pick_remakes):
-        print("ERROR: {} did not have 22 pick bans but wasnt remade".format(match_id))
+    for k in set(saved_ap_remade_matches.keys()).difference(set(saved_m22_matches.keys())):
+        print("ERROR: {} did not have proper stats. but could not find drafted game".format(saved_ap_remade_matches[k]['match_id']))
 
-    for match_id in all_pick_remakes.difference(missing_22):
-        print("ERROR: {} did not have proper stats. but could not find drafted game".format(match_id))
+    for k in set(saved_m22_matches.keys()).difference(set(saved_ap_remade_matches.keys())):
+        print("ERROR: {} did not have 22 pick bans but wasnt remade".format(saved_m22_matches[k]['match_id']))
 
 
 def add_match_to_api(match, tournament_id=None):
