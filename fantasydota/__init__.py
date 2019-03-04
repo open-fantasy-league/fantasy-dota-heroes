@@ -82,6 +82,7 @@ def main(global_config, **settings):
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
     config.add_route('view_faq', '/faq')
+    config.add_route('hall_of_fame', '/hallOfFame')
     
     config.add_route('register', '/register')
     config.add_route('change_password', '/changePassword')
