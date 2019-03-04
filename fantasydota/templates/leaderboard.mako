@@ -70,6 +70,7 @@
 var rankBy = "${rank_by}";
 var mode = "${mode}";
 var period = ${period};
+var friends = ${friends};
 
 $( document ).ready(function() {
     $(".dropdown-button").dropdown({
@@ -78,7 +79,7 @@ $( document ).ready(function() {
     });
 })
 </script>
-    <script src="/static/leaderboard.js"></script>
+    <script src="/static/leaderboard.js?v=1.0"></script>
     % if not period:
     <div id="friendBlock" class="col s12 m5">
         <div class="card-panel">
@@ -86,7 +87,7 @@ $( document ).ready(function() {
             <p>Results updated ~1 minute after match ends</p>
             <p><a href="https://discord.gg/MAH7EEv" target="_blank">Discord channel for suggestions/improvements</a></p>
         </div>
-    % if user_id and False:
+    % if user_id:
         <div class="card">
         <div class="card-content">
             <p>

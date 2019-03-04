@@ -5,6 +5,9 @@ function makeLeaderboard(){
     if (period != 0){
         leaderBoardUrl = leaderBoardUrl + "&period=" + period;
     }
+    if (friends.length != 0){
+        leaderBoardUrl = leaderBoardUrl + "&userIds=" + friends.join(",");
+    }
     $("#leagueLink").attr('href', league.url);
     $("#leagueLink").text(league.name);
     var r = new Array(), j = -1;

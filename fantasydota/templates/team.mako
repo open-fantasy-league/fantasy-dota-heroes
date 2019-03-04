@@ -73,5 +73,5 @@
         </table>
     </div>
 </div>
-<script src="/static/trade.js"></script>
-<script src="/static/team.js"></script>
+<script src="/static/trade.js?v=1.0"></script>
+<script src="/static/team.js?v=1.0"></script>
