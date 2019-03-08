@@ -22,7 +22,7 @@ def recalibrate():
     heroes = json.loads(response.read())
     print(response)
     data = {"pickees": []}
-    new_calibration = squeeze_values_together(calibrate_all_hero_values([10560], 1550625199))
+    new_calibration = squeeze_values_together(calibrate_all_hero_values([10681], 1551814635))
     for hero in heroes:
         id_ = hero['pickee']['id']
         print "new calbration: %s, from %s" % (
@@ -40,6 +40,7 @@ def recalibrate():
         print(response.read())
     except urllib2.HTTPError as e:
         print(e.read())
+
 
 if __name__ == "__main__":
     recalibrate()

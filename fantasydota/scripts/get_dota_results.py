@@ -138,9 +138,9 @@ def main():
     # it sounds sensibile to save work by checking highest startTstamp, and filtering out any below
     # this is not safe because can 'lose' games that started before highest startTstamp, but went on so long
     # that highest startTstamp finished first
-    excluded_matches = [] #get_already_stored_matches()
+    excluded_matches = get_already_stored_matches()
     print("excluded matches: {}".format(excluded_matches))
-    get_matches(10560, excluded_match_ids=excluded_matches, tstamp_from=1550625199)
+    get_matches(10681, excluded_match_ids=excluded_matches, tstamp_from=1551814635)
 
 
 if __name__ == "__main__":

@@ -62,7 +62,7 @@ def calibrate_value(average_points, our_points):
 
 
 def combine_calibrations(older_value, newer_value):
-    return (newer_value + older_value * 9) / 10.
+    return (newer_value + older_value * 5) / 6.
 
 
 def recalibrate_hero_values(league_id):

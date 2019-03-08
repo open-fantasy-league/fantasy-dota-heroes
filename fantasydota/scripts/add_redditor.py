@@ -68,5 +68,6 @@ def main():
                 post_api_json_wkey(API_BUY_URL, buy_dict)
                 transaction.commit()
 
+
 if __name__ == "__main__":
     main()
