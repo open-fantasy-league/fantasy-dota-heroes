@@ -272,3 +272,13 @@ and (max-width: 900px)
     margin-left: 10px;
  }
  }
+.gridHeroDiv {
+    position: relative;
+    min-height: 72px;
+    min-width: 128px;
+}
+ .gridHeroBtn {
+      position: absolute;
+      bottom: 0;
+  right: 0;
+ }

@@ -10,6 +10,11 @@ function undisableButtons(){
     $("[name=buyHero]").add("[name=sellHero]").add("#confirmTransfers").add("#useWildcard").each(function(){$(this).removeAttr("disabled");})
 }
 
+function undisableButtonsFiltered(money){
+    var buyable = $("[name=buyHero][class*=gridHeroBtn]").filter(function() {return parseFloat($(this).text()) <= money;});
+    buyable.add("[name=sellHero]").add("#confirmTransfers").add("#useWildcard").each(function(){$(this).removeAttr("disabled");})
+}
+
 var tradeOnclick = function tradeOnclick(event){
     console.log("tradeonclick")
     disableButtons();
@@ -65,7 +70,7 @@ function doTrade(event, action, heroId){
             }
             $(".userCredits").each(function(){$(this).text(data.updatedMoney)});
             $("#remainingTransfers").text(data.remainingTransfers);
-            undisableButtons();
+            undisableButtonsFiltered(data.updatedMoney);
             swal({
              title: "Transfer valid",
              text: "Confirm Transfers to process changes",

@@ -37,7 +37,7 @@ def transfer_proxy(request):
         req = urllib2.Request(
             url, data=json.dumps(out), headers={
                 'apiKey': FANTASY_API_KEY,
-                'User-Agent': 'ubuntu:fantasydotaheroes:v1.0.0 (by /u/LePianoDentist)',
+                'User-Agent': 'fantasy-dota-frontend',
                 "Content-Type": "application/json"
             }
         )

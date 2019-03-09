@@ -15,7 +15,7 @@
 <div class="row" id="myTeamBlock">
     <span class="left"><h2>Team</h2></span>
     <span class="right"><h2>Points: <span class="userPoints"></span></h2></span>
-    <div id="tableContainer">
+    <div id="teamTableContainer">
         <table class="sortable card-table striped centered" id="teamTable">
             <tr style="cursor: pointer" id="teamTableHeader">
                 <th class="heroHeader">Hero</th>
@@ -42,23 +42,30 @@
         </span></p>
         <p><span id="wildcardDescriptionMessage" style="display:none">Wildcard sells entire team and resets to 50 credits</span></p>
         <span id="transferDelayMessage" style="display:none"><p><strong>
-            There is a 1 hour delay between confirmation of transfers and their processing (to prevent cheating/unfair advantages).
+            1 hour delay between transfer confirmation and processing (to prevent cheating/unfair advantages).
         </strong></p>
-        <p>Further transfers are disabled during this hour period,
-        however your old team does continue scoring points until transfers processed</p></span>
         <span class="messageTransClosed" id="messageTransferCooldown" style="display:none"><p><strong>
             Due to recent changes you are in transfer cooldown.
         </strong></p></span>
         <p><span id="infinityTransfersUntilStartMessage" style="display:none">Once the tournament starts you will have 5 extra transfers you can make (You can make infinity changes before first game)</span></p>
-        <p><strong><a href="/rules">Detailed Rules</a></strong></p>
-        <span>
-            <p>Tables are sortable (click table headers)</p>
-        </span>
     </div>
 </div>
 <div id="heroesBlock" class="row">
     <h2>Heroes (Credits Available: <span class="userCredits"></span>)</h2>
-    <div id="tableContainer">
+      <div class="switch">
+    <label>
+      Table view (sortable)
+      <input type="checkbox" id="gridViewBtn" onchange="switchGridTable(this);" checked>
+      <span class="lever"></span>
+      Grid view
+    </label>
+  </div>
+    <div id="gridContainer">
+        <table class="card-table striped centered" id="heroesTableGrid">
+        <tr><td></td></tr>
+        </table>
+    </div>
+    <div id="tableContainer" style="display:none">
         <table class="sortable card-table striped centered" id="heroesTable">
             <tr style="cursor: pointer" id="heroesTableHeader">
                 <th class="heroHeader">Hero</th>

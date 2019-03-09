@@ -1,6 +1,8 @@
 var userCanTransfer;
 var teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&scheduledTransfers&stats";
 var heroes;
+var tableContainer = $("#tableContainer");
+var gridContainer = $("#gridContainer");
 getLeagueInfo().then(getPickees)
 //$.ajax({url: apiBaseUrl + "leagues/" + leagueId,
 //    dataType: "json",
@@ -17,40 +19,64 @@ function getPickees(){
                 dataType: "json",
                 success: function(data){
                     var r = new Array(), j = -1;
+                    var r2 = new Array(), j2 = -1;
+                    r2[++j2] = '<tr>';
                     heroes = data;
                     $.each(data, function(key, hero) {
                         var id = hero.id;
                         var imgSrc = "/static/images/dota/" + hero.name.replace(/ /g, "_") + "_icon.png";
-                    r[++j] = '<tr class="';
-                    r[++j] = id;
-                    r[++j] = 'Row';
-                    r[++j] = '" id="';
-                    r[++j] = id;
-                    r[++j] = 'Row"><td class="heroImg" sorttable_customkey="';
-                    r[++j] = hero.name;
-                    r[++j] = '"><img src="';
-                    r[++j] = imgSrc;
-                    r[++j] = '" title="';
-                    r[++j] = hero.name;
-                    r[++j] = '"/></td><td class="heroEntry">';
-                    r[++j] = hero.name;
-                    r[++j] = '</td><td class="heroPointsEntry">';
-                    r[++j] = hero.stats.points;
-                    r[++j] = '</td><td class="picksEntry extra">';
-                    r[++j] = hero.stats.picks;
-                    r[++j] = '</td><td class="bansEntry extra">';
-                    r[++j] = hero.stats.bans;
-                    r[++j] = '</td><td class="winsEntry extra">';
-                    r[++j] = hero.stats.wins;
-                    r[++j] = '</td><td class="valueEntry">';
-                    r[++j] = hero.cost;
-                    r[++j] = '</td><td class="tradeEntry">';
-                    r[++j] = '<button type="submit" name="buyHero" class="btn waves-effect waves-light" disabled="true" data-heroId="';
-                    r[++j] = id;
-                    r[++j] = '">Buy</button>';
-                    r[++j] = '</td></tr>';
+                        var pickImgSrc = "/static/images/dota/big/" + hero.name.toLowerCase().replace(/ /g, "_") + ".png";
+                        //var pickImgSrc = "http://cdn.dota2.com/apps/dota2/images/heroes/" + hero.name.toLowerCase() + "_sb.png";
+                        console.log(pickImgSrc)
+                        if (key % 8 == 0){
+                            r2[++j2] = '</tr><tr>';
+                        }
+                        else if (key % 4 == 0){
+                            r2[++j2] = '<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>';
+                        }
+                        r2[++j2] = '<td title="';
+                        r2[++j2] = hero.name;
+                        r2[++j2] = '" style="background-image: url(';
+                        r2[++j2] = pickImgSrc;
+                        r2[++j2] = '); background-repeat: no-repeat; background-size: 100% 100%; width: 128px; height: 72px;">';
+                        r2[++j2] = '<div class="gridHeroDiv"><button type="submit" name="buyHero" class="btn waves-effect waves-light gridHeroBtn" disabled="true" data-heroId="';
+                        r2[++j2] = id;
+                        r2[++j2] = '">';
+                        r2[++j2] = hero.cost;
+                        r2[++j2] = '</button></div>';
+                        r2[++j2] = '</td>';
+                        r[++j] = '<tr class="';
+                        r[++j] = id;
+                        r[++j] = 'Row';
+                        r[++j] = '" id="';
+                        r[++j] = id;
+                        r[++j] = 'Row"><td class="heroImg" sorttable_customkey="';
+                        r[++j] = hero.name;
+                        r[++j] = '"><img src="';
+                        r[++j] = imgSrc;
+                        r[++j] = '" title="';
+                        r[++j] = hero.name;
+                        r[++j] = '"/></td><td class="heroEntry">';
+                        r[++j] = hero.name;
+                        r[++j] = '</td><td class="heroPointsEntry">';
+                        r[++j] = hero.stats.points;
+                        r[++j] = '</td><td class="picksEntry extra">';
+                        r[++j] = hero.stats.picks;
+                        r[++j] = '</td><td class="bansEntry extra">';
+                        r[++j] = hero.stats.bans;
+                        r[++j] = '</td><td class="winsEntry extra">';
+                        r[++j] = hero.stats.wins;
+                        r[++j] = '</td><td class="valueEntry">';
+                        r[++j] = hero.cost;
+                        r[++j] = '</td><td class="tradeEntry">';
+                        r[++j] = '<button type="submit" name="buyHero" class="btn waves-effect waves-light" disabled="true" data-heroId="';
+                        r[++j] = id;
+                        r[++j] = '">Buy</button>';
+                        r[++j] = '</td></tr>';
                     })
+                    r2[++j2] = '</tr>';
                     $("#heroesTable").find("tbody").html(r.join(''));
+                    $("#heroesTableGrid").find("tbody").html(r2.join(''));
                 },
                 error: function(data){
                     sweetAlert("Something went wrong. oops!", '', 'error');
@@ -238,4 +264,16 @@ function setup(){
             }
         });
     });
+}
+
+function switchGridTable(inp){
+    if (inp.checked != true){
+        tableContainer.css('display', 'initial');
+        gridContainer.css('display', 'none');
+    }
+    else{
+        gridContainer.css('display', 'initial');
+        tableContainer.css('display', 'none');
+    }
+
 }
