@@ -19,10 +19,10 @@
     Simple fantasy dota style game but with heroes. You buy the heroes you think are likely to be picked/banned and win in pro matches.<br>
 When this occurs you gain points.</p>
     </div>
-<h2>Are there any prizes?</h2>
+<h2>Are there any prizes four tournament winner?</h2>
     <div class="card-panel">
 <p>
-   Hell yeah! but not much. First prize wins 3 random treasures/chests I have lying around in my inventory
+   1st Prize Rubick arcana. Top 5 free 7k (As of 2019-03-10) support replay analysis (if want to claim it).
 </p>
     </div>
 <h2>Aren't there already fantasy dota games?</h2>
@@ -31,7 +31,7 @@ When this occurs you gain points.</p>
 Yeah there's the official stuff, and other third party stuff.<br>
 My problem with these is being based on pro players, I have to keep track of what teams are playing on what days,
 who's been knocked out, etc.<br>
-I find this system to be a lot easier to get into.
+I find this system to be a lot easier to get into and more fun.
 </p>
     </div>
 <h2>Why do later phase picks/bans/wins get bonus points?</h2>

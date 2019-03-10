@@ -50,6 +50,10 @@
             <td>The International 2018</td>
             <td>Patro</td>
         </tr>
+        <tr>
+            <td>MDL Macau</td>
+            <td>Misanthrope</td>
+        </tr>
         </tbody>
     </table>
         <table class="card-table striped">
