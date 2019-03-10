@@ -14,6 +14,8 @@ getLeagueInfo().then(getPickees)
 //}).then(getPickees)
 
 function getPickees(){
+    $("#leagueLink").attr('href', league.url);
+    $("#leagueLink").text(league.name);
     $.ajax({url: apiBaseUrl + "pickees/leagues/" + leagueId + "/stats/",
                 type: "GET",
                 dataType: "json",
@@ -69,7 +71,7 @@ function getPickees(){
                         r[++j] = '</td><td class="valueEntry">';
                         r[++j] = hero.cost;
                         r[++j] = '</td><td class="tradeEntry">';
-                        r[++j] = '<button type="submit" name="buyHero" class="btn waves-effect waves-light" disabled="true" data-heroId="';
+                        r[++j] = '<button type="submit" name="buyHero" class="btn waves-effect waves-light tableHeroBtn" disabled="true" data-heroId="';
                         r[++j] = id;
                         r[++j] = '">Buy</button>';
                         r[++j] = '</td></tr>';

@@ -13,8 +13,11 @@
 </%def>
 
 <div class="row" id="myTeamBlock">
-    <span class="left"><h2>Team</h2></span>
-    <span class="right"><h2>Points: <span class="userPoints"></span></h2></span>
+    <div class="row">
+    <span class="left" style="width: 33%;"><h5>Team: ${user.username if user else ""}</h5></span>
+    <span class="left center-align" style="width: 33%;"><h5><a id="leagueLink" target="_blank"></a></h5></span>
+    <span class="right"><h5>Points: <span class="userPoints"></span></h5></span>
+    </div>
     <div id="teamTableContainer">
         <table class="sortable card-table striped centered" id="teamTable">
             <tr style="cursor: pointer" id="teamTableHeader">
@@ -51,11 +54,11 @@
     </div>
 </div>
 <div id="heroesBlock" class="row">
-    <h2>Heroes (Credits Available: <span class="userCredits"></span>)</h2>
+    <h2>Heroes (Credits Available: <strong><span class="userCredits"></span></strong>)</h2>
       <div class="switch">
     <label>
       Table view (sortable)
-      <input type="checkbox" id="gridViewBtn" onchange="switchGridTable(this);" checked>
+      <input type="checkbox" id="gridViewBtn" onchange="switchGridTable(this);" checked autocomplete="off">
       <span class="lever"></span>
       Grid view
     </label>

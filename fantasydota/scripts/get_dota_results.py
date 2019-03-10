@@ -102,7 +102,9 @@ def add_match_to_api(match, tournament_id=None):
     start_time = datetime.datetime.fromtimestamp(match['start_time']).strftime('%Y-%m-%d %H:%M:%S')
     print(match['start_time'])
     print(start_time)
-    print('id {}: {} vs {}. radiant win: {}'.format(match_id, match.get('radiant_name', ' '), match.get('dire_name', ' '), match['radiant_win']))
+    print('id {}: {} vs {}. radiant win: {}'.format(
+        match_id, match.get('radiant_name', ' ').encode('utf-8'), match.get('dire_name', ' ').encode('utf-8'), match['radiant_win']
+    ))
     data = json.dumps({
         'matchId': match_id,
         'teamOne': match.get('radiant_name', ' '),
@@ -140,7 +142,8 @@ def main():
     # that highest startTstamp finished first
     excluded_matches = get_already_stored_matches()
     print("excluded matches: {}".format(excluded_matches))
-    get_matches(10681, excluded_match_ids=excluded_matches, tstamp_from=1551814635)
+    # 1551814635
+    get_matches(10681, excluded_match_ids=excluded_matches, tstamp_from=0)
 
 
 if __name__ == "__main__":

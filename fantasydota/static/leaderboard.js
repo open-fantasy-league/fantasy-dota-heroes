@@ -254,7 +254,7 @@ function fillMatches(){
 
 
 function progress_arrow(player){
-    if (player.previousRank){
+    if (player.previousRank && friends.length == 0){
         var diff = player.previousRank - player.rank;
         if (diff == 0){
                 return " <span>&#8660;</span>";
@@ -272,4 +272,5 @@ function progress_arrow(player){
                 return ' <span class="sdownMyArrow">&#8664;</span>';
         }
     }
+    else return '';
 }

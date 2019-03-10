@@ -31,7 +31,7 @@ def create_league(name, tournament_id, url):
         },
         "extraStats": ["wins", "picks", "bans"],
         "periods": [
-            {"start": "2019-03-14 10:00", "end": "2018-03-14 21:00", "multiplier": 1},
+            {"start": "2019-03-14 10:00", "end": "2019-03-14 21:00", "multiplier": 1},
             {"start": "2019-03-15 10:00", "end": "2019-03-15 21:00", "multiplier": 1},
             {"start": "2019-03-16 10:00", "end": "2019-03-16 21:00", "multiplier": 2},
             {"start": "2019-03-17 10:00", "end": "2019-03-17 21:00", "multiplier": 2},
@@ -66,7 +66,7 @@ def create_league(name, tournament_id, url):
         print(e.read())
     try:
         req = urllib2.Request(
-            API_URL + "leagues/" + str(DEFAULT_LEAGUE), data=json.dumps({'transferOpen': True, 'transferDelayMinutes': 10}), headers={
+            API_URL + "leagues/" + str(DEFAULT_LEAGUE), data=json.dumps({'transferOpen': True, 'transferDelayMinutes': 60}), headers={
                 "Content-Type": "application/json",
                 "apiKey": FE_APIKEY
             }

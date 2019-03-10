@@ -20,13 +20,13 @@ def squeeze_values_together(hero_values):
     # this is for if unsure and would rather have things have averagish values rather than exremes
     average_value = sum(hero_values.values()) / len(hero_values)
     for key, value in hero_values.items():
-        tmp = value - ((value - average_value) / 2.)
+        tmp = value - ((value - average_value) / 5.)
         new_value = round(min(
             max(
-                3.0 + random.randint(0, 5) / 10,
+                2.7 + random.randint(0, 5) / 10,
                 tmp
             ),
-            24 + random.randint(0, 6) / 10
+            23.5 + random.randint(0, 6) / 10
         ), 1)
         hero_values[key] = new_value
         print "New %s: %s" % (key, new_value)
@@ -47,9 +47,9 @@ def calibrate_all_hero_values(tournament_ids, tstamp_from):
         )
     average_points = sum(hero_points.values()) / len(hero_points)
     for key, points in hero_points.items():
-        if points < 0:
-            hero_points[key] = 1
-            points = 1
+        # if points < 0:
+        #     hero_points[key] = 1
+        #     points = 1
         new_value = round(calibrate_value(average_points, points), 1)
         hero_values[key] = new_value
         print("New %s: %s" % (key, new_value))

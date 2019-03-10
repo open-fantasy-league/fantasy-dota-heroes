@@ -12,7 +12,7 @@ function undisableButtons(){
 
 function undisableButtonsFiltered(money){
     var buyable = $("[name=buyHero][class*=gridHeroBtn]").filter(function() {return parseFloat($(this).text()) <= money;});
-    buyable.add("[name=sellHero]").add("#confirmTransfers").add("#useWildcard").each(function(){$(this).removeAttr("disabled");})
+    buyable.add("[name=buyHero][class*=tableHeroBtn]").add("[name=sellHero]").add("#confirmTransfers").add("#useWildcard").each(function(){$(this).removeAttr("disabled");})
 }
 
 var tradeOnclick = function tradeOnclick(event){

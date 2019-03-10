@@ -18,12 +18,10 @@ def leaderboard(request):
         mode = "global"
     other_modes = ['global', 'friend'] # , 'hero']
     other_modes.remove(mode)
-    if mode == "friend":
-        if user_id:
-            friends = [kek[0] for kek in session.query(Friend.friend).filter(Friend.user_id == user_id).all()]
-            friends.append(user_id)
-        else:
-            friends = []
+    friends = []
+    if mode == "friend" and user_id:
+        friends = [int(kek[0]) for kek in session.query(Friend.friend).filter(Friend.user_id == user_id).all()]
+        friends.append(int(user_id))
 
     rank_by = request.params.get("rank_by")
     rank_by = rank_by if rank_by in ("points", "wins", "picks", "bans") else "points"
