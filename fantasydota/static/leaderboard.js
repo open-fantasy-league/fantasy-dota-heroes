@@ -85,6 +85,8 @@ function fillMatches(){
     if (period != 0){
         resultsUrl = resultsUrl + "&period=" + period;
     }
+    function sorted(a, b){
+    }
 
     $.ajax({url: resultsUrl,
                 type: "GET",
@@ -93,14 +95,14 @@ function fillMatches(){
                     var r = new Array(), j = -1;
                     $.each(data, function(key, entry){
                         var match = entry.match;
-                        var radiantPicks = entry.results.filter(function(x){return x.isTeamOne && x.stats.picks});
-                        var radiantBans = entry.results.filter(function(x){return x.isTeamOne && x.stats.bans});
-                        var direPicks = entry.results.filter(function(x){return !x.isTeamOne && x.stats.picks});
-                        var direBans = entry.results.filter(function(x){return !x.isTeamOne && x.stats.bans});
+                        var radiantPicks = entry.results.filter(function(x){return x.isTeamOne && x.stats.picks}).sort(function(a, b){return a.stats.points - b.stats.points});
+                        var radiantBans = entry.results.filter(function(x){return x.isTeamOne && x.stats.bans}).sort(function(a, b){return a.stats.points - b.stats.points});
+                        var direPicks = entry.results.filter(function(x){return !x.isTeamOne && x.stats.picks}).sort(function(a, b){return b.stats.points - a.stats.points});
+                        var direBans = entry.results.filter(function(x){return !x.isTeamOne && x.stats.bans}).sort(function(a, b){return b.stats.points - a.stats.points});
                         console.log(match.id)
                         r[j++] = '<div class="section pointerCursor matchRow" id="match' + match.id + '">';
                         r[j++] = '<div class="row"><span class="radiantTeam">';
-                        if (match.isTeamOneVictory){
+                        if (match.teamOneVictory){
                             r[j++] = '<strong>';
                             r[j++] = match.teamOne;
                             r[j++] = '</strong>';
@@ -109,7 +111,7 @@ function fillMatches(){
                             r[j++] = match.teamOne;
                         }
                         r[j++] = '</span><span class="direTeam right hide-on-small-only">';
-                        if (!match.isTeamOneVictory){
+                        if (!match.teamOneVictory){
                             r[j++] = '<strong>';
                             r[j++] = match.teamTwo;
                             r[j++] = '</strong>';
