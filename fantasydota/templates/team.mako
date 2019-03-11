@@ -39,7 +39,7 @@
 
 <div class="card row">
     <div class="card-content">
-        <p><span id="pleaseLogIn" style="display:none" class="messageTransClosed"><strong>Please log in or register to pick a team</strong></span></p>
+        <p><span id="pleaseLogIn" style="display:none" class="messageTransClosed"><strong><a href="${request.route_path('login')}">Please log in or register to pick a team</a></strong></span></p>
         <p>50 Credits to pick a team of 5 heroes</p>
         <p><span id="remainingTransfersSection" style="display:none">You have <span id="remainingTransfers"></span> remaining available transfers (Transfers will not count until 'Confirm Transfers' pressed)
         </span></p>

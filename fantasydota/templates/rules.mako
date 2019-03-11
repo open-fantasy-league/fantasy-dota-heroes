@@ -27,15 +27,17 @@
             <li>2nd Phase Pick/Ban/Win +1 point</li>
             <li>3rd Phase Pick/Ban/Win +3 point</li>
             </br>
-                <li>(Picks and wins stack. A 3rd phase pick will win earn 15 points total!)</li>
+                <li>(Picks and wins stack. A 3rd phase pick and win will earn 15 points total!)</li>
                             </br>
                 <li>(Win/Loss applies to picked heroes, but not banned heroes.)</li>
         </ul>
-            Only teams of 5 heroes will score points
+            Only full teams of 5 heroes will score points</br>
             Weekend multiplier:</br>
             <ul class="browser-default"><li>x2 points for Main event matches. x3 points for grand finals day!
             </li>
             </ul>
+            </br>
+            Points leader at end of tournament wins Rubick arcana.
     </div>
     <h2>Team</h2>
     <div class="card-panel">

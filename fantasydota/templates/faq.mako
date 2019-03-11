@@ -22,7 +22,7 @@ When this occurs you gain points.</p>
 <h2>Are there any prizes four tournament winner?</h2>
     <div class="card-panel">
 <p>
-   1st Prize Rubick arcana. Top 5 free 7k (As of 2019-03-10) support replay analysis (if want to claim it).
+   1st Prize Rubick arcana. Top 5: offer of free support replay analysis (7k as of 2019-03-10).
 </p>
     </div>
 <h2>Aren't there already fantasy dota games?</h2>
