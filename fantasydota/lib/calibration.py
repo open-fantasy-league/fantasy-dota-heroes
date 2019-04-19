@@ -29,7 +29,7 @@ def squeeze_values_together(hero_values):
             23.5 + random.randint(0, 6) / 10
         ), 1)
         hero_values[key] = new_value
-        print "New %s: %s" % (key, new_value)
+        print "New squeezed %s: %s" % (key, new_value)
     return hero_values
 
 
@@ -62,7 +62,7 @@ def calibrate_value(average_points, our_points):
 
 
 def combine_calibrations(older_value, newer_value):
-    return (newer_value + older_value * 5) / 6.
+    return (newer_value + older_value * 7) / 8.
 
 
 def recalibrate_hero_values(league_id):

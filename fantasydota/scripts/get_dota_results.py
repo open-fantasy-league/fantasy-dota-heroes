@@ -62,7 +62,7 @@ def get_matches(tournament_id, tstamp_from=0, excluded_match_ids=None):
         print("ERROR: {} did not have 22 pick bans but wasnt remade".format(saved_m22_matches[k]['match_id']))
 
 
-def add_match_to_api(match, tournament_id=None):
+def add_match_to_api(match, tournament_id=None, target_at_tstamp=None):
     FE_APIKEY = os.environ.get("FE_APIKEY")
     if not FE_APIKEY:
         print "Set your fantasy esport APIKEY environment variable"
@@ -105,7 +105,7 @@ def add_match_to_api(match, tournament_id=None):
     print('id {}: {} vs {}. radiant win: {}'.format(
         match_id, match.get('radiant_name', ' ').encode('utf-8'), match.get('dire_name', ' ').encode('utf-8'), match['radiant_win']
     ))
-    data = json.dumps({
+    data = {
         'matchId': match_id,
         'teamOne': match.get('radiant_name', ' '),
         'teamTwo': match.get('dire_name', ' '),
@@ -113,9 +113,13 @@ def add_match_to_api(match, tournament_id=None):
         'tournamentId': tournament_id,
         'startTstamp': start_time,
         'pickees': pickees
-    })
+    }
+    if target_at_tstamp is not None:
+        data['targetAtTstamp'] = datetime.datetime.fromtimestamp(target_at_tstamp).strftime('%Y-%m-%d %H:%M:%S')
+    print(data)
+    
     try:
-        req = urllib2.Request(API_LEAGUE_RESULTS_URL, data=data, headers={'apiKey': FE_APIKEY, "Content-Type": "application/json"})
+        req = urllib2.Request(API_LEAGUE_RESULTS_URL, data=json.dumps(data), headers={'apiKey': FE_APIKEY, "Content-Type": "application/json"})
         response = urllib2.urlopen(req)
         print(response.read())
     except urllib2.HTTPError as e:
@@ -140,10 +144,10 @@ def main():
     # it sounds sensibile to save work by checking highest startTstamp, and filtering out any below
     # this is not safe because can 'lose' games that started before highest startTstamp, but went on so long
     # that highest startTstamp finished first
-    excluded_matches = get_already_stored_matches()
+    excluded_matches = get_already_stored_matches() + [4543372361, 4543931757, 4544296911]
     print("excluded matches: {}".format(excluded_matches))
     # 1551814635
-    get_matches(10681, excluded_match_ids=excluded_matches, tstamp_from=0)
+    get_matches(10681, excluded_match_ids=excluded_matches, tstamp_from=1552523622)
 
 
 if __name__ == "__main__":

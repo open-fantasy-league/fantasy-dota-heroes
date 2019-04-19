@@ -20,14 +20,15 @@ def recalibrate():
     )
     response = urllib2.urlopen(req)
     heroes = json.loads(response.read())
-    print(response)
+    print(heroes)
+    print(response.read())
     data = {"pickees": []}
     new_calibration = squeeze_values_together(calibrate_all_hero_values([10681], 1551814635))
     for hero in heroes:
-        id_ = hero['pickee']['id']
-        print "new calbration: %s, from %s" % (
-            round(combine_calibrations(hero['pickee']['cost'], new_calibration[id_]), 1), hero['pickee']['cost'])
-        new_value = round(combine_calibrations(hero['pickee']['cost'], new_calibration[id_]), 1)
+        id_ = hero['id']
+        new_value = round(combine_calibrations(hero['cost'], new_calibration[id_]), 1)
+        print "new calbration %s: %s, from %s" % (hero['name'],
+            new_value, hero['cost'])
         data["pickees"].append({'id': id_, 'cost': new_value})
     try:
         req = urllib2.Request(
@@ -40,6 +41,8 @@ def recalibrate():
         print(response.read())
     except urllib2.HTTPError as e:
         print(e.read())
+    
+    
 
 
 if __name__ == "__main__":
