@@ -1,3 +1,5 @@
+import datetime
+
 import urllib2
 
 import json
@@ -36,3 +38,7 @@ def post_api_json(url, data, fe_api_key=None):
         print(response.read())
     except urllib2.HTTPError as e:
         print(e.read())
+
+
+def format_time(time_):
+    return datetime.datetime.fromtimestamp(time_).strftime('%Y-%m-%d %H:%M:%S')

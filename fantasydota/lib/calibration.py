@@ -29,7 +29,7 @@ def squeeze_values_together(hero_values):
             23.5 + random.randint(0, 6) / 10
         ), 1)
         hero_values[key] = new_value
-        print "New %s: %s" % (key, new_value)
+        print "New squeezed %s: %s" % (key, new_value)
     return hero_values
 
 

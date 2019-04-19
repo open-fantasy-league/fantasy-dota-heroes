@@ -62,7 +62,7 @@ def get_matches(tournament_id, tstamp_from=0, excluded_match_ids=None):
         print("ERROR: {} did not have 22 pick bans but wasnt remade".format(saved_m22_matches[k]['match_id']))
 
 
-def add_match_to_api(match, tournament_id=None):
+def add_match_to_api(match, tournament_id=None, target_at_tstamp=None):
     FE_APIKEY = os.environ.get("FE_APIKEY")
     if not FE_APIKEY:
         print "Set your fantasy esport APIKEY environment variable"
@@ -114,6 +114,8 @@ def add_match_to_api(match, tournament_id=None):
         'startTstamp': start_time,
         'pickees': pickees
     })
+    if target_at_tstamp is not None:
+        data['targetAtTstamp'] = datetime.datetime.fromtimestamp(target_at_tstamp).strftime('%Y-%m-%d %H:%M:%S')
     try:
         req = urllib2.Request(API_LEAGUE_RESULTS_URL, data=data, headers={'apiKey': FE_APIKEY, "Content-Type": "application/json"})
         response = urllib2.urlopen(req)
@@ -143,7 +145,7 @@ def main():
     excluded_matches = get_already_stored_matches()
     print("excluded matches: {}".format(excluded_matches))
     # 1551814635
-    get_matches(10681, excluded_match_ids=excluded_matches, tstamp_from=0)
+    get_matches(10681, excluded_match_ids=excluded_matches, tstamp_from=1552523622)
 
 
 if __name__ == "__main__":

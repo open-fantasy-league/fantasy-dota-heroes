@@ -21,13 +21,13 @@ def create_league(name, tournament_id, url):
         'gameId': 1,
         'pickeeDescription': 'Hero',
         'periodDescription': 'Day',
-        'startingMoney': 50.0,
+        'startingMoney': 5.0,
         'transferInfo': {
-            'transferWildcard': True,
+            'transferWildcard': False,
             "transferBlockedDuringPeriod": False,
-            "transferDelayMinutes": 60,
-            "noWildcardForLateRegister": True,
-            'transferLimit': 5
+            # "transferDelayMinutes": 60,
+            # "noWildcardForLateRegister": True,
+            #'transferLimit': 5
         },
         "extraStats": ["wins", "picks", "bans"],
         "periods": [
@@ -48,10 +48,10 @@ def create_league(name, tournament_id, url):
     # 60 group games, 31 mainstage
     pickees = []
     calib_tournaments = [10560, 10575, 10733, 10681, 10532, 10646, 10153]
-    hero_values = squeeze_values_together(calibrate_all_hero_values(calib_tournaments, 1549241783))
+    #hero_values = squeeze_values_together(calibrate_all_hero_values(calib_tournaments, 1549241783))
     for id, name in herodict.items():
-        #pickees.append({"id": id, "name": name, "value": 9.0})#hero_values[id]})
-        pickees.append({"id": id, "name": name, "value": hero_values[id]})
+        pickees.append({"id": id, "name": name, "value": 1.0})#hero_values[id]})
+        #pickees.append({"id": id, "name": name, "value": hero_values[id]})
     data['pickees'] = pickees
 
     try:
@@ -87,4 +87,4 @@ def create_league(name, tournament_id, url):
 
 
 if __name__ == "__main__":
-    create_league("Dreamleague 11", 10681, "https://liquipedia.net/dota2/DreamLeague/Season_11")
+    create_league("OGA Dota Pit 2019", 10869, "https://liquipedia.net/dota2/Dota_Pit_League/Season_7")
