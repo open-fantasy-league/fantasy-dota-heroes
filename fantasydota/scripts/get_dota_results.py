@@ -134,7 +134,7 @@ def get_already_stored_matches():
         print(e.read())
         raise e
 
-    existing_ids = [m["match"]["id"] for m in existing_matches]
+    existing_ids = [m["match"]["matchId"] for m in existing_matches]
     return existing_ids
 
 

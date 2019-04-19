@@ -11,16 +11,18 @@ function makeLeaderboard(){
     $("#leagueLink").attr('href', league.url);
     $("#leagueLink").text(league.name);
     var r = new Array(), j = -1;
-    for(var i=1; i<=league.currentPeriod.value; i++){
-        r[++j] = '<li><a href="/leaderboard?rank_by=';
-        r[++j] = rankBy;
-        r[++j] = '&mode=';
-        r[++j] = mode;
-        r[++j] = "&period=";
-        r[++j] = i;
-        r[++j] = '">Day ';
-        r[++j] = i;
-        r[++j] = '</a></li>';
+    if (league.currentPeriod){
+        for(var i=1; i<=league.currentPeriod.value; i++){
+            r[++j] = '<li><a href="/leaderboard?rank_by=';
+            r[++j] = rankBy;
+            r[++j] = '&mode=';
+            r[++j] = mode;
+            r[++j] = "&period=";
+            r[++j] = i;
+            r[++j] = '">Day ';
+            r[++j] = i;
+            r[++j] = '</a></li>';
+        }
     }
     $("#periodDropdown").append(r.join(''));
     $.ajax({url: leaderBoardUrl,
@@ -142,38 +144,38 @@ function fillMatches(){
                         })
                         r[j++] = '</div></div><div class="row"><div class="left">';
                         $.each(radiantPicks, function(key2, pick){
-                            var imgSrc = "/static/images/dota/" + pick.pickee.name.replace(/ /g, "_") + "_icon.png";
+                            var imgSrc = "/static/images/dota/" + pick.pickee.replace(/ /g, "_") + "_icon.png";
                             r[j++] = '<img src="';
                             r[j++] = imgSrc;
                             r[j++] = '" title="';
-                            r[j++] = pick.pickee.name;
+                            r[j++] = pick.pickee;
                             r[j++] = '" />';
                         })
                         r[j++] = '</div><div class="right hide-on-small-only">';
                         $.each(direPicks, function(key2, pick){
-                            var imgSrc = "/static/images/dota/" + pick.pickee.name.replace(/ /g, "_") + "_icon.png";
+                            var imgSrc = "/static/images/dota/" + pick.pickee.replace(/ /g, "_") + "_icon.png";
                             r[j++] = '<img src="';
                             r[j++] = imgSrc;
                             r[j++] = '" title="';
-                            r[j++] = pick.pickee.name;
+                            r[j++] = pick.pickee;
                             r[j++] = '" />';
                         })
                         r[j++] = '</div></div><div class="row" style="margin-bottom: 0px"><div class="left">';
                         $.each(radiantBans, function(key2, pick){
-                            var imgSrc = "/static/images/dota/" + pick.pickee.name.replace(/ /g, "_") + "_icon.png";
+                            var imgSrc = "/static/images/dota/" + pick.pickee.replace(/ /g, "_") + "_icon.png";
                             r[j++] = '<img class="banIcon" src="';
                             r[j++] = imgSrc;
                             r[j++] = '" title="';
-                            r[j++] = pick.pickee.name;
+                            r[j++] = pick.pickee;
                             r[j++] = '" />';
                         })
                         r[j++] = '</div><div class="right hide-on-small-only">';
                         $.each(direBans, function(key2, pick){
-                            var imgSrc = "/static/images/dota/" + pick.pickee.name.replace(/ /g, "_") + "_icon.png";
+                            var imgSrc = "/static/images/dota/" + pick.pickee.replace(/ /g, "_") + "_icon.png";
                             r[j++] = '<img class="banIcon" src="';
                             r[j++] = imgSrc;
                             r[j++] = '" title="';
-                            r[j++] = pick.pickee.name;
+                            r[j++] = pick.pickee;
                             r[j++] = '" />';
                         })
                         r[j++] = '</div></div><div class="row"><div class="left">';
@@ -214,20 +216,20 @@ function fillMatches(){
                         })
                         r[j++] = '</div></div><div class="row"><div class="left">';
                         $.each(direPicks, function(key2, pick){
-                            var imgSrc = "/static/images/dota/" + pick.pickee.name.replace(/ /g, "_") + "_icon.png";
+                            var imgSrc = "/static/images/dota/" + pick.pickee.replace(/ /g, "_") + "_icon.png";
                             r[j++] = '<img src="';
                             r[j++] = imgSrc;
                             r[j++] = '" title="';
-                            r[j++] = pick.pickee.name;
+                            r[j++] = pick.pickee;
                             r[j++] = '" />';
                         })
                         r[j++] = '</div></div><div class="row" style="margin-bottom: 0px"><div class="left">';
                         $.each(direBans, function(key2, pick){
-                            var imgSrc = "/static/images/dota/" + pick.pickee.name.replace(/ /g, "_") + "_icon.png";
+                            var imgSrc = "/static/images/dota/" + pick.pickee.replace(/ /g, "_") + "_icon.png";
                             r[j++] = '<img class="banIcon" src="';
                             r[j++] = imgSrc;
                             r[j++] = '" title="';
-                            r[j++] = pick.pickee.name;
+                            r[j++] = pick.pickee;
                             r[j++] = '" />';
                         })
                         r[j++] = '</div></div><div class="row"><div class="left">';

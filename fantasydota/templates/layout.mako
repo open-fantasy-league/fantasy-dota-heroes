@@ -205,9 +205,6 @@
     $( document ).ready(function(){
       $('.button-collapse').sideNav();
       $('.button-collapse').click(removeOverlay);
-      /*getLeagueInfo().then(function(){
-      var currentPeriod = league.currentPeriod ? league.currentPeriod.value : 1;
-      $('.dailyLink').attr('href', "/leaderboard?period=" + currentPeriod);})*/
       $('.clearNotifications').click(function() {
         $.get('/clearNotifications', function(){window.location.reload(false);});
       });

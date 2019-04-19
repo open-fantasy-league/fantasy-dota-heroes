@@ -24,23 +24,17 @@ def create_league(name, tournament_id, url):
         'startingMoney': 5.0,
         'transferInfo': {
             'transferWildcard': False,
-            "transferBlockedDuringPeriod": False,
+            "transferBlockedDuringPeriod": True,
             # "transferDelayMinutes": 60,
             # "noWildcardForLateRegister": True,
             #'transferLimit': 5
         },
         "extraStats": ["wins", "picks", "bans"],
         "periods": [
-            {"start": "2019-03-14 10:00", "end": "2019-03-14 21:00", "multiplier": 1},
-            {"start": "2019-03-15 10:00", "end": "2019-03-15 21:00", "multiplier": 1},
-            {"start": "2019-03-16 10:00", "end": "2019-03-16 21:00", "multiplier": 2},
-            {"start": "2019-03-17 10:00", "end": "2019-03-17 21:00", "multiplier": 2},
-            {"start": "2019-03-18 10:00", "end": "2019-03-18 21:00", "multiplier": 2},
-            {"start": "2019-03-19 10:00", "end": "2019-03-19 21:00", "multiplier": 2},
-            {"start": "2019-03-20 10:00", "end": "2019-03-20 21:00", "multiplier": 2},
-            {"start": "2019-03-22 10:00", "end": "2019-03-22 21:00", "multiplier": 2},
-            {"start": "2019-03-23 10:00", "end": "2019-03-23 21:00", "multiplier": 2},
-            {"start": "2019-03-24 10:00", "end": "2019-03-24 21:00", "multiplier": 3},
+            {"start": "2019-05-14 10:00", "end": "2019-05-14 21:00", "multiplier": 1},
+            {"start": "2019-05-15 10:00", "end": "2019-05-15 21:00", "multiplier": 1},
+            {"start": "2019-05-16 10:00", "end": "2019-05-16 21:00", "multiplier": 1},
+            {"start": "2019-05-17 10:00", "end": "2019-05-17 21:00", "multiplier": 1},
         ],
         "url": url,
         "applyPointsAtStartTime": False
@@ -66,7 +60,7 @@ def create_league(name, tournament_id, url):
         print(e.read())
     try:
         req = urllib2.Request(
-            API_URL + "leagues/" + str(DEFAULT_LEAGUE), data=json.dumps({'transferOpen': True, 'transferDelayMinutes': 60}), headers={
+            API_URL + "leagues/" + str(DEFAULT_LEAGUE), data=json.dumps({'transferOpen': True, 'transferDelayMinutes': None}), headers={
                 "Content-Type": "application/json",
                 "apiKey": FE_APIKEY
             }

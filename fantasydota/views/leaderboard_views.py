@@ -13,7 +13,11 @@ def leaderboard(request):
     league_id = int(request.params.get('league', DEFAULT_LEAGUE))
     user_id = authenticated_userid(request)
     mode = request.params.get("mode", "global")
-    period = int(request.params.get("period", 0))
+    try:
+        period = int(request.params.get("period", 0))
+    except ValueError:
+        print("Got invalid period param: %s" % request.params.get("period"))
+        period = 0
     if mode == "friend" and not user_id:
         mode = "global"
     other_modes = ['global', 'friend'] # , 'hero']

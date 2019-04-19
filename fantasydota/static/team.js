@@ -44,7 +44,7 @@ function getPickees(){
                         r2[++j2] = '<div class="gridHeroDiv"><button type="submit" name="buyHero" class="btn waves-effect waves-light gridHeroBtn" disabled="true" data-heroId="';
                         r2[++j2] = id;
                         r2[++j2] = '">';
-                        r2[++j2] = hero.cost;
+                        r2[++j2] = hero.price;
                         r2[++j2] = '</button></div>';
                         r2[++j2] = '</td>';
                         r[++j] = '<tr class="';
@@ -69,7 +69,7 @@ function getPickees(){
                         r[++j] = '</td><td class="winsEntry extra">';
                         r[++j] = hero.stats.wins;
                         r[++j] = '</td><td class="valueEntry">';
-                        r[++j] = hero.cost;
+                        r[++j] = hero.price;
                         r[++j] = '</td><td class="tradeEntry">';
                         r[++j] = '<button type="submit" name="buyHero" class="btn waves-effect waves-light tableHeroBtn" disabled="true" data-heroId="';
                         r[++j] = id;
@@ -163,7 +163,7 @@ function getTeamThenSetup(){
                     r[++j] = '</td><td class="winsEntry extra">';
                     r[++j] = heroInfo.stats.wins;
                     r[++j] = '</td><td class="valueEntry">';
-                    r[++j] = hero.cost;
+                    r[++j] = hero.price;
                     r[++j] = '</td><td class="tradeEntry">';
                     r[++j] = '<button type="submit" name="sellHero" class="btn waves-effect waves-light" disabled="true" data-heroId="';
                     r[++j] = id;
