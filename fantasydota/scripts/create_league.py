@@ -24,17 +24,16 @@ def create_league(name, tournament_id, url):
         'startingMoney': 5.0,
         'transferInfo': {
             'transferWildcard': False,
-            "transferBlockedDuringPeriod": True,
             # "transferDelayMinutes": 60,
             # "noWildcardForLateRegister": True,
             #'transferLimit': 5
         },
         "extraStats": ["wins", "picks", "bans"],
         "periods": [
-            {"start": "2019-05-14 10:00", "end": "2019-05-14 21:00", "multiplier": 1},
-            {"start": "2019-05-15 10:00", "end": "2019-05-15 21:00", "multiplier": 1},
-            {"start": "2019-05-16 10:00", "end": "2019-05-16 21:00", "multiplier": 1},
-            {"start": "2019-05-17 10:00", "end": "2019-05-17 21:00", "multiplier": 1},
+            {"start": "2019-04-25 10:00", "end": "2019-04-25 22:00", "multiplier": 1, "onStartCloseTransferWindow": True},
+            {"start": "2019-04-26 10:00", "end": "2019-04-26 22:00", "multiplier": 1},
+            {"start": "2019-04-27 10:00", "end": "2019-04-27 22:00", "multiplier": 1},
+            {"start": "2019-04-28 10:00", "end": "2019-04-28 22:00", "multiplier": 2},
         ],
         "url": url,
         "applyPointsAtStartTime": False

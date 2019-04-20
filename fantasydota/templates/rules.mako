@@ -31,24 +31,12 @@
                             </br>
                 <li>(Win/Loss applies to picked heroes, but not banned heroes.)</li>
         </ul>
-            Only full teams of 5 heroes will score points</br>
-            Weekend multiplier:</br>
-            <ul class="browser-default"><li>x2 points for Main event matches. x3 points for grand finals day!
+        Example:</br>
+        <img src="/static/images/dota/examplescoring.png"></img>
+            <ul class="browser-default"><li>x2 points for grand finals day
             </li>
             </ul>
             </br>
-            Points leader at end of tournament wins Rubick arcana.
-    </div>
-    <h2>Team</h2>
-    <div class="card-panel">
-        <ul class="browser-default">
-            <li>
-                Your team must consist of 5 dota heroes
-            </li>
-            <li>
-            You get 5 potential hero transfers to be used whenever you like throughout the tournament, as well as one wildcard, to reset your team and go back to 50 credits
-            There is a 1 hour delay before your mid-tournament transfers go through. This prevents abuse of transferring as drafts/games occurring.
-            </li>
-        </ul>
+            Points leader at end of tournament wins Crystal Maiden arcana.
     </div>
 </div>

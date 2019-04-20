@@ -145,7 +145,7 @@ def main():
     excluded_matches = get_already_stored_matches()
     print("excluded matches: {}".format(excluded_matches))
     # 1551814635
-    get_matches(10681, excluded_match_ids=excluded_matches, tstamp_from=1552523622)
+    get_matches(10869, excluded_match_ids=excluded_matches, tstamp_from=1556223758)
 
 
 if __name__ == "__main__":

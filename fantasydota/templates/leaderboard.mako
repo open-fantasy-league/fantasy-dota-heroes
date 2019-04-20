@@ -79,11 +79,11 @@ $( document ).ready(function() {
     });
 })
 </script>
-    <script src="/static/leaderboard.js?v=1.0"></script>
+    <script src="/static/leaderboard.js?v=1.1"></script>
     % if not period:
     <div id="friendBlock" class="col s12 m5">
         <div class="card-panel">
-        <p>2x points multiplier for main event. 3x for grand finals day</p>
+        <p>2x points multiplier for grand finals day</p>
             <p>Results updated ~1 minute after match ends</p>
             <p><a href="https://discord.gg/MAH7EEv" target="_blank">Discord channel for suggestions/improvements</a></p>
         </div>
@@ -91,7 +91,7 @@ $( document ).ready(function() {
         <div class="card">
         <div class="card-content">
             <p>
-                Add friends usernames to compete in tables against them
+                Add friends usernames to compete in tables just against them
             </p>
             <form name="addFriendForm" onsubmit="return false;">
                 <input type="text" name="newFriend" placeholder="New friend..."/>

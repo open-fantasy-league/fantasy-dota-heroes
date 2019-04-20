@@ -40,17 +40,7 @@
 <div class="card row">
     <div class="card-content">
         <p><span id="pleaseLogIn" style="display:none" class="messageTransClosed"><strong><a href="${request.route_path('login')}">Please log in or register to pick a team</a></strong></span></p>
-        <p>50 Credits to pick a team of 5 heroes</p>
-        <p><span id="remainingTransfersSection" style="display:none">You have <span id="remainingTransfers"></span> remaining available transfers (Transfers will not count until 'Confirm Transfers' pressed)
-        </span></p>
-        <p><span id="wildcardDescriptionMessage" style="display:none">Wildcard sells entire team and resets to 50 credits</span></p>
-        <span id="transferDelayMessage" style="display:none"><p><strong>
-            1 hour delay between transfer confirmation and processing (to prevent cheating/unfair advantages).
-        </strong></p>
-        <span class="messageTransClosed" id="messageTransferCooldown" style="display:none"><p><strong>
-            Due to recent changes you are in transfer cooldown.
-        </strong></p></span>
-        <p><span id="infinityTransfersUntilStartMessage" style="display:none">Once the tournament starts you will have 5 extra transfers you can make (You can make infinity changes before first game)</span></p>
+        <p>Pick any 5 heroes to gain points from picks, bans and wins during main event stage. <a href="/rules">Scoring details</a></p>
     </div>
 </div>
 <div id="heroesBlock" class="row">
@@ -84,4 +74,4 @@
     </div>
 </div>
 <script src="/static/trade.js?v=1.0"></script>
-<script src="/static/team.js?v=1.0"></script>
+<script src="/static/team.js?v=1.1"></script>
