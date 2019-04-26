@@ -1,3 +1,8 @@
+import sys
+
+import re
+
+from fantasydota.lib.herodict import herodict
 from fantasydota.scripts.get_dota_results import add_match_to_api
 
 
@@ -13,30 +18,36 @@ def add_game_manually(radiant_team, dire_team, radiant_win, fake_match_id, pick_
 
 
 if __name__ == "__main__":
-    picks_bans = [
-        {"is_pick": False, "hero_id": 66, "team": 0},
-        {"is_pick": False, "hero_id": 80, "team": 0},
-        {"is_pick": False, "hero_id": 52, "team": 0},
-        {"is_pick": False, "hero_id": 33, "team": 1},
-        {"is_pick": False, "hero_id": 120, "team": 1},
-        {"is_pick": False, "hero_id": 53, "team": 1},
-        {"is_pick": True, "hero_id": 111, "team": 0},
-        {"is_pick": True, "hero_id": 15, "team": 0},
-        {"is_pick": True, "hero_id": 90, "team": 1},
-        {"is_pick": True, "hero_id": 106, "team": 1},
-        {"is_pick": False, "hero_id": 55, "team": 0},
-        {"is_pick": False, "hero_id": 38, "team": 0},
-        {"is_pick": False, "hero_id": 88, "team": 1},
-        {"is_pick": False, "hero_id": 54, "team": 1},
-        {"is_pick": True, "hero_id": 107, "team": 0},
-        {"is_pick": True, "hero_id": 57, "team": 0},
-        {"is_pick": True, "hero_id": 100, "team": 1},
-        {"is_pick": True, "hero_id": 114, "team": 1},
-        {"is_pick": False, "hero_id": 45, "team": 0},
-        {"is_pick": False, "hero_id": 10, "team": 1},
-        {"is_pick": True, "hero_id": 70, "team": 0},
-        {"is_pick": True, "hero_id": 69, "team": 1},
-    ]
+    regex = re.compile('[^a-zA-Z]')
+    heroes_simple_rev = {regex.sub('', v.lower()).replace(' ', ''): k for k, v in herodict.items()}
+    picks_bans = []
+    team_one, team_two, radiant_win, fake_id, start_time, target_time = sys.argv[1:7]
+    for i, arg in enumerate(sys.argv[7:]):
+        hero_id = heroes_simple_rev[arg]
+        if i < 3:
+            picks_bans.append({"is_pick": False, "hero_id": hero_id, "team": 0})
+        elif i < 6:
+            picks_bans.append({"is_pick": False, "hero_id": hero_id, "team": 1})
+        elif i < 8:
+            picks_bans.append({"is_pick": True, "hero_id": hero_id, "team": 0})
+        elif i < 10:
+            picks_bans.append({"is_pick": True, "hero_id": hero_id, "team": 1})
+        elif i < 12:
+            picks_bans.append({"is_pick": False, "hero_id": hero_id, "team": 0})
+        elif i < 14:
+            picks_bans.append({"is_pick": False, "hero_id": hero_id, "team": 1})
+        elif i < 16:
+            picks_bans.append({"is_pick": True, "hero_id": hero_id, "team": 0})
+        elif i < 18:
+            picks_bans.append({"is_pick": True, "hero_id": hero_id, "team": 1})
+        elif i < 19:
+            picks_bans.append({"is_pick": False, "hero_id": hero_id, "team": 0})
+        elif i < 20:
+            picks_bans.append({"is_pick": False, "hero_id": hero_id, "team": 1})
+        elif i < 21:
+            picks_bans.append({"is_pick": True, "hero_id": hero_id, "team": 0})
+        elif i < 22:
+            picks_bans.append({"is_pick": True, "hero_id": hero_id, "team": 1})
     add_game_manually(
-        'Chaos', 'Team Liquid', True, 1111, picks_bans, 1552830900, 1552833540
+        team_one, team_two, radiant_win, fake_id, picks_bans, start_time, target_time
     )
