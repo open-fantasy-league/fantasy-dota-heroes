@@ -3,16 +3,16 @@ var toBuy = [];
 var wildcard = false;
 
 function disableButtons(){
-    $("[name=buyHero]").add("[name=sellHero]").add("#confirmTransfers").add("#useWildcard").each(function(){$(this).attr("disabled","true");});
+    $("[name=buyPlayer]").add("[name=sellPlayer]").add("#confirmTransfers").each(function(){$(this).attr("disabled","true");});
 }
 
 function undisableButtons(){
-    $("[name=buyHero]").add("[name=sellHero]").add("#confirmTransfers").add("#useWildcard").each(function(){$(this).removeAttr("disabled");})
+    $("[name=buyPlayer]").add("[name=sellPlayer]").add("#confirmTransfers").each(function(){$(this).removeAttr("disabled");})
 }
 
 function undisableButtonsFiltered(money){
-    var buyable = $("[name=buyHero][class*=gridHeroBtn]").filter(function() {return parseFloat($(this).text()) <= money;});
-    buyable.add("[name=buyHero][class*=tableHeroBtn]").add("[name=sellHero]").add("#confirmTransfers").add("#useWildcard").each(function(){$(this).removeAttr("disabled");})
+    var buyable = $("[name=buyPlayer][class*=gridPlayerBtn]").filter(function() {return parseFloat($(this).text()) <= money;});
+    buyable.add("[name=buyPlayer][class*=tablePlayerBtn]").add("[name=sellPlayer]").add("#confirmTransfers").add("#useWildcard").each(function(){$(this).removeAttr("disabled");})
 }
 
 var tradeOnclick = function tradeOnclick(event){
@@ -20,8 +20,34 @@ var tradeOnclick = function tradeOnclick(event){
     disableButtons();
     var button = $(event.currentTarget);
     var action = button.attr('name');
-    var heroId = button.attr('data-heroId');
-    doTrade(event, action, heroId)
+    var cardId = parseInt(button.attr('data-cardId'));
+    doTrade(event, action, cardId)
+}
+
+var recycleOnClick = function recycleOnClick(event){
+    var cardId = parseInt(button.attr('data-cardId'));
+
+    $.ajax({
+        url: '/recycle_card',
+        dataType: "json",
+
+        type: "POST",
+        data: {"cardId": cardId},
+        success: function(data){
+            $(".userCredits").each(function(){$(this).text(data.updatedMoney)});
+            $(".playerCard") > child$("#recyclePlayer-" + cardId).remove();
+            undisableButtons();
+            swal({
+             title: "Recycled",
+              icon: "success",
+              timer: 400
+            });
+        },
+        error: function(jqxhr, textStatus, errorThrown){
+            undisableButtons();
+            sweetAlert(jqxhr.responseText, '', 'error');
+        }
+    })
 }
 
 var pleaseLogInClick = function pleaseLogInClick(){
@@ -30,29 +56,28 @@ var pleaseLogInClick = function pleaseLogInClick(){
     });
 }
 
-function doTrade(event, action, heroId){
+function doTrade(event, action, playerId){
+console.log(playerId)
     disableButtons();
     var toSellOriginal = toSell.slice();
     var toBuyOriginal = toBuy.slice();
-    var cancel = false;
-    if (action == "buyHero"){
-        var ind = toSell.indexOf(heroId);
+    if (action == "buyPlayer"){
+        var ind = toSell.indexOf(playerId);
         if (ind > -1){
             toSell.splice(ind, 1);
-            cancel = true;
         }
         else{
-            toBuy.push(heroId)
+            toBuy.push(playerId)
         }
     }
     else{
-        var ind = toBuy.indexOf(heroId);
+        var ind = toBuy.indexOf(playerId);
         if (ind > -1){
             toBuy.splice(ind, 1);
-            cancel = true;
         }
         else{
-            toSell.push(heroId)
+            toSell.push(playerId)
+            console.log(toSell)
         }
     }
     $.ajax({
@@ -60,17 +85,17 @@ function doTrade(event, action, heroId){
         dataType: "json",
 
         type: "POST",
-        data: {"sell": toSell, "buy": toBuy, "isCheck": true, "wildcard": wildcard},
+        data: {"sell": toSell, "buy": toBuy, "isCheck": true, "wildcard": false},
         success: function(data){
-            if (action == "sellHero"){
-                removeFromTeam(heroId, cancel);
+            if (action == "sellPlayer"){
+                removeFromTeam(playerId);
             }
             else{
-                addToTeam(heroId, cancel);
+                var playerData = playerDataCache.get(playerId)
+                addToTeam(playerData);
             }
             $(".userCredits").each(function(){$(this).text(data.updatedMoney)});
-            $("#remainingTransfers").text(data.remainingTransfers);
-            undisableButtonsFiltered(data.updatedMoney);
+            undisableButtons();
             swal({
              title: "Transfer valid",
              text: "Confirm Transfers to process changes",
@@ -87,51 +112,27 @@ function doTrade(event, action, heroId){
     });
 }
 
-function addToTeam(hero, cancel){
-    if (cancel){
-        var oldRow = $("#" + hero + "TeamRow");
-        var btn = oldRow.find("button");
-        var heroEntry = oldRow.find(".heroEntry");
-        heroEntry.find('i').remove();
-        oldRow.removeClass("toTransfer");
-        btn.attr('name', 'sellHero');
-        btn.text('Sell');
-        btn.off('click').click(tradeOnclick);  // otherwise need reload page to resell
-    }
-    else{
-        var new_row = $("#" + hero + "Row").clone();
-        new_row.attr('id', hero + "TeamRow");
-        var heroEntry = new_row.find(".heroEntry");
-        var plannedSale = heroEntry.find('i');
-        heroEntry.prepend('<i class="material-icons">add_circle</i>')
-        new_row.addClass("toTransfer");
-        var btn = new_row.find("button");
-        btn.attr('name', 'sellHero');
-        btn.text('Cancel');
-        var teamRow = $(".teamRow");
-        if (teamRow.length != 0) {
-            teamRow.last().after(new_row);
-        }
-        else{
-            $("#teamTable").find("tbody").append(new_row);
-        }
-        btn.off('click').click(tradeOnclick);  // otherwise need reload page to resell
-    }
+function makeTeamRow(player){
+var r = new Array(), j = -1;
+r, j = addPlayerHtmlArray(player, r, j);
+ return $.parseHTML(r.join(''))
 }
 
-function removeFromTeam(hero, cancel){
-    console.log("removing from team")
-    var oldRow = $("#" + hero + "TeamRow");
-    var heroEntry = oldRow.find(".heroEntry");
-    if (cancel){
-        oldRow.remove();
+function addToTeam(player){
+    var new_row = makeTeamRow(player);
+    var btn = $(new_row).find("button");
+    var teamRow = $(".teamRow");
+    if (teamRow.length != 0) {
+        teamRow.last().after(new_row);
     }
     else{
-        heroEntry.prepend('<i class="material-icons">remove_circle</i>')
-        var btn = oldRow.find("button");
-        oldRow.addClass("toTransfer");
-        btn.attr('name', 'buyHero');
-        btn.text('Buy');
-        btn.off('click').click(tradeOnclick);  // otherwise need reload page to resell
+        $("#teamTable").find("tbody").append(new_row);
     }
+    btn.off('click').click(tradeOnclick);  // otherwise need reload page to resell
+}
+
+function removeFromTeam(cardId){
+    console.log("removing from team")
+    var oldRow = $("#" + cardId + "TeamRow");
+    oldRow.remove();
 }

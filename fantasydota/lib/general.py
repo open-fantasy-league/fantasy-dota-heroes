@@ -26,6 +26,7 @@ def all_view_wrapper(return_dict, session, user_id=None):
         return_dict['username'] = ""
     return_dict['api_base_url'] = API_URL
     return_dict['league_id'] = return_dict.get('league_id', DEFAULT_LEAGUE)
+    return_dict['api_registered'] = return_dict.get('api_registered', False)
     return return_dict
 
 

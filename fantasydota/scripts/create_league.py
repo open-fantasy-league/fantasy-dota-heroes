@@ -7,8 +7,30 @@ from fantasydota.lib.herodict import herodict
 from fantasydota.lib.calibration import calibrate_all_hero_values, squeeze_values_together
 from fantasydota.lib.constants import API_URL, DEFAULT_LEAGUE
 
+def get_fixtures():
+    with open("fixtures.json") as f:
+        fixtures = json.load(f)['fixtures']
+    matches = []
+    for i, match in enumerate(fixtures):
+        matches.append({
+            'matchId': i, 'tournamentId': 1, 'teamOne': match[0], 'teamTwo': match[1],
+            "startTstamp": match[2] + ":00"
+        })
+    return matches
+
+def get_players(teams):
+    pickees = []
+    id = 0
+    for team in teams:
+        for player in team[1]:
+            # player position and team name
+            pickees.append({"id": id, "name": player[0], "value": 1.0, "limits": [player[1], team[0]]})
+            id += 1
+    return pickees
 
 def create_league(name, tournament_id, url):
+    with open('players.json') as f:
+        teams = json.load(f)
 
     FE_APIKEY = os.environ.get("FE_APIKEY")
     if not FE_APIKEY:
@@ -19,33 +41,55 @@ def create_league(name, tournament_id, url):
         'apiKey': FE_APIKEY,
         'tournamentId': tournament_id,
         'gameId': 1,
-        'pickeeDescription': 'Hero',
-        'periodDescription': 'Day',
-        'startingMoney': 5.0,
+        'pickeeDescription': 'Player',
+        'periodDescription': 'Week',
+        'startingMoney': 0.0,
+        'teamSize': 11,
         'transferInfo': {
-            'transferWildcard': False,
+            'cardSystem': True,
+
             # "transferDelayMinutes": 60,
             # "noWildcardForLateRegister": True,
             #'transferLimit': 5
         },
-        "extraStats": ["wins", "picks", "bans"],
         "periods": [
-            {"start": "2019-04-25 10:00", "end": "2019-04-25 22:00", "multiplier": 1, "onStartCloseTransferWindow": True},
-            {"start": "2019-04-26 10:00", "end": "2019-04-26 22:00", "multiplier": 1},
-            {"start": "2019-04-27 10:00", "end": "2019-04-27 22:00", "multiplier": 1},
-            {"start": "2019-04-28 10:00", "end": "2019-04-28 22:00", "multiplier": 2},
+            {"start": "2019-04-25 10:00", "end": "2019-05-01 22:00", "multiplier": 1},
+            {"start": "2019-05-01 10:00", "end": "2019-05-07 10:00", "multiplier": 1},
+            {"start": "2019-05-07 10:00", "end": "2019-05-29 22:00", "multiplier": 2},
         ],
         "url": url,
-        "applyPointsAtStartTime": False
+        "applyPointsAtStartTime": False,
+        "limits": [{'name': 'position', 'types': [
+            {'name': 'goalkeeper', 'max': 1}, {'name': 'defender', 'max': 4}, {'name': 'midfielder', 'max': 4},
+            {'name': 'forward', 'max': 2}
+        ]},
+                   {'name': 'club', 'max': 2, 'types': [{'name': t[0]} for t in teams]}
+                   ],
+        "stats": [
+            {'name': 'assist', 'allFactionPoints': 4.0},
+            {'name': 'clean sheet', 'separateFactionPoints': [
+                {'name': 'goalkeeper', 'value': 10.0},
+                {'name': 'defender', 'value': 6.0},
+                {'name': 'midfielder', 'value': 2.0}
+            ]},
+             {'name': 'goal', 'separateFactionPoints': [
+                 {'name': 'forward', 'value': 4.0},
+                 {'name': 'defender', 'value': 6.0},
+                 {'name': 'midfielder', 'value': 5.0}
+             ]},
+            {'name': 'goal conceded', 'separateFactionPoints': [
+                 {'name': 'goalkeeper', 'value': -2.0},
+                 {'name': 'defender', 'value': -1.0},
+                 {'name': 'midfielder', 'value': -0.5}
+             ]},
+            {'name': 'penalty save', 'separateFactionPoints': [
+                {'name': 'goalkeeper', 'value': 4.0},
+            ]},
+            {'name': 'penalty miss', 'allFactionPoints': -4.0},
+            {'name': 'WhoScored match rating', 'allFactionPoints': 1.0}
+        ],
+        'pickees': get_players(teams)
     }
-    # 60 group games, 31 mainstage
-    pickees = []
-    calib_tournaments = [10560, 10575, 10733, 10681, 10532, 10646, 10153]
-    #hero_values = squeeze_values_together(calibrate_all_hero_values(calib_tournaments, 1549241783))
-    for id, name in herodict.items():
-        pickees.append({"id": id, "name": name, "value": 1.0})#hero_values[id]})
-        #pickees.append({"id": id, "name": name, "value": hero_values[id]})
-    data['pickees'] = pickees
 
     try:
         req = urllib2.Request(
@@ -57,17 +101,31 @@ def create_league(name, tournament_id, url):
         print(response.read())
     except urllib2.HTTPError as e:
         print(e.read())
-    try:
-        req = urllib2.Request(
-            API_URL + "leagues/" + str(DEFAULT_LEAGUE), data=json.dumps({'transferOpen': True, 'transferDelayMinutes': None}), headers={
-                "Content-Type": "application/json",
-                "apiKey": FE_APIKEY
-            }
-        )
-        response = urllib2.urlopen(req)
-        print(response.read())
-    except urllib2.HTTPError as e:
-        print(e.read())
+    # try:
+    #     req = urllib2.Request(
+    #         API_URL + "leagues/" + str(DEFAULT_LEAGUE), data=json.dumps({'transferOpen': True, 'transferDelayMinutes': None}), headers={
+    #             "Content-Type": "application/json",
+    #             "apiKey": FE_APIKEY
+    #         }
+    #     )
+    #     response = urllib2.urlopen(req)
+    #     print(response.read())
+    # except urllib2.HTTPError as e:
+    #     print(e.read())
+
+    for fixture in get_fixtures():
+        try:
+            req = urllib2.Request(
+                API_URL + "results/leagues/" + str(DEFAULT_LEAGUE) + "/fixture",
+                data=json.dumps(fixture), headers={
+                    "Content-Type": "application/json",
+                    "apiKey": FE_APIKEY
+                }
+            )
+            response = urllib2.urlopen(req)
+            print(response.read())
+        except urllib2.HTTPError as e:
+            print(e.read())
 
     # req = urllib2.Request(
     #     API_URL + "leagues/1/startPeriod", data=json.dumps(data), headers={
@@ -80,4 +138,4 @@ def create_league(name, tournament_id, url):
 
 
 if __name__ == "__main__":
-    create_league("OGA Dota Pit 2019", 10869, "https://liquipedia.net/dota2/Dota_Pit_League/Season_7")
+    create_league("Premier League", 1, "https://liquipedia.net/dota2/Dota_Pit_League/Season_7")

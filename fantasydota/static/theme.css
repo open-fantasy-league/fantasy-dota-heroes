@@ -282,3 +282,23 @@ and (max-width: 900px)
       bottom: 0;
   right: 0;
  }
+
+ .playerCard { border-radius : 10px; }
+
+ .rarity-gold{
+     background: radial-gradient(ellipse farthest-corner at right bottom, #FEDB37 0%, #FDB931 8%, #9f7928 30%, #8A6E2F 40%, transparent 80%),
+                radial-gradient(ellipse farthest-corner at left top, #FFFFFF 0%, #FFFFAC 8%, #D1B464 25%, #5d4a1f 62.5%, #5d4a1f 100%);
+ }
+
+ .rarity-silver{
+     background: radial-gradient(ellipse farthest-corner at right bottom, silver 0%, #A1A2A3 8%, #8E8E8D 30%, #7D7D7A 40%, transparent 80%),
+                radial-gradient(ellipse farthest-corner at left top, #FFFFFF 0%, #B3B6B5 8%, #A1A2A3 25%, #8E8E8D 62.5%, #7D7D7A 100%);
+ }
+
+.rarity-bronze{
+    background: #e8be84
+}
+ /*
+     background: linear-gradient(-180deg, #BCC5CE 0%, #929EAD 98%), radial-gradient(at top left, rgba(255,255,255,0.30) 0%, rgba(0,0,0,0.30) 100%);
+ background-blend-mode: screen;
+ */

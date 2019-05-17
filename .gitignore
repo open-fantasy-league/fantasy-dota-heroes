@@ -6,4 +6,7 @@ build
 dist
 .idea
 *.swp
+*.log
 *.sql
+get_fixtures.py
+get_teams.py

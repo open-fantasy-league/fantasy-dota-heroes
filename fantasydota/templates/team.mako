@@ -12,6 +12,8 @@
     League page for fantasy dota game.
 </%def>
 
+<link href="/static/footballteams.css?v=1.0" rel="stylesheet">
+
 <div class="row" id="myTeamBlock">
     <div class="row">
     <span class="left" style="width: 33%;"><h5>Team: ${user.username if user else ""}</h5></span>
@@ -21,14 +23,13 @@
     <div id="teamTableContainer">
         <table class="sortable card-table striped centered" id="teamTable">
             <tr style="cursor: pointer" id="teamTableHeader">
-                <th class="heroHeader">Hero</th>
+                <th class="heroHeader">Player</th>
                 <th class="dummyHeader" colspan="0"></th>
-                <th class="heroPointsHeader sorttable_numeric">Points</th>
-                <th class="picksHeader extra sorttable_numeric">Picks</th>
-                <th class="bansHeader extra sorttable_numeric">Bans</th>
-                <th class="winsHeader extra sorttable_numeric">Wins</th>
-                <th class="valueHeader sorttable_numeric">Value</th>
-                <th class="sellHeader">Sell</th>
+                <th class="positionHeader sorttable_numeric">Position</th>
+                <th class="clubHeader extra sorttable_numeric">Club</th>
+                <th class="pointsHeader extra sorttable_numeric">Points</th>
+                <th class="bonusHeader extra sorttable_numeric">Bonuses</th>
+                <th class="sellHeader">Remove</th>
             </tr>
         </table>
     </div>
@@ -36,42 +37,24 @@
         Use Wildcard</button></span>
     <span class="right"><button type="submit" id="confirmTransfers" disabled="true" class="btn waves-effect waves-light">Confirm Team!</button></span>
 </div>
-
-<div class="card row">
-    <div class="card-content">
-        <p><span id="pleaseLogIn" style="display:none" class="messageTransClosed"><strong><a href="${request.route_path('login')}">Please log in or register to pick a team</a></strong></span></p>
-        <p>Pick any 5 heroes to gain points from picks, bans and wins during main event stage. <a href="/rules">Scoring details</a></p>
-    </div>
-</div>
 <div id="heroesBlock" class="row">
-    <h2>Heroes (Credits Available: <strong><span class="userCredits"></span></strong>)</h2>
-      <div class="switch">
-    <label>
-      Table view (sortable)
-      <input type="checkbox" id="gridViewBtn" onchange="switchGridTable(this);" checked autocomplete="off">
-      <span class="lever"></span>
-      Grid view
-    </label>
-  </div>
-    <div id="gridContainer">
-        <table class="card-table striped centered" id="heroesTableGrid">
-        <tr><td></td></tr>
-        </table>
-    </div>
-    <div id="tableContainer" style="display:none">
-        <table class="sortable card-table striped centered" id="heroesTable">
-            <tr style="cursor: pointer" id="heroesTableHeader">
-                <th class="heroHeader">Hero</th>
-                <th class="dummyHeader" colspan="0"></th>
-                <th class="heroPointsHeader sorttable_numeric">Points</th>
-                <th class="picksHeader extra sorttable_numeric">Picks</th>
-                <th class="bansHeader extra sorttable_numeric">Bans</th>
-                <th class="winsHeader extra sorttable_numeric">Wins</th>
-                <th class="valueHeader sorttable_numeric">Value</th>
-                <th class="sellHeader">Buy</th>
-            </tr>
-        </table>
-    </div>
+    <h2>Cards (Credits: <strong><span class="userCredits"></span></strong>)<span class="right">
+    <button type="submit" id="newCardPack" title="10 credits" class="btn waves-effect waves-light">
+    New pack
+    </button></h2>
 </div>
+    <div id="cardsContainer" class="row">
+        <ul class = "tabs">
+        <li class = "tab col s3"><a href = "#goalkeepers">Goalkeepers</a></li>
+        <li class = "tab col s3"><a href = "#defenders">Defenders</a></li>
+        <li class = "tab col s3"><a href = "#midfielders">Midfielders</a></li>
+        <li class = "tab col s3"><a href = "#forwards">Forwards</a></li>
+        </ul>
+        <div id="goalkeepers" class="col s12"></div>
+        <div id="defenders" class="col s12"></div>
+        <div id="midfielders" class="col s12"></div>
+        <div id="forwards" class="col s12"></div>
+    </div>
+<div class="row">Fish</div>
 <script src="/static/trade.js?v=1.0"></script>
 <script src="/static/team.js?v=1.1"></script>
