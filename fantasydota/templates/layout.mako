@@ -72,6 +72,9 @@
                 <a href="/team">Team</a>
             </li>
             <li class="col s1">
+                <a href="/predictions">Predictions</a>
+            </li>
+            <li class="col s1">
                 <a href="/leaderboard?period=0">Leaderboard</a>
             </li>
             <li class="col s1">

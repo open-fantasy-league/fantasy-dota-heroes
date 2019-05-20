@@ -47,12 +47,12 @@ function makeLeaderboard(){
                         if (userId != null){
                             tfoot[k++] = ' outsideRanks';
                         }
-                        appendBothUserRows(isUser, r, tfoot, j++, k++,'"><td class="positionEntry">');
+                        appendBothUserRows(isUser, r, tfoot, j++, k++,'"><td class="positionHeader">');
                         appendBothUserRows(isUser, r, tfoot, j++, k++,player.rank);
                         if (period == 0){
                             appendBothUserRows(isUser, r, tfoot, j++, k++, progress_arrow(player));
                         }
-                        appendBothUserRows(isUser, r, tfoot, j++, k++, '</td><td class="heroEntry"><span style="vertical-align:middle">');
+                        appendBothUserRows(isUser, r, tfoot, j++, k++, '</td><td class="heroHeader"><span style="vertical-align:middle">');
                         if (league.ended && key == 0){
                             r[++j] = '<img src="static/images/dota/trophy.png"/>';
                         }
@@ -68,7 +68,7 @@ function makeLeaderboard(){
                             appendBothUserRows(isUser, r, tfoot, j++, k++,'"/>');
                         })
                         }
-                        appendBothUserRows(isUser, r, tfoot, j++, k++,'</span></td><td class="rankingEntry">');
+                        appendBothUserRows(isUser, r, tfoot, j++, k++,'</span></td><td class="rankingHeader">');
                         appendBothUserRows(isUser, r, tfoot, j++, k++,player.value);
                         appendBothUserRows(isUser, r, tfoot, j++, k++,'</td></tr>');
                     })

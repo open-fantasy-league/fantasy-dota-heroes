@@ -298,6 +298,22 @@ and (max-width: 900px)
 .rarity-bronze{
     background: #e8be84
 }
+
+.bonus-rarity-gold{
+    color: white;
+}
+.bonus-rarity-silver{
+    color: white;
+}
+
+.bottomRightParent{
+    position: relative;
+}
+.bottomRight{
+    position: absolute;
+right:    5px;
+bottom:   5px;
+}
  /*
      background: linear-gradient(-180deg, #BCC5CE 0%, #929EAD 98%), radial-gradient(at top left, rgba(255,255,255,0.30) 0%, rgba(0,0,0,0.30) 100%);
  background-blend-mode: screen;

@@ -68,5 +68,26 @@ def new_card_pack(request):
         text = e.read()
         return Response(text, status=e.code)
     except Exception as e:
-        text = traceback.print_exc()
+        return Response(e.message, status=500)
+
+
+@view_config(route_name='recycle_card', renderer='json')
+def recycle_card(request):
+    user_id = authenticated_userid(request)
+    league_id = int(request.params.get('league', DEFAULT_LEAGUE))
+    url = API_URL + "transfers/leagues/" + str(league_id) + "/users/" + str(user_id) + "/recycleCard/" + str(request.POST.get('cardId'))
+    try:
+        req = urllib2.Request(
+            url, data="", headers={
+                'apiKey': FANTASY_API_KEY,
+                'User-Agent': 'fantasy-dota-frontend',
+                "Content-Type": "application/json"
+            }
+        )
+        response = urllib2.urlopen(req)
+        return json.loads(response.read())
+    except urllib2.HTTPError as e:
+        text = e.read()
+        return Response(text, status=e.code)
+    except Exception as e:
         return Response(e.message, status=500)

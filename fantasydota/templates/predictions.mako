@@ -13,22 +13,22 @@
 </%def>
 
 <div class="row">
-    <h2>Predictions
-        <a class="right" id="leagueLink" target="_blank"></a></h2>
-</div>
-<div class="row">
-<div id="predictionsBlock" class="col m7 s12">
-    <nav>
-    <div class="nav-wrapper teal darken-2">
-        <ul class="left">
+    <h2>Predictions</h2>
+    <span class="centre>
+    <ul class="left">
             <li>
                 <a class="dropdown-button leaderboardDropdown" data-hover="true" data-beloworigin="true" href="" data-activates="periodDropdown">Period<i class="material-icons right">arrow_drop_down</i></a>
             </li>
             <ul id="periodDropdown" class="dropdown-content">
             </ul>
         </ul>
-    </div>
-    </nav>
+    </span>
+        <h2><a class="right" id="leagueLink" target="_blank"></a></h2>
+</div>
+<div class="row">
+<div id="predictionsBlock" class="col m7 s12">
+    <!--<nav>-->
+    <!--<div class="nav-wrapper teal darken-2">-->
 
     <div id="predictionsContainer">
     </div>

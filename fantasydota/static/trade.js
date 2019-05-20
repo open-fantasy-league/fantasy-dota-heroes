@@ -25,6 +25,7 @@ var tradeOnclick = function tradeOnclick(event){
 }
 
 var recycleOnClick = function recycleOnClick(event){
+    var button = $(event.currentTarget);
     var cardId = parseInt(button.attr('data-cardId'));
 
     $.ajax({
@@ -35,7 +36,7 @@ var recycleOnClick = function recycleOnClick(event){
         data: {"cardId": cardId},
         success: function(data){
             $(".userCredits").each(function(){$(this).text(data.updatedMoney)});
-            $(".playerCard") > child$("#recyclePlayer-" + cardId).remove();
+            $("#recyclePlayer-" + cardId).parent().parent().parent().parent().remove();
             undisableButtons();
             swal({
              title: "Recycled",
@@ -100,7 +101,7 @@ console.log(playerId)
              title: "Transfer valid",
              text: "Confirm Transfers to process changes",
               icon: "success",
-              timer: 1600
+              timer: 500
             });
         },
         error: function(jqxhr, textStatus, errorThrown){
@@ -121,12 +122,25 @@ r, j = addPlayerHtmlArray(player, r, j);
 function addToTeam(player){
     var new_row = makeTeamRow(player);
     var btn = $(new_row).find("button");
-    var teamRow = $(".teamRow");
+    var position = player.limitTypes.position;
+    var teamRow = $(".teamRow." + position);
+    var positionRow = $("")
     if (teamRow.length != 0) {
         teamRow.last().after(new_row);
     }
     else{
-        $("#teamTable").find("tbody").append(new_row);
+        var currentVal = positionOrder.get(position);
+        while (currentVal > -1 && teamRow.length == 0){
+            currentVal--;
+            var nextPosition = reversePositionOrder.get(currentVal)
+            teamRow = $(".teamRow." + nextPosition);
+        }
+        if (teamRow.length != 0){
+            teamRow.last().after(new_row);
+        }
+        else{
+            $("#teamTable").find("tbody").prepend(new_row);
+        }
     }
     btn.off('click').click(tradeOnclick);  // otherwise need reload page to resell
 }
