@@ -13,24 +13,27 @@
 </%def>
 
 <div class="row">
+    <span class="left">
     <h2>Predictions</h2>
-    <span class="centre>
-    <ul class="left">
+    </span>
+    <ul class="right">
             <li>
-                <a class="dropdown-button leaderboardDropdown" data-hover="true" data-beloworigin="true" href="" data-activates="periodDropdown">Period<i class="material-icons right">arrow_drop_down</i></a>
+                <a class="dropdown-trigger btn leaderboardDropdown" data-hover="true" data-beloworigin="true" href="" data-activates="periodDropdown">
+                Week
+                <i class="material-icons right">arrow_drop_down</i></a>
             </li>
             <ul id="periodDropdown" class="dropdown-content">
             </ul>
         </ul>
-    </span>
-        <h2><a class="right" id="leagueLink" target="_blank"></a></h2>
+        <span class="centre">
+        <a id="leagueLink" target="_blank"></a></span>
 </div>
 <div class="row">
 <div id="predictionsBlock" class="col m7 s12">
-    <!--<nav>-->
-    <!--<div class="nav-wrapper teal darken-2">-->
-
+    <button type="submit" id="predictBtn" class="btn waves-effect waves-light">Update predictions</button>
     <div id="predictionsContainer">
+    <table class="card-table striped centered" id="predictionsTable">
+    </table>
     </div>
 </div>
 
@@ -38,6 +41,7 @@
 var period = ${period};
 
 $( document ).ready(function() {
+    $('.dropdown-trigger').dropdown();
     $(".dropdown-button").dropdown({
         "belowOrigin": true,
         "hover": true
