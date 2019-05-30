@@ -227,7 +227,7 @@ def update_email_settings(request):
 
 
 @view_config(route_name='clear_notifications', renderer='string')
-def update_email_settings(request):
+def clear_notifications(request):
     session = DBSession()
     user_id = authenticated_userid(request)
     if not user_id:

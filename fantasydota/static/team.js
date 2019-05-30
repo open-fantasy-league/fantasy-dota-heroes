@@ -33,7 +33,7 @@ if (!apiRegistered){
 //}).then(getPickees)
 
 function getCards(){
-var nextPeriodValue = league.currentPeriod ? league.currentPeriod + 1: 1
+var nextPeriodValue = league.currentPeriod ? league.currentPeriod.value + 1: 1
 var nextPeriodStart = league.periods[nextPeriodValue - 1].start
 teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&stats&time=" + nextPeriodStart;
     $("#leagueLink").attr('href', league.url);

@@ -117,7 +117,6 @@ function updatePredictions(){
               timer: 500
             }),
                     error: function(jqxhr, textStatus, errorThrown){
-            undisableButtons();
             sweetAlert(jqxhr.responseText, '', 'error');
         }
             });

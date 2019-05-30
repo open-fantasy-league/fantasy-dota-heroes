@@ -7,6 +7,8 @@ SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/done'
 
 SOCIAL_AUTH_AUTHENTICATION_BACKENDS = (
     'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.open_id.OpenIdAuth',  # for Google authentication
+    'social_core.backends.google.GoogleOpenId',  # for Google authentication
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.steam.SteamOpenId'
 )

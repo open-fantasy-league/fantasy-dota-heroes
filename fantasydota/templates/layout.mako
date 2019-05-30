@@ -49,6 +49,7 @@
                         league = data;
                         currentPeriod = league.currentPeriod ? league.currentPeriod.value : 1;
                         $('.dailyLink').attr('href', "/leaderboard?period=" + currentPeriod);
+                        $('#predictionsLink').attr('href', "/predictions?period=" + (league.currentPeriod ? league.currentPeriod.value + 1 : 1));
                     }
                 })
             };
@@ -72,7 +73,7 @@
                 <a href="/team">Team</a>
             </li>
             <li class="col s1">
-                <a href="/predictions">Predictions</a>
+                <a href="/predictions" class="predictionsLink">Predictions</a>
             </li>
             <li class="col s1">
                 <a href="/leaderboard?period=0">Leaderboard</a>
@@ -189,6 +190,9 @@
             <div class="row">
         <div class="col s1">
             <a href="/faq">FAQ</a>
+        </div>
+        <div class="col s1">
+            <a href="/privacy">Privacy stuff</a>
         </div>
         <div class="col s2">
             <a href="/hallOfFame">Hall of Fame</a>

@@ -69,6 +69,7 @@ def main(global_config, **settings):
     Base.metadata.create_all(engine)
     create_tables(DBSession)
 
+    app_local_settings.includeme(config)
     config.include('social_pyramid')
     config.scan('social_pyramid')
 
@@ -82,6 +83,7 @@ def main(global_config, **settings):
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
     config.add_route('view_faq', '/faq')
+    config.add_route('view_privacy', '/privacy')
     config.add_route('hall_of_fame', '/hallOfFame')
     
     config.add_route('register', '/register')
