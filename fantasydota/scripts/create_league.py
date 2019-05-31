@@ -66,26 +66,34 @@ def create_league(name, tournament_id, url):
                    {'name': 'club', 'max': 2, 'types': [{'name': t[0]} for t in teams]}
                    ],
         "stats": [
+            {'name': 'playing', 'allFactionPoints': 1.0},
+            {'name': 'playing > 60 mins', 'allFactionPoints': 1.0},
             {'name': 'assist', 'allFactionPoints': 4.0},
             {'name': 'clean sheet', 'separateFactionPoints': [
-                {'name': 'goalkeeper', 'value': 10.0},
-                {'name': 'defender', 'value': 6.0},
-                {'name': 'midfielder', 'value': 2.0}
+                {'name': 'goalkeeper', 'value': 5.0},
+                {'name': 'defender', 'value': 4.0},
+                {'name': 'midfielder', 'value': 1.0}
             ]},
              {'name': 'goal', 'separateFactionPoints': [
                  {'name': 'forward', 'value': 4.0},
-                 {'name': 'defender', 'value': 6.0},
+                 {'name': 'defender', 'value': 7.0},
                  {'name': 'midfielder', 'value': 5.0}
              ]},
             {'name': 'goal conceded', 'separateFactionPoints': [
-                 {'name': 'goalkeeper', 'value': -2.0},
+                 {'name': 'goalkeeper', 'value': -1.0},
                  {'name': 'defender', 'value': -1.0},
                  {'name': 'midfielder', 'value': -0.5}
              ]},
-            {'name': 'penalty save', 'separateFactionPoints': [
-                {'name': 'goalkeeper', 'value': 4.0},
+            {'name': 'shot saved', 'separateFactionPoints': [
+                {'name': 'goalkeeper', 'value': 0.2},
             ]},
-            {'name': 'penalty miss', 'allFactionPoints': -4.0},
+            {'name': 'penalty save', 'separateFactionPoints': [
+                {'name': 'goalkeeper', 'value': 3.0},
+            ]},
+            {'name': 'yellow card', 'allFactionPoints': -1.0},
+            {'name': 'red card', 'allFactionPoints': -2.0},
+            {'name': 'own goal', 'allFactionPoints': -2.0},
+            {'name': 'penalty miss', 'allFactionPoints': -3.0},
             {'name': 'WhoScored match rating', 'allFactionPoints': 1.0}
         ],
         'pickees': get_players(teams)
