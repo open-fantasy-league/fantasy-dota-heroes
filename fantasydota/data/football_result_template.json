@@ -1,0 +1,14 @@
+{
+  "tournamentId": 0,
+    "teamOne":  "Arsenal",
+  "teamTwo": "Chelsea",
+  "teamOneGoals": [
+    {"min":  37, "scorer":  "Greg", "assist": null}
+  ],
+  "teamTwoGoals": [
+    {"min":  64, "scorer":  "Oleg", "assist": "Tom"},
+    {"min":  88, "scorer":  "Oleg", "assist": "Tom"}
+  ],
+  "teamOnePlayers": ["David", 0, 120],
+  "teamTwoPlayers": []
+}
