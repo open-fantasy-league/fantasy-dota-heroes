@@ -7,16 +7,26 @@ from fantasydota.lib.herodict import herodict
 from fantasydota.lib.calibration import calibrate_all_hero_values, squeeze_values_together
 from fantasydota.lib.constants import API_URL, DEFAULT_LEAGUE
 
+
 def get_fixtures():
     with open("fixtures.json") as f:
-        fixtures = json.load(f)['fixtures']
+        j = json.load(f)
+        fixtures = j['fixtures']
     matches = []
+    periods = []
     for i, match in enumerate(fixtures):
         matches.append({
             'matchId': i, 'tournamentId': 1, 'teamOne': match[0], 'teamTwo': match[1],
             "startTstamp": match[2] + ":00"
         })
-    return matches
+    period_starts = j['period_starts']
+    for i, tstamp in period_starts:
+        if i != 37:
+            periods.append({'start': tstamp, 'end': period_starts, 'multiplier': 1.0})
+        else:
+            periods.append({'start': tstamp, 'end': '3000-12-05 15:00', 'multiplier': 2.0})
+    return matches, periods
+
 
 def get_players(teams):
     pickees = []
@@ -35,12 +45,13 @@ def create_league(name, tournament_id, url):
     FE_APIKEY = os.environ.get("FE_APIKEY")
     if not FE_APIKEY:
         print "Set your fantasy esport APIKEY environment variable"
+    fixtures, periods = get_fixtures()
 
     data = {
         'name': name,
         'apiKey': FE_APIKEY,
         'tournamentId': tournament_id,
-        'gameId': 1,
+        'gameId': 3,
         'pickeeDescription': 'Player',
         'periodDescription': 'Week',
         'startingMoney': 0.0,
@@ -52,11 +63,7 @@ def create_league(name, tournament_id, url):
             # "noWildcardForLateRegister": True,
             #'transferLimit': 5
         },
-        "periods": [
-            {"start": "2019-04-25 10:00", "end": "2019-05-01 22:00", "multiplier": 1},
-            {"start": "2019-05-01 10:00", "end": "2019-05-07 10:00", "multiplier": 1},
-            {"start": "2019-05-07 10:00", "end": "2019-05-29 22:00", "multiplier": 2},
-        ],
+        "periods": periods,
         "url": url,
         "applyPointsAtStartTime": False,
         "limits": [{'name': 'position', 'types': [
@@ -67,9 +74,9 @@ def create_league(name, tournament_id, url):
                    ],
         "stats": [
             {'name': 'playing', 'allFactionPoints': 1.0},
-            {'name': 'playing > 60 mins', 'allFactionPoints': 1.0},
+            {'name': 'playing > 60 mins', 'allFactionPoints': 1.0},  # total 2 points when playing point added
             {'name': 'assist', 'allFactionPoints': 4.0},
-            {'name': 'clean sheet', 'separateFactionPoints': [
+            {'name': 'clean sheet', 'separateFactionPoints': [  # when on pitch, and must be 60+ mins
                 {'name': 'goalkeeper', 'value': 5.0},
                 {'name': 'defender', 'value': 4.0},
                 {'name': 'midfielder', 'value': 1.0}
@@ -94,7 +101,7 @@ def create_league(name, tournament_id, url):
             {'name': 'red card', 'allFactionPoints': -2.0},
             {'name': 'own goal', 'allFactionPoints': -2.0},
             {'name': 'penalty miss', 'allFactionPoints': -3.0},
-            {'name': 'WhoScored match rating', 'allFactionPoints': 1.0}
+            {'name': 'WhoScored match rating (x % game played)', 'allFactionPoints': 1.0}
         ],
         'pickees': get_players(teams)
     }
@@ -121,7 +128,7 @@ def create_league(name, tournament_id, url):
     # except urllib2.HTTPError as e:
     #     print(e.read())
 
-    for fixture in get_fixtures():
+    for fixture in fixtures:
         try:
             req = urllib2.Request(
                 API_URL + "results/leagues/" + str(DEFAULT_LEAGUE) + "/fixture",

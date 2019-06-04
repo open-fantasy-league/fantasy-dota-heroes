@@ -55,6 +55,5 @@
         <div id="midfielders" class="col s12"></div>
         <div id="forwards" class="col s12"></div>
     </div>
-<div class="row">Fish</div>
 <script src="/static/trade.js?v=1.0"></script>
 <script src="/static/team.js?v=1.1"></script>

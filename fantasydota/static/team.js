@@ -1,15 +1,39 @@
 var userCanTransfer;
 var teamUrl;
 var players;
+var currentIndex;
 var tableContainer = $("#tableContainer");
 var gridContainer = $("#gridContainer");
 var posOrders = [['Goalkeeper', 0], ['Defender', 1], ['Midfielder', 2], ['Forward', 3]];
 var reversePosOrders = [[0, 'Goalkeeper'], [1, 'Defender'], [2, 'Midfielder'], [3, 'Forward']];
 var positionOrder = new Map(posOrders);
 var reversePositionOrder = new Map(reversePosOrders);
-var playerDataCache = new Map()
-signup()
-getLeagueInfo().then(getCards)
+var playerDataCache = new Map();
+
+                var rightClick = function rightClick(event){
+                    var newCards = $(".newCard")
+                    if (currentIndex >= newCards.length){return}
+                    var n = newCards[currentIndex];
+                    $(n).removeClass('topCard');
+                    currentIndex += 1;
+                    var m = newCards[currentIndex];
+                    $(m).addClass('topCard');
+                };
+                var leftClick = function leftClick(event){
+                    if (currentIndex == 0){return}
+                    var newCards = $(".newCard")
+                    var n = newCards[currentIndex]
+                    $(n).removeClass('topCard');
+                    currentIndex -= 1;
+                    var m = newCards[currentIndex]
+                    $(m).addClass('topCard');
+                };
+$(document).on('click', "#leftClick", leftClick);
+$(document).on('click', "#rightClick", rightClick);
+
+
+signup();
+getLeagueInfo().then(getCards);
 
 function signup(){
 if (!apiRegistered){
@@ -217,7 +241,56 @@ function setup(){
             dataType: "json",
             type: "GET",
             success: function(data){
-                    window.location.reload(false);
+                var p = [], j = -1;
+                var newCards = [];
+                currentIndex = 0;
+                p[++j] = '<span class="left"><button name="left" id="leftClick">Left</button></span><span class="right"><button name="right" id="rightClick">Right</button>';
+                $.each(data, function(i, player){
+                p[++j] = '<div style="height: 400px; position: absolute; right:';
+                p[++j] = (i * 10) + 40;
+                p[++j] = 'px';
+                p[++j] = '" class="card col s9 playerCard rounded bottomRightParent newCard';
+                 if (i == 0) p[++j] = ' topCard';
+                 p[++j] = ' rarity-';
+                            p[++j] = player.colour.toLowerCase();
+                            p[++j] = ' ';
+                            p[++j] = player.limitTypes.club.split(" ").join("").toLowerCase();
+                            p[++j] = '"><div class="card-content"><span class="card-title"><h6><p><span class="centre"><strong>';
+                            p[++j] = player.name;
+                            p[++j] = '</strong></span></p><p><span class="centre">';
+                            p[++j] = player.limitTypes.club;
+                            p[++j] = '</span></p></h6></span><p><span class="left">';
+                            p[++j] = player.limitTypes.position;
+                            p[++j] = '</span>';
+                            p[++j] = '</p><div class="card-image"><img src="/static/images/football/placeholder.png"></div><p>';
+                            $.each(player.bonuses, function(bkey, bonus){
+                                console.log(bonus)
+                                p[++j] = '<p><i><span class="bonus-rarity-';
+                                p[++j] = player.colour.toLowerCase();
+                                p[++j] = '">→';
+                                p[++j] = bonus.name;
+                                p[++j] = ' x';
+                                p[++j] = bonus.multiplier;
+                                p[++j] = '</span></i></p>';
+                            })
+                            p[++j] = '</div></div>';
+                            //newCards.push(p.join(""));
+                            });
+                var html = p.join("");
+                var div = document.createElement("div");
+                div.innerHTML = html;
+                div.setAttribute("class", "row");
+                div.style.position = "relative";
+                //$(".rightBtn").click(rightClick)
+
+                //$(".leftBtn").click(leftClick)
+                swal({
+                 content: div,
+                 heightAuto: false,
+                  icon: "success",
+                  className: 'swal-newcards'
+                })
+                    //window.location.reload(false);
             },
             error: function(jqxhr, textStatus, errorThrown){
                 sweetAlert(jqxhr.responseText, '', 'error');

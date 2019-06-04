@@ -13,6 +13,24 @@ SOCIAL_AUTH_AUTHENTICATION_BACKENDS = (
     'social_core.backends.steam.SteamOpenId'
 )
 
+# Google OAuth2 (google-oauth2)
+SOCIAL_AUTH_GOOGLE_OAUTH2_IGNORE_DEFAULT_SCOPE = True
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+'https://www.googleapis.com/auth/userinfo.email',
+'https://www.googleapis.com/auth/userinfo.profile'
+]
+
+# Google+ SignIn (google-plus)
+SOCIAL_AUTH_GOOGLE_PLUS_IGNORE_DEFAULT_SCOPE = True
+SOCIAL_AUTH_GOOGLE_PLUS_SCOPE = [
+'https://www.googleapis.com/auth/plus.login',
+'https://www.googleapis.com/auth/userinfo.email',
+'https://www.googleapis.com/auth/userinfo.profile'
+]
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_USE_DEPRECATED_API = True
+SOCIAL_AUTH_GOOGLE_PLUS_USE_DEPRECATED_API = True
+
 # # Specified key was too long mysql social auth bug
 # SOCIAL_AUTH_UID_LENGTH = 128
 # SOCIAL_AUTH_NONCE_SERVER_URL_LENGTH = 128
