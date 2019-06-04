@@ -20,8 +20,8 @@ def view_team(request):
     session = DBSession()
     user_id = authenticated_userid(request)
     league_id = int(request.params.get('league', DEFAULT_LEAGUE))
-    team_name = session.query(Team).filter(Team.league_id.is_(league_id)).filter(Team.user_id.is_(user_id)).single
-    team_name = team_name or session.query(User.username).filter(User.user_id.is_(user_id)).single[0]
+    team_name = session.query(Team).filter(Team.league_id == league_id).filter(Team.user_id == user_id).first()
+    team_name = team_name or session.query(User.username).filter(User.id == user_id).first()[0]
     return_dict = {'league_id': league_id, 'team_name': team_name}
 
     return_dict = all_view_wrapper(return_dict, session, user_id)
@@ -63,8 +63,8 @@ def update_team_name(request):
         data = {"success": False, "msg": "Team name can only contain letters, numbers and spaces"}
         return Response(json.loads(data), status=400)
     else:
-        teamq = session.query(Team).filter(Team.league_id.is_(league_id)).filter(Team.user_id.is_(user_id))
-        if teamq.single:
+        teamq = session.query(Team).filter(Team.league_id == league_id).filter(Team.user_id == user_id)
+        if teamq.first():
             data = {"success": False, "msg": "Team name already taken. please choose unique one"}
             return Response(json.loads(data), status=400)
         else:
