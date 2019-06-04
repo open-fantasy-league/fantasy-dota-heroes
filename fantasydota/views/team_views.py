@@ -1,10 +1,11 @@
+import re
 import traceback
 import urllib2
 
 import json
 from fantasydota.lib.constants import DEFAULT_LEAGUE, API_URL
 from fantasydota.local_settings import FANTASY_API_KEY
-from fantasydota.models import User
+from fantasydota.models import User, Team
 from pyramid.httpexceptions import HTTPFound, HTTPBadRequest, HTTPInternalServerError
 from pyramid.response import Response
 from pyramid.security import authenticated_userid
@@ -18,7 +19,10 @@ from fantasydota.lib.general import all_view_wrapper
 def view_team(request):
     session = DBSession()
     user_id = authenticated_userid(request)
-    return_dict = {'league_id': int(request.params.get('league', DEFAULT_LEAGUE))}
+    league_id = int(request.params.get('league', DEFAULT_LEAGUE))
+    team_name = session.query(Team).filter(Team.league_id.is_(league_id)).filter(Team.user_id.is_(user_id)).single
+    team_name = team_name or session.query(User.username).filter(User.user_id.is_(user_id)).single[0]
+    return_dict = {'league_id': league_id, 'team_name': team_name}
 
     return_dict = all_view_wrapper(return_dict, session, user_id)
     return return_dict
@@ -47,6 +51,26 @@ def transfer_proxy(request):
     except urllib2.HTTPError as e:
         text = e.read()
         return Response(text, status=e.code)
+
+
+@view_config(route_name='update_team_name', renderer='json')
+def update_team_name(request):
+    session = DBSession()
+    user_id = authenticated_userid(request)
+    league_id = int(request.params.get('league', DEFAULT_LEAGUE))
+    new_name = request.POST.get('name')
+    if not re.match("^[0-9 ]+$", new_name):
+        data = {"success": False, "msg": "Team name can only contain letters, numbers and spaces"}
+        return Response(json.loads(data), status=400)
+    else:
+        teamq = session.query(Team).filter(Team.league_id.is_(league_id)).filter(Team.user_id.is_(user_id))
+        if teamq.single:
+            data = {"success": False, "msg": "Team name already taken. please choose unique one"}
+            return Response(json.loads(data), status=400)
+        else:
+            teamq.update({Team.name: new_name})
+            data = {"success": True, "name": new_name}
+            return Response(json.loads(data), status=200)
 
 
 @view_config(route_name='new_card_pack', renderer='json')

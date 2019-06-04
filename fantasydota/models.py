@@ -55,6 +55,20 @@ class User(Base):
         return bcrypt.verify(password, self.password)
 
 
+class League(Base):
+    __tablename__ = "league"
+    id = Column(Integer, Sequence('id'), primary_key=True)
+    name = Column(String(20), nullable=False, index=True)
+
+
+class Team(Base):
+    __tablename__ = "team"
+    id = Column(Integer, Sequence('id'), primary_key=True)
+    user_id = Column(Integer, ForeignKey(User.id))
+    league_id = Column(Integer, ForeignKey(League.id))
+    name = Column(String(20), nullable=False, index=True)
+
+
 class PasswordReset(Base):
     __tablename__ = "password_reset"
     id = Column(Integer, Sequence('id'), primary_key=True)
