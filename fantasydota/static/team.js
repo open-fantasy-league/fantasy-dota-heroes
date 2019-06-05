@@ -12,21 +12,20 @@ var playerDataCache = new Map();
 
                 var rightClick = function rightClick(event){
                     var newCards = $(".newCard")
-                    if (currentIndex >= newCards.length){return}
-                    var n = newCards[currentIndex];
-                    $(n).removeClass('topCard');
+                    if (currentIndex >= newCards.length -1){return}
+                    var oldSelected = $(newCards[currentIndex]);
+                    var oldSelectedZ = parseInt(n.css('z-index'));
+                    var newSelected = $(newCards[currentIndex+1]);
+                    newSelected.css('z-index', oldSelectedZ + 1);
                     currentIndex += 1;
-                    var m = newCards[currentIndex];
-                    $(m).addClass('topCard');
                 };
                 var leftClick = function leftClick(event){
                     if (currentIndex == 0){return}
                     var newCards = $(".newCard")
-                    var n = newCards[currentIndex]
-                    $(n).removeClass('topCard');
+                    var oldSelected = $(newCards[currentIndex])
+                    var oldSelectedZ = parseInt(n.css('z-index'));
+                    oldSelected.css('z-index', oldSelectedZ - (2 * currentIndex));
                     currentIndex -= 1;
-                    var m = newCards[currentIndex]
-                    $(m).addClass('topCard');
                 };
 $(document).on('click', "#leftClick", leftClick);
 $(document).on('click', "#rightClick", rightClick);
@@ -244,13 +243,15 @@ function setup(){
                 var p = [], j = -1;
                 var newCards = [];
                 currentIndex = 0;
-                p[++j] = '<span class="left"><button name="left" id="leftClick">Left</button></span><span class="right"><button name="right" id="rightClick">Right</button>';
+                p[++j] = '<span class="left"><button name="left" class="btn waves-effect waves-light" id="leftClick">&#8249;</button></span><span class="right"><button name="right" class="btn waves-effect waves-light" id="rightClick">&#8250;</button>';
                 $.each(data, function(i, player){
+                                var positioning = (i * -10) + 110;
                 p[++j] = '<div style="height: 400px; position: absolute; right:';
-                p[++j] = (i * 10) + 40;
-                p[++j] = 'px';
-                p[++j] = '" class="card col s9 playerCard rounded bottomRightParent newCard';
-                 if (i == 0) p[++j] = ' topCard';
+                p[++j] = positioning;
+                p[++j] = 'px; z-index:';
+                p[++j] =  6 + i * -1;
+                p[++j] = ';" class="card col s9 playerCard rounded bottomRightParent newCard';
+                 //if (i == 0) p[++j] = ' topCard';
                  p[++j] = ' rarity-';
                             p[++j] = player.colour.toLowerCase();
                             p[++j] = ' ';
@@ -288,7 +289,10 @@ function setup(){
                  content: div,
                  heightAuto: false,
                   icon: "success",
-                  className: 'swal-newcards'
+                  className: 'swal-newcards',
+                  showCloseButton: true,
+                  button: false,
+
                 })
                     //window.location.reload(false);
             },
