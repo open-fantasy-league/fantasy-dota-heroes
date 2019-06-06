@@ -10,27 +10,28 @@ var positionOrder = new Map(posOrders);
 var reversePositionOrder = new Map(reversePosOrders);
 var playerDataCache = new Map();
 
-                var rightClick = function rightClick(event){
-                    var newCards = $(".newCard")
-                    if (currentIndex >= newCards.length -1){return}
-                    var oldSelected = $(newCards[currentIndex]);
-                    var oldSelectedZ = parseInt(n.css('z-index'));
-                    var newSelected = $(newCards[currentIndex+1]);
-                    newSelected.css('z-index', oldSelectedZ + 1);
-                    currentIndex += 1;
-                };
-                var leftClick = function leftClick(event){
-                    if (currentIndex == 0){return}
-                    var newCards = $(".newCard")
-                    var oldSelected = $(newCards[currentIndex])
-                    var oldSelectedZ = parseInt(n.css('z-index'));
-                    oldSelected.css('z-index', oldSelectedZ - (2 * currentIndex));
-                    currentIndex -= 1;
-                };
+var rightClick = function rightClick(event){
+    var newCards = $(".newCard")
+    if (currentIndex >= newCards.length -1){return}
+    var oldSelected = $(newCards[currentIndex]);
+    var oldSelectedZ = parseInt(oldSelected.css('z-index'));
+    var newSelected = $(newCards[currentIndex+1]);
+    newSelected.css('z-index', oldSelectedZ + 1);
+    currentIndex += 1;
+};
+var leftClick = function leftClick(event){
+    if (currentIndex == 0){return}
+    var newCards = $(".newCard")
+    var oldSelected = $(newCards[currentIndex])
+    var oldSelectedZ = parseInt(oldSelected.css('z-index'));
+    oldSelected.css('z-index', oldSelectedZ - (2 * currentIndex));
+    currentIndex -= 1;
+};
 $(document).on('click', "#leftClick", leftClick);
 $(document).on('click', "#rightClick", rightClick);
 
-
+$("#updateNameButton").click(updateNameOnclick)
+$("#confirmNameButton").click(confirmNameOnclick)
 signup();
 getLeagueInfo().then(getCards);
 
@@ -189,7 +190,6 @@ function getTeamThenSetup(){
                                 type: "POST",
                                 contentType: "application/json",
                                 data: JSON.stringify({"username": username, "userId": userId}),
-                                dataType: "json"
                                 }).then(getTeamThenSetup)  // this time the call should work
                     }
                     else{
@@ -243,7 +243,7 @@ function setup(){
                 var p = [], j = -1;
                 var newCards = [];
                 currentIndex = 0;
-                p[++j] = '<span class="left"><button name="left" class="btn waves-effect waves-light" id="leftClick">&#8249;</button></span><span class="right"><button name="right" class="btn waves-effect waves-light" id="rightClick">&#8250;</button>';
+                p[++j] = '<span class="left"><button name="left" class="btn waves-effect amber lighten-1" id="leftClick"><i class="material-icons">chevron_left</i></button></span><span class="right"><button name="right" class="btn waves-effect amber lighten-1" id="rightClick"><i class="material-icons">chevron_right</i></button>';
                 $.each(data, function(i, player){
                                 var positioning = (i * -10) + 110;
                 p[++j] = '<div style="height: 400px; position: absolute; right:';
@@ -301,4 +301,46 @@ function setup(){
             }
         });
     })
+}
+
+function updateNameOnclick(){
+    var teamName = $("#teamName");
+    teamName.addClass("invisible");
+    $("#teamNameEdit").removeClass("invisible");
+    $("#updateNameButton").addClass("invisible");
+    $("#confirmNameButton").removeClass("invisible");
+    }
+//        $.ajax({
+//            url: "/update_team_name",
+//            dataType: "json",
+//            type: "POST",
+//            data: {"name": name},
+//            success: function(data){
+//                $("#teamName").text(data.team_name);
+//            },
+//            error: function(jqxhr, textStatus, errorThrown){
+//                sweetAlert(jqxhr.responseText, '', 'error');
+//            }
+//        });
+
+function confirmNameOnclick(){
+    var teamName = $("#teamName");
+    var teamNameTextField = $("#teamNameTextField");
+    $.ajax({
+        url: "/update_team_name",
+        dataType: "json",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({"name": teamNameTextField.val()}),
+        success: function(data){
+            $("#teamName").text(data.team_name);
+            $("#teamNameEdit").addClass("invisible");
+            $("#updateNameButton").removeClass("invisible");
+            $("#confirmNameButton").addClass("invisible");
+            teamName.removeClass("invisible");
+        },
+        error: function(jqxhr, textStatus, errorThrown){
+            sweetAlert(jqxhr.responseText, '', 'error');
+        }
+    });
 }

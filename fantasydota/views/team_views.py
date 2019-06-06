@@ -20,8 +20,8 @@ def view_team(request):
     session = DBSession()
     user_id = authenticated_userid(request)
     league_id = int(request.params.get('league', DEFAULT_LEAGUE))
-    team_name = session.query(Team).filter(Team.league_id == league_id).filter(Team.user_id == user_id).first()
-    team_name = team_name or session.query(User.username).filter(User.id == user_id).first()[0]
+    team_name = session.query(Team.name).filter(Team.league_id == league_id).filter(Team.user_id == user_id).first()
+    team_name = team_name[0] or session.query(User.username).filter(User.id == user_id).first()[0]
     return_dict = {'league_id': league_id, 'team_name': team_name}
 
     return_dict = all_view_wrapper(return_dict, session, user_id)
@@ -58,19 +58,31 @@ def update_team_name(request):
     session = DBSession()
     user_id = authenticated_userid(request)
     league_id = int(request.params.get('league', DEFAULT_LEAGUE))
-    new_name = request.POST.get('name')
-    if not re.match("^[0-9 ]+$", new_name):
+    print(type(request.json_body))
+    print(request.json_body)
+    print(request.json_body.get('name'))
+    print(request.json_body.get(u'name'))
+    new_name = request.json_body.get('name')
+    if len(new_name) < 3:
+        data = {"success": False, "msg": "Team name must be > 3 characters"}
+        return Response(json.dumps(data), status=400)
+    if not re.match("(?i)^[0-9a-zA-Z ]+$", new_name):
         data = {"success": False, "msg": "Team name can only contain letters, numbers and spaces"}
-        return Response(json.loads(data), status=400)
+        return Response(json.dumps(data), status=400)
     else:
         teamq = session.query(Team).filter(Team.league_id == league_id).filter(Team.user_id == user_id)
-        if teamq.first():
+        existing_name = session.query(Team).filter(Team.league_id == league_id).filter(Team.name == new_name)
+        if existing_name.first():
             data = {"success": False, "msg": "Team name already taken. please choose unique one"}
-            return Response(json.loads(data), status=400)
+            return Response(json.dumps(data), status=400, content_type="application/json")
         else:
-            teamq.update({Team.name: new_name})
-            data = {"success": True, "name": new_name}
-            return Response(json.loads(data), status=200)
+            if teamq.first():
+                teamq.update({Team.name: new_name})
+            else:
+                team = Team(user_id, league_id, new_name)
+                session.add(team)
+            data = {"success": True, "team_name": new_name}
+            return Response(json.dumps(data), status=200, content_type="application/json")
 
 
 @view_config(route_name='new_card_pack', renderer='json')
@@ -90,7 +102,7 @@ def new_card_pack(request):
         return json.loads(response.read())
     except urllib2.HTTPError as e:
         text = e.read()
-        return Response(text, status=e.code)
+        return Response(text, status=e.code, content_type="application/json")
     except Exception as e:
         return Response(e.message, status=500)
 
@@ -112,6 +124,6 @@ def recycle_card(request):
         return json.loads(response.read())
     except urllib2.HTTPError as e:
         text = e.read()
-        return Response(text, status=e.code)
+        return Response(text, status=e.code, content_type="application/json")
     except Exception as e:
         return Response(e.message, status=500)

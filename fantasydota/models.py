@@ -68,6 +68,11 @@ class Team(Base):
     league_id = Column(Integer, ForeignKey(League.id))
     name = Column(String(20), nullable=False, index=True)
 
+    def __init__(self, user_id, league_id, name):
+        self.user_id = user_id
+        self.league_id = league_id
+        self.name = name
+
 
 class PasswordReset(Base):
     __tablename__ = "password_reset"
