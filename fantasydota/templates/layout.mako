@@ -49,7 +49,7 @@
                         league = data;
                         currentPeriod = league.currentPeriod ? league.currentPeriod.value : 1;
                         $('.dailyLink').attr('href', "/leaderboard?period=" + currentPeriod);
-                        $('#predictionsLink').attr('href', "/predictions?period=" + (league.currentPeriod ? league.currentPeriod.value + 1 : 1));
+                        $('.predictionsLink').attr('href', "/predictions?period=" + (league.currentPeriod ? league.currentPeriod.value + 1 : 1));
                     }
                 })
             };

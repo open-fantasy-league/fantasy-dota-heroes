@@ -29,11 +29,11 @@
         <a id="leagueLink" target="_blank"></a></span>
 </div>
 <div class="row">
-<div id="predictionsBlock" class="col m7 s12">
+<div id="predictionsBlock" class="col s12">
     <button type="submit" id="predictBtn" class="btn waves-effect waves-light">Update predictions</button>
     <div id="predictionsContainer">
-    <table class="card-table striped centered" id="predictionsTable">
-    </table>
+    <div class="row" id="predictionsTable">
+    </div>
     </div>
 </div>
 
