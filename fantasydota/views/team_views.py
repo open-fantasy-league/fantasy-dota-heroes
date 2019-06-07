@@ -58,10 +58,6 @@ def update_team_name(request):
     session = DBSession()
     user_id = authenticated_userid(request)
     league_id = int(request.params.get('league', DEFAULT_LEAGUE))
-    print(type(request.json_body))
-    print(request.json_body)
-    print(request.json_body.get('name'))
-    print(request.json_body.get(u'name'))
     new_name = request.json_body.get('name')
     if len(new_name) < 3:
         data = {"success": False, "msg": "Team name must be > 3 characters"}

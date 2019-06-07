@@ -99,6 +99,7 @@ def main(global_config, **settings):
     config.add_route('view_team', '/team')
     config.add_route('update_team_name', '/update_team_name')
     config.add_route('transfer_proxy', '/transfer_proxy')
+    config.add_route('prediction_proxy', '/prediction_proxy')
     config.add_route('new_card_pack', '/new_card_pack')
     config.add_route('recycle_card', '/recycle_card')
     config.add_route('leaderboard', '/leaderboard')

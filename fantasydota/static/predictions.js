@@ -113,16 +113,16 @@ function updatePredictions(){
                     });
             }
     })
-    $.ajax({url: predictionsUrl,
+    $.ajax({url: "/prediction_proxy",
                     type: "POST",
                     dataType: "json",
                     data: JSON.stringify(data),
                     contentType: "application/json",
-                    success: swal({
+                    success: function(){swal({
              title: "Success",
               icon: "success",
               timer: 500
-            }),
+            })},
                     error: function(jqxhr, textStatus, errorThrown){
             sweetAlert(jqxhr.responseText, '', 'error');
         }
