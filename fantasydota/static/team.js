@@ -59,10 +59,10 @@ if (!apiRegistered){
 function getCards(){
 var nextPeriodValue = league.currentPeriod ? league.currentPeriod.value + 1: 1
 var nextPeriodStart = league.periods[nextPeriodValue - 1].start
-teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&stats&time=" + nextPeriodStart;
+teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&stats&period=" + nextPeriodValue;
     $("#leagueLink").attr('href', league.url);
     $("#leagueLink").text(league.name);
-    $.ajax({url: apiBaseUrl + "teams/league/" + leagueId + "/user/" + userId + "/cards?time=" + nextPeriodStart,
+    $.ajax({url: apiBaseUrl + "teams/league/" + leagueId + "/user/" + userId + "/cards?period=" + nextPeriodValue,
                 type: "GET",
                 dataType: "json",
                 success: function(data){

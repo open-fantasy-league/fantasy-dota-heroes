@@ -12,12 +12,12 @@ def get_fixtures():
     with open("fixtures.json") as f:
         j = json.load(f)
         fixtures = j['fixtures']
-    matches = []
+    series = []
     periods = []
     for i, match in enumerate(fixtures):
-        matches.append({
-            'matchId': i, 'tournamentId': 1, 'teamOne': match[0], 'teamTwo': match[1],
-            "startTstamp": match[2] + ":00"
+        series.append({
+            'seriesId': i, 'tournamentId': 1, 'teamOne': match[0], 'teamTwo': match[1],
+            "matches": [{'matchId': i, "startTstamp": match[2] + ":00"}]
         })
     period_starts = j['period_starts']
     for i, tstamp in period_starts:
@@ -25,7 +25,7 @@ def get_fixtures():
             periods.append({'start': tstamp, 'end': period_starts, 'multiplier': 1.0})
         else:
             periods.append({'start': tstamp, 'end': '3000-12-05 15:00', 'multiplier': 2.0})
-    return matches, periods
+    return series, periods
 
 
 def get_players(teams):
@@ -37,6 +37,7 @@ def get_players(teams):
             pickees.append({"id": id, "name": player[0], "value": 1.0, "limits": [player[1], team[0]]})
             id += 1
     return pickees
+
 
 def create_league(name, tournament_id, url):
     with open('players.json') as f:
@@ -100,8 +101,10 @@ def create_league(name, tournament_id, url):
             {'name': 'yellow card', 'allFactionPoints': -1.0},
             {'name': 'red card', 'allFactionPoints': -2.0},
             {'name': 'own goal', 'allFactionPoints': -2.0},
-            {'name': 'penalty miss', 'allFactionPoints': -3.0},
-            {'name': 'WhoScored match rating (x % game played)', 'allFactionPoints': 1.0}
+            {'name': 'penalty miss', 'allFactionPoints': -3.0, 'noCardBonus': True},
+            {'name': 'Unsung hero', 'allFactionPoints': 5.0},
+            {'name': 'Unsung hero 2', 'allFactionPoints': 3.0},
+            {'name': 'Unsung hero 3', 'allFactionPoints': 2.0}
         ],
         'pickees': get_players(teams)
     }
@@ -131,7 +134,7 @@ def create_league(name, tournament_id, url):
     for fixture in fixtures:
         try:
             req = urllib2.Request(
-                API_URL + "results/leagues/" + str(DEFAULT_LEAGUE) + "/fixture",
+                API_URL + "results/leagues/" + str(DEFAULT_LEAGUE),
                 data=json.dumps(fixture), headers={
                     "Content-Type": "application/json",
                     "apiKey": FE_APIKEY
