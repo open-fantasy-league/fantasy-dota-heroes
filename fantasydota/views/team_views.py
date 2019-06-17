@@ -20,8 +20,15 @@ def view_team(request):
     session = DBSession()
     user_id = authenticated_userid(request)
     league_id = int(request.params.get('league', DEFAULT_LEAGUE))
-    team_name = session.query(Team.name).filter(Team.league_id == league_id).filter(Team.user_id == user_id).first()
-    team_name = team_name[0] or session.query(User.username).filter(User.id == user_id).first()[0]
+    team_name_q = session.query(Team.name).filter(Team.league_id == league_id).filter(Team.user_id == user_id).first()
+    if team_name_q:
+        team_name = team_name_q[0]
+    else:
+        usernameq = session.query(User.username).filter(User.id == user_id).first()
+        if usernameq:
+            team_name = usernameq[0]
+        else:
+            team_name = ""
     return_dict = {'league_id': league_id, 'team_name': team_name}
 
     return_dict = all_view_wrapper(return_dict, session, user_id)

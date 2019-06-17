@@ -73,7 +73,7 @@ teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&stats
                         $.each(data.filter(function(e){return e.limitTypes.position == position}), function(i, player) {
                             console.log(player)
                             playerDataCache.set(player.cardId, player);
-                            p[++j] = '<div style="height: 400px;" class="card col s3 playerCard rounded bottomRightParent rarity-';
+                            p[++j] = '<div style="height: 420px;" class="card col s3 playerCard rounded bottomRightParent rarity-';
                             p[++j] = player.colour.toLowerCase();
                             p[++j] = ' ';
                             p[++j] = player.limitTypes.club.split(" ").join("").toLowerCase();
@@ -246,7 +246,7 @@ function setup(){
                 p[++j] = '<span class="left"><button name="left" class="btn waves-effect amber lighten-1" id="leftClick"><i class="material-icons">chevron_left</i></button></span><span class="right"><button name="right" class="btn waves-effect amber lighten-1" id="rightClick"><i class="material-icons">chevron_right</i></button>';
                 $.each(data, function(i, player){
                                 var positioning = (i * -10) + 110;
-                p[++j] = '<div style="height: 400px; position: absolute; right:';
+                p[++j] = '<div style="height: 420px; position: absolute; right:';
                 p[++j] = positioning;
                 p[++j] = 'px; z-index:';
                 p[++j] =  6 + i * -1;

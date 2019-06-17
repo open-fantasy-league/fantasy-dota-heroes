@@ -1,14 +1,14 @@
 {
-  "tournamentId": 0,
-    "teamOne":  "Arsenal",
+  "tournamentId": 1,
+    "teamOne":  "Manchester Utd",
   "teamTwo": "Chelsea",
   "teamOneGoals": [
-    {"min":  37, "scorer":  "Greg", "assist": null}
+    {"min":  37, "scorer":  "Angelo Ogbonna", "assist": null}
   ],
   "teamTwoGoals": [
-    {"min":  64, "scorer":  "Oleg", "assist": "Tom"},
+    {"min":  64, "scorer":  "Lewis Cass", "assist": "Tom"},
     {"min":  88, "scorer":  "Oleg", "assist": "Tom"}
   ],
-  "teamOnePlayers": ["David", 0, 120],
-  "teamTwoPlayers": []
+  "teamOnePlayers": [["Angelo Ogbonna", 0, 120], ["Chris Wood", 0, 120], ["John Ruddy", 70, 95]],
+  "teamTwoPlayers": [["Lewis Cass", 0, 120],["Patrick Roberts", 0, 120], ["John McGinn", 0, 66]]
 }

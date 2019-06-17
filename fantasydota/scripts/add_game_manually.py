@@ -22,49 +22,57 @@ def add_game_manually():
     if not FE_APIKEY:
         print "Set your fantasy esport APIKEY environment variable"
         exit()
-    with open('/../data/football_result_template.json') as f:
+    with open(os.getcwd() + '/../data/football_result_template.json') as f:
         match = json.load(f)
 
-    match_id = json.load(urllib2.urlopen(urllib2.Request(
+    series_info = json.load(urllib2.urlopen(urllib2.Request(
         "http://localhost/api/v1/results/leagues/" + str(DEFAULT_LEAGUE) + "/findByTeams",
         headers={'apiKey': FE_APIKEY, "Content-Type": "application/json"},
-        data={'teamOne': match['teamOne'], 'teamTwo': match['teamTwo']}
-    )))[0]['matchId']
+        data=json.dumps({'teamOne': match['teamOne'], 'teamTwo': match['teamTwo']})
+    )))
+    match_id = series_info[0]['matches'][0]['match']['matchId']
+    series_id = series_info[0]['series']['seriesId']
     team_one_goals = match['teamOneGoals']
     team_two_goals = match['teamTwoGoals']
     pickees = []
-    for name, on, off in match['teamOnePlayers']:
+
+    def appendPlayer(is_team_one, our_team_goals, other_team_goals):
         playing_mins = off - on
         closest_name = difflib.get_close_matches(name, [p['name'] for p in all_pickees], 1)[0]
         stats = []
-        if conceded_whilst_playing(on, off, team_two_goals) == 0 and playing_mins >= 60:
+        if conceded_whilst_playing(on, off, other_team_goals) == 0 and playing_mins >= 60:
             stats.append({'field': 'clean sheet', 'value': 1})
-        stats.append({'field': 'conceded', 'value': conceded_whilst_playing})
-        goals = len([g for g in team_one_goals if g['scorer'] == name])
+        stats.append({'field': 'goal conceded', 'value': conceded_whilst_playing(on, off, other_team_goals)})
+        goals = len([g for g in our_team_goals if g['scorer'] == name])
         if goals:
-            stats.append({'field': 'goals', 'value': goals})
-        assists = len([g for g in team_one_goals if g['assists'] == name])
+            stats.append({'field': 'goal', 'value': goals})
+        assists = len([g for g in our_team_goals if g['assist'] == name])
         if assists:
-            stats.append({'field': 'assists', 'value': assists})
+            stats.append({'field': 'assist', 'value': assists})
+        stats.append({'field': 'playing', 'value': 1})
+        if playing_mins >= 60:
+            stats.append({'field': 'playing > 60 mins', 'value': 1})
         pickees.append({
             'id': next(p for p in all_pickees if p["name"] == closest_name)['id'],
-            'isTeamOne': True, 'stats': stats
+            'isTeamOne': is_team_one, 'stats': stats
         })
 
+    for name, on, off in match['teamOnePlayers']:
+        appendPlayer(True, team_one_goals, team_two_goals)
 
-    # pickees = [{'id': all_pickees[0]['id'], 'isTeamOne': True, 'stats': [
-    #     {'field': 'goal', 'value': 2}, {'field': 'WhoScored match rating', 'value': 8.6},{'field': 'clean sheet', 'value': 1}
-    # ]}]
+    for name, on, off in match['teamTwoPlayers']:
+        appendPlayer(False, team_two_goals, team_one_goals)
+
+
     data = json.dumps({
-        'matchId': match_id,
-        'teamOneScore': len(match['teamOneScore']),
-        'teamTwoScore': len(match['teamTwoScore']),
-        'tournamentId': 1,
-        'pickees': pickees
+        'seriesId': series_id,
+        'matches': [{
+            'matchId': match_id,
+            'teamOneMatchScore': len(team_one_goals),
+            'teamTwoMatchScore': len(team_two_goals),
+            'pickeeResults': pickees
+        }]
     })
-    # if team_one is not None:
-    #     data['teamOne'] = team_one
-    #     data['teamTwo'] = team_two
     try:
         req = urllib2.Request(API_LEAGUE_RESULTS_URL, data=data,
                               headers={'apiKey': FE_APIKEY, "Content-Type": "application/json"})

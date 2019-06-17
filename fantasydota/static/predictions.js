@@ -22,7 +22,7 @@ function fillMatches(){
     if (period == 0){
         return
     }
-    var resultsUrl = apiBaseUrl + "results/matches/leagues/" + leagueId + "?";
+    var resultsUrl = apiBaseUrl + "results/leagues/" + leagueId + "?";
     if (period != 0){
         resultsUrl = resultsUrl + "&period=" + period;
     }
@@ -36,11 +36,13 @@ function fillMatches(){
                 dataType: "json",
                 success: function(data){
                     var r = new Array(), j = -1;
-                    $.each(data, function(key, match){
+                    $.each(data, function(key, series){
+                        var match = series.matches[0].match;
+                        var thisSeries = series.series;
                         r[++j] = '<div class="card-panel horizontal matchRow vert-align" id="match';
                          r[++j] = match.matchId;
                         r[++j] = '"><span class="teamOne col s3"><strong>';
-                        r[++j] = match.teamOne;
+                        r[++j] = thisSeries.teamOne;
                         r[++j] = '</strong></span>';
                         r[++j] = '<span class="predictionRow center-align col s3 ';
                         r[++j] = match.predictionsDisabled ? 'disabled" ' : 'active" ';
@@ -51,8 +53,8 @@ function fillMatches(){
                         r[++j] = '  type="number" min="0" id="teamOneScorePredict-';
                         r[++j] = match.matchId;
                         r[++j] = '"></input>';
-                        if (match.teamOneScore != null && match.teamOneScore != undefined){
-                            var score = '(' + match.teamOneScore + ')';
+                        if (match.teamOneMatchScore != null && match.teamOneMatchScore != undefined){
+                            var score = '(' + match.teamOneMatchScore + ')';
                             r[++j] = score
                         }
                         r[++j] = '<span class="col s1 center-align"> - </span><input class="col s2" style="-moz-appearance: textfield" ';
@@ -60,17 +62,15 @@ function fillMatches(){
                         r[++j] = ' type="number" min="0" id="teamTwoScorePredict-';
                         r[++j] = match.matchId;
                         r[++j] = '"></input>';
-                        if (match.teamTwoScore != null && match.teamTwoScore != undefined){
-                            var score = '(' + match.teamTwoScore + ')';
+                        if (match.teamTwoMatchScore != null && match.teamTwoMatchScore != undefined){
+                            var score = '(' + match.teamTwoMatchScore + ')';
                             r[++j] = score
                         }
                         r[++j] = '</span>';
                         r[++j] = '<span class="teamTwo hide-on-small-only col s3 right"><strong>';
-                        r[++j] = match.teamTwo;
+                        r[++j] = thisSeries.teamTwo;
                         r[++j] = '</strong></span></div>';
                     })
-                    console.log(r[0])
-                    console.log(r.join(''));
                     $("#predictionsTable").html(r.join(''));
                 }
     }).then(fillPredictions)

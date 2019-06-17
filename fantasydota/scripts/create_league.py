@@ -16,13 +16,13 @@ def get_fixtures():
     periods = []
     for i, match in enumerate(fixtures):
         series.append({
-            'seriesId': i, 'tournamentId': 1, 'teamOne': match[0], 'teamTwo': match[1],
+            'seriesId': i, 'tournamentId': 1, 'teamOne': match[0], 'teamTwo': match[1], "startTstamp": match[2] + ":00",
             "matches": [{'matchId': i, "startTstamp": match[2] + ":00"}]
         })
     period_starts = j['period_starts']
-    for i, tstamp in period_starts:
+    for i, tstamp in enumerate(period_starts):
         if i != 37:
-            periods.append({'start': tstamp, 'end': period_starts, 'multiplier': 1.0})
+            periods.append({'start': tstamp, 'end': period_starts[i+1], 'multiplier': 1.0})
         else:
             periods.append({'start': tstamp, 'end': '3000-12-05 15:00', 'multiplier': 2.0})
     return series, periods
@@ -52,10 +52,10 @@ def create_league(name, tournament_id, url):
         'name': name,
         'apiKey': FE_APIKEY,
         'tournamentId': tournament_id,
-        'gameId': 3,
+        'gameId': 1,
         'pickeeDescription': 'Player',
         'periodDescription': 'Week',
-        'startingMoney': 0.0,
+        'startingMoney': 100.0,
         'teamSize': 11,
         'transferInfo': {
             'cardSystem': True,
@@ -102,23 +102,23 @@ def create_league(name, tournament_id, url):
             {'name': 'red card', 'allFactionPoints': -2.0},
             {'name': 'own goal', 'allFactionPoints': -2.0},
             {'name': 'penalty miss', 'allFactionPoints': -3.0, 'noCardBonus': True},
-            {'name': 'Unsung hero', 'allFactionPoints': 5.0},
-            {'name': 'Unsung hero 2', 'allFactionPoints': 3.0},
-            {'name': 'Unsung hero 3', 'allFactionPoints': 2.0}
+            {'name': 'Unsung hero Fotmob match rating*', 'allFactionPoints': 1.0},
+            # {'name': 'Unsung hero 2nd (fotmob rating)', 'allFactionPoints': 3.0},
+            # {'name': 'Unsung hero 3rd (fotmob rating)', 'allFactionPoints': 2.0}
         ],
         'pickees': get_players(teams)
     }
 
-    try:
-        req = urllib2.Request(
-            API_URL + "leagues/", data=json.dumps(data), headers={
-                "Content-Type": "application/json"
-            }
-        )
-        response = urllib2.urlopen(req)
-        print(response.read())
-    except urllib2.HTTPError as e:
-        print(e.read())
+    # try:
+    #     req = urllib2.Request(
+    #         API_URL + "leagues/", data=json.dumps(data), headers={
+    #             "Content-Type": "application/json"
+    #         }
+    #     )
+    #     response = urllib2.urlopen(req)
+    #     print(response.read())
+    # except urllib2.HTTPError as e:
+    #     print(e.read())
     # try:
     #     req = urllib2.Request(
     #         API_URL + "leagues/" + str(DEFAULT_LEAGUE), data=json.dumps({'transferOpen': True, 'transferDelayMinutes': None}), headers={
