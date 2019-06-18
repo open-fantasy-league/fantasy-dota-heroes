@@ -33,7 +33,7 @@ function makeLeaderboard(){
                     var r = new Array(), j = -1;
                     var tfoot = new Array(), k = -1;
                     console.log(data)
-                    r[++j] = '<tr><th class="positionHeader">Position</th><th class="playerHeader">Player</th><th class="rankingHeader">';
+                    r[++j] = '<tr><th class="positionHeader">Position</th><th class="teamHeader">Team</th><th class="rankingHeader">';
                     r[++j] = 'Points';
                     r[++j] = '</th></tr>';
                     $.each(data.rankings, function(key, player) {
@@ -45,27 +45,27 @@ function makeLeaderboard(){
                         if (userId != null){
                             tfoot[k++] = ' outsideRanks';
                         }
-                        appendBothUserRows(isUser, r, tfoot, j++, k++,'"><td class="positionHeader">');
+                        appendBothUserRows(isUser, r, tfoot, j++, k++,'"><td class="positionEntry">');
                         appendBothUserRows(isUser, r, tfoot, j++, k++,player.rank);
                         if (period == 0){
                             appendBothUserRows(isUser, r, tfoot, j++, k++, progress_arrow(player));
                         }
-                        appendBothUserRows(isUser, r, tfoot, j++, k++, '</td><td class="heroHeader"><span style="vertical-align:middle">');
+                        appendBothUserRows(isUser, r, tfoot, j++, k++, '</td><td class="teamEntry left"><span style="vertical-align:middle">');
                         if (league.ended && key == 0){
                             r[++j] = '<img src="static/images/dota/trophy.png"/>';
                         }
                         appendBothUserRows(isUser, r, tfoot, j++, k++, player.username);
                         appendBothUserRows(isUser, r, tfoot, j++, k++,'</span><span class="hero_images">');
-                        if (player.team){
-                        $.each(player.team, function(key2, hero){
-                            var imgSrc = "/static/images/dota/" + hero.name.replace(/ /g, "_") + "_icon.png";
-                            appendBothUserRows(isUser, r, tfoot, j++, k++,'<img src="');
-                            appendBothUserRows(isUser, r, tfoot, j++, k++,imgSrc);
-                            appendBothUserRows(isUser, r, tfoot, j++, k++,'" title="');
-                            appendBothUserRows(isUser, r, tfoot, j++, k++,hero.name)
-                            appendBothUserRows(isUser, r, tfoot, j++, k++,'"/>');
-                        })
-                        }
+//                        if (player.team){
+//                        $.each(player.team, function(key2, hero){
+//                            var imgSrc = "/static/images/dota/" + hero.name.replace(/ /g, "_") + "_icon.png";
+//                            appendBothUserRows(isUser, r, tfoot, j++, k++,'<img src="');
+//                            appendBothUserRows(isUser, r, tfoot, j++, k++,imgSrc);
+//                            appendBothUserRows(isUser, r, tfoot, j++, k++,'" title="');
+//                            appendBothUserRows(isUser, r, tfoot, j++, k++,hero.name)
+//                            appendBothUserRows(isUser, r, tfoot, j++, k++,'"/>');
+//                        })
+//                        }
                         appendBothUserRows(isUser, r, tfoot, j++, k++,'</span></td><td class="rankingHeader">');
                         appendBothUserRows(isUser, r, tfoot, j++, k++,player.value);
                         appendBothUserRows(isUser, r, tfoot, j++, k++,'</td></tr>');
