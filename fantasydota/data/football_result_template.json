@@ -1,9 +1,9 @@
 {
   "tournamentId": 1,
-    "teamOne":  "Manchester Utd",
-  "teamTwo": "Chelsea",
+    "teamOne":  "Southampton",
+  "teamTwo": "Liverpool",
   "teamOneGoals": [
-    {"min":  37, "scorer":  "Angelo Ogbonna", "assist": null}
+    {"min":  37, "scorer":  "Christian Atsu", "assist": null}
   ],
   "teamTwoGoals": [
     {"min":  64, "scorer":  "Lewis Cass", "assist": "Tom"},

@@ -56,23 +56,8 @@ if (!apiRegistered){
 //    }
 //}).then(getPickees)
 
-function getCards(){
-var nextPeriodValue = league.currentPeriod ? league.currentPeriod.value + 1: 1
-var nextPeriodStart = league.periods[nextPeriodValue - 1].start
-teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&stats&period=" + nextPeriodValue;
-    $("#leagueLink").attr('href', league.url);
-    $("#leagueLink").text(league.name);
-    $.ajax({url: apiBaseUrl + "teams/league/" + leagueId + "/user/" + userId + "/cards?period=" + nextPeriodValue,
-                type: "GET",
-                dataType: "json",
-                success: function(data){
-                    $.each(["Goalkeeper", "Defender", "Midfielder", "Forward"], function(key, position){
-                        var positionLowerCase = position.toLowerCase()
-                        var positionDiv = $("#" + positionLowerCase);
-                        var p = [], j = -1;
-                        $.each(data.filter(function(e){return e.limitTypes.position == position}), function(i, player) {
-                            console.log(player)
-                            playerDataCache.set(player.cardId, player);
+function cardHtml(p, j, player){
+    playerDataCache.set(player.cardId, player);
                             p[++j] = '<div style="height: 420px;" class="card col s3 playerCard rounded bottomRightParent rarity-';
                             p[++j] = player.colour.toLowerCase();
                             p[++j] = ' ';
@@ -105,6 +90,28 @@ teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&stats
                             p[++j] = player.cardId;
                             p[++j] ='">Recycle</button>';
                             p[++j] = '</div></div>';
+    return [p, j]
+}
+
+function getCards(){
+var nextPeriodValue = league.currentPeriod ? league.currentPeriod.value + 1: 1
+var nextPeriodStart = league.periods[nextPeriodValue - 1].start
+teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&stats&period=" + nextPeriodValue;
+    $("#leagueLink").attr('href', league.url);
+    $("#leagueLink").text(league.name);
+    $.ajax({url: apiBaseUrl + "teams/league/" + leagueId + "/user/" + userId + "/cards?period=" + nextPeriodValue,
+                type: "GET",
+                dataType: "json",
+                success: function(data){
+                    $.each(["Goalkeeper", "Defender", "Midfielder", "Forward"], function(key, position){
+                        var positionLowerCase = position.toLowerCase()
+                        var positionDiv = $("#" + positionLowerCase);
+                        var p = [], j = -1;
+                        $.each(data.filter(function(e){return e.limitTypes.position == position}), function(i, player) {
+                            console.log(player)
+                            var out = cardHtml(p, j, player);
+                            p = out[0];
+                            j = out[1];
                         })
                     $("#" + positionLowerCase + "s").html(p.join(''));
                     })
@@ -245,6 +252,9 @@ function setup(){
                 currentIndex = 0;
                 p[++j] = '<span class="left"><button name="left" class="btn waves-effect amber lighten-1" id="leftClick"><i class="material-icons">chevron_left</i></button></span><span class="right"><button name="right" class="btn waves-effect amber lighten-1" id="rightClick"><i class="material-icons">chevron_right</i></button>';
                 $.each(data, function(i, player){
+                    var fullCardHtml = [], j2 =-1;
+                    fullCardHtml, j2 = cardHtml(fullCardHtml, j2, player);
+                    $("#" + player.limitTypes.position.toLowerCase() + "s").append(fullCardHtml.join(""));
                                 var positioning = (i * -10) + 110;
                 p[++j] = '<div style="height: 420px; position: absolute; right:';
                 p[++j] = positioning;
@@ -282,9 +292,6 @@ function setup(){
                 div.innerHTML = html;
                 div.setAttribute("class", "row");
                 div.style.position = "relative";
-                //$(".rightBtn").click(rightClick)
-
-                //$(".leftBtn").click(leftClick)
                 swal({
                  content: div,
                  heightAuto: false,

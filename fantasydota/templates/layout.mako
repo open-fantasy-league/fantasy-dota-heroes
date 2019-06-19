@@ -37,7 +37,7 @@
             var leagueId = ${league_id};
             var userId = ${user_id if user_id else "null"};
             var username = "${user.username if user else ""}";
-            var apiRegistered = ${"true" if api_registered else "false"}
+            var apiRegistered = ${"true" if api_registered else "false"};
             console.log(username)
             var league;
             var currentPeriod;

@@ -14,7 +14,7 @@
 
 <div class="row">
     <span class="left">
-    <h2>Predictions</h2>
+    <h2></a>Predictions: <a id="leagueLink" target="_blank"></h2>
     </span>
     <ul class="right">
             <li>
@@ -25,8 +25,6 @@
             <ul id="periodDropdown" class="dropdown-content">
             </ul>
         </ul>
-        <span class="centre">
-        <a id="leagueLink" target="_blank"></a></span>
 </div>
 <div class="row">
 <div id="predictionsBlock" class="col s12">

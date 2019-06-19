@@ -296,7 +296,7 @@ and (max-width: 900px)
  }
 
 .rarity-bronze{
-    background: #e8be84
+    background: #774d22
 }
 
 .bonus-rarity-gold{
@@ -335,3 +335,17 @@ height: 620px;
      background: linear-gradient(-180deg, #BCC5CE 0%, #929EAD 98%), radial-gradient(at top left, rgba(255,255,255,0.30) 0%, rgba(0,0,0,0.30) 100%);
  background-blend-mode: screen;
  */
+
+
+ /*
+ Predictions
+ */
+ .predictionCard{
+    background: linear-gradient(
+    135deg,
+    #ff9e2c 0%,
+    #ff9e2c 50%,
+    #b6701e 50%,
+    #b6701e 100%
+  );
+  }
