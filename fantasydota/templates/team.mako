@@ -18,7 +18,7 @@
     <div class="row">
     <span class="left" style="width: 33%;"><h5><span class="col s3">Team: </span><span id="teamName" class="col s5">${team_name if user else ""}</span>
     <span id="teamNameEdit" class="invisible col s5">
-          <input id="teamNameTextField" type="text" class="validate" value=${team_name if user else ""}>
+          <input id="teamNameTextField" type="text" class="validate" value=${team_name if user else ""} />
         </span>
     <span class="col s1"><button id="updateNameButton"><i class="material-icons">edit</i></button>
     <button id="confirmNameButton" class="invisible"><i class="material-icons">check</i></button>
@@ -50,6 +50,25 @@
     New pack
     </button></h2>
 </div>
+    <div id="cardFilters" class="row">
+        <div class="col s1"><button type="button" id="filterCards" class="btn waves-effect waves-light">Filter</button></div>
+        <div class="col s3">
+            <label for="cardTeamFilter"><h6>Team:</h6></label>
+            <input id="cardTeamFilter" type="text" class="validate" value="" />
+        </div>
+        <div class="col s3">
+            <label for="cardPlayerFilter"><h6>Player:</h6></label>
+            <input id="cardPlayerFilter" type="text" class="validate" value="" />
+        </div>
+        <div class="col s5">
+            <input id="goldFilter" type="checkbox" class="filled-in" checked="checked" />
+            <label for="goldFilter">Gold</label>
+            <input id="silverFilter" type="checkbox" class="filled-in" checked="checked" />
+            <label for="silverFilter">Silver</label>
+            <input id="bronzeFilter" type="checkbox" class="filled-in" checked="checked" />
+            <label for="bronzeFilter">Bronze</label>
+        </div>
+    </div>
     <div id="cardsContainer" class="row">
         <ul class = "tabs">
         <li class = "tab col s3"><a href = "#goalkeepers">Goalkeepers</a></li>

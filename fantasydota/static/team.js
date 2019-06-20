@@ -30,10 +30,29 @@ var leftClick = function leftClick(event){
 $(document).on('click', "#leftClick", leftClick);
 $(document).on('click', "#rightClick", rightClick);
 
-$("#updateNameButton").click(updateNameOnclick)
-$("#confirmNameButton").click(confirmNameOnclick)
+$("#updateNameButton").click(updateNameOnclick);
+$("#confirmNameButton").click(confirmNameOnclick);
 signup();
 getLeagueInfo().then(getCards);
+$("#filterCards").click(function (){
+    var teamFilter = $("#cardTeamFilter").val().toLowerCase();
+    var playerFilter = $("#cardPlayerFilter").val().toLowerCase();
+    var cards = $(".playerCard");
+    $.each(cards, function(i, card) {
+        var elem = $(this);
+        var show = true;
+        if (teamFilter && !elem.find(".teamName").text().toLowerCase().includes(teamFilter)) show = false;
+        if (show && playerFilter && !elem.find(".playerName").text().toLowerCase().includes(playerFilter)) show = false;
+        if (show && !document.getElementById("goldFilter").checked && elem.hasClass("rarity-gold")) show = false;
+        if (show && !document.getElementById("silverFilter").checked  && elem.hasClass("rarity-silver")) show = false;
+        if (show && !document.getElementById("bronzeFilter").checked  && elem.hasClass("rarity-bronze")) show = false;
+        if (show){
+            elem.removeClass("invisible");
+        } else{
+            elem.addClass("invisible");
+        }
+    })
+});
 
 function signup(){
 if (!apiRegistered){
@@ -62,9 +81,9 @@ function cardHtml(p, j, player){
                             p[++j] = player.colour.toLowerCase();
                             p[++j] = ' ';
                             p[++j] = player.limitTypes.club.split(" ").join("").toLowerCase();
-                            p[++j] = '"><div class="card-content"><span class="card-title"><h6><p><span class="centre"><strong>';
+                            p[++j] = '"><div class="card-content"><span class="card-title"><h6><p><span class="playerName centre"><strong>';
                             p[++j] = player.name;
-                            p[++j] = '</strong></span></p><p><span class="centre">';
+                            p[++j] = '</strong></span></p><p><span class="teamName centre">';
                             p[++j] = player.limitTypes.club;
                             p[++j] = '</span></p></h6></span><p><span class="left">';
                             p[++j] = player.limitTypes.position;
@@ -75,7 +94,6 @@ function cardHtml(p, j, player){
                             p[++j] ='">Add</button></span></p>';
                             p[++j] = '</p><div class="card-image"><img src="/static/images/football/placeholder.png"></div><p>';
                             $.each(player.bonuses, function(bkey, bonus){
-                                console.log(bonus)
                                 p[++j] = '<p><i><span class="bonus-rarity-';
                                 p[++j] = player.colour.toLowerCase();
                                 p[++j] = '">→';
@@ -108,7 +126,6 @@ teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&stats
                         var positionDiv = $("#" + positionLowerCase);
                         var p = [], j = -1;
                         $.each(data.filter(function(e){return e.limitTypes.position == position}), function(i, player) {
-                            console.log(player)
                             var out = cardHtml(p, j, player);
                             p = out[0];
                             j = out[1];
@@ -174,7 +191,6 @@ function getTeamThenSetup(){
                     $(".userPoints").text(data.stats.points);
                     var r = new Array(), j = -1;
                     $.each(data.team.sort(function(x, y) {
-                    console.log(x)
                         var xval = positionOrder.get(x.limitTypes.position);
                         var yval = positionOrder.get(y.limitTypes.position);
                         if (xval < yval) {
@@ -275,7 +291,6 @@ function setup(){
                             p[++j] = '</span>';
                             p[++j] = '</p><div class="card-image"><img src="/static/images/football/placeholder.png"></div><p>';
                             $.each(player.bonuses, function(bkey, bonus){
-                                console.log(bonus)
                                 p[++j] = '<p><i><span class="bonus-rarity-';
                                 p[++j] = player.colour.toLowerCase();
                                 p[++j] = '">→';
