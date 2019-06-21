@@ -1,3 +1,4 @@
+from fantasydota.lib.constants import DEFAULT_LEAGUE
 from fantasydota.lib.general import all_view_wrapper
 from fantasydota.models import (
     DBSession,
@@ -68,3 +69,12 @@ def index(request):
     return all_view_wrapper(
         {}, session, user_id
     )
+
+
+@view_config(route_name='collection', renderer='../templates/collection.mako')
+def collection(request):
+    session = DBSession()
+    league_id = int(request.params.get('league', DEFAULT_LEAGUE))
+    user_id = authenticated_userid(request)
+    return_dict = {'league_id': league_id}
+    return all_view_wrapper(return_dict, session, user_id)

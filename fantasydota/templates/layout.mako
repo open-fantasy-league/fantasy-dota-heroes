@@ -53,6 +53,18 @@
                     }
                 })
             };
+            var signup = function signup(){
+                if (!apiRegistered){
+                $.ajax({url: apiBaseUrl + "users/" + userId + "/join/" + leagueId + "?username=" + username,
+                    dataType: "json",
+                    type: "POST",
+                    data: {"username": username, "userId": userId},
+                    success: function(data){
+                        console.log("signed up")
+                    }
+                })
+                }
+            }
         </script>
 
         <!--<script src="/static/sweetalert.min.js"></script>-->
@@ -86,6 +98,9 @@
                 </li>
             </ul>
             <ul class="right hide-on-med-and-down">
+                <li class="col s2">
+                    <a href="/collection">Collection</a>
+                </li>
                 <li class="col s2">
                 <a id="notificationButton" class="dropdown-button" data-constrainWidth="false" data-hover="true" data-beloworigin="true" href="#" data-activates="notificationDropdown">
                     Notifications ${"(%s)" % len(notifications)}

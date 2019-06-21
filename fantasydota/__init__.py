@@ -104,6 +104,7 @@ def main(global_config, **settings):
     config.add_route('recycle_card', '/recycle_card')
     config.add_route('leaderboard', '/leaderboard')
     config.add_route('predictions', '/predictions')
+    config.add_route('collection', '/collection')
     config.add_route('account_settings', '/accountSettings')
     config.add_route('profile', '/profile')
 

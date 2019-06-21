@@ -14,7 +14,7 @@
 
 <div class="row">
     <span class="left">
-    <h2></a>Predictions: <a id="leagueLink" target="_blank"></h2>
+    <h2>Predictions: <a id="leagueLink" target="_blank"></a></h2>
     </span>
     <ul class="right">
             <li>
