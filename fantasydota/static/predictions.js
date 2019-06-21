@@ -46,11 +46,11 @@ function fillMatches(){
                         r[++j] = '"><span class="teamOne col s3"><strong>';
                         r[++j] = thisSeries.teamOne;
                         r[++j] = '</strong></span>';
-                        r[++j] = '<span class="predictionRow center-align col s2 scoreboardfont';
+                        r[++j] = '<div style="width: 180px;" class="card-panel horizontal predictionRow center-align col s3 scoreboardfont';
                         r[++j] = match.started ? ' disabled" ' : ' active" ';
                         r[++j] = 'data-matchId=';
                         r[++j] = match.matchId;
-                        r[++j] = '><input class="col s2" style="-moz-appearance: textfield" ';
+                        r[++j] = '><input class="col s5 center" style="-moz-appearance: textfield" ';
                         r[++j] = match.started ? ' disabled=true' : "";
                         r[++j] = '  type="number" min="0" id="teamOneScorePredict-';
                         r[++j] = match.matchId;
@@ -59,7 +59,7 @@ function fillMatches(){
                             var score = '(' + match.teamOneMatchScore + ')';
                             r[++j] = score
                         }
-                        r[++j] = '<span class="col s1 center-align scoreboardSpacer"> : </span><input class="col s2" style="-moz-appearance: textfield" ';
+                        r[++j] = '<span class="col s2 center-align scoreboardSpacer center"> : </span><input class="col s5 center" style="-moz-appearance: textfield" ';
                         r[++j] = match.started ? ' disabled=true' : "";
                         r[++j] = ' type="number" min="0" id="teamTwoScorePredict-';
                         r[++j] = match.matchId;
@@ -68,7 +68,7 @@ function fillMatches(){
                             var score = '(' + match.teamTwoMatchScore + ')';
                             r[++j] = score
                         }
-                        r[++j] = '</span>';
+                        r[++j] = '</div>';
                         r[++j] = '<span class="teamTwo hide-on-small-only col s3 right"><strong>';
                         r[++j] = thisSeries.teamTwo;
                         r[++j] = '</strong></span></div>';
