@@ -3,6 +3,17 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
+@font-face {
+    font-family: "scoreboard";
+    src: url(/static/Bazaronite.ttf) format("truetype");
+}
+
+.scoreboardfont {
+    font-family: "scoreboard";
+    color: #ff9900;
+    background-color: black;
+}
+
 body {
 display: flex;
 min-height: 100vh;
