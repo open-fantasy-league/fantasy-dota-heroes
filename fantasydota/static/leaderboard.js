@@ -1,4 +1,4 @@
-getLeagueInfo().then(makeLeaderboard);
+getLeagueInfo(false, false, false, false).then(makeLeaderboard);
 
 function makeLeaderboard(){
     var leaderBoardUrl = apiBaseUrl + "leagues/" + leagueId + "/rankings/points" ;

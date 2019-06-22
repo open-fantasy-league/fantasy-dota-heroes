@@ -41,8 +41,13 @@
             console.log(username)
             var league;
             var currentPeriod;
-            var getLeagueInfo = function getLeagueInfo(){
-                return $.ajax({url: apiBaseUrl + "leagues/" + leagueId,
+            var getLeagueInfo = function getLeagueInfo(showPeriods, showScoring, showLimits, showStatFields){
+                var url = apiBaseUrl + "leagues/" + leagueId + "?";
+                if (showPeriods) url = url + "periods&";
+                if (showScoring) url = url + "scoring&";
+                if (showStatFields) url = url + "statfields&";
+                if (showLimits) url = url + "limits&";
+                return $.ajax({url: url,
                     dataType: "json",
                     type: "GET",
                     success: function(data){

@@ -1,9 +1,8 @@
 signup();
-getLeagueInfo().then(getCards);
+getLeagueInfo(false, false, true, false).then(getCards);
 
 function getCards(){
 var nextPeriodValue = league.currentPeriod ? league.currentPeriod.value + 1: 1
-var nextPeriodStart = league.periods[nextPeriodValue - 1].start
 teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&stats&period=" + nextPeriodValue;
     $("#leagueLink").attr('href', league.url);
     $("#leagueLink").text(league.name);

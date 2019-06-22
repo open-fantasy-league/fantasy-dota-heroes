@@ -1,6 +1,6 @@
 var scoringRulesUl = $("#scoringRules");
 var r = new Array(), j = -1;
-getLeagueInfo().then(function() {
+getLeagueInfo(false, true, false, false).then(function() {
     for (const [key, value] of Object.entries(league.scoring)){
         r[++j] = '<li>';
         r[++j] = key;

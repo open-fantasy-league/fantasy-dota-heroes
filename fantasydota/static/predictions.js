@@ -1,5 +1,5 @@
 var predictionsUrl;
-getLeagueInfo().then(makePredictions);
+getLeagueInfo(false, false, false, false).then(makePredictions);
 
 function makePredictions(){
     $("#leagueLink").attr('href', league.url);
@@ -7,8 +7,7 @@ function makePredictions(){
     var r = new Array(), j = -1;
     console.log(league)
     if (league.currentPeriod){
-        console.log(league.periods.length)
-        for(var i=1; i<=league.periods.length; i++){
+        for(var i=1; i<=league.numPeriods; i++){
             r[++j] = '<li><a href="/predictions?period=';
             r[++j] = i;
             r[++j] = '">Week ';
