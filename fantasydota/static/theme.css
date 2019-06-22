@@ -335,9 +335,9 @@ height: 620px;
 }
 
 .matchRow{
-    border-radius: 15px;
+    border-radius: 150px;
    display: block;
-    width: 100%;
+    width: 60%;
     height: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -352,12 +352,11 @@ height: 620px;
  /*
  Predictions
  */
- .predictionCard{
-    background: linear-gradient(
-    135deg,
-    #ff9e2c 0%,
-    #ff9e2c 50%,
-    #b6701e 50%,
-    #b6701e 100%
-  );
+
+  .teamOne, .teamTwo {
+    padding: inherit !important;
+  }
+
+  .predictionRow{
+    padding: 0%
   }

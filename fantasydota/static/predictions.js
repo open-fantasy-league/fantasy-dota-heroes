@@ -40,17 +40,23 @@ function fillMatches(){
                     $.each(data, function(key, series){
                         var match = series.matches[0].match;
                         var thisSeries = series.series;
+                        var teamOneBasic = thisSeries.teamOne.replace(/[ &]/g, '').toLowerCase();
+                        var teamTwoBasic = thisSeries.teamTwo.replace(/[ &]/g, '').toLowerCase();
                         r[++j] = '<div class="row" style="height: 100%">'
-                        r[++j] = '<div class="card-panel horizontal matchRow vert-align center-align valign-wrapper" id="match';
+                        r[++j] = '<div class="card-panel horizontal matchRow center-align ';
+                        r[++j] = teamOneBasic + teamTwoBasic;
+                        r[++j] = '" id="match';
                          r[++j] = match.matchId;
-                        r[++j] = '"><span class="teamOne col s3 valign"><strong>';
+                        r[++j] = '"><span class="teamOne col s4 ';
+                        r[++j] = teamOneBasic;
+                        r[++j] = '"><strong>';
                         r[++j] = thisSeries.teamOne;
                         r[++j] = '</strong></span>';
-                        r[++j] = '<div style="width: 180px;" class="card-panel horizontal predictionRow center-align col s3 scoreboardfont valign';
+                        r[++j] = '<div style="width: 180px;" class="card-panel horizontal predictionRow col s4 scoreboardfont ';
                         r[++j] = match.started ? ' disabled" ' : ' active" ';
                         r[++j] = 'data-matchId=';
                         r[++j] = match.matchId;
-                        r[++j] = '><input class="col s3 center" style="-moz-appearance: textfield" ';
+                        r[++j] = '><strong><input class="col s4 center" style="-moz-appearance: textfield" ';
                         r[++j] = match.started ? ' disabled=true' : "";
                         r[++j] = '  type="number" min="0" id="teamOneScorePredict-';
                         r[++j] = match.matchId;
@@ -59,17 +65,19 @@ function fillMatches(){
                             var score = '(' + match.teamOneMatchScore + ')';
                             r[++j] = score
                         }
-                        r[++j] = '<input style="color:#ff9900" class="col s3 center" type="text" value=":" disabled><input class="col s3 center" style="-moz-appearance: textfield" ';
+                        r[++j] = '<input style="color:#ff9900" class="col s4 center" type="text" value=":" disabled><input class="col s4 center" style="-moz-appearance: textfield" ';
                         r[++j] = match.started ? ' disabled=true' : "";
                         r[++j] = ' type="number" min="0" id="teamTwoScorePredict-';
                         r[++j] = match.matchId;
-                        r[++j] = '">';
+                        r[++j] = '"></strong>';
                         if (match.teamTwoMatchScore != null && match.teamTwoMatchScore != undefined){
                             var score = '(' + match.teamTwoMatchScore + ')';
                             r[++j] = score
                         }
                         r[++j] = '</div>';
-                        r[++j] = '<span class="teamTwo hide-on-small-only col s3 right valign"><strong>';
+                        r[++j] = '<span class="teamTwo hide-on-small-only col s4 right ';
+                        r[++j] = teamTwoBasic;
+                        r[++j] = '"><strong>';
                         r[++j] = thisSeries.teamTwo;
                         r[++j] = '</strong></span></div></div>';
                     })

@@ -12,7 +12,8 @@
     League page for fantasy dota game.
 </%def>
 
-<link href="/static/footballteams.css?v=1.0" rel="stylesheet">
+<%def name="custom_css()">
+</%def>
 
 <div class="row" id="myTeamBlock">
     <div class="row">

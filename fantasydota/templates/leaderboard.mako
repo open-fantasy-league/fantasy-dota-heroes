@@ -12,6 +12,9 @@
     Leaderboard page for fantasy dota game.
 </%def>
 
+<%def name="custom_css()">
+</%def>
+
 <div class="row">
     <h2>${"Tournament: Points" if period == 0 else "Day {}: Points".format(period)}
         <a class="right" id="leagueLink" target="_blank"></a></h2>

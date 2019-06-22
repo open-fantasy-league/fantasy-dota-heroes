@@ -12,6 +12,9 @@
     Home page for Fantasy Esport
 </%def>
 
+<%def name="custom_css()">
+</%def>
+
 <div class="row">
     <div class="col5 left">
         <div class="card-panel">

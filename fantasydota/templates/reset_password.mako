@@ -12,6 +12,9 @@
     Password reset page for fantasy dota game.
 </%def>
 
+<%def name="custom_css()">
+</%def>
+
 <div>
     <div>
     <h5>Password Reset</h5>

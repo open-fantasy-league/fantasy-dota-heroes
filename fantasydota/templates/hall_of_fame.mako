@@ -11,6 +11,8 @@
 <%def name="meta_description()">
     Hall of fame page for fantasy dota game.
 </%def>
+
+<%def name="custom_css()"></%def>
 <div>
     <h2><img src="/static/images/dota/trophy.png"/> Hall of Fame</h2>
 </div>

@@ -11,6 +11,9 @@
 <%def name="meta_description()">
     Password reset page for fantasy dota game.
 </%def>
+
+<%def name="custom_css()">
+</%def>
 % if message:
     <div class="card-panel">
         <div id=${"successMessage" if message and 'have been emailed to you' in message else "message"}>

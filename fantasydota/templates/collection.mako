@@ -1,7 +1,11 @@
 <%inherit file="layout.mako"/>
 
+<%def name="custom_css()">
+    <link href="/static/footballteams.css?v=1.0" rel="stylesheet"/>
+</%def>
+
 <%def name="title()">
-    Card colection
+    Card collection
 </%def>
 
 <%def name="meta_keywords()">
@@ -12,7 +16,6 @@
     Card collection for fantasy football
 </%def>
 
-<link href="/static/footballteams.css?v=1.0" rel="stylesheet">
 <div class="row">
     <span class="left">
     <h2>Collection: <a id="leagueLink" target="_blank"></a></h2>

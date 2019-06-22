@@ -11,6 +11,7 @@
 <%def name="meta_description()">
     Account settings page for fantasy dota game.
 </%def>
+<%def name="custom_css()"></%def>
 
 <div>
     % if message:

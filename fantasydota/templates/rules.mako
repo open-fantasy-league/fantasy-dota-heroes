@@ -10,6 +10,9 @@
 
 <%def name="meta_description()">
     Rules page for fantasy dota
+</%def>#
+
+<%def name="custom_css()">
 </%def>
 
 <div>

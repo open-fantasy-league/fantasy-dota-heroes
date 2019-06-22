@@ -12,6 +12,9 @@
     Privacy
 </%def>
 
+<%def name="custom_css()">
+</%def>
+
 <div>
 <h2>Privacy info</h2>
     <div class="card-panel">

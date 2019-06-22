@@ -27,6 +27,7 @@
         <!-- Custom styles for this scaffold -->
         <link href="/static/theme.css?v=1.0" rel="stylesheet">
         <link href="/static/favicon.ico?v=1.0" rel="icon" type="image/x-icon" />
+        ${next.custom_css()}
 
         <!-- Should move these links just to the pages where they belong -->
         <script src="/static/thirdparty/sorttable.js"></script>

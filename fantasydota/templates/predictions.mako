@@ -12,6 +12,10 @@
     Leaderboard page for fantasy dota game.
 </%def>
 
+<%def name="custom_css()">
+    <link href="/static/footballteams.css?v=1.0" rel="stylesheet"/>
+</%def>
+
 <div class="row">
     <span class="left">
     <h2>Predictions: <a id="leagueLink" target="_blank"></a></h2>
