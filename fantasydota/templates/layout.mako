@@ -71,6 +71,37 @@
                 })
                 }
             }
+            var posOrders = [['Goalkeeper', 0], ['Defender', 1], ['Midfielder', 2], ['Forward', 3]];
+            var positionOrder = new Map(posOrders);
+            var positionSort = function positionSort(x, y) {
+                        var xval = positionOrder.get(x.limitTypes.position);
+                        var yval = positionOrder.get(y.limitTypes.position);
+                        if (xval < yval) {
+                            return -1;
+                        }
+                        if (xval > yval) {
+                            return 1;
+                        }
+                            return 0;
+                    };
+
+             var positionNameSort = function positionNameSort(x, y) {
+                        var xval = positionOrder.get(x.limitTypes.position);
+                        var yval = positionOrder.get(y.limitTypes.position);
+                        if (xval < yval) {
+                            return -1;
+                        }
+                        if (xval > yval) {
+                            return 1;
+                        }
+                        var x_last = x.name.split(" ").pop();
+                        var y_last = y.name.split(" ").pop();
+                        if (x_last < y_last) return -1;
+                        if (x_last > y_last) return 1;
+                        if (x.name < y.name) return -1;
+                        if (x.name > y.name) return 1;
+                        return 0;
+                    };
         </script>
 
         <!--<script src="/static/sweetalert.min.js"></script>-->

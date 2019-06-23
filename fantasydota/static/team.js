@@ -4,10 +4,6 @@ var players;
 var currentIndex;
 var tableContainer = $("#tableContainer");
 var gridContainer = $("#gridContainer");
-var posOrders = [['Goalkeeper', 0], ['Defender', 1], ['Midfielder', 2], ['Forward', 3]];
-var reversePosOrders = [[0, 'Goalkeeper'], [1, 'Defender'], [2, 'Midfielder'], [3, 'Forward']];
-var positionOrder = new Map(posOrders);
-var reversePositionOrder = new Map(reversePosOrders);
 var playerDataCache = new Map();
 
 var rightClick = function rightClick(event){
@@ -53,19 +49,6 @@ $("#filterCards").click(function (){
         }
     })
 });
-
-function signup(){
-if (!apiRegistered){
-                $.ajax({url: apiBaseUrl + "users/" + userId + "/join/" + leagueId + "?username=" + username,
-                    dataType: "json",
-                    type: "POST",
-                    data: {"username": username, "userId": userId},
-                    success: function(data){
-                        console.log("signed up")
-                    }
-                })
-            }
-            }
 //$.ajax({url: apiBaseUrl + "leagues/" + leagueId,
 //    dataType: "json",
 //    type: "GET",
@@ -79,8 +62,6 @@ function cardHtml(p, j, player){
     playerDataCache.set(player.cardId, player);
                             p[++j] = '<div style="height: 420px;" class="card col s3 playerCard rounded bottomRightParent rarity-';
                             p[++j] = player.colour.toLowerCase();
-                            p[++j] = ' ';
-                            p[++j] = player.limitTypes.club.split(" ").join("").toLowerCase();
                             p[++j] = '"><div class="card-content"><span class="card-title"><h6><p><span class="playerName centre"><strong>';
                             p[++j] = player.name;
                             p[++j] = '</strong></span></p><p><span class="teamName centre">';
@@ -189,17 +170,7 @@ function getTeamThenSetup(){
                     $(".userCredits").text(data.user.money);
                     $(".userPoints").text(data.stats.points);
                     var r = new Array(), j = -1;
-                    $.each(data.team.sort(function(x, y) {
-                        var xval = positionOrder.get(x.limitTypes.position);
-                        var yval = positionOrder.get(y.limitTypes.position);
-                        if (xval < yval) {
-                            return -1;
-                        }
-                        if (xval > yval) {
-                            return 1;
-                        }
-                            return 0;
-                    }), function(key, player) {
+                    $.each(data.team.sort(positionNameSort), function(key, player) {
                     r, j = addPlayerHtmlArray(player, r, j);
                     })
                     $("#teamTable").find("tbody").html(r.join(''));
