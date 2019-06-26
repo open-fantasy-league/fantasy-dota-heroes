@@ -33,6 +33,8 @@
 <div class="row">
 <div id="predictionsBlock" class="col s12">
     <button type="submit" id="predictBtn" class="btn waves-effect waves-light">Update predictions</button>
+    <span><strong>Predictions can be updated up until match start time.</strong></span>
+    <span>Correct predictions will award <span id="predictionWinMoney"></span> credits towards new packs</span>
     <div id="predictionsContainer">
     <div class="row" id="predictionsTable">
     </div>

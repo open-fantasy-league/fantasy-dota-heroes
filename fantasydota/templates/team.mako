@@ -35,7 +35,7 @@
                 <th class="dummyHeader" colspan="0"></th>
                 <th class="positionHeader sorttable_numeric">Position</th>
                 <th class="clubHeader extra sorttable_numeric">Club</th>
-                <th class="pointsHeader extra sorttable_numeric">Points</th>
+                <th class="pointsHeader extra sorttable_numeric">Points (Last week)</th>
                 <th class="bonusHeader extra sorttable_numeric">Bonuses</th>
                 <th class="sellHeader">Remove</th>
             </tr>

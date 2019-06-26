@@ -97,7 +97,7 @@ var nextPeriodValue = league.currentPeriod ? league.currentPeriod.value + 1: 1
 teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&stats&period=" + nextPeriodValue;
     $("#leagueLink").attr('href', league.url);
     $("#leagueLink").text(league.name);
-    $.ajax({url: apiBaseUrl + "teams/league/" + leagueId + "/user/" + userId + "/cards?period=" + nextPeriodValue,
+    $.ajax({url: apiBaseUrl + "teams/league/" + leagueId + "/user/" + userId + "/cards?lastXPeriodStats=1&overallStats&period=" + nextPeriodValue,
                 type: "GET",
                 dataType: "json",
                 success: function(data){
@@ -134,9 +134,12 @@ function addPlayerHtmlArray(player, r, j){
                     r[++j] = '</td><td class="clubEntry">';
                     r[++j] = player.limitTypes.club;
                     r[++j] = '</td><td class="playerPointsEntry">';
-                    r[++j] = 2.1;
+                    var card = playerDataCache.get(player.cardId);
+                    r[++j] = card.overallStats.points;
+                    r[++j] = ' ('
+                    r[++j] = card.recentPeriodStats.find(function(x){return x.period == (league.currentPeriod.value - 1)}).stats.points;
                     //r[++j] = player.stats.points;
-                    r[++j] = '</td><td class="bonusesEntry">';
+                    r[++j] = ')</td><td class="bonusesEntry">';
                     $.each(player.bonuses, function(bkey, bonus){
                         r[++j] = '<p><span>→';
                                 r[++j] = bonus.name;
@@ -233,6 +236,8 @@ function setup(){
             dataType: "json",
             type: "GET",
             success: function(data){
+                var userCredits = $(".userCredits");
+                userCredits.text(parseFloat(userCredits.text()) - league.cardPackCost);
                 var p = [], j = -1;
                 var newCards = [];
                 currentIndex = 0;
@@ -280,7 +285,7 @@ function setup(){
                 swal({
                  content: div,
                  heightAuto: false,
-                  icon: "success",
+                  icon: "",
                   className: 'swal-newcards',
                   showCloseButton: true,
                   button: false,

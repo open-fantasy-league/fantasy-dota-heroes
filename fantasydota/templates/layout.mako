@@ -128,7 +128,7 @@
                 <a href="/leaderboard?period=0">Leaderboard</a>
             </li>
             <li class="col s1">
-                <a class="dailyLink" href="/leaderboard?period=1">Daily</a>
+                <a class="dailyLink" href="/leaderboard?period=1">Weekly</a>
             </li>
                 <li class="col s1">
                     <a href="/rules">Rules</a>

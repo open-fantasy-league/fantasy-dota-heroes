@@ -10,8 +10,10 @@ body {
 
 .scoreboardfont {
     font-family: "scoreboard";
-    color: #ff9900;
-    background-color: black;
+    color: #ff9900 !important;
+    font-size: 1.1rem !important;
+    padding: 0.3rem !important;
+    margin: 0px !important;
 }
 
 body {

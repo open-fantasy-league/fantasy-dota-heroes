@@ -59,7 +59,10 @@ def create_league(name, tournament_id, url):
         'teamSize': 11,
         'transferInfo': {
             'cardSystem': True,
-
+            'cardPackSize': 10,
+            'cardPackCost': 5,
+            'recycleValue': 0.2,
+            'predictionWinMoney': 2.0
             # "transferDelayMinutes": 60,
             # "noWildcardForLateRegister": True,
             #'transferLimit': 5
@@ -103,8 +106,6 @@ def create_league(name, tournament_id, url):
             {'name': 'own goal', 'allFactionPoints': -2.0},
             {'name': 'penalty miss', 'allFactionPoints': -3.0, 'noCardBonus': True},
             {'name': 'Unsung hero Fotmob match rating*', 'allFactionPoints': 1.0},
-            # {'name': 'Unsung hero 2nd (fotmob rating)', 'allFactionPoints': 3.0},
-            # {'name': 'Unsung hero 3rd (fotmob rating)', 'allFactionPoints': 2.0}
         ],
         'pickees': get_players(teams)
     }

@@ -1,5 +1,6 @@
 var predictionsUrl;
 getLeagueInfo(false, false, false, false).then(makePredictions);
+var matchIdToScores = new Map();
 
 function makePredictions(){
     $("#leagueLink").attr('href', league.url);
@@ -16,6 +17,7 @@ function makePredictions(){
         }
     }
     $("#periodDropdown").append(r.join(''));
+    $("#predictionWinMoney").text(league.predictionWinMoney);
     fillMatches();
 }
 
@@ -42,6 +44,9 @@ function fillMatches(){
                         var thisSeries = series.series;
                         var teamOneBasic = thisSeries.teamOne.replace(/[ &]/g, '').toLowerCase();
                         var teamTwoBasic = thisSeries.teamTwo.replace(/[ &]/g, '').toLowerCase();
+                        if (match.matchTeamOneFinalScore != null && match.matchTeamOneFinalScore != undefined){
+                            matchIdToScores.set(match.matchId, [match.matchTeamOneFinalScore, match.matchTeamTwoFinalScore])
+                        }
                         r[++j] = '<div class="row" style="height: 100%">'
                         r[++j] = '<div class="card-panel horizontal matchRow center-align ';
                         r[++j] = teamOneBasic + teamTwoBasic;
@@ -52,28 +57,20 @@ function fillMatches(){
                         r[++j] = '"><strong>';
                         r[++j] = thisSeries.teamOne;
                         r[++j] = '</strong></span>';
-                        r[++j] = '<div style="width: 180px;" class="card-panel horizontal predictionRow col s4 scoreboardfont ';
+                        r[++j] = '<div style="width: 180px;background-color: black;" class="card-panel horizontal predictionRow col s4 ';
                         r[++j] = match.started ? ' disabled" ' : ' active" ';
                         r[++j] = 'data-matchId=';
                         r[++j] = match.matchId;
-                        r[++j] = '><strong><input class="col s4 center" style="-moz-appearance: textfield" ';
+                        r[++j] = '><strong><input class="col s5 center scoreboardfont" style="-moz-appearance: textfield" ';
                         r[++j] = match.started ? ' disabled=true' : "";
-                        r[++j] = '  type="number" min="0" id="teamOneScorePredict-';
+                        r[++j] = '  type="text" id="teamOneScorePredict-';
                         r[++j] = match.matchId;
                         r[++j] = '">';
-                        if (match.teamOneMatchScore != null && match.teamOneMatchScore != undefined){
-                            var score = '(' + match.teamOneMatchScore + ')';
-                            r[++j] = score
-                        }
-                        r[++j] = '<input style="color:#ff9900" class="col s4 center" type="text" value=":" disabled><input class="col s4 center" style="-moz-appearance: textfield" ';
+                        r[++j] = '<input style="color:#ff9900" class="col s2 center scoreboardfont" type="text" value=":" disabled><input class="col s5 center scoreboardfont" style="-moz-appearance: textfield" ';
                         r[++j] = match.started ? ' disabled=true' : "";
-                        r[++j] = ' type="number" min="0" id="teamTwoScorePredict-';
+                        r[++j] = ' type="text" id="teamTwoScorePredict-';
                         r[++j] = match.matchId;
                         r[++j] = '"></strong>';
-                        if (match.teamTwoMatchScore != null && match.teamTwoMatchScore != undefined){
-                            var score = '(' + match.teamTwoMatchScore + ')';
-                            r[++j] = score
-                        }
                         r[++j] = '</div>';
                         r[++j] = '<span class="teamTwo hide-on-small-only col s4 right ';
                         r[++j] = teamTwoBasic;
@@ -102,8 +99,22 @@ function fillPredictions(){
                     $.each(data, function(key, entry){
                         var teamOneScorePredict = $("#teamOneScorePredict-" + entry.matchId);
                         var teamTwoScorePredict = $("#teamTwoScorePredict-" + entry.matchId);
-                        if (teamOneScorePredict){teamOneScorePredict.val(entry.teamOneScore)};
-                        if (teamTwoScorePredict){teamTwoScorePredict.val(entry.teamTwoScore)};
+                        var scores = matchIdToScores.get(entry.matchId);
+                        if (teamOneScorePredict){
+                            var out = entry.teamOneScore;
+                            if (scores){
+                                out = out + " <" + scores[0] + ">";
+                            }
+                            teamOneScorePredict.val(out);
+
+                        };
+                        if (teamTwoScorePredict){
+                            var out = entry.teamTwoScore;
+                            if (scores){
+                                out = out + " <" + scores[1] + ">";
+                            }
+                            teamTwoScorePredict.val(out);
+                            };
                     })
                 }
     })
