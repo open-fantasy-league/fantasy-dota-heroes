@@ -17,13 +17,13 @@
 
 <div class="row" id="myTeamBlock">
     <div class="row">
-    <span class="left" style="width: 33%;"><h5><span class="col s3">Team: </span><span id="teamName" class="col s5">${team_name if user else ""}</span>
-    <span id="teamNameEdit" class="invisible col s5">
+    <span class="left" style="width: 33%;"><h5><span class="col s3">Team: </span>
+        <button id="updateNameButton"><i class="material-icons prefix">edit</i></button>
+    <button id="confirmNameButton" class="invisible"><i class="material-icons prefix">check</i></button>
+    <span id="teamName">${team_name if user else ""}</span>
+    <span id="teamNameEdit" class="invisible">
           <input id="teamNameTextField" type="text" class="validate" value=${team_name if user else ""} />
         </span>
-    <span class="col s1"><button id="updateNameButton"><i class="material-icons">edit</i></button>
-    <button id="confirmNameButton" class="invisible"><i class="material-icons">check</i></button>
-    </span>
     </h5></span>
     <span class="left center-align" style="width: 33%;"><h5><a id="leagueLink" target="_blank"></a></h5></span>
     <span class="right"><h5>Points: <span class="userPoints"></span></h5></span>

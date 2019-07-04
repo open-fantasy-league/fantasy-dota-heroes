@@ -96,6 +96,7 @@ def process_match(driver):
         "\+(\d+) minutes? added",
         driver.find_element_by_xpath("//*[starts-with(@class, 'match-factsstyles__AddedTimeContainer')]").text).groups()[0])
     raw_input("now switch to lineup")
+    scroll_to_bottom(driver, "detailstyles__LivescoreDetailsContainer-")
     for i, starting_player in enumerate(driver.find_elements_by_xpath("//*[@class='fm-lineup__player']")):
         name = starting_player.find_element_by_xpath(".//*[starts-with(@class, 'lineupstyles__LineupPlayerName')]").text
         rating = float(
@@ -153,7 +154,7 @@ def data_listener():
         pass
     while True:
         raw_input("Wait to load match")
-        scroll_to_bottom(driver)
+        scroll_to_bottom(driver, "detailstyles__LivescoreDetailsContainer-")
         match_data = process_match(driver)
         print(match_data)
         raw_input("this look fine?: ")

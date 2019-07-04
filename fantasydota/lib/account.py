@@ -3,6 +3,8 @@ from uuid import uuid4
 from social_core.pipeline.user import USER_FIELDS
 from social_core.utils import module_member, slugify
 
+from fantasydota.lib.constants import OTHER_ACCOUNT, SOCIAL_CODES
+
 
 def check_invalid_password(password, confirm_password):
     if len(password) < 6:
@@ -74,3 +76,18 @@ def get_non_unique_username(strategy, details, backend, user=None, *args, **kwar
     else:
         final_username = storage.user.get_username(user)
     return {'username': final_username}
+
+
+def create_user(strategy, details, backend, user=None, *args, **kwargs):
+    if user:
+        return {'is_new': False}
+    fields = dict((name, kwargs.get(name, details.get(name)))
+                  for name in backend.setting('USER_FIELDS', USER_FIELDS))
+    fields['account_type'] = SOCIAL_CODES.get(backend.name, OTHER_ACCOUNT)
+    if not fields:
+        return
+
+    return {
+        'is_new': True,
+        'user': strategy.create_user(**fields)
+}

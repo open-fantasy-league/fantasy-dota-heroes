@@ -20,17 +20,17 @@ from .models import (
 
 
 # I was getting 2006 mysql gone away if website left for few hours. didnt know why
-def checkout_listener(dbapi_con, con_record, con_proxy):
-    try:
-        try:
-            dbapi_con.ping(False)
-        except TypeError:
-            dbapi_con.ping()
-    except dbapi_con.OperationalError as exc:
-        if exc.args[0] in (2006, 2013, 2014, 2045, 2055):
-            raise DisconnectionError()
-        else:
-            raise
+# def checkout_listener(dbapi_con, con_record, con_proxy):
+#     try:
+#         try:
+#             dbapi_con.ping(False)
+#         except TypeError:
+#             dbapi_con.ping()
+#     except dbapi_con.OperationalError as exc:
+#         if exc.args[0] in (2006, 2013, 2014, 2045, 2055):
+#             raise DisconnectionError()
+#         else:
+#             raise
 
 
 def get_settings(module):
@@ -44,7 +44,7 @@ def main(global_config, **settings):
     """
     sqlalchemy_url = os.path.expandvars(settings.get('sqlalchemy.url'))
     engine = create_engine(sqlalchemy_url, echo=False, pool_size=100, pool_recycle=3600)
-    event.listen(engine, 'checkout', checkout_listener)
+    #event.listen(engine, 'checkout', checkout_listener)
     DBSession.configure(bind=engine)
 
     # Need https set up on local machine for secure True to work locally

@@ -68,16 +68,19 @@ def update_team_name(request):
     new_name = request.json_body.get('name')
     if len(new_name) < 3:
         data = {"success": False, "msg": "Team name must be > 3 characters"}
-        return Response(json.dumps(data), status=400)
+        return Response(json_body=data, status=400)
+    if len(new_name) > 20:
+        data = {"success": False, "msg": "Team name must be <= 20 characters"}
+        return Response(json_body=data, status=400)
     if not re.match("(?i)^[0-9a-zA-Z ]+$", new_name):
         data = {"success": False, "msg": "Team name can only contain letters, numbers and spaces"}
-        return Response(json.dumps(data), status=400)
+        return Response(json_body=data, status=400)
     else:
         teamq = session.query(Team).filter(Team.league_id == league_id).filter(Team.user_id == user_id)
         existing_name = session.query(Team).filter(Team.league_id == league_id).filter(Team.name == new_name)
         if existing_name.first():
             data = {"success": False, "msg": "Team name already taken. please choose unique one"}
-            return Response(json.dumps(data), status=400, content_type="application/json")
+            return Response(json_body=data, status=400, content_type="application/json")
         else:
             if teamq.first():
                 teamq.update({Team.name: new_name})
@@ -85,7 +88,7 @@ def update_team_name(request):
                 team = Team(user_id, league_id, new_name)
                 session.add(team)
             data = {"success": True, "team_name": new_name}
-            return Response(json.dumps(data), status=200, content_type="application/json")
+            return Response(json_body=data, status=200, content_type="application/json")
 
 
 @view_config(route_name='new_card_pack', renderer='json')
@@ -102,12 +105,11 @@ def new_card_pack(request):
             }
         )
         response = urllib2.urlopen(req)
-        return json.loads(response.read())
+        return Response(json_body={'success': True, 'msg': json.loads(response.read())})
     except urllib2.HTTPError as e:
-        text = e.read()
-        return Response(text, status=e.code, content_type="application/json")
+        return Response(json_body={'success': False, 'msg': e.read()}, status=e.code, content_type="application/json")
     except Exception as e:
-        return Response(e.message, status=500)
+        return Response(json_body={'success': False, 'msg': e.message}, status=500)
 
 
 @view_config(route_name='recycle_card', renderer='json')

@@ -56,6 +56,10 @@
             <td>MDL Macau</td>
             <td>Misanthrope</td>
         </tr>
+        <tr>
+            <td>OGA Dotapit 2019</td>
+            <td>surelylie</td>
+        </tr>
         </tbody>
     </table>
         <table class="card-table striped">

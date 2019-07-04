@@ -39,8 +39,9 @@ def view_rules(request):
 @view_config(route_name="hall_of_fame", renderer="../templates/hall_of_fame.mako")
 def hall_of_fame(request):
     session = DBSession()
+    user_id = authenticated_userid(request)
     return all_view_wrapper(
-        {}, session, request
+        {}, session, user_id
     )
 
 

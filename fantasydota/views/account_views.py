@@ -55,7 +55,7 @@ def logout(request):
 @view_config(route_name='register')
 def register(request):
     session = DBSession()
-    username = request.params.get('username').lower()
+    username = request.params.get('username')
     password = request.params.get('password')
     confirm_password = request.params.get('confirm_password')
     email = request.params.get('email')

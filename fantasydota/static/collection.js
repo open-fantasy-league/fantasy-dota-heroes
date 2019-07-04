@@ -55,8 +55,13 @@ teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&stats
                     })
                     $('.tabs').tabs();
                 },
-                error: function(data){
+                error: function(jqxhr, textStatus, errorThrown){
+                    if (jqxhr.responseText.startsWith("Invalid User ID")){
+                        Swal.fire({html: "<a href='/login'>Please log in to play!</a>", type: 'info'});
+                    }
+                    else{
                     Swal.fire("Something went wrong. oops!", '', 'error');
+                    }
                 }
     });
     })

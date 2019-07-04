@@ -113,8 +113,13 @@ teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&stats
                     $("#" + positionLowerCase + "s").html(p.join(''));
                     })
                 },
-                error: function(data){
+                error: function(jqxhr, textStatus, errorThrown){
+                    if (jqxhr.responseText.startsWith("Invalid User ID")){
+                        Swal.fire({html: "<a href='/login'>Please log in to play!</a>", type: 'info'});
+                    }
+                    else{
                     Swal.fire("Something went wrong. oops!", '', 'error');
+                    }
                 }
             }).then(getTeamThenSetup);
             }
@@ -236,6 +241,7 @@ function setup(){
             dataType: "json",
             type: "GET",
             success: function(data){
+            var data = data.msg;
                 var userCredits = $(".userCredits");
                 userCredits.text(parseFloat(userCredits.text()) - league.cardPackCost);
                 var p = [], j = -1;
@@ -293,7 +299,7 @@ function setup(){
                     //window.location.reload(false);
             },
             error: function(jqxhr, textStatus, errorThrown){
-                Swal.fire({'text': jqxhr.responseText, 'type': 'error'});
+                Swal.fire({'text': jqxhr.responseJSON.msg, 'type': 'error'});
             }
         });
     })
@@ -336,7 +342,7 @@ function confirmNameOnclick(){
             teamName.removeClass("invisible");
         },
         error: function(jqxhr, textStatus, errorThrown){
-            Swal.fire({'text': jqxhr.responseText, 'type': 'error'});
+            Swal.fire({'text': jqxhr.responseJSON.msg, 'type': 'error'});
         }
     });
 }
