@@ -73,7 +73,7 @@ function makeLeaderboard(){
                     $("#leaderboardTable").find("tbody").html(r.concat(tfoot).join(''));
                 },
                 error: function(data){
-                    sweetAlert("Something went wrong. oops!", '', 'error');
+                    Swal.fire("Something went wrong. oops!", '', 'error');
                 }
             });
         }

@@ -4,6 +4,7 @@ import json
 from datetime import datetime
 
 import re
+from selenium_utils import scroll_to_bottom
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
@@ -152,6 +153,7 @@ def data_listener():
         pass
     while True:
         raw_input("Wait to load match")
+        scroll_to_bottom(driver)
         match_data = process_match(driver)
         print(match_data)
         raw_input("this look fine?: ")

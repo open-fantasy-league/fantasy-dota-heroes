@@ -32,7 +32,9 @@
         <!-- Should move these links just to the pages where they belong -->
         <script src="/static/thirdparty/sorttable.js"></script>
 
-        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="/static/thirdparty/sweetalert2.all.min.js"></script>
+        <!--<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>-->
+        <!--<script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>-->
         <script>var apiBaseUrl = "${api_base_url}"
 
             var leagueId = ${league_id};

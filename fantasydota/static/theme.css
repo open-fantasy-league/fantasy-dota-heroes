@@ -332,8 +332,15 @@ bottom:   5px;
     display: none;
 }
 
+.swal2-content{
+color: black !important;
+}
+
 .swal-newcards{
-height: 620px;
+height: 470px;
+}
+.swal-newcards-header{
+height: 40px
 }
 
 .matchRow{

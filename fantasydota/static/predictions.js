@@ -141,11 +141,11 @@ function updatePredictions(){
                     contentType: "application/json",
                     success: function(){swal({
              title: "Success",
-              icon: "success",
+              type: "success",
               timer: 500
             })},
                     error: function(jqxhr, textStatus, errorThrown){
-            sweetAlert(jqxhr.responseText, '', 'error');
+            Swal.fire({'text': jqxhr.responseText, 'type': 'error'});
         }
             });
 }

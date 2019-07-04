@@ -1,6 +1,8 @@
 var toSell = [];
 var toBuy = [];
 var wildcard = false;
+var reversePosOrders = [[0, 'Goalkeeper'], [1, 'Defender'], [2, 'Midfielder'], [3, 'Forward']];
+var reversePositionOrder = new Map(reversePosOrders);
 
 function disableButtons(){
     $("[name=buyPlayer]").add("[name=sellPlayer]").add("#confirmTransfers").each(function(){$(this).attr("disabled","true");});
@@ -38,21 +40,21 @@ var recycleOnClick = function recycleOnClick(event){
             $(".userCredits").each(function(){$(this).text(data.updatedMoney)});
             $("#recyclePlayer-" + cardId).parent().parent().parent().parent().remove();
             undisableButtons();
-            swal({
+            Swal.fire({
              title: "Recycled",
-              icon: "success",
+              type: "success",
               timer: 400
             });
         },
         error: function(jqxhr, textStatus, errorThrown){
             undisableButtons();
-            sweetAlert(jqxhr.responseText, '', 'error');
+            Swal.fire({'text': jqxhr.responseText, 'type': 'error'});
         }
     })
 }
 
 var pleaseLogInClick = function pleaseLogInClick(){
-    swal('Please log in to pick a team!', '', 'error').then(function(){
+    Swal.fire('Please log in to pick a team!', '', 'error').then(function(){
         window.location.href = '/login';
     });
 }
@@ -97,10 +99,10 @@ console.log(playerId)
             }
             $(".userCredits").each(function(){$(this).text(data.updatedMoney)});
             undisableButtons();
-            swal({
+            Swal.fire({
              title: "Transfer valid",
              text: "Confirm Transfers to process changes",
-              icon: "success",
+              type: "success",
               timer: 500
             });
         },
@@ -108,7 +110,7 @@ console.log(playerId)
             toSell = toSellOriginal;
             toBuy = toBuyOriginal;
             undisableButtons();
-            sweetAlert(jqxhr.responseText, '', 'error');
+            Swal.fire({'text': jqxhr.responseText, 'type': 'error'});
         }
     });
 }

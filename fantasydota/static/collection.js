@@ -56,7 +56,7 @@ teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&stats
                     $('.tabs').tabs();
                 },
                 error: function(data){
-                    sweetAlert("Something went wrong. oops!", '', 'error');
+                    Swal.fire("Something went wrong. oops!", '', 'error');
                 }
     });
     })

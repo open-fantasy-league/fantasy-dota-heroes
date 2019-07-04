@@ -114,7 +114,7 @@ teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&stats
                     })
                 },
                 error: function(data){
-                    sweetAlert("Something went wrong. oops!", '', 'error');
+                    Swal.fire("Something went wrong. oops!", '', 'error');
                 }
             }).then(getTeamThenSetup);
             }
@@ -189,7 +189,7 @@ function getTeamThenSetup(){
                                 }).then(getTeamThenSetup)  // this time the call should work
                     }
                     else{
-                        sweetAlert("Something went wrong. oops!", '', 'error');
+                        Swal.fire("Something went wrong. oops!", '', 'error');
                         }
                 }
             }).then(setup);
@@ -215,17 +215,17 @@ function setup(){
             type: "POST",
             data: {"sell": toSell, "buy": toBuy, "isCheck": false, "wildcard": wildcard},
             success: function(data){
-                swal({
+                Swal.fire({
                  title: "Transfers locked in!",
                  text: league.started ? "Note: Your new players will start scoring points one hour from now" : "You can make as many changes as you like until league start",
-                  icon: "success"
+                  type: "success"
                 }).then(function(){
                     window.location.reload(false);
                 });
             },
             error: function(jqxhr, textStatus, errorThrown){
                 undisableButtons();
-                sweetAlert(jqxhr.responseText, '', 'error');
+                Swal.fire({'text': jqxhr.responseText, 'type': 'error'});
             }
         });
     });
@@ -282,19 +282,18 @@ function setup(){
                 div.innerHTML = html;
                 div.setAttribute("class", "row");
                 div.style.position = "relative";
-                swal({
-                 content: div,
+                Swal.fire({
+                 html: div,
                  heightAuto: false,
-                  icon: "",
-                  className: 'swal-newcards',
+                  type: "",
+                  customClass: {content: 'swal-newcards', header: 'swal-newcards-header'},
+                  showConfirmButton: false,
                   showCloseButton: true,
-                  button: false,
-
                 })
                     //window.location.reload(false);
             },
             error: function(jqxhr, textStatus, errorThrown){
-                sweetAlert(jqxhr.responseText, '', 'error');
+                Swal.fire({'text': jqxhr.responseText, 'type': 'error'});
             }
         });
     })
@@ -316,7 +315,7 @@ function updateNameOnclick(){
 //                $("#teamName").text(data.team_name);
 //            },
 //            error: function(jqxhr, textStatus, errorThrown){
-//                sweetAlert(jqxhr.responseText, '', 'error');
+//                Swal.fire({'text': jqxhr.responseText, 'type': 'error'});
 //            }
 //        });
 
@@ -337,7 +336,7 @@ function confirmNameOnclick(){
             teamName.removeClass("invisible");
         },
         error: function(jqxhr, textStatus, errorThrown){
-            sweetAlert(jqxhr.responseText, '', 'error');
+            Swal.fire({'text': jqxhr.responseText, 'type': 'error'});
         }
     });
 }

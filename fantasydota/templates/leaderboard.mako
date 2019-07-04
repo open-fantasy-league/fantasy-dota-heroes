@@ -95,7 +95,7 @@ $( document ).ready(function() {
                         var success = data.success,
                         message = data.message;
                         if (!success){
-                            sweetAlert(message);
+                            Swal.fire(message);
                         }
                         else{
                             window.location.reload();

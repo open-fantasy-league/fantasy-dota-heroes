@@ -15,10 +15,10 @@ def all_pickees():
     return json.load(urllib2.urlopen(urllib2.Request(API_URL + "pickees/" + str(DEFAULT_LEAGUE))))
 
 
-def update_pickees(diffs):
+def update_pickees(diffs, inserts):
     try:
         req = urllib2.Request(
-            API_URL + "pickees/leagues/" + str(DEFAULT_LEAGUE),
+            API_URL + "pickees/leagues/" + str(DEFAULT_LEAGUE) + "/updates",
             data=json.dumps(diffs), headers={
                 "Content-Type": "application/json",
                 "apiKey": FE_APIKEY
@@ -26,7 +26,20 @@ def update_pickees(diffs):
         )
         response = urllib2.urlopen(req).read()
         print(response)
-        return response
+    except urllib2.HTTPError as e:
+        print(e.read())
+        raise
+
+    try:
+        req = urllib2.Request(
+            API_URL + "pickees/leagues/" + str(DEFAULT_LEAGUE) + "/add",
+            data=json.dumps(inserts), headers={
+                "Content-Type": "application/json",
+                "apiKey": FE_APIKEY
+            }
+        )
+        response = urllib2.urlopen(req).read()
+        print(response)
     except urllib2.HTTPError as e:
         print(e.read())
         raise
