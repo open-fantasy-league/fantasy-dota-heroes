@@ -23,13 +23,11 @@
         Points are allocated in the following way:</br>
         <ul class="browser-default" id="scoringRules">
         </ul></br>
-        Example:</br>
-        <img src="/static/images/dota/examplescoring.png"></img>
-            <ul class="browser-default"><li>x2 points for grand finals day
+            <ul class="browser-default"><li>x2 points for final week
             </li>
             </ul>
             </br>
-            Points leader at end of tournament wins Crystal Maiden arcana.
+            Prizes TBD closer to start
     </div>
 </div>
 

@@ -226,7 +226,7 @@ function setup(){
             success: function(data){
                 Swal.fire({
                  title: "Transfers locked in!",
-                 text: league.started ? "Note: Your new players will start scoring points one hour from now" : "You can make as many changes as you like until league start",
+                 text: "Note: Your new players will start scoring points starting next game week",
                   type: "success"
                 }).then(function(){
                     window.location.reload(false);

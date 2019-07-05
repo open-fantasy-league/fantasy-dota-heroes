@@ -38,7 +38,7 @@ var recycleOnClick = function recycleOnClick(event){
         data: {"cardId": cardId},
         success: function(data){
             $(".userCredits").each(function(){$(this).text(data.updatedMoney)});
-            $("#recyclePlayer-" + cardId).parent().parent().parent().parent().remove();
+            $("#recyclePlayer-" + cardId).parent().parent().parent().remove();
             undisableButtons();
             Swal.fire({
              title: "Recycled",

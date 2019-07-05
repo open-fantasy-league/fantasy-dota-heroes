@@ -26,16 +26,11 @@
 <div class="card">
     <div class="card-content">
         <div class="row">
-            <h2>Existing User . . .
-                <span class="right">. . . or <a id="steam-button" href="/login/steam/">
-                <img src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_01.png" width="180" height="35" border="0"/>
-                </a>
-                </span>
-                <span class="right"><a id="google-button" href="/login/google-oauth2/">Goggle</a>
-                <span class="right"><a id="facebook-button" href="/login/facebook/">Fbook</a>
-            </h2>
+            <h2>Existing User . . .</h2>
+
         </div>
         <div class="row">
+        <div class="col s9">
             <form action="${request.route_path('login')}" method="POST" id="loginForm">
                 <div class="input-field col s4">
                     <input type="text" name="username" placeholder="Username">
@@ -52,6 +47,15 @@
                 <a href="/forgotPassword">Forgotten password?</a>
                 </div>
             </form>
+            </div>
+            <div class="col s3">
+                            <div class="row"><a id="steam-button" href="/login/steam/">
+                <img src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_01.png" width="180" height="35" border="0"/>
+                </a></div>
+                <div class="row"><a id="google-button" href="/login/google-oauth2/"><img src="/static/thirdparty/google-sign-in.png"/></a></div>
+                <div class="row"><a id="facebook-button" href="/login/facebook/"><div class="fb-login-button" data-width="100" data-size="large" data-button-type="login_with" data-auto-logout-link="false"
+                data-use-continue-as="false"></div></a></div>
+            </div>
         </div>
     </div>
 </div>
@@ -84,25 +88,5 @@
         </form>
     </div>
 </div>
-
-<script>
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '{your-app-id}',
-      cookie     : true,
-      xfbml      : true,
-      version    : '{api-version}'
-    });
-
-    FB.AppEvents.logPageView();
-
-  };
-
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "https://connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-</script>
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v3.3&appId=436163960275264"></script>

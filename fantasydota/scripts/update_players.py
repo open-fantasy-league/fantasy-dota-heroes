@@ -22,10 +22,10 @@ def main():
         current_p = next((x for x in current_players if x["name"] == p["name"]), None)
         if current_p:
             seen_players.add(p["name"])
-            if current_p['limitTypes']['club'] != p['limits'][1]:
+            if current_p['limitTypes'].get('club') != p['limits'][1]:
                 diff['limitTypes'].append({'name': 'club', 'value': p['limits'][1]})
                 is_diff = True
-            if current_p['limitTypes']['position'] != p['limits'][0]:
+            if current_p['limitTypes'].get('position') != p['limits'][0]:
                 diff['limitTypes'].append({'name': 'position', 'value': p['limits'][0]})
                 is_diff = True
             if not current_p['active']:
