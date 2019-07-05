@@ -63,9 +63,6 @@ def create_league(name, tournament_id, url):
             'cardPackCost': 5,
             'recycleValue': 0.2,
             'predictionWinMoney': 2.0
-            # "transferDelayMinutes": 60,
-            # "noWildcardForLateRegister": True,
-            #'transferLimit': 5
         },
         "periods": periods,
         "url": url,
@@ -105,7 +102,9 @@ def create_league(name, tournament_id, url):
             {'name': 'red card', 'allFactionPoints': -2.0},
             {'name': 'own goal', 'allFactionPoints': -2.0},
             {'name': 'penalty miss', 'allFactionPoints': -3.0, 'noCardBonus': True},
-            {'name': 'Unsung hero Fotmob match rating*', 'allFactionPoints': 1.0},
+            {'name': 'Unsung hero Fotmob match rating*',
+             'description': '3 highest rated players without any goals or assists, are awarded points equal to 0.5x their match rating',
+             'allFactionPoints': 0.5},
         ],
         'pickees': get_players(teams)
     }

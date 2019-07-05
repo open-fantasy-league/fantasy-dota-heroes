@@ -41,6 +41,7 @@ def add_game(match):
     team_two_goals = match['teamTwoGoals']
     team_one_penalty_miss = match['penaltyMiss']['teamOne']
     team_two_penalty_miss = match['penaltyMiss']['teamTwo']
+    own_goals = match['ownGoals']
     red_cards = match['redCards']
     pickees = []
 
@@ -49,6 +50,7 @@ def add_game(match):
     unsung_players = [p for p in players if p[0] not in ([x['scorer'] for x in all_goals] + [x['assist'] for x in all_goals])]
     unsung_players.sort(key=lambda p: p[3], reverse=True)
     unsung_players = [p[0] for p in unsung_players][:3]
+    highest_off = max(x[2] for x in match['teamOnePlayers'])
 
     def appendPlayer(name, on, off, is_team_one, our_team_goals, other_team_goals, red_cards):
         red_cards = [x for x in red_cards if x[0] == name]
@@ -77,15 +79,28 @@ def add_game(match):
         if name in unsung_players:
             stats.append({'field': 'unsung hero (fotmob rating)', 'value': 5 - unsung_players.index(name)})
 
-        if is_keeper and is_team_one and len(team_two_penalty_miss):
+        if is_keeper and is_team_one:
+            saved = int(raw_input("team one saves on/off: {}:{}".format(on, off))) if on != 0 or off != highest_off else match['teamOneSaves']
+            stats.append({'field': 'shot saved', 'value': saved})
+            if len(team_two_penalty_miss):
+                stats.append({
+                    'field': 'penalty save',
+                    'value': len([p for p in team_two_penalty_miss if on <= p[1] < off])
+                })
+        if is_keeper and not is_team_one:
+            saved = int(raw_input("team one saves on/off: {}:{}".format(on, off))) if on != 0 or off != highest_off else match['teamTwoSaves']
+
+            stats.append({'field': 'shot saved', 'value': saved})
+            if len(team_one_penalty_miss):
+                stats.append({
+                    'field': 'penalty save',
+                    'value': len([p for p in team_one_penalty_miss if on <= p[1] < off])
+                })
+        num_own_goals = len([x for x in own_goals if x == name])
+        if num_own_goals:
             stats.append({
-                'field': 'penalty save',
-                'value': len([p for p in team_two_penalty_miss if on <= p[1] < off])
-            })
-        if is_keeper and not is_team_one and len(team_one_penalty_miss):
-            stats.append({
-                'field': 'penalty save',
-                'value': len([p for p in team_one_penalty_miss if on <= p[1] < off])
+                'field': 'own goal',
+                'value': num_own_goals
             })
         pickees.append({
             'id': pickee['id'],

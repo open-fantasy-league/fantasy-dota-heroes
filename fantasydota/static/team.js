@@ -58,6 +58,24 @@ $("#filterCards").click(function (){
 //    }
 //}).then(getPickees)
 
+function drawBonus(bonuses, p, j){
+
+    $.each(bonuses, function(bkey, bonus){
+        p[++j] = '<p><i><span class="bonus-rarity-text" ';
+        if (bonus.description){
+            p[++j] = 'title="';
+            p[++j] = bonus.description;
+            p[++j] = '"';
+        }
+        p[++j] = '>→';
+        p[++j] = bonus.name;
+        p[++j] = ' x';
+        p[++j] = bonus.multiplier;
+        p[++j] = '</span></i></p>';
+    })
+    return j
+}
+
 function cardHtml(p, j, player){
     playerDataCache.set(player.cardId, player);
                             p[++j] = '<div style="height: 420px;" class="card col s3 playerCard rounded bottomRightParent rarity-';
@@ -74,15 +92,7 @@ function cardHtml(p, j, player){
                             p[++j] = player.cardId;
                             p[++j] ='">Add</button></span></p>';
                             p[++j] = '</p><div class="card-image"><img src="/static/images/football/placeholder.png"></div><p>';
-                            $.each(player.bonuses, function(bkey, bonus){
-                                p[++j] = '<p><i><span class="bonus-rarity-';
-                                p[++j] = player.colour.toLowerCase();
-                                p[++j] = '">→';
-                                p[++j] = bonus.name;
-                                p[++j] = ' x';
-                                p[++j] = bonus.multiplier;
-                                p[++j] = '</span></i></p>';
-                            })
+                            j = drawBonus(player.bonuses, p, j);
                             p[++j] = '<button name="recyclePlayer" id="recyclePlayer-';
                             p[++j] = player.cardId;
                             p[++j] = '" type="submit" class="btn waves-effect waves-light recyclePlayer bottomRight" data-cardId="';
@@ -145,13 +155,7 @@ function addPlayerHtmlArray(player, r, j){
                     r[++j] = card.recentPeriodStats.find(function(x){return x.period == (league.currentPeriod.value - 1)}).stats.points;
                     //r[++j] = player.stats.points;
                     r[++j] = ')</td><td class="bonusesEntry">';
-                    $.each(player.bonuses, function(bkey, bonus){
-                        r[++j] = '<p><span>→';
-                                r[++j] = bonus.name;
-                                r[++j] = ' x';
-                                r[++j] = bonus.multiplier;
-                                r[++j] = '</span></p>';
-                    })
+                    j = drawBonus(player.bonuses, r, j);
                     r[++j] = '</td><td class="tradeEntry">';
                     r[++j] = '<button type="submit" name="sellPlayer" class="btn waves-effect waves-light" disabled="true" data-cardId="';
                     r[++j] = player.cardId;
@@ -271,15 +275,7 @@ function setup(){
                             p[++j] = player.limitTypes.position;
                             p[++j] = '</span>';
                             p[++j] = '</p><div class="card-image"><img src="/static/images/football/placeholder.png"></div><p>';
-                            $.each(player.bonuses, function(bkey, bonus){
-                                p[++j] = '<p><i><span class="bonus-rarity-';
-                                p[++j] = player.colour.toLowerCase();
-                                p[++j] = '">→';
-                                p[++j] = bonus.name;
-                                p[++j] = ' x';
-                                p[++j] = bonus.multiplier;
-                                p[++j] = '</span></i></p>';
-                            })
+                            j = drawBonus(player.bonuses, p, j);
                             p[++j] = '</div></div>';
                             //newCards.push(p.join(""));
                             });

@@ -32,7 +32,8 @@ def process_match(driver):
         "teamTwoPlayers": [],
         "yellowCards": [],
         "redCards": [],
-        "penaltyMiss": {"teamOne": [], "teamTwo": []}
+        "penaltyMiss": {"teamOne": [], "teamTwo": []},
+        "ownGoals": []
     }
 
     home_goals = driver.find_elements_by_xpath(
@@ -59,6 +60,25 @@ def process_match(driver):
     yellows = driver.find_elements_by_xpath(
         "//*[contains(@class, 'MatchFactsContainer')]//*[contains(@class, 'fm-match-event')][div/div/div[contains(@class,'fm-svg--yellowcard')]]"
     )
+
+    home_own_goals = driver.find_elements_by_xpath(
+        "//*[contains(@class, 'MatchFactsContainer')]//*[contains(@class, 'fm-match-event--home')][div/div/div[contains(@class,'fm-svg--owngoal')]]"
+    )
+    away_own_goals = driver.find_elements_by_xpath(
+        "//*[contains(@class, 'MatchFactsContainer')]//*[contains(@class, 'fm-match-event--away')][div/div/div[contains(@class,'fm-svg--owngoal')]]"
+    )
+    for goal in home_own_goals:
+        scorer = goal.find_element_by_xpath("div[2]/span/a").text.split("(")[0]
+        gtime = int(re.search("^\d+",
+                          goal.find_element_by_xpath(".//*[contains(@class, 'fm-match-event__time')]").text).group(0))
+        match_data['teamOneGoals'].append({"min": gtime, "scorer": None, "assist": None})
+        match_data['ownGoals'].append(scorer)
+    for goal in away_own_goals:
+        scorer = goal.find_element_by_xpath("div[2]/span/a").text.split("(")[0]
+        gtime = int(re.search("^\d+",
+                          goal.find_element_by_xpath(".//*[contains(@class, 'fm-match-event__time')]").text).group(0))
+        match_data['teamTwoGoals'].append({"min": gtime, "scorer": None, "assist": None})
+        match_data['ownGoals'].append(scorer)
     for yellow in yellows:
         ytime = int(re.search("^\d+",
                           yellow.find_element_by_xpath(".//*[contains(@class, 'fm-match-event__time')]").text).group(0))
@@ -141,6 +161,13 @@ def process_match(driver):
             except (NoSuchElementException, ValueError):
                 rating = 0.0  # they came on too late to be rated
             match_data["teamOnePlayers"].append([name, int(re.search("^\d+", sub_on.text).group(0)), 90+added_time, rating])
+    raw_input("now switch to stats:")
+    scroll_to_bottom(driver, "detailstyles__LivescoreDetailsContainerNoPadding")
+    shots_on_target = driver.find_element_by_xpath("//div[starts-with(@class, 'statsstyles__MatchStatBallPitchText')]")
+    shots_on_target = [int(x.text()) if x.text() else 0 for x in shots_on_target]
+    home_shots_target, away_shots_target = shots_on_target
+    match_data["teamOneSaves"] = away_shots_target - len(match_data['teamTwoGoals'])
+    match_data["teamTwoSaves"] = home_shots_target - len(match_data['teamOneGoals'])
     return match_data
 
 

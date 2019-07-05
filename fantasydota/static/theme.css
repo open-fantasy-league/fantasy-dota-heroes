@@ -313,10 +313,7 @@ and (max-width: 900px)
 background:  radial-gradient(ellipse farthest-corner at right bottom, silver 0%, #CD7F32 8%, #BE7023 30%, #AF6114 40%, transparent 80%), radial-gradient(ellipse farthest-corner at left top, #FFF 0%, #DC8E41 8%, #AF6114 25%, #774d22 62.5%, #CD7F32 100%);
 }
 
-.bonus-rarity-gold{
-    color: white;
-}
-.bonus-rarity-silver{
+.bonus-rarity-text{
     color: white;
 }
 
