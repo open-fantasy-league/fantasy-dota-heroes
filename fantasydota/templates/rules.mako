@@ -17,9 +17,11 @@
 
 <div>
     <h2>Team</h2>
-    Max of 2 players from each club.
-    Teams are locked at start of game week, therefore any transfers you make, will only take affect start of next week
-    (Old players will continue scoring 'this' week, even if removed from next week's team)
+    <div class="card-panel">
+    <p>Max of 2 players from each club.</p>
+    <p>Teams are locked at start of game week, therefore any transfers you make, will only take affect start of next week
+    (Old players will continue scoring 'this' week, even if removed from next week's team)</p>
+    </div>
     <h2>Scoring</h2>
     <div class="card-panel">
         Points are allocated in the following way:</br>
