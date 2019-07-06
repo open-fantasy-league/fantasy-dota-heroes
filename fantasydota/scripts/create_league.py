@@ -3,13 +3,11 @@ import urllib2
 import json
 
 import os
-from fantasydota.lib.herodict import herodict
-from fantasydota.lib.calibration import calibrate_all_hero_values, squeeze_values_together
 from fantasydota.lib.constants import API_URL, DEFAULT_LEAGUE
 
 
 def get_fixtures():
-    with open("fixtures.json") as f:
+    with open(os.getcwd() + "/../data/fixtures.json") as f:
         j = json.load(f)
         fixtures = j['fixtures']
     series = []
@@ -40,7 +38,8 @@ def get_players(teams):
 
 
 def create_league(name, tournament_id, url):
-    with open('players.json') as f:
+    filename = raw_input("players filename:")
+    with open(os.getcwd() + "/../data/" + filename) as f:
         teams = json.load(f)
 
     FE_APIKEY = os.environ.get("FE_APIKEY")
