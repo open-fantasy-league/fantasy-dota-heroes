@@ -9,7 +9,7 @@
 </%def>
 
 <%def name="meta_description()">
-    Rules page for fantasy dota
+    Rules page for fantasy football cards
 </%def>
 
 <%def name="custom_css()">

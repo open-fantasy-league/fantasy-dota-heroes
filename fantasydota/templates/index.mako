@@ -1,15 +1,15 @@
 <%inherit file="fantasydota:templates/layout.mako"/>
 
 <%def name="title()">
-    Fantasy Esport
+    Fantasy Football Cards
 </%def>
 
 <%def name="meta_keywords()">
-    Fantasy Esport, Home
+    Fantasy Football Cards, Home
 </%def>
 
 <%def name="meta_description()">
-    Home page for Fantasy Esport
+    Home page for Fantasy Football Cards
 </%def>
 
 <%def name="custom_css()">

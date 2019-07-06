@@ -142,8 +142,8 @@ def forgot_password(request):
         session.add(PasswordReset(userq.id, guid, request.remote_addr))
         email_url = "https://www.fantasydota.eu/resetPasswordPage?u=" + str(userq.id) + "&guid="  # how not hardcode domain bit?
         email_url += quote_plus(guid)
-        message = Message(subject="Fantasy Dota EU password reset",
-                          sender="Fantasy Dota EU",
+        message = Message(subject="Open fantasu league password reset",
+                          sender="Open Fantasy League",
                           recipients=[userq.email],
                           body="Hi %s.\n\nIf you did not request a password reset, either ignore this email or report incident to me.\n\n"
                                "Otherwise please click this link to reset: %s\n\nThis link will expire in 24 hours" % (userq.username, email_url))

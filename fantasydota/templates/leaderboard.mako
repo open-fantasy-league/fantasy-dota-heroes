@@ -9,7 +9,7 @@
 </%def>
 
 <%def name="meta_description()">
-    Leaderboard page for fantasy dota game.
+    Leaderboard page for fantasy football cards game.
 </%def>
 
 <%def name="custom_css()">
