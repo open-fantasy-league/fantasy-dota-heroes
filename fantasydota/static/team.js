@@ -259,7 +259,10 @@ function setup(){
                 $.each(data, function(i, player){
                     var fullCardHtml = [], j2 =-1;
                     fullCardHtml, j2 = cardHtml(fullCardHtml, j2, player);
-                    $("#" + player.limitTypes.position.toLowerCase() + "s").append(fullCardHtml.join(""));
+                    var newCard = $(fullCardHtml.join(""));
+                    $("#" + player.limitTypes.position.toLowerCase() + "s").append(newCard);
+                    newCard.find("button[name=buyPlayer]").click(tradeOnclick);
+                    newCard.find("button[name=recyclePlayer]").click(recycleOnClick);
                                 var positioning = (i * -10) + 110;
                 p[++j] = '<div style="height: 420px; position: absolute; right:';
                 p[++j] = positioning;

@@ -4,6 +4,8 @@ import json
 from datetime import datetime
 
 import re
+
+from fantasydota.scripts.common import simplify_team_names
 from selenium_utils import scroll_to_bottom
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
@@ -22,8 +24,8 @@ def process_match(driver):
                   driver.find_elements_by_xpath("//*[starts-with(@class, 'match-headerstyles__MatchHeaderTeamTitle')]")]
     match_data = {
         "tournamentId": 1,
-        "teamOne": home,
-        "teamTwo": away,
+        "teamOne": simplify_team_names(home),
+        "teamTwo": simplify_team_names(away),
         "teamOneGoals": [
         ],
         "teamTwoGoals": [

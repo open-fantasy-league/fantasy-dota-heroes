@@ -11,6 +11,11 @@ if not FE_APIKEY:
     exit()
 
 
+def simplify_team_names(name):
+    return name.replace('AFC B', 'B').replace('& Hove Albion', '').replace("Man City", "Manchester City").\
+        replace("Man Utd", "Manchester United").replace('Sheff Utd', 'Sheffield United')
+
+
 def all_pickees():
     return json.load(urllib2.urlopen(urllib2.Request(API_URL + "pickees/" + str(DEFAULT_LEAGUE))))
 
