@@ -58,10 +58,11 @@ $("#filterCards").click(function (){
 //    }
 //}).then(getPickees)
 
-function drawBonus(bonuses, p, j){
+function drawBonus(bonuses, p, j, makeWhite){
 
     $.each(bonuses, function(bkey, bonus){
-        p[++j] = '<p><i><span class="bonus-rarity-text" ';
+        p[++j] = '<p><i><span ';
+        if (makeWhite) p[++j] = 'class="bonus-rarity-text" ';
         if (bonus.description){
             p[++j] = 'title="';
             p[++j] = bonus.description;
@@ -92,7 +93,7 @@ function cardHtml(p, j, player){
                             p[++j] = player.cardId;
                             p[++j] ='">Add</button></span></p>';
                             p[++j] = '</p><div class="card-image"><img src="/static/images/football/placeholder.png"></div><p>';
-                            j = drawBonus(player.bonuses, p, j);
+                            j = drawBonus(player.bonuses, p, j, true);
                             p[++j] = '<button name="recyclePlayer" id="recyclePlayer-';
                             p[++j] = player.cardId;
                             p[++j] = '" type="submit" class="btn waves-effect waves-light recyclePlayer bottomRight" data-cardId="';
@@ -151,11 +152,14 @@ function addPlayerHtmlArray(player, r, j){
                     r[++j] = '</td><td class="playerPointsEntry">';
                     var card = playerDataCache.get(player.cardId);
                     r[++j] = card.overallStats.points;
+                    if (card.recentPeriodStats && card.recentPeriodStats.length > 0){
                     r[++j] = ' ('
                     r[++j] = card.recentPeriodStats.find(function(x){return x.period == (league.currentPeriod.value - 1)}).stats.points;
                     //r[++j] = player.stats.points;
-                    r[++j] = ')</td><td class="bonusesEntry">';
-                    j = drawBonus(player.bonuses, r, j);
+                    r[++j] = ')';
+                    }
+                    r[++j] = '</td><td class="bonusesEntry">';
+                    j = drawBonus(player.bonuses, r, j, false);
                     r[++j] = '</td><td class="tradeEntry">';
                     r[++j] = '<button type="submit" name="sellPlayer" class="btn waves-effect waves-light" disabled="true" data-cardId="';
                     r[++j] = player.cardId;
@@ -275,7 +279,7 @@ function setup(){
                             p[++j] = player.limitTypes.position;
                             p[++j] = '</span>';
                             p[++j] = '</p><div class="card-image"><img src="/static/images/football/placeholder.png"></div><p>';
-                            j = drawBonus(player.bonuses, p, j);
+                            j = drawBonus(player.bonuses, p, j, true);
                             p[++j] = '</div></div>';
                             //newCards.push(p.join(""));
                             });
