@@ -7,8 +7,8 @@ SECONDS_IN_DAY = 86400
 SECONDS_IN_12_HOURS = 43200
 SECONDS_IN_HOUR = 3600
 
-DEFAULT_LEAGUE = 5
-API_URL = 'https://openfantasyleague.com/api/v1/' if socket.gethostname() == 'fantasyesport' else 'http://localhost/api/v1/'
+DEFAULT_LEAGUE = 3
+API_URL = 'https://football.openfantasyleague.com/api/v1/' if socket.gethostname() == 'fantasyesport' else 'http://localhost/api/v1/'
 
 FESPORT_ACCOUNT = 0
 STEAM_ACCOUNT = 1

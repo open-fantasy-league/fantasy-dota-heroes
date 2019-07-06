@@ -54,10 +54,10 @@ def create_league(name, tournament_id, url):
         'gameId': 1,
         'pickeeDescription': 'Player',
         'periodDescription': 'Week',
-        'startingMoney': 100.0,
+        'startingMoney': 50.0,
         'teamSize': 11,
         'transferInfo': {
-            'cardSystem': True,
+            'isCardSystem': True,
             'cardPackSize': 10,
             'cardPackCost': 5,
             'recycleValue': 0.2,
@@ -67,8 +67,8 @@ def create_league(name, tournament_id, url):
         "url": url,
         "applyPointsAtStartTime": False,
         "limits": [{'name': 'position', 'types': [
-            {'name': 'goalkeeper', 'max': 1}, {'name': 'defender', 'max': 4}, {'name': 'midfielder', 'max': 4},
-            {'name': 'forward', 'max': 2}
+            {'name': 'Goalkeeper', 'max': 1}, {'name': 'Defender', 'max': 4}, {'name': 'Midfielder', 'max': 4},
+            {'name': 'Forward', 'max': 2}
         ]},
                    {'name': 'club', 'max': 2, 'types': [{'name': t[0]} for t in teams]}
                    ],
@@ -77,38 +77,38 @@ def create_league(name, tournament_id, url):
             {'name': 'playing > 60 mins', 'allFactionPoints': 1.0},  # total 2 points when playing point added
             {'name': 'assist', 'allFactionPoints': 4.0},
             {'name': 'clean sheet', 'separateFactionPoints': [  # when on pitch, and must be 60+ mins
-                {'name': 'goalkeeper', 'value': 5.0},
-                {'name': 'defender', 'value': 4.0},
-                {'name': 'midfielder', 'value': 1.0}
+                {'name': 'Goalkeeper', 'value': 5.0},
+                {'name': 'Defender', 'value': 4.0},
+                {'name': 'Midfielder', 'value': 1.0}
             ]},
              {'name': 'goal', 'separateFactionPoints': [
-                 {'name': 'forward', 'value': 4.0},
-                 {'name': 'defender', 'value': 7.0},
-                 {'name': 'midfielder', 'value': 5.0}
+                 {'name': 'Forward', 'value': 4.0},
+                 {'name': 'Defender', 'value': 7.0},
+                 {'name': 'Midfielder', 'value': 5.0}
              ]},
             {'name': 'goal conceded', 'separateFactionPoints': [
-                 {'name': 'goalkeeper', 'value': -1.0},
-                 {'name': 'defender', 'value': -1.0},
-                 {'name': 'midfielder', 'value': -0.5}
+                 {'name': 'Goalkeeper', 'value': -1.0},
+                 {'name': 'Defender', 'value': -1.0},
+                 {'name': 'Midfielder', 'value': -0.5}
              ]},
             {'name': 'shot saved', 'separateFactionPoints': [
-                {'name': 'goalkeeper', 'value': 0.2},
+                {'name': 'Goalkeeper', 'value': 0.2},
             ]},
             {'name': 'penalty save', 'separateFactionPoints': [
-                {'name': 'goalkeeper', 'value': 3.0},
+                {'name': 'Goalkeeper', 'value': 3.0},
             ]},
             {'name': 'yellow card', 'allFactionPoints': -1.0},
             {'name': 'red card', 'allFactionPoints': -2.0},
             {'name': 'own goal', 'allFactionPoints': -2.0},
             {'name': 'penalty miss', 'allFactionPoints': -3.0, 'noCardBonus': True},
-            {'name': 'Unsung hero Fotmob match rating*',
+            {'name': 'Unsung hero (<a href="www.fotmob.com">Fotmob match rating*</a>)',
              'description': '3 highest rated players without any goals or assists, are awarded points equal to 0.5x their match rating',
              'allFactionPoints': 0.5},
         ],
         'pickees': get_players(teams)
     }
 
-    try:
+    """try:
         req = urllib2.Request(
             API_URL + "leagues/", data=json.dumps(data), headers={
                 "Content-Type": "application/json"
@@ -129,7 +129,7 @@ def create_league(name, tournament_id, url):
         print(response.read())
     except urllib2.HTTPError as e:
         print(e.read())
-
+    """
     for fixture in fixtures:
         try:
             req = urllib2.Request(
@@ -155,4 +155,4 @@ def create_league(name, tournament_id, url):
 
 
 if __name__ == "__main__":
-    create_league("Premier League", 1, "https://liquipedia.net/dota2/Dota_Pit_League/Season_7")
+    create_league("Premier League", 1, "https://www.fotmob.com/leagues/47/")

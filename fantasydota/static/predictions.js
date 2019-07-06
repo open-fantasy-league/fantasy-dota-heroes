@@ -63,12 +63,12 @@ function fillMatches(){
                         r[++j] = match.matchId;
                         r[++j] = '><strong><input class="col s5 center scoreboardfont" style="-moz-appearance: textfield" ';
                         r[++j] = match.started ? ' disabled=true' : "";
-                        r[++j] = '  type="text" id="teamOneScorePredict-';
+                        r[++j] = '  type="number" id="teamOneScorePredict-';
                         r[++j] = match.matchId;
                         r[++j] = '">';
                         r[++j] = '<input style="color:#ff9900" class="col s2 center scoreboardfont" type="text" value=":" disabled><input class="col s5 center scoreboardfont" style="-moz-appearance: textfield" ';
                         r[++j] = match.started ? ' disabled=true' : "";
-                        r[++j] = ' type="text" id="teamTwoScorePredict-';
+                        r[++j] = ' type="number" id="teamTwoScorePredict-';
                         r[++j] = match.matchId;
                         r[++j] = '"></strong>';
                         r[++j] = '</div>';
@@ -127,10 +127,10 @@ function updatePredictions(){
     var elem = $(this);
         var inputs = elem.find('input');
         // .value is str so "0" still truthy
-        if (inputs[0].value && inputs[1].value){
+        if (inputs[0].value && inputs[2].value){
         data.predictions.push({
                     'matchId': parseInt(elem.attr("data-matchId")), "teamOneScore": inputs[0].valueAsNumber,
-                     "teamTwoScore": inputs[1].valueAsNumber
+                     "teamTwoScore": inputs[2].valueAsNumber
                     });
             }
     })

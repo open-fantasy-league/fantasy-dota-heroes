@@ -9,7 +9,7 @@
 .arsenal{color: #FFFFFF;background-color: #EF0107;}
 .westham{color: #1bb1e7;background-color: #7A263A;}
 .bournemouth{color: #b50e12;background-color: #000000;}
-.brightonhovealbion{color: #FFFFFF;background-color: #0057B8;}
+.brighton{color: #FFFFFF;background-color: #0057B8;}
 .astonvilla{color: #850322;background-color: #88bbff;}
 .watford{color: #ED2127;background-color: #FBEE23;}
 .newcastle{color: #FFFFFF;background-color: #241F20;}
@@ -29,7 +29,7 @@
 .manchestercityarsenal{background: linear-gradient(135deg,#6CABDD 0%,#6CABDD 50%,#EF0107 50%,#EF0107 100%);}
 .manchestercitywestham{background: linear-gradient(135deg,#6CABDD 0%,#6CABDD 50%,#7A263A 50%,#7A263A 100%);}
 .manchestercitybournemouth{background: linear-gradient(135deg,#6CABDD 0%,#6CABDD 50%,#000000 50%,#000000 100%);}
-.manchestercitybrightonhovealbion{background: linear-gradient(135deg,#6CABDD 0%,#6CABDD 50%,#0057B8 50%,#0057B8 100%);}
+.manchestercitybrighton{background: linear-gradient(135deg,#6CABDD 0%,#6CABDD 50%,#0057B8 50%,#0057B8 100%);}
 .manchestercityastonvilla{background: linear-gradient(135deg,#6CABDD 0%,#6CABDD 50%,#88bbff 50%,#88bbff 100%);}
 .manchestercitywatford{background: linear-gradient(135deg,#6CABDD 0%,#6CABDD 50%,#FBEE23 50%,#FBEE23 100%);}
 .manchestercitynewcastle{background: linear-gradient(135deg,#6CABDD 0%,#6CABDD 50%,#241F20 50%,#241F20 100%);}
@@ -49,7 +49,7 @@
 .manchesterutdarsenal{background: linear-gradient(135deg,#DA291C 0%,#DA291C 50%,#EF0107 50%,#EF0107 100%);}
 .manchesterutdwestham{background: linear-gradient(135deg,#DA291C 0%,#DA291C 50%,#7A263A 50%,#7A263A 100%);}
 .manchesterutdbournemouth{background: linear-gradient(135deg,#DA291C 0%,#DA291C 50%,#000000 50%,#000000 100%);}
-.manchesterutdbrightonhovealbion{background: linear-gradient(135deg,#DA291C 0%,#DA291C 50%,#0057B8 50%,#0057B8 100%);}
+.manchesterutdbrighton{background: linear-gradient(135deg,#DA291C 0%,#DA291C 50%,#0057B8 50%,#0057B8 100%);}
 .manchesterutdastonvilla{background: linear-gradient(135deg,#DA291C 0%,#DA291C 50%,#88bbff 50%,#88bbff 100%);}
 .manchesterutdwatford{background: linear-gradient(135deg,#DA291C 0%,#DA291C 50%,#FBEE23 50%,#FBEE23 100%);}
 .manchesterutdnewcastle{background: linear-gradient(135deg,#DA291C 0%,#DA291C 50%,#241F20 50%,#241F20 100%);}
@@ -69,7 +69,7 @@
 .liverpoolarsenal{background: linear-gradient(135deg,#c8102E 0%,#c8102E 50%,#EF0107 50%,#EF0107 100%);}
 .liverpoolwestham{background: linear-gradient(135deg,#c8102E 0%,#c8102E 50%,#7A263A 50%,#7A263A 100%);}
 .liverpoolbournemouth{background: linear-gradient(135deg,#c8102E 0%,#c8102E 50%,#000000 50%,#000000 100%);}
-.liverpoolbrightonhovealbion{background: linear-gradient(135deg,#c8102E 0%,#c8102E 50%,#0057B8 50%,#0057B8 100%);}
+.liverpoolbrighton{background: linear-gradient(135deg,#c8102E 0%,#c8102E 50%,#0057B8 50%,#0057B8 100%);}
 .liverpoolastonvilla{background: linear-gradient(135deg,#c8102E 0%,#c8102E 50%,#88bbff 50%,#88bbff 100%);}
 .liverpoolwatford{background: linear-gradient(135deg,#c8102E 0%,#c8102E 50%,#FBEE23 50%,#FBEE23 100%);}
 .liverpoolnewcastle{background: linear-gradient(135deg,#c8102E 0%,#c8102E 50%,#241F20 50%,#241F20 100%);}
@@ -89,7 +89,7 @@
 .southamptonarsenal{background: linear-gradient(135deg,#d71920 0%,#d71920 50%,#EF0107 50%,#EF0107 100%);}
 .southamptonwestham{background: linear-gradient(135deg,#d71920 0%,#d71920 50%,#7A263A 50%,#7A263A 100%);}
 .southamptonbournemouth{background: linear-gradient(135deg,#d71920 0%,#d71920 50%,#000000 50%,#000000 100%);}
-.southamptonbrightonhovealbion{background: linear-gradient(135deg,#d71920 0%,#d71920 50%,#0057B8 50%,#0057B8 100%);}
+.southamptonbrighton{background: linear-gradient(135deg,#d71920 0%,#d71920 50%,#0057B8 50%,#0057B8 100%);}
 .southamptonastonvilla{background: linear-gradient(135deg,#d71920 0%,#d71920 50%,#88bbff 50%,#88bbff 100%);}
 .southamptonwatford{background: linear-gradient(135deg,#d71920 0%,#d71920 50%,#FBEE23 50%,#FBEE23 100%);}
 .southamptonnewcastle{background: linear-gradient(135deg,#d71920 0%,#d71920 50%,#241F20 50%,#241F20 100%);}
@@ -109,7 +109,7 @@
 .leicesterarsenal{background: linear-gradient(135deg,#003090 0%,#003090 50%,#EF0107 50%,#EF0107 100%);}
 .leicesterwestham{background: linear-gradient(135deg,#003090 0%,#003090 50%,#7A263A 50%,#7A263A 100%);}
 .leicesterbournemouth{background: linear-gradient(135deg,#003090 0%,#003090 50%,#000000 50%,#000000 100%);}
-.leicesterbrightonhovealbion{background: linear-gradient(135deg,#003090 0%,#003090 50%,#0057B8 50%,#0057B8 100%);}
+.leicesterbrighton{background: linear-gradient(135deg,#003090 0%,#003090 50%,#0057B8 50%,#0057B8 100%);}
 .leicesterastonvilla{background: linear-gradient(135deg,#003090 0%,#003090 50%,#88bbff 50%,#88bbff 100%);}
 .leicesterwatford{background: linear-gradient(135deg,#003090 0%,#003090 50%,#FBEE23 50%,#FBEE23 100%);}
 .leicesternewcastle{background: linear-gradient(135deg,#003090 0%,#003090 50%,#241F20 50%,#241F20 100%);}
@@ -129,7 +129,7 @@
 .sheffieldutdarsenal{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#EF0107 50%,#EF0107 100%);}
 .sheffieldutdwestham{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#7A263A 50%,#7A263A 100%);}
 .sheffieldutdbournemouth{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#000000 50%,#000000 100%);}
-.sheffieldutdbrightonhovealbion{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#0057B8 50%,#0057B8 100%);}
+.sheffieldutdbrighton{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#0057B8 50%,#0057B8 100%);}
 .sheffieldutdastonvilla{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#88bbff 50%,#88bbff 100%);}
 .sheffieldutdwatford{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#FBEE23 50%,#FBEE23 100%);}
 .sheffieldutdnewcastle{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#241F20 50%,#241F20 100%);}
@@ -149,7 +149,7 @@
 .norwicharsenal{background: linear-gradient(135deg,#007020 0%,#007020 50%,#EF0107 50%,#EF0107 100%);}
 .norwichwestham{background: linear-gradient(135deg,#007020 0%,#007020 50%,#7A263A 50%,#7A263A 100%);}
 .norwichbournemouth{background: linear-gradient(135deg,#007020 0%,#007020 50%,#000000 50%,#000000 100%);}
-.norwichbrightonhovealbion{background: linear-gradient(135deg,#007020 0%,#007020 50%,#0057B8 50%,#0057B8 100%);}
+.norwichbrighton{background: linear-gradient(135deg,#007020 0%,#007020 50%,#0057B8 50%,#0057B8 100%);}
 .norwichastonvilla{background: linear-gradient(135deg,#007020 0%,#007020 50%,#88bbff 50%,#88bbff 100%);}
 .norwichwatford{background: linear-gradient(135deg,#007020 0%,#007020 50%,#FBEE23 50%,#FBEE23 100%);}
 .norwichnewcastle{background: linear-gradient(135deg,#007020 0%,#007020 50%,#241F20 50%,#241F20 100%);}
@@ -169,7 +169,7 @@
 .burnleyarsenal{background: linear-gradient(135deg,#6C1D45 0%,#6C1D45 50%,#EF0107 50%,#EF0107 100%);}
 .burnleywestham{background: linear-gradient(135deg,#6C1D45 0%,#6C1D45 50%,#7A263A 50%,#7A263A 100%);}
 .burnleybournemouth{background: linear-gradient(135deg,#6C1D45 0%,#6C1D45 50%,#000000 50%,#000000 100%);}
-.burnleybrightonhovealbion{background: linear-gradient(135deg,#6C1D45 0%,#6C1D45 50%,#0057B8 50%,#0057B8 100%);}
+.burnleybrighton{background: linear-gradient(135deg,#6C1D45 0%,#6C1D45 50%,#0057B8 50%,#0057B8 100%);}
 .burnleyastonvilla{background: linear-gradient(135deg,#6C1D45 0%,#6C1D45 50%,#88bbff 50%,#88bbff 100%);}
 .burnleywatford{background: linear-gradient(135deg,#6C1D45 0%,#6C1D45 50%,#FBEE23 50%,#FBEE23 100%);}
 .burnleynewcastle{background: linear-gradient(135deg,#6C1D45 0%,#6C1D45 50%,#241F20 50%,#241F20 100%);}
@@ -189,7 +189,7 @@
 .arsenalarsenal{background: linear-gradient(135deg,#EF0107 0%,#EF0107 50%,#EF0107 50%,#EF0107 100%);}
 .arsenalwestham{background: linear-gradient(135deg,#EF0107 0%,#EF0107 50%,#7A263A 50%,#7A263A 100%);}
 .arsenalbournemouth{background: linear-gradient(135deg,#EF0107 0%,#EF0107 50%,#000000 50%,#000000 100%);}
-.arsenalbrightonhovealbion{background: linear-gradient(135deg,#EF0107 0%,#EF0107 50%,#0057B8 50%,#0057B8 100%);}
+.arsenalbrighton{background: linear-gradient(135deg,#EF0107 0%,#EF0107 50%,#0057B8 50%,#0057B8 100%);}
 .arsenalastonvilla{background: linear-gradient(135deg,#EF0107 0%,#EF0107 50%,#88bbff 50%,#88bbff 100%);}
 .arsenalwatford{background: linear-gradient(135deg,#EF0107 0%,#EF0107 50%,#FBEE23 50%,#FBEE23 100%);}
 .arsenalnewcastle{background: linear-gradient(135deg,#EF0107 0%,#EF0107 50%,#241F20 50%,#241F20 100%);}
@@ -209,7 +209,7 @@
 .westhamarsenal{background: linear-gradient(135deg,#7A263A 0%,#7A263A 50%,#EF0107 50%,#EF0107 100%);}
 .westhamwestham{background: linear-gradient(135deg,#7A263A 0%,#7A263A 50%,#7A263A 50%,#7A263A 100%);}
 .westhambournemouth{background: linear-gradient(135deg,#7A263A 0%,#7A263A 50%,#000000 50%,#000000 100%);}
-.westhambrightonhovealbion{background: linear-gradient(135deg,#7A263A 0%,#7A263A 50%,#0057B8 50%,#0057B8 100%);}
+.westhambrighton{background: linear-gradient(135deg,#7A263A 0%,#7A263A 50%,#0057B8 50%,#0057B8 100%);}
 .westhamastonvilla{background: linear-gradient(135deg,#7A263A 0%,#7A263A 50%,#88bbff 50%,#88bbff 100%);}
 .westhamwatford{background: linear-gradient(135deg,#7A263A 0%,#7A263A 50%,#FBEE23 50%,#FBEE23 100%);}
 .westhamnewcastle{background: linear-gradient(135deg,#7A263A 0%,#7A263A 50%,#241F20 50%,#241F20 100%);}
@@ -229,7 +229,7 @@
 .bournemoutharsenal{background: linear-gradient(135deg,#000000 0%,#000000 50%,#EF0107 50%,#EF0107 100%);}
 .bournemouthwestham{background: linear-gradient(135deg,#000000 0%,#000000 50%,#7A263A 50%,#7A263A 100%);}
 .bournemouthbournemouth{background: linear-gradient(135deg,#000000 0%,#000000 50%,#000000 50%,#000000 100%);}
-.bournemouthbrightonhovealbion{background: linear-gradient(135deg,#000000 0%,#000000 50%,#0057B8 50%,#0057B8 100%);}
+.bournemouthbrighton{background: linear-gradient(135deg,#000000 0%,#000000 50%,#0057B8 50%,#0057B8 100%);}
 .bournemouthastonvilla{background: linear-gradient(135deg,#000000 0%,#000000 50%,#88bbff 50%,#88bbff 100%);}
 .bournemouthwatford{background: linear-gradient(135deg,#000000 0%,#000000 50%,#FBEE23 50%,#FBEE23 100%);}
 .bournemouthnewcastle{background: linear-gradient(135deg,#000000 0%,#000000 50%,#241F20 50%,#241F20 100%);}
@@ -238,26 +238,26 @@
 .bournemouthcrystalpalace{background: linear-gradient(135deg,#000000 0%,#000000 50%,#CF4157 50%,#CF4157 100%);}
 .bournemouthchelsea{background: linear-gradient(135deg,#000000 0%,#000000 50%,#034694 50%,#034694 100%);}
 .bournemouthtottenham{background: linear-gradient(135deg,#000000 0%,#000000 50%,#132257 50%,#132257 100%);}
-.brightonhovealbionmanchestercity{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#6CABDD 50%,#6CABDD 100%);}
-.brightonhovealbionmanchesterutd{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#DA291C 50%,#DA291C 100%);}
-.brightonhovealbionliverpool{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#c8102E 50%,#c8102E 100%);}
-.brightonhovealbionsouthampton{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#d71920 50%,#d71920 100%);}
-.brightonhovealbionleicester{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#003090 50%,#003090 100%);}
-.brightonhovealbionsheffieldutd{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#FFFFFF 50%,#FFFFFF 100%);}
-.brightonhovealbionnorwich{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#007020 50%,#007020 100%);}
-.brightonhovealbionburnley{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#6C1D45 50%,#6C1D45 100%);}
-.brightonhovealbionarsenal{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#EF0107 50%,#EF0107 100%);}
-.brightonhovealbionwestham{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#7A263A 50%,#7A263A 100%);}
-.brightonhovealbionbournemouth{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#000000 50%,#000000 100%);}
-.brightonhovealbionbrightonhovealbion{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#0057B8 50%,#0057B8 100%);}
-.brightonhovealbionastonvilla{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#88bbff 50%,#88bbff 100%);}
-.brightonhovealbionwatford{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#FBEE23 50%,#FBEE23 100%);}
-.brightonhovealbionnewcastle{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#241F20 50%,#241F20 100%);}
-.brightonhovealbioneverton{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#FFFFFF 50%,#FFFFFF 100%);}
-.brightonhovealbionwolves{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#FDB913 50%,#FDB913 100%);}
-.brightonhovealbioncrystalpalace{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#CF4157 50%,#CF4157 100%);}
-.brightonhovealbionchelsea{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#034694 50%,#034694 100%);}
-.brightonhovealbiontottenham{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#132257 50%,#132257 100%);}
+.brightonmanchestercity{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#6CABDD 50%,#6CABDD 100%);}
+.brightonmanchesterutd{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#DA291C 50%,#DA291C 100%);}
+.brightonliverpool{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#c8102E 50%,#c8102E 100%);}
+.brightonsouthampton{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#d71920 50%,#d71920 100%);}
+.brightonleicester{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#003090 50%,#003090 100%);}
+.brightonsheffieldutd{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.brightonnorwich{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#007020 50%,#007020 100%);}
+.brightonburnley{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#6C1D45 50%,#6C1D45 100%);}
+.brightonarsenal{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#EF0107 50%,#EF0107 100%);}
+.brightonwestham{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#7A263A 50%,#7A263A 100%);}
+.brightonbournemouth{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#000000 50%,#000000 100%);}
+.brightonbrighton{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#0057B8 50%,#0057B8 100%);}
+.brightonastonvilla{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#88bbff 50%,#88bbff 100%);}
+.brightonwatford{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#FBEE23 50%,#FBEE23 100%);}
+.brightonnewcastle{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#241F20 50%,#241F20 100%);}
+.brightoneverton{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.brightonwolves{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#FDB913 50%,#FDB913 100%);}
+.brightoncrystalpalace{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#CF4157 50%,#CF4157 100%);}
+.brightonchelsea{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#034694 50%,#034694 100%);}
+.brightontottenham{background: linear-gradient(135deg,#0057B8 0%,#0057B8 50%,#132257 50%,#132257 100%);}
 .astonvillamanchestercity{background: linear-gradient(135deg,#88bbff 0%,#88bbff 50%,#6CABDD 50%,#6CABDD 100%);}
 .astonvillamanchesterutd{background: linear-gradient(135deg,#88bbff 0%,#88bbff 50%,#DA291C 50%,#DA291C 100%);}
 .astonvillaliverpool{background: linear-gradient(135deg,#88bbff 0%,#88bbff 50%,#c8102E 50%,#c8102E 100%);}
@@ -269,7 +269,7 @@
 .astonvillaarsenal{background: linear-gradient(135deg,#88bbff 0%,#88bbff 50%,#EF0107 50%,#EF0107 100%);}
 .astonvillawestham{background: linear-gradient(135deg,#88bbff 0%,#88bbff 50%,#7A263A 50%,#7A263A 100%);}
 .astonvillabournemouth{background: linear-gradient(135deg,#88bbff 0%,#88bbff 50%,#000000 50%,#000000 100%);}
-.astonvillabrightonhovealbion{background: linear-gradient(135deg,#88bbff 0%,#88bbff 50%,#0057B8 50%,#0057B8 100%);}
+.astonvillabrighton{background: linear-gradient(135deg,#88bbff 0%,#88bbff 50%,#0057B8 50%,#0057B8 100%);}
 .astonvillaastonvilla{background: linear-gradient(135deg,#88bbff 0%,#88bbff 50%,#88bbff 50%,#88bbff 100%);}
 .astonvillawatford{background: linear-gradient(135deg,#88bbff 0%,#88bbff 50%,#FBEE23 50%,#FBEE23 100%);}
 .astonvillanewcastle{background: linear-gradient(135deg,#88bbff 0%,#88bbff 50%,#241F20 50%,#241F20 100%);}
@@ -289,7 +289,7 @@
 .watfordarsenal{background: linear-gradient(135deg,#FBEE23 0%,#FBEE23 50%,#EF0107 50%,#EF0107 100%);}
 .watfordwestham{background: linear-gradient(135deg,#FBEE23 0%,#FBEE23 50%,#7A263A 50%,#7A263A 100%);}
 .watfordbournemouth{background: linear-gradient(135deg,#FBEE23 0%,#FBEE23 50%,#000000 50%,#000000 100%);}
-.watfordbrightonhovealbion{background: linear-gradient(135deg,#FBEE23 0%,#FBEE23 50%,#0057B8 50%,#0057B8 100%);}
+.watfordbrighton{background: linear-gradient(135deg,#FBEE23 0%,#FBEE23 50%,#0057B8 50%,#0057B8 100%);}
 .watfordastonvilla{background: linear-gradient(135deg,#FBEE23 0%,#FBEE23 50%,#88bbff 50%,#88bbff 100%);}
 .watfordwatford{background: linear-gradient(135deg,#FBEE23 0%,#FBEE23 50%,#FBEE23 50%,#FBEE23 100%);}
 .watfordnewcastle{background: linear-gradient(135deg,#FBEE23 0%,#FBEE23 50%,#241F20 50%,#241F20 100%);}
@@ -309,7 +309,7 @@
 .newcastlearsenal{background: linear-gradient(135deg,#241F20 0%,#241F20 50%,#EF0107 50%,#EF0107 100%);}
 .newcastlewestham{background: linear-gradient(135deg,#241F20 0%,#241F20 50%,#7A263A 50%,#7A263A 100%);}
 .newcastlebournemouth{background: linear-gradient(135deg,#241F20 0%,#241F20 50%,#000000 50%,#000000 100%);}
-.newcastlebrightonhovealbion{background: linear-gradient(135deg,#241F20 0%,#241F20 50%,#0057B8 50%,#0057B8 100%);}
+.newcastlebrighton{background: linear-gradient(135deg,#241F20 0%,#241F20 50%,#0057B8 50%,#0057B8 100%);}
 .newcastleastonvilla{background: linear-gradient(135deg,#241F20 0%,#241F20 50%,#88bbff 50%,#88bbff 100%);}
 .newcastlewatford{background: linear-gradient(135deg,#241F20 0%,#241F20 50%,#FBEE23 50%,#FBEE23 100%);}
 .newcastlenewcastle{background: linear-gradient(135deg,#241F20 0%,#241F20 50%,#241F20 50%,#241F20 100%);}
@@ -329,7 +329,7 @@
 .evertonarsenal{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#EF0107 50%,#EF0107 100%);}
 .evertonwestham{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#7A263A 50%,#7A263A 100%);}
 .evertonbournemouth{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#000000 50%,#000000 100%);}
-.evertonbrightonhovealbion{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#0057B8 50%,#0057B8 100%);}
+.evertonbrighton{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#0057B8 50%,#0057B8 100%);}
 .evertonastonvilla{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#88bbff 50%,#88bbff 100%);}
 .evertonwatford{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#FBEE23 50%,#FBEE23 100%);}
 .evertonnewcastle{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#241F20 50%,#241F20 100%);}
@@ -349,7 +349,7 @@
 .wolvesarsenal{background: linear-gradient(135deg,#FDB913 0%,#FDB913 50%,#EF0107 50%,#EF0107 100%);}
 .wolveswestham{background: linear-gradient(135deg,#FDB913 0%,#FDB913 50%,#7A263A 50%,#7A263A 100%);}
 .wolvesbournemouth{background: linear-gradient(135deg,#FDB913 0%,#FDB913 50%,#000000 50%,#000000 100%);}
-.wolvesbrightonhovealbion{background: linear-gradient(135deg,#FDB913 0%,#FDB913 50%,#0057B8 50%,#0057B8 100%);}
+.wolvesbrighton{background: linear-gradient(135deg,#FDB913 0%,#FDB913 50%,#0057B8 50%,#0057B8 100%);}
 .wolvesastonvilla{background: linear-gradient(135deg,#FDB913 0%,#FDB913 50%,#88bbff 50%,#88bbff 100%);}
 .wolveswatford{background: linear-gradient(135deg,#FDB913 0%,#FDB913 50%,#FBEE23 50%,#FBEE23 100%);}
 .wolvesnewcastle{background: linear-gradient(135deg,#FDB913 0%,#FDB913 50%,#241F20 50%,#241F20 100%);}
@@ -369,7 +369,7 @@
 .crystalpalacearsenal{background: linear-gradient(135deg,#CF4157 0%,#CF4157 50%,#EF0107 50%,#EF0107 100%);}
 .crystalpalacewestham{background: linear-gradient(135deg,#CF4157 0%,#CF4157 50%,#7A263A 50%,#7A263A 100%);}
 .crystalpalacebournemouth{background: linear-gradient(135deg,#CF4157 0%,#CF4157 50%,#000000 50%,#000000 100%);}
-.crystalpalacebrightonhovealbion{background: linear-gradient(135deg,#CF4157 0%,#CF4157 50%,#0057B8 50%,#0057B8 100%);}
+.crystalpalacebrighton{background: linear-gradient(135deg,#CF4157 0%,#CF4157 50%,#0057B8 50%,#0057B8 100%);}
 .crystalpalaceastonvilla{background: linear-gradient(135deg,#CF4157 0%,#CF4157 50%,#88bbff 50%,#88bbff 100%);}
 .crystalpalacewatford{background: linear-gradient(135deg,#CF4157 0%,#CF4157 50%,#FBEE23 50%,#FBEE23 100%);}
 .crystalpalacenewcastle{background: linear-gradient(135deg,#CF4157 0%,#CF4157 50%,#241F20 50%,#241F20 100%);}
@@ -389,7 +389,7 @@
 .chelseaarsenal{background: linear-gradient(135deg,#034694 0%,#034694 50%,#EF0107 50%,#EF0107 100%);}
 .chelseawestham{background: linear-gradient(135deg,#034694 0%,#034694 50%,#7A263A 50%,#7A263A 100%);}
 .chelseabournemouth{background: linear-gradient(135deg,#034694 0%,#034694 50%,#000000 50%,#000000 100%);}
-.chelseabrightonhovealbion{background: linear-gradient(135deg,#034694 0%,#034694 50%,#0057B8 50%,#0057B8 100%);}
+.chelseabrighton{background: linear-gradient(135deg,#034694 0%,#034694 50%,#0057B8 50%,#0057B8 100%);}
 .chelseaastonvilla{background: linear-gradient(135deg,#034694 0%,#034694 50%,#88bbff 50%,#88bbff 100%);}
 .chelseawatford{background: linear-gradient(135deg,#034694 0%,#034694 50%,#FBEE23 50%,#FBEE23 100%);}
 .chelseanewcastle{background: linear-gradient(135deg,#034694 0%,#034694 50%,#241F20 50%,#241F20 100%);}
@@ -409,7 +409,7 @@
 .tottenhamarsenal{background: linear-gradient(135deg,#132257 0%,#132257 50%,#EF0107 50%,#EF0107 100%);}
 .tottenhamwestham{background: linear-gradient(135deg,#132257 0%,#132257 50%,#7A263A 50%,#7A263A 100%);}
 .tottenhambournemouth{background: linear-gradient(135deg,#132257 0%,#132257 50%,#000000 50%,#000000 100%);}
-.tottenhambrightonhovealbion{background: linear-gradient(135deg,#132257 0%,#132257 50%,#0057B8 50%,#0057B8 100%);}
+.tottenhambrighton{background: linear-gradient(135deg,#132257 0%,#132257 50%,#0057B8 50%,#0057B8 100%);}
 .tottenhamastonvilla{background: linear-gradient(135deg,#132257 0%,#132257 50%,#88bbff 50%,#88bbff 100%);}
 .tottenhamwatford{background: linear-gradient(135deg,#132257 0%,#132257 50%,#FBEE23 50%,#FBEE23 100%);}
 .tottenhamnewcastle{background: linear-gradient(135deg,#132257 0%,#132257 50%,#241F20 50%,#241F20 100%);}
