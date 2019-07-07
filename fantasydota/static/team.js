@@ -1,4 +1,5 @@
 var userCanTransfer;
+var lateEntry;
 var teamUrl;
 var players;
 var currentIndex;
@@ -108,6 +109,7 @@ var nextPeriodValue = league.currentPeriod ? league.currentPeriod.value + 1: 1
 teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&stats&period=" + nextPeriodValue;
     $("#leagueLink").attr('href', league.url);
     $("#leagueLink").text(league.name);
+    if (!league.started) $('#confirmTransfers').addClass('invisible');
     if (userId != null){
     $.ajax({url: apiBaseUrl + "teams/league/" + leagueId + "/user/" + userId + "/cards?lastXPeriodStats=1&overallStats&period=" + nextPeriodValue,
                 type: "GET",
@@ -186,6 +188,7 @@ function getTeamThenSetup(){
             type: "GET",
             success: function(data){
                 userCanTransfer = (league.transferOpen);
+                //lateEntry = (league.currentPeriod && league.currentPeriod.start )
                 $(".userCredits").text(data.user.money);
                 $(".userPoints").text(data.stats.points);
                 var r = new Array(), j = -1;

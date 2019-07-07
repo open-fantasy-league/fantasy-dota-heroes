@@ -77,7 +77,7 @@ console.log(playerId)
             console.log(toSell)
         }
     }
-    var isCheck = false;//league.started ? true : false;
+    var isCheck = league.started ? true : false;
     $.ajax({
         url: '/transfer_proxy',
         dataType: "json",
@@ -98,12 +98,21 @@ console.log(playerId)
             }
             $(".userCredits").each(function(){$(this).text(data.updatedMoney)});
             undisableButtons();
+            if (league.started){
             Swal.fire({
              title: "Transfer valid",
              text: "Confirm Transfers to process changes",
               type: "success",
-              timer: 500
+              timer: 800
             });
+            }
+            else{
+                        Swal.fire({
+             title: "Transfer successful",
+              type: "success",
+              timer: 800
+            });
+            }
         },
         error: function(jqxhr, textStatus, errorThrown){
             toSell = toSellOriginal;
