@@ -83,12 +83,13 @@ console.log(playerId)
             console.log(toSell)
         }
     }
+    var isCheck = league.started ? true : false;
     $.ajax({
         url: '/transfer_proxy',
         dataType: "json",
 
         type: "POST",
-        data: {"sell": toSell, "buy": toBuy, "isCheck": true, "wildcard": false},
+        data: {"sell": toSell, "buy": toBuy, "isCheck": isCheck, "wildcard": false},
         success: function(data){
             if (action == "sellPlayer"){
                 removeFromTeam(playerId);
@@ -96,6 +97,10 @@ console.log(playerId)
             else{
                 var playerData = playerDataCache.get(playerId)
                 addToTeam(playerData);
+            }
+            if (!isCheck){
+              toSell = [];
+              toBuy = [];
             }
             $(".userCredits").each(function(){$(this).text(data.updatedMoney)});
             undisableButtons();

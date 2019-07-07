@@ -139,7 +139,7 @@ function updatePredictions(){
                     dataType: "json",
                     data: JSON.stringify(data),
                     contentType: "application/json",
-                    success: function(){swal({
+                    success: function(){Swal.fire({
              title: "Success",
               type: "success",
               timer: 500
