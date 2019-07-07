@@ -1,8 +1,15 @@
 var scoringRulesUl = $("#scoringRules");
 var r = new Array(), j = -1;
-getLeagueInfo(false, true, false, false).then(function() {
+getLeagueInfo(false, true, false, true).then(function() {
     for (const [key, value] of Object.entries(league.scoring)){
-        r[++j] = '<li>';
+        r[++j] = '<li ';
+        var statField = league.statFields.find(function(x){return x.name == key});
+        if (statField){
+            r[++j] = 'title="';
+            r[++j] = statField.description;
+            r[++j] = '"';
+        }
+        r[++j] = '>'
         r[++j] = key;
         r[++j] = ': '
         if (value.any){
