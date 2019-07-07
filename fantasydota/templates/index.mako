@@ -25,9 +25,9 @@
         <h1>4. Make a 4-4-2 team from your best cards</h1>
         <img src="/static/images/football/cardselectexample.png" />
         <img src="/static/images/football/teamexample.png" />
-        <h1>5. Earn (or lose) points based on goals, assists, conceded, cards, missed penalties,
-         high <a href="https://www.fotmob.com">Fotmob</a> match ratings</h1>
+        <h1>5. Earn (or lose) points based on appearances, goals, assists, conceded, cards, missed penalties,
+         high <a href="https://www.fotmob.com">Fotmob</a> match ratings and more</h1>
         <h1>6. Go to <a href="/predictions">Predictions</a> to earn credits for more/better cards by predicting correct match scores</h1>
-        <img src="/static/images/predictionsexample.png" />
+        <img src="/static/images/football/predictionsexample.png" />
     </div>
 </div>

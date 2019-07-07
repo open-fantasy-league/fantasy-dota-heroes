@@ -256,7 +256,8 @@
             <a href="/hallOfFame">Hall of Fame</a>
         </div>
                 <div>
-                     Dota 2 is a registered trademark of Valve Corporation
+                     This site is 100% unofficial and has no affiliation with the English Premier League, Fotmob, Al-Qaeda or the impending collapse of civilization as we know it.
+                     <i>P.S. pls dont sue me.</i>
                 </div>
             </div>
         </div>
