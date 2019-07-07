@@ -149,5 +149,4 @@ function updatePredictions(){
         }
             });
 }
-
-$("#predictBtn").click(updatePredictions);
+$("#predictBtn").click(userId === null ? pleaseLogInClick : updatePredictions);

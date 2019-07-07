@@ -53,12 +53,6 @@ var recycleOnClick = function recycleOnClick(event){
     })
 }
 
-var pleaseLogInClick = function pleaseLogInClick(){
-    Swal.fire('Please log in to pick a team!', '', 'error').then(function(){
-        window.location.href = '/login';
-    });
-}
-
 function doTrade(event, action, playerId){
 console.log(playerId)
     disableButtons();
@@ -83,7 +77,7 @@ console.log(playerId)
             console.log(toSell)
         }
     }
-    var isCheck = league.started ? true : false;
+    var isCheck = false;//league.started ? true : false;
     $.ajax({
         url: '/transfer_proxy',
         dataType: "json",

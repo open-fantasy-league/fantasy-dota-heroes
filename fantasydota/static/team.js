@@ -108,6 +108,7 @@ var nextPeriodValue = league.currentPeriod ? league.currentPeriod.value + 1: 1
 teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&stats&period=" + nextPeriodValue;
     $("#leagueLink").attr('href', league.url);
     $("#leagueLink").text(league.name);
+    if (userId != null){
     $.ajax({url: apiBaseUrl + "teams/league/" + leagueId + "/user/" + userId + "/cards?lastXPeriodStats=1&overallStats&period=" + nextPeriodValue,
                 type: "GET",
                 dataType: "json",
@@ -126,14 +127,25 @@ teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&stats
                 },
                 error: function(jqxhr, textStatus, errorThrown){
                     if (jqxhr.responseText.startsWith("Invalid User ID")){
-                        Swal.fire({html: "<a href='/login'>Please log in to play!</a>", type: 'info'});
+                        pleaseLogInClick();
                     }
                     else{
                     Swal.fire("Something went wrong. oops!", '', 'error');
                     }
                 }
             }).then(getTeamThenSetup);
-            }
+        }
+    else{
+        $("#pleaseLogIn").css('display', 'initial');
+        $("#myTeamBlock").addClass('invisible');
+        undisableButtons();
+        $('button[name=buyPlayer]').each(function (key, btn){
+            $(this).click(pleaseLogInClick);
+        });
+        $('#confirmTransfers').click(pleaseLogInClick);
+        $('#newCardPack').click(pleaseLogInClick);
+    }
+    }
 
 function addPlayerHtmlArray(player, r, j){
                     r[++j] = '<tr class="teamRow toSell ';
@@ -169,47 +181,38 @@ function addPlayerHtmlArray(player, r, j){
 }
 
 function getTeamThenSetup(){
-    if (userId == null){
-        $("#pleaseLogIn").css('display', 'initial');
-        undisableButtons();
-        $('button[name=buyPlayer]').each(function (key, btn){
-            $(this).click(pleaseLogInClick);
-        });
-        $('#confirmTransfers').click(pleaseLogInClick);
-    }
-    else{
-        $.ajax({url: teamUrl,
-                dataType: "json",
-                type: "GET",
-                success: function(data){
-                    userCanTransfer = (league.transferOpen);
-                    $(".userCredits").text(data.user.money);
-                    $(".userPoints").text(data.stats.points);
-                    var r = new Array(), j = -1;
-                    $.each(data.team.sort(positionNameSort), function(key, player) {
-                    r, j = addPlayerHtmlArray(player, r, j);
-                    })
-                    $("#teamTable").find("tbody").html(r.join(''));
-                },
-                error: function(jqxhr, textStatus, errorThrown){
-                    if (jqxhr.responseText.startsWith("User does not exist on api")){
-                        // need to add user first
-                         $.ajax({url: apiBaseUrl + "users/",
-                                dataType: "json",
-                                type: "POST",
-                                contentType: "application/json",
-                                data: JSON.stringify({"username": username, "userId": userId}),
-                                }).then(getTeamThenSetup)  // this time the call should work
-                    }
-                    else{
-                        Swal.fire("Something went wrong. oops!", '', 'error');
-                        }
+    $.ajax({url: teamUrl,
+            dataType: "json",
+            type: "GET",
+            success: function(data){
+                userCanTransfer = (league.transferOpen);
+                $(".userCredits").text(data.user.money);
+                $(".userPoints").text(data.stats.points);
+                var r = new Array(), j = -1;
+                $.each(data.team.sort(positionNameSort), function(key, player) {
+                r, j = addPlayerHtmlArray(player, r, j);
+                })
+                $("#teamTable").find("tbody").html(r.join(''));
+            },
+            error: function(jqxhr, textStatus, errorThrown){
+                if (jqxhr.responseText.startsWith("User does not exist on api")){
+                    // need to add user first
+                     $.ajax({url: apiBaseUrl + "users/",
+                            dataType: "json",
+                            type: "POST",
+                            contentType: "application/json",
+                            data: JSON.stringify({"username": username, "userId": userId}),
+                            }).then(getTeamThenSetup)  // this time the call should work
                 }
-            }).then(setup);
-        }
+                else{
+                    Swal.fire("Something went wrong. oops!", '', 'error');
+                    }
+            }
+        }).then(setup);
 }
 
 function setup(){
+    console.log("in setup")
     $('ul.tabs').tabs();
     undisableButtons();
     $('button[name=buyPlayer]').add('button[name=sellPlayer]').each(function (key, btn){

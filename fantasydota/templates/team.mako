@@ -43,12 +43,12 @@
     </div>
     <span class="left"><button type="submit" id="useWildcard" disabled="true" title="Wildcard sells entire team and resets to 50 credits" class="btn waves-effect waves-light" style="display:none">
         Use Wildcard</button></span>
-    <span class="right"><button type="submit" id="confirmTransfers" disabled="true" class="btn waves-effect waves-light">Confirm Team!</button></span>
+    <span class="right"><button type="submit" id="confirmTransfers" disabled="true" class="invisible btn waves-effect waves-light">Confirm Team!</button></span>
 </div>
 <div id="heroesBlock" class="row">
     <h2>Cards (Credits: <strong><span class="userCredits"></span></strong>)<span class="right">
-    <button type="submit" id="newCardPack" title="10 credits" class="btn waves-effect waves-light">
-    New pack
+    <button type="submit" id="newCardPack" title="5 credits" class="btn waves-effect waves-light amber accent-4">
+    New pack<i class="material-icons right">shopping_cart</i>
     </button></h2>
 </div>
     <div id="cardFilters" class="row">

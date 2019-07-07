@@ -103,6 +103,11 @@
                         if (x.name > y.name) return 1;
                         return 0;
                     };
+                    var pleaseLogInClick = function pleaseLogInClick(){
+    Swal.fire('<a href="/login">Login to play</a>', '', 'info').then(function(){
+        window.location.href = '/login';
+    });
+}
         </script>
 
         <!--<script src="/static/sweetalert.min.js"></script>-->
