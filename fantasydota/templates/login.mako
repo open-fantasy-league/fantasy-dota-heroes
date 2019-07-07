@@ -30,6 +30,12 @@
 
         </div>
         <div class="row">
+                    <div class="col s3">
+                            <div class="row"><a id="steam-button" href="/login/steam/">
+                <img src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_01.png" width="180" height="35" border="0"/>
+                </a></div>
+                <div class="row"><a id="google-button" href="/login/google-oauth2/"><img src="/static/thirdparty/google-sign-in.png"/></a></div>
+            </div>
         <div class="col s9">
             <form action="${request.route_path('login')}" method="POST" id="loginForm">
                 <div class="input-field col s4">
@@ -48,21 +54,13 @@
                 </div>
             </form>
             </div>
-            <div class="col s3">
-                            <div class="row"><a id="steam-button" href="/login/steam/">
-                <img src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_01.png" width="180" height="35" border="0"/>
-                </a></div>
-                <div class="row"><a id="google-button" href="/login/google-oauth2/"><img src="/static/thirdparty/google-sign-in.png"/></a></div>
-                <div class="row"><a id="facebook-button" href="/login/facebook/"><div class="fb-login-button" data-width="100" data-size="large" data-button-type="login_with" data-auto-logout-link="false"
-                data-use-continue-as="false"></div></a></div>
-            </div>
         </div>
     </div>
 </div>
 
 <div class="card">
     <div class="card-content">
-        <h2>Create Account</h2>
+        <h2>Create Account . . .</h2>
         <form action="${request.route_path('register')}" method="POST" id="createAccountForm">
         <div class="row">
             <div class="input-field col s4">
@@ -88,5 +86,3 @@
         </form>
     </div>
 </div>
-<div id="fb-root"></div>
-<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v3.3&appId=436163960275264"></script>
