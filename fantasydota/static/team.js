@@ -95,7 +95,7 @@ function cardHtml(p, j, player){
                             p[++j] ='">Add</button></span></p>';
                             p[++j] = '</p><div class="card-image"><img src="/static/images/football/placeholder.png"></div><p>';
                             j = drawBonus(player.bonuses, p, j, true);
-                            p[++j] = '<button name="recyclePlayer" id="recyclePlayer-';
+                            p[++j] = '<button name="recyclePlayer" title="Recycle card for ' + league.recycleValue + ' credits" id="recyclePlayer-';
                             p[++j] = player.cardId;
                             p[++j] = '" type="submit" class="btn waves-effect waves-light recyclePlayer bottomRight" data-cardId="';
                             p[++j] = player.cardId;
