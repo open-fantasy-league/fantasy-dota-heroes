@@ -12,7 +12,7 @@ if not FE_APIKEY:
 
 
 def simplify_team_names(name):
-    return name.replace('AFC B', 'B').replace('& Hove Albion', '').replace("Man City", "Manchester City").\
+    return name.replace('AFC B', 'B').replace(' & Hove Albion', '').replace("Man City", "Manchester City").\
         replace("Man Utd", "Manchester United").replace('Sheff Utd', 'Sheffield United')
 
 
