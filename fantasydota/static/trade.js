@@ -37,7 +37,7 @@ var recycleOnClick = function recycleOnClick(event){
         type: "POST",
         data: {"cardId": cardId},
         success: function(data){
-            $(".userCredits").each(function(){$(this).text(parseFloat($(this).text()) - league.recycleValue)});
+            $(".userCredits").each(function(){$(this).text(data.updatedMoney)});
             $("#recyclePlayer-" + cardId).parent().parent().parent().remove();
             undisableButtons();
             Swal.fire({

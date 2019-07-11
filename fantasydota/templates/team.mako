@@ -17,36 +17,37 @@
 
 <div class="row" id="myTeamBlock">
     <div class="row">
-    <span class="left" style="width: 33%;"><h5><span class="col s3">Team: </span>
+    <span class="left" style="width: 33%;"><h5><span class="col s3 hide-on-small-only">Team: </span>
         <button id="updateNameButton"><i class="material-icons prefix">edit</i></button>
-    <button id="confirmNameButton" class="invisible"><i class="material-icons prefix">check</i></button>
+    <button id="confirmNameButton" class="hide"><i class="material-icons prefix">check</i></button>
     <span id="teamName">${team_name if user else ""}</span>
-    <span id="teamNameEdit" class="invisible">
+    <span id="teamNameEdit" class="hide">
           <input id="teamNameTextField" type="text" class="validate" value=${team_name if user else ""} />
         </span>
     </h5></span>
-    <span class="left center-align" style="width: 33%;"><h5><a id="leagueLink" target="_blank"></a></h5></span>
+    <span class="left center-align hide-on-small-only" style="width: 33%;"><h5><a id="leagueLink" target="_blank"></a></h5></span>
     <span class="right"><h5>Points: <span class="userPoints"></span></h5></span>
     </div>
-    <div id="teamTableContainer">
-        <table class="sortable card-table striped centered" id="teamTable">
+    <div id="teamTableContainer" class="row">
+        <table class="sortable card-table striped centered responsive-table" id="teamTable">
             <tr style="cursor: pointer" id="teamTableHeader">
-                <th class="heroHeader">Player</th>
-                <th class="dummyHeader" colspan="0"></th>
-                <th class="positionHeader sorttable_numeric">Position</th>
-                <th class="clubHeader extra sorttable_numeric">Club</th>
-                <th class="pointsHeader extra sorttable_numeric">Points (Last week)</th>
-                <th class="bonusHeader extra sorttable_numeric">Bonuses</th>
                 <th class="sellHeader">Remove</th>
+                <th class="heroHeader">Player</th>
+                <th class="positionHeader sorttable_numeric">Position</th>
+                <th class="clubHeader sorttable_numeric">Club</th>
+                <th class="pointsHeader sorttable_numeric">Points<br/>(Last week)</th>
+                <th class="bonusHeader sorttable_numeric">Bonuses</th>
             </tr>
         </table>
     </div>
+    <div class="row">
     <span class="left"><button type="submit" id="useWildcard" disabled="true" title="Wildcard sells entire team and resets to 50 credits" class="btn waves-effect waves-light" style="display:none">
         Use Wildcard</button></span>
     <span class="right"><button type="submit" id="confirmTransfers" disabled="true" class="btn waves-effect waves-light">Confirm Team!</button></span>
+    </div>
 </div>
 <div id="heroesBlock" class="row">
-    <h2>Cards (Credits: <strong><span class="userCredits"></span></strong>)<span class="right">
+    <h2><span class="col s12 m3">Cards (Credits: <strong><span class="userCredits"></span></strong>)</span><span class="col s12 m6 right">
     <button type="submit" id="newCardPack" title="5 credits" class="btn waves-effect waves-light amber accent-4">
     New pack<i class="material-icons right">shopping_cart</i>
     </button></h2>

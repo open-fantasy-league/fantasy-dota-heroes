@@ -69,7 +69,7 @@ teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&stats
 
 function cardHtml(p, player, name, club, position){
     if (!player){
-    p.push('<div style="height: 420px;" class="card col s3 playerCard rounded bottomRightParent');
+    p.push('<div class="card col s6 m3 playerCardSmol rounded bottomRightParent');
                             p.push('"><div class="card-content"><span class="card-title"><h6><p><span class="playerName centre"><strong>');
                             p.push(name);
                             p.push('</strong></span></p><p><span class="teamName centre">');
@@ -80,7 +80,7 @@ function cardHtml(p, player, name, club, position){
                             p.push('</div></div>');
 
     } else{
-                            p.push('<div style="height: 420px;" class="card col s3 playerCard rounded bottomRightParent rarity-');
+                            p.push('<div class="card col s6 m3 playerCardSmol rounded bottomRightParent rarity-');
                             p.push(player.colour.toLowerCase());
                             p.push('"><div class="card-content"><span class="card-title"><h6><p><span class="playerName centre"><strong>');
                             p.push(player.name);

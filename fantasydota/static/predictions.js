@@ -72,7 +72,7 @@ function fillMatches(){
                         r[++j] = match.matchId;
                         r[++j] = '"></strong>';
                         r[++j] = '</div>';
-                        r[++j] = '<span class="teamTwo hide-on-small-only col s4 right ';
+                        r[++j] = '<span class="teamTwo col s4 right ';
                         r[++j] = teamTwoBasic;
                         r[++j] = '"><strong>';
                         r[++j] = thisSeries.teamTwo;

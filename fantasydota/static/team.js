@@ -24,6 +24,8 @@ var leftClick = function leftClick(event){
     oldSelected.css('z-index', oldSelectedZ - (2 * currentIndex));
     currentIndex -= 1;
 };
+
+function isMobile() {return window.innerWidth <= 800 && window.innerHeight <= 600}
 $(document).on('click', "#leftClick", leftClick);
 $(document).on('click', "#rightClick", rightClick);
 
@@ -44,9 +46,9 @@ $("#filterCards").click(function (){
         if (show && !document.getElementById("silverFilter").checked  && elem.hasClass("rarity-silver")) show = false;
         if (show && !document.getElementById("bronzeFilter").checked  && elem.hasClass("rarity-bronze")) show = false;
         if (show){
-            elem.removeClass("invisible");
+            elem.removeClass("hide");
         } else{
-            elem.addClass("invisible");
+            elem.addClass("hide");
         }
     })
 });
@@ -80,7 +82,7 @@ function drawBonus(bonuses, p, j, makeWhite){
 
 function cardHtml(p, j, player){
     playerDataCache.set(player.cardId, player);
-                            p[++j] = '<div style="height: 420px;" class="card col s3 playerCard rounded bottomRightParent rarity-';
+                            p[++j] = '<div class="card col s12 m3 playerCard rounded bottomRightParent rarity-';
                             p[++j] = player.colour.toLowerCase();
                             p[++j] = '"><div class="card-content"><span class="card-title"><h6><p><span class="playerName centre"><strong>';
                             p[++j] = player.name;
@@ -109,7 +111,7 @@ var nextPeriodValue = league.currentPeriod ? league.currentPeriod.value + 1: 1
 teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&stats&period=" + nextPeriodValue;
     $("#leagueLink").attr('href', league.url);
     $("#leagueLink").text(league.name);
-    if (!league.started) $('#confirmTransfers').addClass('invisible');
+    if (!league.started) $('#confirmTransfers').addClass('hide');
     if (userId != null){
     $.ajax({url: apiBaseUrl + "teams/league/" + leagueId + "/user/" + userId + "/cards?lastXPeriodStats=1&overallStats&period=" + nextPeriodValue,
                 type: "GET",
@@ -139,7 +141,7 @@ teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&stats
         }
     else{
         $("#pleaseLogIn").css('display', 'initial');
-        $("#myTeamBlock").addClass('invisible');
+        $("#myTeamBlock").addClass('hide');
         undisableButtons();
         $('button[name=buyPlayer]').each(function (key, btn){
             $(this).click(pleaseLogInClick);
@@ -154,10 +156,12 @@ function addPlayerHtmlArray(player, r, j){
                     r[++j] = player.limitTypes.position;
                     r[++j] = '" id="';
                     r[++j] = player.cardId;
-                    r[++j] = 'TeamRow"><td class="playerImg" sorttable_customkey="';
-                    r[++j] = player.name;
-                    r[++j] = '">';
-                    r[++j] = '</td><td class="playerEntry"><strong>';
+                    r[++j] = 'TeamRow"><td class="tradeEntry">';
+                    r[++j] = '<button type="submit" name="sellPlayer" class="btn waves-effect waves-light" disabled="true" data-cardId="';
+                    r[++j] = player.cardId;
+                    r[++j] = '">Remove</button>';
+                    r[++j] = '</td>';
+                    r[++j] = '<td class="playerEntry"><strong>';
                     r[++j] = player.name;
                     r[++j] = '</strong></td><td class="positionEntry">';
                     r[++j] = player.limitTypes.position;
@@ -169,16 +173,11 @@ function addPlayerHtmlArray(player, r, j){
                     if (card.recentPeriodStats && card.recentPeriodStats.length > 0){
                     r[++j] = ' ('
                     r[++j] = card.recentPeriodStats.find(function(x){return x.period == (league.currentPeriod.value - 1)}).stats.points;
-                    //r[++j] = player.stats.points;
                     r[++j] = ')';
                     }
                     r[++j] = '</td><td class="bonusesEntry">';
                     j = drawBonus(player.bonuses, r, j, false);
-                    r[++j] = '</td><td class="tradeEntry">';
-                    r[++j] = '<button type="submit" name="sellPlayer" class="btn waves-effect waves-light" disabled="true" data-cardId="';
-                    r[++j] = player.cardId;
-                    r[++j] = '">Remove</button>';
-                    r[++j] = '</td></tr>';
+                    r[++j] = '</tr>';
         return r, j
 }
 
@@ -269,14 +268,15 @@ function setup(){
                     $("#" + player.limitTypes.position.toLowerCase() + "s").append(newCard);
                     newCard.find("button[name=buyPlayer]").click(tradeOnclick);
                     newCard.find("button[name=recyclePlayer]").click(recycleOnClick);
-                                var positioning = (i * -10) + 110;
-                p[++j] = '<div style="height: 420px; position: absolute; right:';
-                p[++j] = positioning;
-                p[++j] = 'px; z-index:';
-                p[++j] =  6 + i * -1;
-                p[++j] = ';" class="card col s9 playerCard rounded bottomRightParent newCard';
-                 //if (i == 0) p[++j] = ' topCard';
-                 p[++j] = ' rarity-';
+                    var positioning = isMobile ? ((i * -5) + 55) : ((i * -10) + 110);
+                    console.log(positioning)
+                    p[++j] = '<div style="position: absolute; right:';
+                    p[++j] = positioning;
+                    p[++j] = 'px; z-index:';
+                    p[++j] =  6 + i * -1;
+                    p[++j] = ';" class="card col s9 playerCardSmol rounded bottomRightParent newCard';
+                     //if (i == 0) p[++j] = ' topCard';
+                     p[++j] = ' rarity-';
                             p[++j] = player.colour.toLowerCase();
                             p[++j] = ' ';
                             p[++j] = player.limitTypes.club.split(" ").join("").toLowerCase();
@@ -305,7 +305,6 @@ function setup(){
                   showConfirmButton: false,
                   showCloseButton: true,
                 })
-                    //window.location.reload(false);
             },
             error: function(jqxhr, textStatus, errorThrown){
                 Swal.fire({'text': jqxhr.responseJSON.msg, 'type': 'error'});
@@ -316,23 +315,11 @@ function setup(){
 
 function updateNameOnclick(){
     var teamName = $("#teamName");
-    teamName.addClass("invisible");
-    $("#teamNameEdit").removeClass("invisible");
-    $("#updateNameButton").addClass("invisible");
-    $("#confirmNameButton").removeClass("invisible");
+    teamName.addClass("hide");
+    $("#teamNameEdit").removeClass("hide");
+    $("#updateNameButton").addClass("hide");
+    $("#confirmNameButton").removeClass("hide");
     }
-//        $.ajax({
-//            url: "/update_team_name",
-//            dataType: "json",
-//            type: "POST",
-//            data: {"name": name},
-//            success: function(data){
-//                $("#teamName").text(data.team_name);
-//            },
-//            error: function(jqxhr, textStatus, errorThrown){
-//                Swal.fire({'text': jqxhr.responseText, 'type': 'error'});
-//            }
-//        });
 
 function confirmNameOnclick(){
     var teamName = $("#teamName");
@@ -345,10 +332,10 @@ function confirmNameOnclick(){
         data: JSON.stringify({"name": teamNameTextField.val()}),
         success: function(data){
             $("#teamName").text(data.team_name);
-            $("#teamNameEdit").addClass("invisible");
-            $("#updateNameButton").removeClass("invisible");
-            $("#confirmNameButton").addClass("invisible");
-            teamName.removeClass("invisible");
+            $("#teamNameEdit").addClass("hide");
+            $("#updateNameButton").removeClass("hide");
+            $("#confirmNameButton").addClass("hide");
+            teamName.removeClass("hide");
         },
         error: function(jqxhr, textStatus, errorThrown){
             Swal.fire({'text': jqxhr.responseJSON.msg, 'type': 'error'});

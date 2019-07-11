@@ -69,11 +69,17 @@ p {
 }
 
 /* Table css */
-
+@media screen and (min-width: 600px){
 tr > td
 {
   padding-bottom: 2.5px;
   padding-top: 2.5px;
+}}
+
+@media screen and (max-width: 900px){
+.sellHeader{
+    margin-bottom: 15px !important;
+}
 }
 
 .dateField input{
@@ -181,7 +187,7 @@ submit:hover  {
 
 .toTransfer {opacity: 0.5}
 
-.positionHeader {width: 8%}
+//.positionHeader {width: 8%}
 .rankingHeader {width: 15%; text-transform: capitalize}
 
 .hero_images {float:right;
@@ -242,11 +248,11 @@ img {margin-bottom: 0px;
   max-width: 1280px;
   width: 85%;
 }
-@media only screen and (min-width: 601px)
+@media screen and (min-width: 601px)
   .container {
     width: 85%;
 }
-@media only screen and (min-width: 993px)
+@media screen and (min-width: 993px)
   .container {
     width: 70%;
 }
@@ -271,7 +277,7 @@ img {margin-bottom: 0px;
     color: Gold;
  }
 
-@media only screen
+@media screen
 and (max-width: 900px)
 {
  .leaderboardDropdown {
@@ -279,7 +285,7 @@ and (max-width: 900px)
  }
  }
 
-@media only screen
+@media screen
 and (max-width: 900px)
 {
  .leaderboardDropdown > i {
@@ -297,7 +303,21 @@ and (max-width: 900px)
   right: 0;
  }
 
- .playerCard { border-radius : 10px; }
+ @media screen
+and (max-width: 900px)
+{
+ .playerCardSmol {
+    height: 350px !important;
+ }
+ }
+
+  .playerCard { border-radius : 10px;
+    height: 420px;
+ }
+
+ .playerCardSmol { border-radius : 10px;
+    height: 420px;
+ }
 
  .rarity-gold{
      background: radial-gradient(ellipse farthest-corner at right bottom, #FEDB37 0%, #FDB931 8%, #9f7928 30%, #8A6E2F 40%, transparent 80%),
@@ -326,9 +346,10 @@ right:    5px;
 bottom:   5px;
 }
 
-.invisible{
+/*.invisible{
+// materialize .hide does same job
     display: none;
-}
+}*/
 
 .swal2-content{
 color: black !important;
@@ -340,6 +361,14 @@ height: 470px;
 .swal-newcards-header{
 height: 40px
 }
+
+@media screen
+and (max-width: 900px)
+{
+ .matchRow {
+    width: 100% !important;
+ }
+ }
 
 .matchRow{
     border-radius: 150px;

@@ -183,15 +183,21 @@
                     <a href="/team">Team</a>
                 </li>
                 <li class="col s1">
+                <a href="/predictions" class="predictionsLink">Predictions</a>
+            </li>
+                <li class="col s1">
                     <a href="/leaderboard?period=0">Leaderboard</a>
                 </li>
                 <li class="col s1">
-                    <a class="dailyLink" href="/leaderboard?period=1">Daily</a>
+                    <a class="dailyLink" href="/leaderboard?period=1">Weekly</a>
                 </li>
                 <li class="col s1">
                     <a href="/rules">Rules</a>
                 </li>
                 <div class="divider"></div>
+                                <li class="col s2">
+                    <a href="/collection">Collection</a>
+                </li>
                 <li class="col s2">
                 <a id="mobileNotificationButton" class="dropdown-button" data-constrainWidth='false'
                    data-beloworigin="true" href="#" data-activates="mobileNotificationDropdown">
