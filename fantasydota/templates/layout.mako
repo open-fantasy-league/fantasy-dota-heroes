@@ -55,7 +55,9 @@
                     success: function(data){
                         league = data;
                         currentPeriod = league.currentPeriod ? league.currentPeriod.value : 1;
-                        $('.dailyLink').attr('href', "/leaderboard?period=" + currentPeriod);
+                        var periodLink = $('.periodLink');
+                        periodLink.attr('href', "/leaderboard?period=" + currentPeriod);
+                        periodLink.text(league.periodDescription);
                         $('.predictionsLink').attr('href', "/predictions?period=" + (league.currentPeriod ? league.currentPeriod.value + 1 : 1));
                     }
                 })
@@ -134,7 +136,7 @@
                 <a href="/leaderboard?period=0">Leaderboard</a>
             </li>
             <li class="col s1">
-                <a class="dailyLink" href="/leaderboard?period=1">Weekly</a>
+                <a class="periodLink" href="/leaderboard?period=1">Daily</a>
             </li>
                 <li class="col s1">
                     <a href="/rules">Rules</a>
@@ -189,7 +191,7 @@
                     <a href="/leaderboard?period=0">Leaderboard</a>
                 </li>
                 <li class="col s1">
-                    <a class="dailyLink" href="/leaderboard?period=1">Weekly</a>
+                    <a class="periodLink" href="/leaderboard?period=1">Daily</a>
                 </li>
                 <li class="col s1">
                     <a href="/rules">Rules</a>

@@ -9,7 +9,7 @@
 </%def>
 
 <%def name="meta_description()">
-    FAQ page for fantasy football cards
+    FAQ page for fantasy DotA cards
 </%def>
 
 <%def name="custom_css()"></%def>
@@ -18,7 +18,7 @@
 <h2>What is this site?</h2>
     <div class="card-panel">
 <p>
-    A fun(?) variant on premier league fantasy football with even more RNG</p>
+    A fun(?) variant on premier league fantasy DotA with even more RNG</p>
     <p>Rather than pick a team, you get random cards, which can have points bonuses.</p>
     <p>Craft your team with these, whilst improving your team by winning more credits by predicting correct scorelines</p>
     </div>

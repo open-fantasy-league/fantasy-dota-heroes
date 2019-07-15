@@ -9,7 +9,7 @@
 </%def>
 
 <%def name="meta_description()">
-    Rules page for fantasy football cards
+    Rules page for fantasy DotA cards
 </%def>
 
 <%def name="custom_css()">
@@ -19,15 +19,15 @@
     <h2>Team</h2>
     <div class="card-panel">
     <p>Max of 2 players from each club.</p>
-    <p>Teams are locked at start of game week, therefore any transfers you make, will only take affect start of next week
-    (Old players will continue scoring 'this' week, even if removed from next week's team)</p>
+    <p>Teams are locked at start of game day, therefore any transfers you make, will only take affect start of next day
+    (Old players will continue scoring 'this' day, even if removed from next day's team)</p>
     </div>
     <h2>Scoring</h2>
     <div class="card-panel">
         Points are allocated in the following way:</br>
         <ul class="browser-default" id="scoringRules">
         </ul></br>
-            <ul class="browser-default"><li>x2 points for final week
+            <ul class="browser-default"><li>x2 points for final day
             </li>
             </ul>
             </br>

@@ -9,7 +9,7 @@
 </%def>
 
 <%def name="meta_description()">
-    Hall of fame page for fantasy football cards game.
+    Hall of fame page for fantasy DotA cards game.
 </%def>
 
 <%def name="custom_css()"></%def>

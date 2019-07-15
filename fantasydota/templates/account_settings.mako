@@ -9,7 +9,7 @@
 </%def>
 
 <%def name="meta_description()">
-    Account settings page for fantasy football cards game.
+    Account settings page for fantasy DotA cards game.
 </%def>
 <%def name="custom_css()"></%def>
 

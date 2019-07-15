@@ -9,7 +9,7 @@
 </%def>
 
 <%def name="meta_description()">
-    Password reset page for fantasy football cards game.
+    Password reset page for fantasy DotA cards game.
 </%def>
 
 <%def name="custom_css()">

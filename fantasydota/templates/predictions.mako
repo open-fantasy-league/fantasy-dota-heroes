@@ -9,7 +9,7 @@
 </%def>
 
 <%def name="meta_description()">
-    Leaderboard page for fantasy football cards game.
+    Leaderboard page for fantasy DotA cards game.
 </%def>
 
 <%def name="custom_css()">
@@ -22,8 +22,7 @@
     </span>
     <ul class="right">
             <li>
-                <a class="dropdown-trigger btn leaderboardDropdown" data-hover="true" data-beloworigin="true" href="" data-activates="periodDropdown">
-                Week
+                <a id="predictionPeriodDropdown" class="dropdown-trigger btn" data-hover="true" data-beloworigin="true" href="" data-activates="periodDropdown">
                 <i class="material-icons right">arrow_drop_down</i></a>
             </li>
             <ul id="periodDropdown" class="dropdown-content">

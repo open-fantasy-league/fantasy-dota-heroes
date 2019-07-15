@@ -9,7 +9,7 @@
 </%def>
 
 <%def name="meta_description()">
-    League page for fantasy football cards game.
+    League page for fantasy DotA cards game.
 </%def>
 
 <%def name="custom_css()">
@@ -35,7 +35,7 @@
                 <th class="heroHeader">Player</th>
                 <th class="positionHeader sorttable_numeric">Position</th>
                 <th class="clubHeader sorttable_numeric">Club</th>
-                <th class="pointsHeader sorttable_numeric">Points<br/>(Last week)</th>
+                <th class="pointsHeader sorttable_numeric">Points<br/>(Last day)</th>
                 <th class="bonusHeader sorttable_numeric">Bonuses</th>
             </tr>
         </table>

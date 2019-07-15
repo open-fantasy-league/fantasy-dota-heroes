@@ -6,33 +6,13 @@ import os
 from fantasydota.lib.constants import API_URL, DEFAULT_LEAGUE
 
 
-def get_fixtures():
-    with open(os.getcwd() + "/../data/fixtures.json") as f:
-        j = json.load(f)
-        fixtures = j['fixtures']
-    series = []
-    periods = []
-    for i, match in enumerate(fixtures):
-        series.append({
-            'seriesId': i, 'tournamentId': 1, 'teamOne': match[0], 'teamTwo': match[1], "startTstamp": match[2] + ":00",
-            "matches": [{'matchId': i, "startTstamp": match[2] + ":00"}]
-        })
-    period_starts = j['period_starts']
-    for i, tstamp in enumerate(period_starts):
-        if i != 37:
-            periods.append({'start': tstamp, 'end': period_starts[i+1], 'multiplier': 1.0})
-        else:
-            periods.append({'start': tstamp, 'end': '3000-12-05 15:00', 'multiplier': 2.0})
-    return series, periods
-
-
 def get_players(teams):
     pickees = []
     id = 0
     for team in teams:
-        for player in team[1]:
+        for player in team['players']:
             # player position and team name
-            pickees.append({"id": id, "name": player[0], "value": 1.0, "limits": [player[1], team[0]]})
+            pickees.append({"id": id, "name": player[0], "value": 1.0, "limits": [player[1], team['name']]})
             id += 1
     return pickees
 
@@ -45,7 +25,16 @@ def create_league(name, tournament_id, url):
     FE_APIKEY = os.environ.get("FE_APIKEY")
     if not FE_APIKEY:
         print "Set your fantasy esport APIKEY environment variable"
-    fixtures, periods = get_fixtures()
+
+    periods = []
+    for day in ([15, 16, 17, 18, 20, 21, 22, 23, 24, 25]):
+        if day < 20:
+            multiplier = 1.0
+        elif day < 25:
+            multiplier = 2.0
+        else:
+            multiplier = 3.0
+        periods.append({'start': '2019-08-{} 00:00'.format(day), 'end': '2019-08-{} 00:00'.format(day+1), 'multiplier': multiplier})
 
     data = {
         'name': name,
@@ -53,62 +42,44 @@ def create_league(name, tournament_id, url):
         'tournamentId': tournament_id,
         'gameId': 1,
         'pickeeDescription': 'Player',
-        'periodDescription': 'Week',
+        'periodDescription': 'Daily',
         'startingMoney': 50.0,
-        'teamSize': 11,
+        'teamSize': 5,
         'transferInfo': {
             'isCardSystem': True,
-            'cardPackSize': 10,
+            'cardPackSize': 6,
             'cardPackCost': 5,
             'recycleValue': 0.2,
             'predictionWinMoney': 2.0
         },
         "periods": periods,
         "url": url,
-        "applyPointsAtStartTime": False,
+        "applyPointsAtStartTime": True,
         "limits": [{'name': 'position', 'types': [
-            {'name': 'Goalkeeper', 'max': 1}, {'name': 'Defender', 'max': 4}, {'name': 'Midfielder', 'max': 4},
-            {'name': 'Forward', 'max': 2}
+            {'name': 'Core', 'max': 2}, {'name': 'Support', 'max': 2}, {'name': 'Offlane', 'max': 1},
         ]},
-                   {'name': 'club', 'max': 2, 'types': [{'name': t[0]} for t in teams]}
+                   {'name': 'team', 'max': 2, 'types': [{'name': t['name']} for t in teams]}
                    ],
         "stats": [
-            {'name': 'playing', 'allFactionPoints': 1.0},
-            {'name': 'playing > 60 mins', 'allFactionPoints': 1.0},  # total 2 points when playing point added
-            {'name': 'assist', 'allFactionPoints': 4.0},
-            {'name': 'clean sheet', 'separateFactionPoints': [  # when on pitch, and must be 60+ mins
-                {'name': 'Goalkeeper', 'value': 5.0},
-                {'name': 'Defender', 'value': 4.0},
-                {'name': 'Midfielder', 'value': 1.0}
-            ]},
-             {'name': 'goal', 'separateFactionPoints': [
-                 {'name': 'Forward', 'value': 4.0},
-                 {'name': 'Defender', 'value': 7.0},
-                 {'name': 'Midfielder', 'value': 5.0}
-             ]},
-            {'name': 'goal conceded', 'separateFactionPoints': [
-                 {'name': 'Goalkeeper', 'value': -1.0},
-                 {'name': 'Defender', 'value': -1.0},
-                 {'name': 'Midfielder', 'value': -0.5}
-             ]},
-            {'name': 'shot saved', 'separateFactionPoints': [
-                {'name': 'Goalkeeper', 'value': 0.2},
-            ]},
-            {'name': 'penalty save', 'separateFactionPoints': [
-                {'name': 'Goalkeeper', 'value': 3.0},
-            ]},
-            {'name': 'yellow card', 'allFactionPoints': -1.0},
-            {'name': 'red card', 'allFactionPoints': -2.0},
-            {'name': 'own goal', 'allFactionPoints': -2.0},
-            {'name': 'penalty miss', 'allFactionPoints': -3.0, 'noCardBonus': True},
-            {'name': 'Unsung hero (<a href="www.fotmob.com">Fotmob match rating*</a>)',
-             'description': '3 highest rated players without any goals or assists, are awarded points equal to 0.5x their match rating',
-             'allFactionPoints': 0.5},
+            {'name': 'kills', 'allFactionPoints': 0.3},
+            {'name': 'deaths', 'allFactionPoints': -0.3},
+            {'name': 'last hits', 'allFactionPoints': 0.003},
+            {'name': 'denies', 'allFactionPoints': 0.003},
+            {'name': 'GPM', 'description': 'Gold per Minute', 'allFactionPoints': 0.002},
+            {'name': 'tower kills', 'allFactionPoints': 1.0},
+            {'name': 'roshan kills', 'allFactionPoints': 1.0},
+            {'name': 'teamfight participation', 'allFactionPoints': 3.0},
+            {'name': 'observer wards', 'allFactionPoints': 0.25},
+            {'name': 'dewards', 'allFactionPoints': 0.25},
+            {'name': 'camps stacked', 'allFactionPoints': 0.5},
+            {'name': 'runes', 'description':'runes picked up', 'allFactionPoints': 0.25},
+            {'name': 'first blood', 'allFactionPoints': 4.0},
+            {'name': 'stun seconds', 'allFactionPoints': 0.05},
         ],
         'pickees': get_players(teams)
     }
 
-    """try:
+    try:
         req = urllib2.Request(
             API_URL + "leagues/", data=json.dumps(data), headers={
                 "Content-Type": "application/json"
@@ -129,20 +100,19 @@ def create_league(name, tournament_id, url):
         print(response.read())
     except urllib2.HTTPError as e:
         print(e.read())
-    """
-    for fixture in fixtures:
-        try:
-            req = urllib2.Request(
-                API_URL + "results/leagues/" + str(DEFAULT_LEAGUE),
-                data=json.dumps(fixture), headers={
-                    "Content-Type": "application/json",
-                    "apiKey": FE_APIKEY
-                }
-            )
-            response = urllib2.urlopen(req)
-            print(response.read())
-        except urllib2.HTTPError as e:
-            print(e.read())
+    # for fixture in fixtures:
+    #     try:
+    #         req = urllib2.Request(
+    #             API_URL + "results/leagues/" + str(DEFAULT_LEAGUE),
+    #             data=json.dumps(fixture), headers={
+    #                 "Content-Type": "application/json",
+    #                 "apiKey": FE_APIKEY
+    #             }
+    #         )
+    #         response = urllib2.urlopen(req)
+    #         print(response.read())
+    #     except urllib2.HTTPError as e:
+    #         print(e.read())
 
     # req = urllib2.Request(
     #     API_URL + "leagues/1/startPeriod", data=json.dumps(data), headers={
@@ -155,4 +125,4 @@ def create_league(name, tournament_id, url):
 
 
 if __name__ == "__main__":
-    create_league("Premier League", 1, "https://www.fotmob.com/leagues/47/")
+    create_league("The International 2019", 10749, "https://liquipedia.net/dota2/The_International/2019")

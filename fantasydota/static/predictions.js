@@ -11,12 +11,15 @@ function makePredictions(){
         for(var i=1; i<=league.numPeriods; i++){
             r[++j] = '<li><a href="/predictions?period=';
             r[++j] = i;
-            r[++j] = '">Week ';
+            r[++j] = '">';
+            r[++j] = league.periodDescription;
+            r[++j] = ' ';
             r[++j] = i;
             r[++j] = '</a></li>';
         }
     }
     $("#periodDropdown").append(r.join(''));
+    $("#predictionPeriodDropdown").text(league.periodDescription);
     $("#predictionWinMoney").text(league.predictionWinMoney);
     fillMatches();
 }

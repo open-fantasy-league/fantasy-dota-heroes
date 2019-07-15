@@ -13,7 +13,7 @@
 </%def>
 
 <%def name="meta_description()">
-    Card collection for fantasy football
+    Card collection for fantasy DotA
 </%def>
 
 <div class="row">

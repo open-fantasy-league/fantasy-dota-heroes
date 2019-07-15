@@ -1,11 +1,11 @@
 Need to:
 + test notification/achievement system
-+ make sure weekends worth double
++ make sure dayends worth double
 -/ add charity stuff
 + migrate user script
 + check about updating Sale so stores swaps as well
 + update rules/faq to talk about late starting
-+ have default league be latest week
++ have default league be latest day
 + handle change league reloading with query param
 + check string/int-ness of league cookie
 + sweetAlert callback to reload page when confirmTransfer/swaps

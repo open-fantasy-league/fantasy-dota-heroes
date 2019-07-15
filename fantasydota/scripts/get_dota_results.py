@@ -7,7 +7,13 @@ import datetime
 import os
 from fantasydota.lib.constants import API_URL, DEFAULT_LEAGUE
 from fantasydota.lib.match import iterate_matches, BANS, STAGE_2_MAX, STAGE_1_MAX, result_to_points
-from fantasydota.lib.valve_requests import get_league_match_list, get_match_details
+from fantasydota.lib.valve_requests import get_league_match_list, get_match_details, \
+    dont_piss_off_valve_but_account_for_sporadic_failures
+
+FE_APIKEY = os.environ.get("FE_APIKEY")
+if not FE_APIKEY:
+    print "Set your fantasy esport APIKEY environment variable"
+    exit()
 
 API_LEAGUE_RESULTS_URL = "{}results/leagues/{}".format(API_URL, DEFAULT_LEAGUE)
 
@@ -48,7 +54,7 @@ def get_matches(tournament_id, tstamp_from=0, excluded_match_ids=None):
             #     frozenset([p['hero_id'] for p in result['players']] +
             #               [result.get('radiant_name', 'rad'), result.get('dire_name', 'dire')])
             # ] = result
-            add_match_to_api(result, tournament_id=tournament_id)
+            add_match_to_api(result)
     for pick_ban_tuple in set(saved_ap_remade_matches.keys()).intersection(set(saved_m22_matches.keys())):
         print("match {} was all-pick remade".format(pick_ban_tuple))
         base_result = saved_ap_remade_matches[pick_ban_tuple]
@@ -62,11 +68,33 @@ def get_matches(tournament_id, tstamp_from=0, excluded_match_ids=None):
         print("ERROR: {} did not have 22 pick bans but wasnt remade".format(saved_m22_matches[k]['match_id']))
 
 
-def add_match_to_api(match, tournament_id=None, target_at_tstamp=None):
-    FE_APIKEY = os.environ.get("FE_APIKEY")
-    if not FE_APIKEY:
-        print "Set your fantasy esport APIKEY environment variable"
-        exit()
+def add_match_to_api(match):
+
+    odota_info = dont_piss_off_valve_but_account_for_sporadic_failures(
+        "https://api.opendota.com/api/matches/{}".format(match['match_id'])
+    )
+    players = odota_info['players']
+    pickees = []
+    for player in players:
+        pickee = {"id": player["account_id"], "isTeamOne": player["isRadiant"],
+                  'stats': [
+                      {'field': 'kills', 'value': player["kills"]},
+                      {'field': 'deaths', 'value': player["deaths"]},
+                      {'field': 'last_hits', 'value': player["last_hits"]},
+                      {'field': 'denies', 'value': player["denies"]},
+                      {'field': 'first blood', 'value': player["firstblood_claimed"]},
+                      {'field': 'stun seconds', 'value': player["stuns"]},
+                      {'field': 'teamfight participation', 'value': player["teamfight_participation"]},
+                      {'field': 'GPM', 'value': player["gold_per_min"]},
+                      {'field': 'tower kills', 'value': player["towers_killed"]},
+                      {'field': 'observer wards', 'value': player["obs_placed"]},
+                      {'field': 'dewards', 'value': player["observer_kills"]},
+                      {'field': 'camps stacked', 'value': player["camps_stacked"]},
+                      {'field': 'runes', 'value': player["rune_pickups"]},
+                      {'field': 'roshan kills', 'value': player["roshan_kills"]},
+                  ]
+                  }
+        pickees.append(pickee)
 
     Result = namedtuple('Result', 'hero_id is_team_one points ban win')
 
@@ -100,22 +128,25 @@ def add_match_to_api(match, tournament_id=None, target_at_tstamp=None):
                 entry['stats'].append({'field': 'wins', 'value': 1})
         pickees.append(entry)
     start_time = datetime.datetime.fromtimestamp(match['start_time']).strftime('%Y-%m-%d %H:%M:%S')
+    radiant_team = match.get('radiant_name', ' ')
+    dire_team = match.get('dire_name', ' ')
     print(match['start_time'])
     print(start_time)
     print('id {}: {} vs {}. radiant win: {}'.format(
-        match_id, match.get('radiant_name', ' ').encode('utf-8'), match.get('dire_name', ' ').encode('utf-8'), match['radiant_win']
+        match_id, radiant_team, dire_team, match['radiant_win']
     ))
+    latest_series = get_latest_series(radiant_team, dire_team)
+    reverse_radiant_t1 = latest_series["teamOne"] == dire_team
     data = json.dumps({
-        'matchId': match_id,
-        'teamOne': match.get('radiant_name', ' '),
-        'teamTwo': match.get('dire_name', ' '),
-        'teamOneVictory': match['radiant_win'],
-        'tournamentId': tournament_id,
-        'startTstamp': start_time,
-        'pickees': pickees
+        'seriesId': latest_series["seriesId"],
+        'matches': [{
+            'matchId': match_id,
+            'teamOneMatchScore': 1 if ((match['radiant_win'] and not reverse_radiant_t1) or (reverse_radiant_t1 and not match['radiant_win'])) else 0,
+            'teamTwoMatchScore': 1 if ((match['radiant_win'] and reverse_radiant_t1) or (reverse_radiant_t1 and match['radiant_win'])) else 0,
+            'startTstamp': start_time,
+            'pickeeResults': pickees
+        }]
     })
-    if target_at_tstamp is not None:
-        data['targetAtTstamp'] = datetime.datetime.fromtimestamp(target_at_tstamp).strftime('%Y-%m-%d %H:%M:%S')
     try:
         req = urllib2.Request(API_LEAGUE_RESULTS_URL, data=data, headers={'apiKey': FE_APIKEY, "Content-Type": "application/json"})
         response = urllib2.urlopen(req)
@@ -126,6 +157,7 @@ def add_match_to_api(match, tournament_id=None, target_at_tstamp=None):
 
 def get_already_stored_matches():
     try:
+
         req = urllib2.Request(API_LEAGUE_RESULTS_URL,
                               headers={"Content-Type": "application/json"})
         response = urllib2.urlopen(req)
@@ -133,9 +165,17 @@ def get_already_stored_matches():
     except urllib2.HTTPError as e:
         print(e.read())
         raise e
-
-    existing_ids = [m["match"]["matchId"] for m in existing_matches]
+    existing_ids = [m["match"]["matchId"] for s in existing_matches for m in s["matches"]]
     return existing_ids
+
+
+def get_latest_series(team_one, team_two):
+    series_info = json.load(urllib2.urlopen(urllib2.Request(
+        "http://localhost/api/v1/results/leagues/" + str(DEFAULT_LEAGUE) + "/findByTeams",
+        headers={'apiKey': FE_APIKEY, "Content-Type": "application/json"},
+        data=json.dumps({'teamOne': team_one, 'teamTwo': team_two, 'includeReversedTeams': True})
+    )))[-1]
+    return series_info
 
 
 def main():

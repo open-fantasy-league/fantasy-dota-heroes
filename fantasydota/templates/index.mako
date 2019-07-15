@@ -1,15 +1,15 @@
 <%inherit file="fantasydota:templates/layout.mako"/>
 
 <%def name="title()">
-    Fantasy Football Cards
+    Fantasy DotA Cards
 </%def>
 
 <%def name="meta_keywords()">
-    Fantasy Football Cards, Home
+    Fantasy DotA Cards, Home
 </%def>
 
 <%def name="meta_description()">
-    Home page for Fantasy Football Cards
+    Home page for Fantasy DotA Cards
 </%def>
 
 <%def name="custom_css()">
@@ -17,7 +17,7 @@
 
 <div class="row">
     <div class="card-panel">
-        <h3>A free-to-play, open-source, fantasy football league; styled on ultimate team, with card packs and stat bonuses (minus the pay-2-win)</h3>
+        <h3>A free-to-play, open-source, fantasy DotA league; styled on ultimate team, with card packs and stat bonuses (minus the pay-2-win)</h3>
         <h1>1. <a href="/login">Login</a> with steam, google, or site account</h1>
         <h1>2. Click <a href="/team">Team</a></h1>
         <h1>3. Buy some card packs (5 credits each. 50 starting credits). Gold and silver cards have stat multipliers for greater points hauls</h1>

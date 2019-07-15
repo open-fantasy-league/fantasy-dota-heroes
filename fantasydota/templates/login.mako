@@ -1,15 +1,15 @@
 <%inherit file="layout.mako"/>
 
 <%def name="title()">
-    Fantasy Football Cards
+    Fantasy DotA Cards
 </%def>
 
 <%def name="meta_keywords()">
-    Login, Football, Fantasy Football Cards
+    Login, Football, Fantasy DotA Cards
 </%def>
 
 <%def name="meta_description()">
-    Login to fantasy football
+    Login to fantasy DotA
 </%def>
 
 <%def name="custom_css()">

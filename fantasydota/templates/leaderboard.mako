@@ -9,7 +9,7 @@
 </%def>
 
 <%def name="meta_description()">
-    Leaderboard page for fantasy football cards game.
+    Leaderboard page for fantasy DotA cards game.
 </%def>
 
 <%def name="custom_css()">
@@ -67,7 +67,7 @@ $( document ).ready(function() {
     <script src="/static/leaderboard.js?v=1.1"></script>
     <div id="friendBlock" class="col s12 m5">
         <div class="card-panel">
-        <p>2x points multiplier for final week</p>
+        <p>2x points multiplier for final day</p>
             <p>Results updated end of match day</p>
             <p><a href="https://discord.gg/MAH7EEv" target="_blank">Discord channel for suggestions/improvements</a></p>
         </div>
