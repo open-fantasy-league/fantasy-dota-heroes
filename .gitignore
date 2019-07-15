@@ -8,5 +8,3 @@ dist
 *.swp
 *.log
 *.sql
-get_fixtures.py
-get_teams.py
