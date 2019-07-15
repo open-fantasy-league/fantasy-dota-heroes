@@ -8,6 +8,8 @@ SECONDS_IN_12_HOURS = 43200
 SECONDS_IN_HOUR = 3600
 
 DEFAULT_LEAGUE = 3 if socket.gethostname() == 'fantasyesport' else 5
+OTHER_LEAGUES = [6]
+HERO_LEAGUE = 6
 API_URL = 'https://dota.openfantasyleague.com/api/v1/' if socket.gethostname() == 'fantasyesport' else 'http://localhost/api/v1/'
 
 FESPORT_ACCOUNT = 0
@@ -27,7 +29,7 @@ TEAM_IDS_TO_NAMES = {
     1838315: 'Team Secret',
 1883502: 'Virtus.Pro',
 726228: 'Vici Gaming',
-    39: 'EG',
+    39: 'Evil Geniuses',
 2626685: 'Keen Gaming',
 2586976: 'OG',
 36: 'Navi',

@@ -87,7 +87,7 @@ function cardHtml(p, j, player){
                             p[++j] = '"><div class="card-content"><span class="card-title"><h6><p><span class="playerName centre"><strong>';
                             p[++j] = player.name;
                             p[++j] = '</strong></span></p><p><span class="teamName centre">';
-                            p[++j] = player.limitTypes.club;
+                            p[++j] = player.limitTypes.team;
                             p[++j] = '</span></p></h6></span><p><span class="left">';
                             p[++j] = player.limitTypes.position;
                             p[++j] = '</span><span class="right"><button name="buyPlayer" id="addTeam-';
@@ -165,8 +165,8 @@ function addPlayerHtmlArray(player, r, j){
                     r[++j] = player.name;
                     r[++j] = '</strong></td><td class="positionEntry">';
                     r[++j] = player.limitTypes.position;
-                    r[++j] = '</td><td class="clubEntry">';
-                    r[++j] = player.limitTypes.club;
+                    r[++j] = '</td><td class="teamEntry">';
+                    r[++j] = player.limitTypes.team;
                     r[++j] = '</td><td class="playerPointsEntry">';
                     var card = playerDataCache.get(player.cardId);
                     r[++j] = card.overallStats.points;
@@ -279,11 +279,11 @@ function setup(){
                      p[++j] = ' rarity-';
                             p[++j] = player.colour.toLowerCase();
                             p[++j] = ' ';
-                            p[++j] = player.limitTypes.club.split(" ").join("").toLowerCase();
+                            p[++j] = player.limitTypes.team.split(" ").join("").toLowerCase();
                             p[++j] = '"><div class="card-content"><span class="card-title"><h6><p><span class="centre"><strong>';
                             p[++j] = player.name;
                             p[++j] = '</strong></span></p><p><span class="centre">';
-                            p[++j] = player.limitTypes.club;
+                            p[++j] = player.limitTypes.team;
                             p[++j] = '</span></p></h6></span><p><span class="left">';
                             p[++j] = player.limitTypes.position;
                             p[++j] = '</span>';

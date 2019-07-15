@@ -43,36 +43,35 @@ function fillMatches(){
                 success: function(data){
                     var r = new Array(), j = -1;
                     $.each(data, function(key, series){
-                        var match = series.matches[0].match;
                         var thisSeries = series.series;
-                        var teamOneBasic = thisSeries.teamOne.replace(/[ &]/g, '').toLowerCase();
-                        var teamTwoBasic = thisSeries.teamTwo.replace(/[ &]/g, '').toLowerCase();
-                        if (match.matchTeamOneFinalScore != null && match.matchTeamOneFinalScore != undefined){
-                            matchIdToScores.set(match.matchId, [match.matchTeamOneFinalScore, match.matchTeamTwoFinalScore])
+                        var teamOneBasic = thisSeries.teamOne.replace(/[\W_]+/g,"");.toLowerCase();
+                        var teamTwoBasic = thisSeries.teamTwo.replace(/[\W_]+/g,"").toLowerCase();
+                        if (series.seriesTeamOneFinalScore != null && series.mseriesTeamOneFinalScore != undefined){
+                            seriesIdToScores.set(series.seriesId, [series.seriesTeamOneFinalScore, series.seriesTeamTwoFinalScore])
                         }
                         r[++j] = '<div class="row" style="height: 100%">'
                         r[++j] = '<div class="card-panel horizontal matchRow center-align ';
                         r[++j] = teamOneBasic + teamTwoBasic;
                         r[++j] = '" id="match';
-                         r[++j] = match.matchId;
+                         r[++j] = series.seriesId;
                         r[++j] = '"><span class="teamOne col s4 ';
                         r[++j] = teamOneBasic;
                         r[++j] = '"><strong>';
                         r[++j] = thisSeries.teamOne;
                         r[++j] = '</strong></span>';
                         r[++j] = '<div style="width: 180px;background-color: black;" class="card-panel horizontal predictionRow col s4 ';
-                        r[++j] = match.started ? ' disabled" ' : ' active" ';
-                        r[++j] = 'data-matchId=';
-                        r[++j] = match.matchId;
+                        r[++j] = series.started ? ' disabled" ' : ' active" ';
+                        r[++j] = 'data-seriesId=';
+                        r[++j] = series.seriesId;
                         r[++j] = '><strong><input class="col s5 center scoreboardfont" style="-moz-appearance: textfield" ';
-                        r[++j] = match.started ? ' disabled=true' : "";
+                        r[++j] = series.started ? ' disabled=true' : "";
                         r[++j] = '  type="number" id="teamOneScorePredict-';
-                        r[++j] = match.matchId;
+                        r[++j] = series.seriesId;
                         r[++j] = '">';
                         r[++j] = '<input style="color:#ff9900" class="col s2 center scoreboardfont" type="text" value=":" disabled><input class="col s5 center scoreboardfont" style="-moz-appearance: textfield" ';
-                        r[++j] = match.started ? ' disabled=true' : "";
+                        r[++j] = series.started ? ' disabled=true' : "";
                         r[++j] = ' type="number" id="teamTwoScorePredict-';
-                        r[++j] = match.matchId;
+                        r[++j] = series.seriesId;
                         r[++j] = '"></strong>';
                         r[++j] = '</div>';
                         r[++j] = '<span class="teamTwo col s4 right ';
@@ -100,9 +99,9 @@ function fillPredictions(){
                 dataType: "json",
                 success: function(data){
                     $.each(data, function(key, entry){
-                        var teamOneScorePredict = $("#teamOneScorePredict-" + entry.matchId);
-                        var teamTwoScorePredict = $("#teamTwoScorePredict-" + entry.matchId);
-                        var scores = matchIdToScores.get(entry.matchId);
+                        var teamOneScorePredict = $("#teamOneScorePredict-" + entry.seriesId);
+                        var teamTwoScorePredict = $("#teamTwoScorePredict-" + entry.seriesId);
+                        var scores = matchIdToScores.get(entry.seriesId);
                         if (teamOneScorePredict){
                             var out = entry.teamOneScore;
                             if (scores){
@@ -132,7 +131,7 @@ function updatePredictions(){
         // .value is str so "0" still truthy
         if (inputs[0].value && inputs[2].value){
         data.predictions.push({
-                    'matchId': parseInt(elem.attr("data-matchId")), "teamOneScore": inputs[0].valueAsNumber,
+                    'seriesId': parseInt(elem.attr("data-seriesId")), "teamOneScore": inputs[0].valueAsNumber,
                      "teamTwoScore": inputs[2].valueAsNumber
                     });
             }

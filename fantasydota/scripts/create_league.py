@@ -5,15 +5,17 @@ import json
 import os
 from fantasydota.lib.constants import API_URL, DEFAULT_LEAGUE
 
+FE_APIKEY = os.environ.get("FE_APIKEY")
+if not FE_APIKEY:
+    print "Set your fantasy esport APIKEY environment variable"
+
 
 def get_players(teams):
     pickees = []
-    id = 0
     for team in teams:
         for player in team['players']:
             # player position and team name
-            pickees.append({"id": id, "name": player[0], "value": 1.0, "limits": [player[1], team['name']]})
-            id += 1
+            pickees.append({"id": player["account_id"], "name": player["name"], "value": 1.0, "limits": [player["position"], team['name']]})
     return pickees
 
 
@@ -21,10 +23,6 @@ def create_league(name, tournament_id, url):
     filename = raw_input("players filename:")
     with open(os.getcwd() + "/../data/" + filename) as f:
         teams = json.load(f)
-
-    FE_APIKEY = os.environ.get("FE_APIKEY")
-    if not FE_APIKEY:
-        print "Set your fantasy esport APIKEY environment variable"
 
     periods = []
     for day in ([15, 16, 17, 18, 20, 21, 22, 23, 24, 25]):
@@ -56,7 +54,7 @@ def create_league(name, tournament_id, url):
         "url": url,
         "applyPointsAtStartTime": True,
         "limits": [{'name': 'position', 'types': [
-            {'name': 'Core', 'max': 2}, {'name': 'Support', 'max': 2}, {'name': 'Offlane', 'max': 1},
+            {'name': 'core', 'max': 2}, {'name': 'support', 'max': 2}, {'name': 'offlane', 'max': 1},
         ]},
                    {'name': 'team', 'max': 2, 'types': [{'name': t['name']} for t in teams]}
                    ],
@@ -66,15 +64,15 @@ def create_league(name, tournament_id, url):
             {'name': 'last hits', 'allFactionPoints': 0.003},
             {'name': 'denies', 'allFactionPoints': 0.003},
             {'name': 'GPM', 'description': 'Gold per Minute', 'allFactionPoints': 0.002},
-            {'name': 'tower kills', 'allFactionPoints': 1.0},
-            {'name': 'roshan kills', 'allFactionPoints': 1.0},
+            {'name': 'towers', 'description': 'Last hits on tower', 'allFactionPoints': 1.0},
+            {'name': 'roshans', 'description': 'Last hits on roshan', 'allFactionPoints': 1.0},
             {'name': 'teamfight participation', 'allFactionPoints': 3.0},
             {'name': 'observer wards', 'allFactionPoints': 0.25},
             {'name': 'dewards', 'allFactionPoints': 0.25},
             {'name': 'camps stacked', 'allFactionPoints': 0.5},
-            {'name': 'runes', 'description':'runes picked up', 'allFactionPoints': 0.25},
+            {'name': 'runes', 'description': 'Runes picked up', 'allFactionPoints': 0.25},
             {'name': 'first blood', 'allFactionPoints': 4.0},
-            {'name': 'stun seconds', 'allFactionPoints': 0.05},
+            {'name': 'stun', 'description': 'Number of seconds of stun applied to enemies', 'allFactionPoints': 0.05},
         ],
         'pickees': get_players(teams)
     }

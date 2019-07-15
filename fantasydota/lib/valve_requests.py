@@ -18,19 +18,20 @@ def dont_piss_off_valve_but_account_for_sporadic_failures(req_url):
     print("requesting {0}".format(req_url))
     fuck = True  # no idea why this failing. im waiting long enough to not piss off valve?
     sleep_time = 1
-    fucks_given = 5
+    fucks_given = 10
     while fuck and fucks_given:
         try:
             req = urllib2.Request(req_url, headers={'User-Agent': 'ubuntu:fantasydotaheroes:v1.0.0 (by /u/LePianoDentist)'})
             response = urllib2.urlopen(req)
             fuck = False
-            time.sleep(sleep_time)
         except:
-            sleep_time *= 4  # incase script breaks dont want to spam
+            time.sleep(sleep_time)
+            sleep_time *= 3  # incase script breaks dont want to spam
             print "Why the fuck are you fucking failing you fucker"
             traceback.print_exc()
             fucks_given -= 1
             continue
+    time.sleep(sleep_time)
     data = json.load(response)
     return data
 
