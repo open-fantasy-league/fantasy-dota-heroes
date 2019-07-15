@@ -1,0 +1,812 @@
+[
+   {
+      "players":[
+         {
+            "games_played":804,
+            "is_current_team_member":true,
+            "wins":511,
+            "account_id":19672354,
+            "name":"N0tail",
+            "position": "support"
+         },
+         {
+            "games_played":598,
+            "is_current_team_member":true,
+            "wins":371,
+            "account_id":26771994,
+            "name":"JerAx",
+            "position": "support"
+         },
+         {
+            "games_played":305,
+            "is_current_team_member":true,
+            "wins":186,
+            "account_id":311360822,
+            "name":"ana",
+           "position": "core"
+         },
+         {
+            "games_played":274,
+            "is_current_team_member":true,
+            "wins":160,
+            "account_id":88271237,
+            "name":"Ceb",
+            "position": "offlane"
+         },
+         {
+            "games_played":192,
+            "is_current_team_member":true,
+            "wins":116,
+            "account_id":94054712,
+            "name":"Topson",
+            "position": "core"
+         }
+      ],
+      "name":"OG"
+   },
+   {
+      "players":[
+         {
+            "games_played":633,
+            "is_current_team_member":true,
+            "wins":375,
+            "account_id":184950344,
+            "name":"Kuku^",
+            "position": "offlane"
+         },
+         {
+            "games_played":625,
+            "is_current_team_member":true,
+            "wins":379,
+            "account_id":155494381,
+            "name":"Tims",
+            "position": "support"
+         },
+         {
+            "games_played":355,
+            "is_current_team_member":true,
+            "wins":220,
+            "account_id":164532005,
+            "name":"ARMEL",
+            "position": "core"
+         },
+         {
+            "games_played":201,
+            "is_current_team_member":true,
+            "wins":132,
+            "account_id":152545459,
+            "name":"Gabbi",
+            "position": "core"
+         },
+         {
+            "games_played":128,
+            "is_current_team_member":true,
+            "wins":84,
+            "account_id":173476224,
+            "name":"eyyou",
+            "position": "support"
+         }
+      ],
+      "name":"TNC Predator"
+   },
+   {
+      "players":[
+         {
+            "games_played":684,
+            "is_current_team_member":true,
+            "wins":360,
+            "account_id":117421467,
+            "name":"SoNNeikO",
+            "position": "support"
+         },
+         {
+            "games_played":395,
+            "is_current_team_member":true,
+            "wins":207,
+            "account_id":114619230,
+            "name":"Crystallize",
+            "position": "core"
+         },
+         {
+            "games_played":194,
+            "is_current_team_member":true,
+            "wins":108,
+            "account_id":234699894,
+            "name":"Blizzy",
+            "position": "offlane"
+         },
+         {
+            "games_played":185,
+            "is_current_team_member":true,
+            "wins":103,
+            "account_id":171981096,
+            "name":"MagicaL",
+            "position": "core"
+         },
+         {
+            "games_played":51,
+            "is_current_team_member":true,
+            "wins":33,
+            "account_id":111030315,
+            "name":"W_Zayac",
+            "position": "support"
+         }
+      ],
+      "name":"Navi"
+   },
+   {
+      "players":[
+         {
+            "games_played":977,
+            "is_current_team_member":true,
+            "wins":635,
+            "account_id":86745912,
+            "name":"rtz",
+            "position": "core"
+         },
+         {
+            "games_played":863,
+            "is_current_team_member":true,
+            "wins":538,
+            "account_id":111620041,
+            "name":"SumaiL",
+            "position": "core"
+         },
+         {
+            "games_played":573,
+            "is_current_team_member":true,
+            "wins":361,
+            "account_id":25907144,
+            "name":"Cr1t-",
+            "position": "support"
+         },
+         {
+            "games_played":231,
+            "is_current_team_member":true,
+            "wins":147,
+            "account_id":41231571,
+            "name":"s4",
+            "position": "offlane"
+         },
+         {
+            "games_played":229,
+            "is_current_team_member":true,
+            "wins":147,
+            "account_id":94155156,
+            "name":"Fly",
+            "position": "support"
+         }
+      ],
+      "name":"Evil Geniuses"
+   },
+   {
+      "players":[
+         {
+            "games_played":54,
+            "is_current_team_member":true,
+            "wins":33,
+            "account_id":157989498,
+            "name":"Scofield",
+            "position": "support"
+         },
+         {
+            "games_played":53,
+            "is_current_team_member":true,
+            "wins":31,
+            "account_id":292921272,
+            "name":"Wisper",
+            "position": "offlane"
+         },
+         {
+            "games_played":34,
+            "is_current_team_member":true,
+            "wins":20,
+            "account_id":21289303,
+            "name":"Stinger",
+            "position": "support"
+         },
+         {
+            "games_played":17,
+            "is_current_team_member":true,
+            "wins":14,
+            "account_id":164685175,
+            "name":"k1",
+            "position": "core"
+         },
+         {
+            "games_played":17,
+            "is_current_team_member":true,
+            "wins":14,
+            "account_id":153836240,
+            "name":"Chris Luck",
+            "position": "core"
+         }
+      ],
+      "name":"Infamous"
+   },
+   {
+      "players":[
+         {
+            "games_played":1041,
+            "is_current_team_member":true,
+            "wins":696,
+            "account_id":87278757,
+            "name":"Puppey",
+            "position": "support"
+         },
+         {
+            "games_played":608,
+            "is_current_team_member":true,
+            "wins":416,
+            "account_id":116585378,
+            "name":"MidOne",
+            "position": "core"
+         },
+         {
+            "games_played":502,
+            "is_current_team_member":true,
+            "wins":342,
+            "account_id":89117038,
+            "name":"YapzOr",
+            "position": "support"
+         },
+         {
+            "games_played":346,
+            "is_current_team_member":true,
+            "wins":258,
+            "account_id":73562326,
+            "name":"zai",
+            "position": "offlane"
+         },
+         {
+            "games_played":210,
+            "is_current_team_member":true,
+            "wins":157,
+            "account_id":121769650,
+            "name":"Nisha",
+            "position": "core"
+         }
+      ],
+      "name":"Team Secret"
+   },
+   {
+      "players":[
+         {
+            "games_played":181,
+            "is_current_team_member":true,
+            "wins":100,
+            "account_id":119576842,
+            "name":"- ah fu -",
+            "position": "support"
+         },
+         {
+            "games_played":181,
+            "is_current_team_member":true,
+            "wins":100,
+            "account_id":148215639,
+            "name":"Monet",
+            "position": "core"
+         },
+         {
+            "games_played":153,
+            "is_current_team_member":true,
+            "wins":85,
+            "account_id":139822354,
+            "name":"Setsu",
+            "position": "core"
+         },
+         {
+            "games_played":108,
+            "is_current_team_member":true,
+            "wins":61,
+            "account_id":89423756,
+            "name":"LaNm",
+            "position": "support"
+         },
+         {
+            "games_played":64,
+            "is_current_team_member":true,
+            "wins":41,
+            "account_id":186627166,
+            "name":"Flyby",
+            "position": "offlane"
+         }
+      ],
+      "name":"RNG"
+   },
+   {
+      "players":[
+         {
+            "games_played":634,
+            "is_current_team_member":true,
+            "wins":426,
+            "account_id":132851371,
+            "name":"RAMZEs",
+            "position": "core"
+         },
+         {
+            "games_played":630,
+            "is_current_team_member":true,
+            "wins":423,
+            "account_id":106573901,
+            "name":"No[o]ne-",
+            "position": "core"
+         },
+         {
+            "games_played":621,
+            "is_current_team_member":true,
+            "wins":414,
+            "account_id":92423451,
+            "name":"9pasha",
+            "position": "offlane"
+         },
+         {
+            "games_played":617,
+            "is_current_team_member":true,
+            "wins":411,
+            "account_id":134556694,
+            "name":"Solo",
+            "position": "support"
+         },
+         {
+            "games_played":329,
+            "is_current_team_member":true,
+            "wins":216,
+            "account_id":159020918,
+            "name":"RodjER",
+            "position": "support"
+         }
+      ],
+      "name":"Virtus.Pro"
+   },
+   {
+      "players":[
+         {
+            "games_played":1206,
+            "is_current_team_member":true,
+            "wins":754,
+            "account_id":106863163,
+            "name":"Somnus/Maybe",
+            "position": "core"
+         },
+         {
+            "games_played":474,
+            "is_current_team_member":true,
+            "wins":298,
+            "account_id":101695162,
+            "name":"fy",
+            "position": "support"
+         },
+         {
+            "games_played":416,
+            "is_current_team_member":true,
+            "wins":273,
+            "account_id":125581247,
+            "name":"Ame",
+            "position": "core"
+         },
+         {
+            "games_played":375,
+            "is_current_team_member":true,
+            "wins":251,
+            "account_id":94738847,
+            "name":"Chalice",
+            "position": "offlane"
+         },
+         {
+            "games_played":373,
+            "is_current_team_member":true,
+            "wins":251,
+            "account_id":94296097,
+            "name":"xNova",
+            "position": "support"
+         }
+      ],
+      "name":"PSG.LGD"
+   },
+   {
+      "players":[
+         {
+            "games_played":309,
+            "is_current_team_member":true,
+            "wins":155,
+            "account_id":77490514,
+            "name":"Boxi",
+            "position": "offlane"
+         },
+         {
+            "games_played":309,
+            "is_current_team_member":true,
+            "wins":155,
+            "account_id":54580962,
+            "name":"iNSaNia",
+            "position": "support"
+         },
+         {
+            "games_played":299,
+            "is_current_team_member":true,
+            "wins":152,
+            "account_id":401792574,
+            "name":"Taiga",
+            "position": "support"
+         },
+         {
+            "games_played":269,
+            "is_current_team_member":true,
+            "wins":145,
+            "account_id":86738694,
+            "name":"qojqva",
+            "position": "core"
+         },
+         {
+            "games_played":267,
+            "is_current_team_member":true,
+            "wins":130,
+            "account_id":152962063,
+            "name":"miCKe",
+            "position": "core"
+         }
+      ],
+      "name":"Alliance"
+   },
+   {
+      "players":[
+         {
+            "games_played":856,
+            "is_current_team_member":true,
+            "wins":557,
+            "account_id":82262664,
+            "name":"KuroKy",
+            "position": "support"
+         },
+         {
+            "games_played":855,
+            "is_current_team_member":true,
+            "wins":556,
+            "account_id":34505203,
+            "name":"MinD_ContRoL",
+            "position": "offlane"
+         },
+         {
+            "games_played":568,
+            "is_current_team_member":true,
+            "wins":373,
+            "account_id":105248644,
+            "name":"Miracle-",
+            "position": "core"
+         },
+         {
+            "games_played":545,
+            "is_current_team_member":true,
+            "wins":364,
+            "account_id":101356886,
+            "name":"Gh",
+            "position": "support"
+         },
+         {
+            "games_played":21,
+            "is_current_team_member":true,
+            "wins":13,
+            "account_id":86700461,
+            "name":"w33",
+            "position": "core"
+         }
+      ],
+      "name":"Team Liquid"
+   },
+   {
+      "players":[
+         {
+            "games_played":616,
+            "is_current_team_member":true,
+            "wins":371,
+            "account_id":107803494,
+            "name":"Ori",
+            "position": "core"
+         },
+         {
+            "games_played":511,
+            "is_current_team_member":true,
+            "wins":313,
+            "account_id":137193239,
+            "name":"Paparazi",
+            "position": "core"
+         },
+         {
+            "games_played":490,
+            "is_current_team_member":true,
+            "wins":291,
+            "account_id":139937922,
+            "name":"Yang",
+            "position": "offlane"
+         },
+         {
+            "games_played":240,
+            "is_current_team_member":true,
+            "wins":153,
+            "account_id":182331313,
+            "name":"Fade",
+            "position": "support"
+         },
+         {
+            "games_played":232,
+            "is_current_team_member":true,
+            "wins":150,
+            "account_id":143693439,
+            "name":"Dy",
+            "position": "support"
+         }
+      ],
+      "name":"Vici Gaming"
+   },
+   {
+      "players":[
+         {
+            "games_played":773,
+            "is_current_team_member":true,
+            "wins":478,
+            "account_id":102099826,
+            "name":"DJ",
+            "position": "support"
+         },
+         {
+            "games_played":392,
+            "is_current_team_member":true,
+            "wins":246,
+            "account_id":154715080,
+            "name":"Abed",
+            "position": "core"
+         },
+         {
+            "games_played":148,
+            "is_current_team_member":true,
+            "wins":98,
+            "account_id":84772440,
+            "name":"iceiceice",
+            "position": "offlane"
+         },
+         {
+            "games_played":148,
+            "is_current_team_member":true,
+            "wins":98,
+            "account_id":145550466,
+            "name":"DuBu",
+            "position": "support"
+         },
+         {
+            "games_played":148,
+            "is_current_team_member":true,
+            "wins":98,
+            "account_id":100471531,
+            "name":"JAbz",
+            "position": "core"
+         }
+      ],
+      "name":"Fnatic"
+   },
+   {
+      "players":[
+         {
+            "games_played":584,
+            "is_current_team_member":true,
+            "wins":345,
+            "account_id":91443418,
+            "name":"ninjaboogie",
+            "position": "support"
+         },
+         {
+            "games_played":513,
+            "is_current_team_member":true,
+            "wins":296,
+            "account_id":192914280,
+            "name":"Bimbo",
+            "position": "support"
+         },
+         {
+            "games_played":430,
+            "is_current_team_member":true,
+            "wins":239,
+            "account_id":113457795,
+            "name":"Moon",
+            "position": "core"
+         },
+         {
+            "games_played":178,
+            "is_current_team_member":true,
+            "wins":90,
+            "account_id":87012746,
+            "name":"kpii",
+            "position": "offlane"
+         },
+         {
+            "games_played":17,
+            "is_current_team_member":true,
+            "wins":11,
+            "account_id":412753955,
+            "name":"Nikobaby",
+            "position": "core"
+         }
+      ],
+      "name":"Mineski"
+   },
+   {
+      "players":[
+         {
+            "games_played":19,
+            "is_current_team_member":true,
+            "wins":14,
+            "account_id":72312627,
+            "name":"MATUMBAMAN",
+            "position": "core"
+         },
+         {
+            "games_played":19,
+            "is_current_team_member":true,
+            "wins":14,
+            "account_id":87382579,
+            "name":"Misery",
+            "position": "support"
+         },
+         {
+            "games_played":19,
+            "is_current_team_member":true,
+            "wins":14,
+            "account_id":98172857,
+            "name":"MiLAN",
+            "position": "support"
+         },
+         {
+            "games_played":19,
+            "is_current_team_member":true,
+            "wins":14,
+            "account_id":169025618,
+            "name":"KheZu",
+            "position": "offlane"
+         },
+         {
+            "games_played":19,
+            "is_current_team_member":true,
+            "wins":14,
+            "account_id":142139318,
+            "name":"vtF\u03b1ded",
+            "position": "core"
+         }
+      ],
+      "name":"Chaos"
+   },
+   {
+      "players":[
+         {
+            "games_played":194,
+            "is_current_team_member":true,
+            "wins":110,
+            "account_id":86726887,
+            "name":"MSS-",
+            "position": "support"
+         },
+         {
+            "games_played":179,
+            "is_current_team_member":true,
+            "wins":104,
+            "account_id":108452107,
+            "name":"YawaR",
+            "position": "core"
+         },
+         {
+            "games_played":92,
+            "is_current_team_member":true,
+            "wins":57,
+            "account_id":10366616,
+            "name":"Sneyking",
+            "position": "offlane"
+         },
+         {
+            "games_played":92,
+            "is_current_team_member":true,
+            "wins":57,
+            "account_id":221666230,
+            "name":"CCnC",
+            "position": "core"
+         },
+         {
+            "games_played":40,
+            "is_current_team_member":true,
+            "wins":25,
+            "account_id":6922000,
+            "name":"pieliedie",
+            "position": "support"
+         }
+      ],
+      "name":"Forward Gaming"
+   },
+   {
+      "players":[
+         {
+            "games_played":473,
+            "is_current_team_member":true,
+            "wins":258,
+            "account_id":397462905,
+            "name":"Dark",
+            "position": "support"
+         },
+         {
+            "games_played":419,
+            "is_current_team_member":true,
+            "wins":231,
+            "account_id":255219872,
+            "name":"\u4e00 [Chinese character for 'One']",
+            "position": "core"
+         },
+         {
+            "games_played":268,
+            "is_current_team_member":true,
+            "wins":152,
+            "account_id":135878232,
+            "name":"old chicken",
+            "position": "core"
+         },
+         {
+            "games_played":231,
+            "is_current_team_member":true,
+            "wins":135,
+            "account_id":139876032,
+            "name":"kaka",
+            "position": "support"
+         },
+         {
+            "games_played":226,
+            "is_current_team_member":true,
+            "wins":131,
+            "account_id":134276083,
+            "name":"old eLeVeN",
+            "position": "offlane"
+         }
+      ],
+      "name":"Keen Gaming"
+   },
+   {
+      "players":[
+         {
+            "games_played":253,
+            "is_current_team_member":true,
+            "wins":145,
+            "account_id":86727555,
+            "name":"PPD",
+            "position": "support"
+         },
+         {
+            "games_played":253,
+            "is_current_team_member":true,
+            "wins":145,
+            "account_id":97590558,
+            "name":"Ace",
+            "position": "core"
+         },
+         {
+            "games_played":252,
+            "is_current_team_member":true,
+            "wins":144,
+            "account_id":86799300,
+            "name":"Fata",
+            "position": "core"
+         },
+         {
+            "games_played":252,
+            "is_current_team_member":true,
+            "wins":144,
+            "account_id":103735745,
+            "name":"Saksa",
+            "position": "support"
+         },
+         {
+            "games_played":237,
+            "is_current_team_member":true,
+            "wins":136,
+            "account_id":86698277,
+            "name":"33",
+            "position": "offlane"
+         }
+      ],
+      "name":"Ninjas in Pyjamas"
+   }
+]
