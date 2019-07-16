@@ -4,7 +4,7 @@ import urllib2
 import json
 from fantasydota.lib.calibration import combine_calibrations, calibrate_value, calibrate_all_hero_values, \
     squeeze_values_together
-from fantasydota.lib.constants import API_URL, DEFAULT_LEAGUE
+from fantasydota.lib.constants import API_URL, DEFAULT_LEAGUE, HERO_LEAGUE, TI9
 
 
 def recalibrate():
@@ -14,7 +14,7 @@ def recalibrate():
         exit()
 
     url = "{}pickees/{}".format(API_URL, DEFAULT_LEAGUE)
-    update_url = "{}pickees/leagues/{}/updateCosts".format(API_URL, DEFAULT_LEAGUE)
+    update_url = "{}pickees/leagues/{}/updatePrices".format(API_URL, HERO_LEAGUE)
     req = urllib2.Request(
         url,
     )
@@ -22,11 +22,11 @@ def recalibrate():
     heroes = json.loads(response.read())
     print(response)
     data = {"pickees": []}
-    new_calibration = squeeze_values_together(calibrate_all_hero_values([10681], 1551814635))
+    new_calibration = squeeze_values_together(calibrate_all_hero_values([TI9], 1551814635))
     for hero in heroes:
         id_ = hero['id']
         new_value = round(combine_calibrations(hero['cost'], new_calibration[id_]), 1)
-        print "new calbration %s: %s, from %s" % (new_value, hero['cost'])
+        print "new calbration %s: %s, from %s" % (id_, new_value, hero['cost'])
         data["pickees"].append({'id': id_, 'cost': new_value})
     try:
         req = urllib2.Request(

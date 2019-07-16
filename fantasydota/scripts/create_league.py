@@ -3,7 +3,7 @@ import urllib2
 import json
 
 import os
-from fantasydota.lib.constants import API_URL, DEFAULT_LEAGUE
+from fantasydota.lib.constants import API_URL, DEFAULT_LEAGUE, TI9
 
 FE_APIKEY = os.environ.get("FE_APIKEY")
 if not FE_APIKEY:
@@ -123,4 +123,4 @@ def create_league(name, tournament_id, url):
 
 
 if __name__ == "__main__":
-    create_league("The International 2019", 10749, "https://liquipedia.net/dota2/The_International/2019")
+    create_league("The International 2019", TI9, "https://liquipedia.net/dota2/The_International/2019")

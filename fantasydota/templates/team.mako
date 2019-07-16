@@ -28,25 +28,43 @@
     <span class="left center-align hide-on-small-only" style="width: 33%;"><h5><a id="leagueLink" target="_blank"></a></h5></span>
     <span class="right"><h5>Points: <span class="userPoints"></span></h5></span>
     </div>
+    % if is_card_system:
     <div id="teamTableContainer" class="row">
         <table class="sortable card-table striped centered responsive-table" id="teamTable">
             <tr style="cursor: pointer" id="teamTableHeader">
                 <th class="sellHeader">Remove</th>
                 <th class="heroHeader">Player</th>
                 <th class="positionHeader sorttable_numeric">Position</th>
-                <th class="clubHeader sorttable_numeric">Club</th>
+                <th class="clubHeader sorttable_numeric">Team</th>
                 <th class="pointsHeader sorttable_numeric">Points<br/>(Last day)</th>
                 <th class="bonusHeader sorttable_numeric">Bonuses</th>
             </tr>
         </table>
     </div>
+    % else:
+        <div id="teamTableContainer">
+        <table class="sortable card-table striped centered" id="teamTable">
+            <tr style="cursor: pointer" id="teamTableHeader">
+                <th class="heroHeader">Hero</th>
+                <th class="dummyHeader" colspan="0"></th>
+                <th class="heroPointsHeader sorttable_numeric">Points</th>
+                <th class="picksHeader extra sorttable_numeric">Picks</th>
+                <th class="bansHeader extra sorttable_numeric">Bans</th>
+                <th class="winsHeader extra sorttable_numeric">Wins</th>
+                <th class="valueHeader sorttable_numeric">Value</th>
+                <th class="sellHeader">Sell</th>
+            </tr>
+        </table>
+    </div>
+    % endif
     <div class="row">
-    <span class="left"><button type="submit" id="useWildcard" disabled="true" title="Wildcard sells entire team and resets to 50 credits" class="btn waves-effect waves-light" style="display:none">
+    <span class="left"><button type="submit" id="useWildcard" disabled="true" title="Wildcard sells entire team and resets to 50 credits" class="btn waves-effect waves-light hide">
         Use Wildcard</button></span>
     <span class="right"><button type="submit" id="confirmTransfers" disabled="true" class="btn waves-effect waves-light">Confirm Team!</button></span>
     </div>
 </div>
 <div id="heroesBlock" class="row">
+% if is_card_system:
     <h2><span class="col s12 m3">Cards (Credits: <strong><span class="userCredits"></span></strong>)</span><span class="col s12 m6 right">
     <button type="submit" id="newCardPack" title="5 credits" class="btn waves-effect waves-light amber accent-4">
     New pack<i class="material-icons right">shopping_cart</i>
@@ -83,5 +101,39 @@
         <div id="midfielders" class="col s12"></div>
         <div id="forwards" class="col s12"></div>
     </div>
-<script src="/static/trade.js?v=1.0"></script>
+    <script src="/static/trade.js?v=1.0"></script>
 <script src="/static/team.js?v=1.1"></script>
+%else:
+    <h2>Heroes (Credits Available: <strong><span class="userCredits"></span></strong>)</h2>
+      <div class="switch">
+    <label>
+      Table view (sortable)
+      <input type="checkbox" id="gridViewBtn" onchange="switchGridTable(this);" checked autocomplete="off">
+      <span class="lever"></span>
+      Grid view
+    </label>
+  </div>
+    <div id="gridContainer">
+        <table class="card-table striped centered" id="heroesTableGrid">
+        <tr><td></td></tr>
+        </table>
+    </div>
+    <div id="tableContainer" style="display:none">
+        <table class="sortable card-table striped centered" id="heroesTable">
+            <tr style="cursor: pointer" id="heroesTableHeader">
+                <th class="heroHeader">Hero</th>
+                <th class="dummyHeader" colspan="0"></th>
+                <th class="heroPointsHeader sorttable_numeric">Points</th>
+                <th class="picksHeader extra sorttable_numeric">Picks</th>
+                <th class="bansHeader extra sorttable_numeric">Bans</th>
+                <th class="winsHeader extra sorttable_numeric">Wins</th>
+                <th class="valueHeader sorttable_numeric">Value</th>
+                <th class="sellHeader">Buy</th>
+            </tr>
+        </table>
+    </div>
+    </div>
+    <script src="/static/hero_trade.js?v=1.0"></script>
+<script src="/static/hero_team.js?v=1.1"></script>
+%endif
+<script src="/static/teamname.js?v=1.0"></script>
