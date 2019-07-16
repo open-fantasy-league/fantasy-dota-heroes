@@ -31,7 +31,7 @@ def view_team(request):
             team_name = ""
     return_dict = {'league_id': league_id, 'team_name': team_name}
 
-    return_dict = all_view_wrapper(return_dict, session, user_id)
+    return_dict = all_view_wrapper(request, return_dict, session, user_id)
     return return_dict
 
 

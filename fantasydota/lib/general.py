@@ -16,7 +16,7 @@ def add_notifications(return_dict, session, user_id):
     return return_dict
 
 
-def all_view_wrapper(return_dict, session, user_id=None):
+def all_view_wrapper(request, return_dict, session, user_id=None):
     return_dict['user_id'] = user_id
     return_dict['user'] = session.query(User).filter(User.id == user_id).first()
     if user_id:
@@ -25,7 +25,7 @@ def all_view_wrapper(return_dict, session, user_id=None):
         return_dict['notifications'] = []
         return_dict['username'] = ""
     return_dict['api_base_url'] = API_URL
-    league_id = return_dict.get('league_id', DEFAULT_LEAGUE)
+    league_id = request.params.get('league', request.cookies.get('league_id', DEFAULT_LEAGUE))
     return_dict['league_id'] = league_id
     return_dict['api_registered'] = return_dict.get('api_registered', False)
     return_dict['is_card_system'] = league_id == DEFAULT_LEAGUE

@@ -4,7 +4,7 @@ from fantasydota.models import (
     DBSession,
     Friend, User)
 from pyramid.httpexceptions import (
-    HTTPForbidden)
+    HTTPForbidden, HTTPFound)
 from pyramid.security import (
     authenticated_userid)
 from pyramid.view import (
@@ -78,15 +78,12 @@ def collection(request):
     league_id = int(request.params.get('league', DEFAULT_LEAGUE))
     user_id = authenticated_userid(request)
     return_dict = {'league_id': league_id}
-    return all_view_wrapper(return_dict, session, user_id)
+    return all_view_wrapper(request, return_dict, session, user_id)
 
 
 @view_config(route_name='change_league', renderer='../templates/collection.mako')
 def change_league(request):
-    session = DBSession()
     league_id = int(request.params.get('league', DEFAULT_LEAGUE))
-    user_id = authenticated_userid(request)
-    return_dict = {'league_id': league_id}
-    # TODO return to same page, with cookie of league set
-    # todo all view wrapper try get cookie
-    return all_view_wrapper(return_dict, session, user_id)
+    response = HTTPFound(location=request.environ['HTTP_REFERER'])
+    response.set_cookie('league_id', value=league_id, max_age=31536000)  # one year
+    return response

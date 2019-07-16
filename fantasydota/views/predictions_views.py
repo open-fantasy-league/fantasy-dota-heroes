@@ -22,7 +22,7 @@ def predictions(request):
         print("Got invalid period param: %s" % request.params.get("period"))
         period = 0
     return_dict = {'period': period, 'league_id': league_id}
-    return all_view_wrapper(return_dict, session, user_id)
+    return all_view_wrapper(request, return_dict, session, user_id)
 
 
 @view_config(route_name='prediction_proxy', renderer='json')

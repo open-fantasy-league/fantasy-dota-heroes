@@ -43,7 +43,7 @@ def login(request):
     return_dict = {'message': message, "plus_id": request.registry.settings.get(
         'SOCIAL_AUTH_STEAM_KEY'
     )}
-    return all_view_wrapper(return_dict, session)
+    return all_view_wrapper(request, return_dict, session)
 
 
 @view_config(route_name='logout')
@@ -129,15 +129,15 @@ def forgot_password(request):
     return_dict = None
     if not username or not userq:
         return_dict = {"message": "Username and email for password reset did not match. Please check filled in correctly"}
-        return all_view_wrapper(return_dict, session)
+        return all_view_wrapper(request, return_dict, session)
     elif not userq.email:
         return_dict = {"message": "Sorry you did not have an email address associated with this account. Please email fantasydotaeu@gmail.com directly"}
-        return all_view_wrapper(return_dict, session)
+        return all_view_wrapper(request, return_dict, session)
     guid = bcrypt.encrypt(str(userq.id))
     tries = session.query(PasswordReset).filter(PasswordReset.time > datetime.datetime.now() - datetime.timedelta(days=1)).filter(PasswordReset.user_id == userq.id).count()
     if tries > 1:
         return_dict = {"message": "You have already tried 2 password resets today. Please email directly if still having issues"}
-        return all_view_wrapper(return_dict, session)
+        return all_view_wrapper(request, return_dict, session)
     try:
         session.add(PasswordReset(userq.id, guid, request.remote_addr))
         email_url = "https://www.fantasydota.eu/resetPasswordPage?u=" + str(userq.id) + "&guid="  # how not hardcode domain bit?
@@ -154,7 +154,7 @@ def forgot_password(request):
     if not return_dict:
         return_dict = {"message": "Instructions for password reset have been emailed to you",
                 "message_type": "success"}
-    return all_view_wrapper(return_dict, session, userq.user_id)
+    return all_view_wrapper(request, return_dict, session, userq.user_id)
 
 
 @view_config(route_name='reset_password_page', renderer='../templates/reset_password.mako')
@@ -170,7 +170,7 @@ def reset_password_page(request):
         if reset.time + datetime.timedelta(days=1) < datetime.datetime.now():
             raise HTTPForbidden()
         return_dict = {"guid": guid}
-        return all_view_wrapper(return_dict, session, user_id)
+        return all_view_wrapper(request, return_dict, session, user_id)
 
 
 @view_config(route_name='reset_password')
@@ -208,7 +208,7 @@ def account_settings(request):
     message = request.params.get("message")
     message_type = request.params.get("message_type")
     return_dict = {"message": message, "message_type": message_type}
-    return all_view_wrapper(return_dict, session, user_id)
+    return all_view_wrapper(request, return_dict, session, user_id)
 
 
 @view_config(route_name='update_email_settings')

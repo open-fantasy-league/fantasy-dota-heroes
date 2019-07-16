@@ -10,7 +10,6 @@ from fantasydota.models import Friend
 @view_config(route_name='leaderboard', renderer='../templates/leaderboard.mako')
 def leaderboard(request):
     session = DBSession()
-    league_id = int(request.params.get('league', DEFAULT_LEAGUE))
     user_id = authenticated_userid(request)
     mode = request.params.get("mode", "global")
     try:
@@ -30,6 +29,5 @@ def leaderboard(request):
     rank_by = request.params.get("rank_by")
     rank_by = rank_by if rank_by in ("points", "wins", "picks", "bans") else "points"
 
-    return_dict = {'rank_by': rank_by, 'mode': mode, 'other_modes': other_modes, 'period': period,
-            'league_id': league_id, 'friends': friends}
-    return all_view_wrapper(return_dict, session, user_id)
+    return_dict = {'rank_by': rank_by, 'mode': mode, 'other_modes': other_modes, 'period': period, 'friends': friends}
+    return all_view_wrapper(request, return_dict, session, user_id)
