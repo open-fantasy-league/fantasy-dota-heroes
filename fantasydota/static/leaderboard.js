@@ -20,7 +20,9 @@ function makeLeaderboard(){
             r[++j] = mode;
             r[++j] = "&period=";
             r[++j] = i;
-            r[++j] = '">Day ';
+            r[++j] = '">';
+            r[++j] = league.periodDescription;
+            r[++j] = ' ';
             r[++j] = i;
             r[++j] = '</a></li>';
         }
@@ -56,16 +58,6 @@ function makeLeaderboard(){
                         }
                         appendBothUserRows(isUser, r, tfoot, j++, k++, player.username);
                         appendBothUserRows(isUser, r, tfoot, j++, k++,'</span><span class="hero_images">');
-//                        if (player.team){
-//                        $.each(player.team, function(key2, hero){
-//                            var imgSrc = "/static/images/dota/" + hero.name.replace(/ /g, "_") + "_icon.png";
-//                            appendBothUserRows(isUser, r, tfoot, j++, k++,'<img src="');
-//                            appendBothUserRows(isUser, r, tfoot, j++, k++,imgSrc);
-//                            appendBothUserRows(isUser, r, tfoot, j++, k++,'" title="');
-//                            appendBothUserRows(isUser, r, tfoot, j++, k++,hero.name)
-//                            appendBothUserRows(isUser, r, tfoot, j++, k++,'"/>');
-//                        })
-//                        }
                         appendBothUserRows(isUser, r, tfoot, j++, k++,'</span></td><td class="rankingHeader">');
                         appendBothUserRows(isUser, r, tfoot, j++, k++,player.value);
                         appendBothUserRows(isUser, r, tfoot, j++, k++,'</td></tr>');

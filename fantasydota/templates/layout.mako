@@ -134,7 +134,7 @@
             </li>
             <ul id="leagueDropdown" class="dropdown-content">
                 % for lid, name in leagues.items():
-                    <li><a href="/changeLeague?league_id=${lid}">${name}</a></li>
+                    <li><a href="/change_league?league_id=${lid}">${name}</a></li>
                 % endfor
             </ul>
             <li id="teamBtn" class="col s1">
@@ -200,7 +200,7 @@
                 </li>
                 <ul id="mobileLeagueDropdown" class="dropdown-content">
                     % for lid, name in leagues.items():
-                        <li><a href="/changeLeague?league_id=${lid}">${name}</a></li>
+                        <li><a href="/change_league?league_id=${lid}">${name}</a></li>
                     % endfor
                 </ul>
                  <li id="leagueBtn" class="col s1">

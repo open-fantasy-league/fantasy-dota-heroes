@@ -107,6 +107,7 @@ def main(global_config, **settings):
     config.add_route('collection', '/collection')
     config.add_route('account_settings', '/accountSettings')
     config.add_route('profile', '/profile')
+    config.add_route('change_league', '/change_league')
 
     config.scan()
     return config.make_wsgi_app()
