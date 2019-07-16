@@ -1,5 +1,4 @@
-from fantasydota.lib.constants import DEFAULT_LEAGUE
-from fantasydota.lib.general import all_view_wrapper
+from fantasydota.lib.general import all_view_wrapper, get_league_id
 from fantasydota.models import (
     DBSession,
     Friend, User)
@@ -32,7 +31,7 @@ def view_rules(request):
     session = DBSession()
     user_id = authenticated_userid(request)
     return all_view_wrapper(
-        {}, session, user_id
+        request, {}, session, user_id
     )
 
 
@@ -41,7 +40,7 @@ def hall_of_fame(request):
     session = DBSession()
     user_id = authenticated_userid(request)
     return all_view_wrapper(
-        {}, session, user_id
+        request, {}, session, user_id
     )
 
 
@@ -68,14 +67,14 @@ def index(request):
     session = DBSession()
     user_id = authenticated_userid(request)
     return all_view_wrapper(
-        {}, session, user_id
+        request, {}, session, user_id
     )
 
 
 @view_config(route_name='collection', renderer='../templates/collection.mako')
 def collection(request):
     session = DBSession()
-    league_id = int(request.params.get('league', DEFAULT_LEAGUE))
+    league_id = get_league_id(request)
     user_id = authenticated_userid(request)
     return_dict = {'league_id': league_id}
     return all_view_wrapper(request, return_dict, session, user_id)
@@ -83,7 +82,7 @@ def collection(request):
 
 @view_config(route_name='change_league', renderer='../templates/collection.mako')
 def change_league(request):
-    league_id = int(request.params.get('league', DEFAULT_LEAGUE))
+    league_id = get_league_id(request)
     response = HTTPFound(location=request.environ['HTTP_REFERER'])
-    response.set_cookie('league_id', value=league_id, max_age=31536000)  # one year
+    response.set_cookie('league_id', value=str(league_id), max_age=31536000)  # one year
     return response

@@ -16,6 +16,10 @@ def add_notifications(return_dict, session, user_id):
     return return_dict
 
 
+def get_league_id(request):
+    return int(request.params.get('league_id', request.cookies.get('league_id', DEFAULT_LEAGUE)))
+
+
 def all_view_wrapper(request, return_dict, session, user_id=None):
     return_dict['user_id'] = user_id
     return_dict['user'] = session.query(User).filter(User.id == user_id).first()
@@ -25,7 +29,8 @@ def all_view_wrapper(request, return_dict, session, user_id=None):
         return_dict['notifications'] = []
         return_dict['username'] = ""
     return_dict['api_base_url'] = API_URL
-    league_id = request.params.get('league', request.cookies.get('league_id', DEFAULT_LEAGUE))
+    #import remote_pdb; remote_pdb.RemotePdb('127.0.0.1', 4444).set_trace()
+    league_id = return_dict.get('league_id', get_league_id(request))
     return_dict['league_id'] = league_id
     return_dict['api_registered'] = return_dict.get('api_registered', False)
     return_dict['is_card_system'] = league_id == DEFAULT_LEAGUE

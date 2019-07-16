@@ -7,6 +7,10 @@ var tableContainer = $("#tableContainer");
 var gridContainer = $("#gridContainer");
 var playerDataCache = new Map();
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 var rightClick = function rightClick(event){
     var newCards = $(".newCard")
     if (currentIndex >= newCards.length -1){return}
@@ -87,7 +91,7 @@ function cardHtml(p, j, player){
                             p[++j] = '</strong></span></p><p><span class="teamName centre">';
                             p[++j] = player.limitTypes.team;
                             p[++j] = '</span></p></h6></span><p><span class="left">';
-                            p[++j] = player.limitTypes.position;
+                            p[++j] = capitalizeFirstLetter(player.limitTypes.position);
                             p[++j] = '</span><span class="right"><button name="buyPlayer" id="addTeam-';
                             p[++j] = player.cardId;
                             p[++j] = '" type="submit" class="btn waves-effect waves-light addTeam" data-cardId="';
@@ -115,8 +119,8 @@ teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&stats
                 type: "GET",
                 dataType: "json",
                 success: function(data){
-                    $.each(["Goalkeeper", "Defender", "Midfielder", "Forward"], function(key, position){
-                        var positionLowerCase = position.toLowerCase()
+                    $.each(["support", "core", "offlane"], function(key, position){
+                        var positionLowerCase = position;
                         var positionDiv = $("#" + positionLowerCase);
                         var p = [], j = -1;
                         $.each(data.filter(function(e){return e.limitTypes.position == position}), function(i, player) {
@@ -195,18 +199,7 @@ function getTeamThenSetup(){
                 $("#teamTable").find("tbody").html(r.join(''));
             },
             error: function(jqxhr, textStatus, errorThrown){
-                if (jqxhr.responseText.startsWith("User does not exist on api")){
-                    // need to add user first
-                     $.ajax({url: apiBaseUrl + "users/",
-                            dataType: "json",
-                            type: "POST",
-                            contentType: "application/json",
-                            data: JSON.stringify({"username": username, "userId": userId}),
-                            }).then(getTeamThenSetup)  // this time the call should work
-                }
-                else{
                     Swal.fire("Something went wrong. oops!", '', 'error');
-                    }
             }
         }).then(setup);
 }
@@ -283,7 +276,7 @@ function setup(){
                             p[++j] = '</strong></span></p><p><span class="centre">';
                             p[++j] = player.limitTypes.team;
                             p[++j] = '</span></p></h6></span><p><span class="left">';
-                            p[++j] = player.limitTypes.position;
+                            p[++j] = capitalizeFirstLetter(player.limitTypes.position);
                             p[++j] = '</span>';
                             p[++j] = '</p><div class="card-image"><img src="/static/images/football/placeholder.png"></div><p>';
                             j = drawBonus(player.bonuses, p, j, true);

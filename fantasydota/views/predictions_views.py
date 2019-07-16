@@ -2,19 +2,19 @@ import json
 import urllib2
 from pyramid.response import Response
 
-from fantasydota.lib.constants import DEFAULT_LEAGUE, API_URL
+from fantasydota.lib.constants import API_URL
 from pyramid.security import authenticated_userid
 from pyramid.view import view_config
 
 from fantasydota import DBSession
-from fantasydota.lib.general import all_view_wrapper
+from fantasydota.lib.general import all_view_wrapper, get_league_id
 from fantasydota.local_settings import FANTASY_API_KEY
 
 
 @view_config(route_name='predictions', renderer='../templates/predictions.mako')
 def predictions(request):
     session = DBSession()
-    league_id = int(request.params.get('league', DEFAULT_LEAGUE))
+    league_id = get_league_id(request)
     user_id = authenticated_userid(request)
     try:
         period = int(request.params.get("period", 1))
@@ -28,7 +28,7 @@ def predictions(request):
 @view_config(route_name='prediction_proxy', renderer='json')
 def prediction_proxy(request):
     user_id = authenticated_userid(request)
-    league_id = int(request.params.get('league', DEFAULT_LEAGUE))
+    league_id = get_league_id(request)
     # out = {'buy': in_.getall('buy[]'), 'sell': in_.getall('sell[]'),
     #        'isCheck': in_.get('isCheck'), 'wildcard': in_.get('wildcard', False)}
     url = API_URL + "results/leagues/" + str(league_id) + "/predictions/" + str(user_id)

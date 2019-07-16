@@ -1,4 +1,3 @@
-from fantasydota.lib.constants import DEFAULT_LEAGUE
 from pyramid.security import authenticated_userid
 from pyramid.view import view_config
 

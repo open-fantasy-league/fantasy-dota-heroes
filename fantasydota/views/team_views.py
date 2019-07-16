@@ -1,25 +1,23 @@
 import re
-import traceback
 import urllib2
 
 import json
-from fantasydota.lib.constants import DEFAULT_LEAGUE, API_URL
+from fantasydota.lib.constants import API_URL
 from fantasydota.local_settings import FANTASY_API_KEY
 from fantasydota.models import User, Team
-from pyramid.httpexceptions import HTTPFound, HTTPBadRequest, HTTPInternalServerError
 from pyramid.response import Response
 from pyramid.security import authenticated_userid
 from pyramid.view import view_config
 
 from fantasydota import DBSession
-from fantasydota.lib.general import all_view_wrapper
+from fantasydota.lib.general import all_view_wrapper, get_league_id
 
 
 @view_config(route_name='view_team', renderer='../templates/team.mako')
 def view_team(request):
     session = DBSession()
     user_id = authenticated_userid(request)
-    league_id = int(request.params.get('league', DEFAULT_LEAGUE))
+    league_id = get_league_id(request)
     team_name_q = session.query(Team.name).filter(Team.league_id == league_id).filter(Team.user_id == user_id).first()
     if team_name_q:
         team_name = team_name_q[0]
@@ -38,7 +36,7 @@ def view_team(request):
 @view_config(route_name='transfer_proxy', renderer='json')
 def transfer_proxy(request):
     user_id = authenticated_userid(request)
-    league_id = int(request.params.get('league', DEFAULT_LEAGUE))
+    league_id = get_league_id(request)
     in_ = request.POST
     print(in_.getall('buy[]'))
     print(in_)
@@ -64,7 +62,7 @@ def transfer_proxy(request):
 def update_team_name(request):
     session = DBSession()
     user_id = authenticated_userid(request)
-    league_id = int(request.params.get('league', DEFAULT_LEAGUE))
+    league_id = get_league_id(request)
     new_name = request.json_body.get('name')
     if len(new_name) < 3:
         data = {"success": False, "msg": "Team name must be > 3 characters"}
@@ -94,7 +92,7 @@ def update_team_name(request):
 @view_config(route_name='new_card_pack', renderer='json')
 def new_card_pack(request):
     user_id = authenticated_userid(request)
-    league_id = int(request.params.get('league', DEFAULT_LEAGUE))
+    league_id = get_league_id(request)
     url = API_URL + "transfers/leagues/" + str(league_id) + "/users/" + str(user_id) + "/newPack"
     try:
         req = urllib2.Request(
@@ -115,7 +113,7 @@ def new_card_pack(request):
 @view_config(route_name='recycle_card', renderer='json')
 def recycle_card(request):
     user_id = authenticated_userid(request)
-    league_id = int(request.params.get('league', DEFAULT_LEAGUE))
+    league_id = get_league_id(request)
     url = API_URL + "transfers/leagues/" + str(league_id) + "/users/" + str(user_id) + "/recycleCard/" + str(request.POST.get('cardId'))
     try:
         req = urllib2.Request(

@@ -91,15 +91,13 @@
     </div>
     <div id="cardsContainer" class="row">
         <ul class = "tabs">
-        <li class = "tab col s3"><a href = "#goalkeepers">Goalkeepers</a></li>
-        <li class = "tab col s3"><a href = "#defenders">Defenders</a></li>
-        <li class = "tab col s3"><a href = "#midfielders">Midfielders</a></li>
-        <li class = "tab col s3"><a href = "#forwards">Forwards</a></li>
+        <li class = "tab col s4"><a href = "#supports">Support</a></li>
+        <li class = "tab col s4"><a href = "#cores">Core</a></li>
+        <li class = "tab col s4"><a href = "#offlanes">Offlane</a></li>
         </ul>
-        <div id="goalkeepers" class="col s12"></div>
-        <div id="defenders" class="col s12"></div>
-        <div id="midfielders" class="col s12"></div>
-        <div id="forwards" class="col s12"></div>
+        <div id="supports" class="col s12"></div>
+        <div id="cores" class="col s12"></div>
+        <div id="offlanes" class="col s12"></div>
     </div>
     <script src="/static/trade.js?v=1.0"></script>
 <script src="/static/team.js?v=1.1"></script>
