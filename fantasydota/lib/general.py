@@ -3,7 +3,7 @@ import datetime
 import urllib2
 
 import json
-from fantasydota.lib.constants import DEFAULT_LEAGUE, API_URL
+from fantasydota.lib.constants import DEFAULT_LEAGUE, API_URL, HERO_LEAGUE
 from fantasydota.models import Notification, User
 from pyramid.security import authenticated_userid
 from sqlalchemy import desc
@@ -25,8 +25,11 @@ def all_view_wrapper(return_dict, session, user_id=None):
         return_dict['notifications'] = []
         return_dict['username'] = ""
     return_dict['api_base_url'] = API_URL
-    return_dict['league_id'] = return_dict.get('league_id', DEFAULT_LEAGUE)
+    league_id = return_dict.get('league_id', DEFAULT_LEAGUE)
+    return_dict['league_id'] = league_id
     return_dict['api_registered'] = return_dict.get('api_registered', False)
+    return_dict['is_card_system'] = league_id == DEFAULT_LEAGUE
+    return_dict['leagues'] = {DEFAULT_LEAGUE: 'Pros', HERO_LEAGUE: 'Heroes'}
     return return_dict
 
 

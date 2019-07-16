@@ -126,6 +126,17 @@
             <div class="nav-wrapper indigo darken-3">
                  <a href="#" data-activates="mobile-nav" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul class="left hide-on-med-and-down">
+            <li class="col s1">
+                <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="#" data-activates="leagueDropdown">
+                    League
+                    <i class="material-icons right">arrow_drop_down</i>
+                </a>
+            </li>
+            <ul id="leagueDropdown" class="dropdown-content">
+                % for lid, name in leagues.items():
+                    <li><a href="/changeLeague?league_id=${lid}">${name}</a></li>
+                % endfor
+            </ul>
             <li id="teamBtn" class="col s1">
                 <a href="/team">Team</a>
             </li>
@@ -181,6 +192,17 @@
             </ul>
 
             <ul class="side-nav" id="mobile-nav">
+                <li class="col s1">
+                    <a class="dropdown-button" data-hover="true" data-beloworigin="true" href="#" data-activates="mobileLeagueDropdown">
+                        League
+                        <i class="material-icons right">arrow_drop_down</i>
+                    </a>
+                </li>
+                <ul id="mobileLeagueDropdown" class="dropdown-content">
+                    % for lid, name in leagues.items():
+                        <li><a href="/changeLeague?league_id=${lid}">${name}</a></li>
+                    % endfor
+                </ul>
                  <li id="leagueBtn" class="col s1">
                     <a href="/team">Team</a>
                 </li>
