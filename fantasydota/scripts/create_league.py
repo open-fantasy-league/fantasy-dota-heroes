@@ -98,19 +98,7 @@ def create_league(name, tournament_id, url):
         print(response.read())
     except urllib2.HTTPError as e:
         print(e.read())
-    # for fixture in fixtures:
-    #     try:
-    #         req = urllib2.Request(
-    #             API_URL + "results/leagues/" + str(DEFAULT_LEAGUE),
-    #             data=json.dumps(fixture), headers={
-    #                 "Content-Type": "application/json",
-    #                 "apiKey": FE_APIKEY
-    #             }
-    #         )
-    #         response = urllib2.urlopen(req)
-    #         print(response.read())
-    #     except urllib2.HTTPError as e:
-    #         print(e.read())
+
 
     # req = urllib2.Request(
     #     API_URL + "leagues/1/startPeriod", data=json.dumps(data), headers={
