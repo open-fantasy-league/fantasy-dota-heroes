@@ -171,18 +171,31 @@ def add_match_to_api(match):
     ))
     latest_series = get_latest_series(radiant_team, dire_team)
     reverse_radiant_t1 = latest_series["teamOne"] == dire_team
-    data = json.dumps({
+    team_one_series_score = latest_series['seriesTeamOneCurrentScore']
+    team_two_series_score = latest_series['seriesTeamTwoCurrentScore']
+    team_one_win = ((match['radiant_win'] and not reverse_radiant_t1) or (reverse_radiant_t1 and not match['radiant_win']))
+    if team_one_win:
+        team_one_series_score += 1
+    else:
+        team_two_series_score += 1
+    series_finished = (team_one_series_score + team_two_series_score) >= (latest_series['bestOf'] + 1) / 2
+    data = {
         'seriesId': latest_series["seriesId"],
+        'seriesTeamOneCurrentScore': team_one_series_score,
+        'seriesTeamTwoCurrentScore': team_two_series_score,
         'matches': [{
             'matchId': match_id,
-            'teamOneMatchScore': 1 if ((match['radiant_win'] and not reverse_radiant_t1) or (reverse_radiant_t1 and not match['radiant_win'])) else 0,
-            'teamTwoMatchScore': 1 if ((match['radiant_win'] and reverse_radiant_t1) or (reverse_radiant_t1 and match['radiant_win'])) else 0,
+            'teamOneMatchScore': 1 if team_one_win else 0,
+            'teamTwoMatchScore': 1 if not team_one_win else 0,
             'startTstamp': start_time,
             'pickeeResults': pickees
         }]
-    })
+    }
+    if series_finished:
+        data['seriesTeamOneFinalScore'] = team_one_series_score
+        data['seriesTeamTwoFinalScore'] = team_two_series_score
     try:
-        req = urllib2.Request(API_LEAGUE_RESULTS_URL, data=data, headers={'apiKey': FE_APIKEY, "Content-Type": "application/json"})
+        req = urllib2.Request(API_LEAGUE_RESULTS_URL, data=json.dumps(data), headers={'apiKey': FE_APIKEY, "Content-Type": "application/json"})
         response = urllib2.urlopen(req)
         print(response.read())
     except urllib2.HTTPError as e:
