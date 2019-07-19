@@ -1,7 +1,7 @@
 var toSell = [];
 var toBuy = [];
 var wildcard = false;
-var reversePosOrders = [[0, 'Goalkeeper'], [1, 'Defender'], [2, 'Midfielder'], [3, 'Forward']];
+var reversePosOrders = [[0, 'core'], [1, 'offlane'], [2, 'support']];
 var reversePositionOrder = new Map(reversePosOrders);
 
 function disableButtons(){
@@ -127,7 +127,7 @@ console.log(playerId)
 
 function makeTeamRow(player){
 var r = new Array(), j = -1;
-r, j = addPlayerHtmlArray(player, r, j);
+r, j = addPlayerHtmlArray(player, r, j, true);
  return $.parseHTML(r.join(''))
 }
 
@@ -135,7 +135,7 @@ function addToTeam(player){
     var new_row = makeTeamRow(player);
     var btn = $(new_row).find("button");
     var position = player.limitTypes.position;
-    var teamRow = $(".teamRow." + position);
+    var teamRow = $(".teamRow.future." + position);
     var positionRow = $("")
     if (teamRow.length != 0) {
         teamRow.last().after(new_row);
@@ -159,6 +159,6 @@ function addToTeam(player){
 
 function removeFromTeam(cardId){
     console.log("removing from team")
-    var oldRow = $("#" + cardId + "TeamRow");
+    var oldRow = $("#future" + cardId + "TeamRow");
     oldRow.remove();
 }

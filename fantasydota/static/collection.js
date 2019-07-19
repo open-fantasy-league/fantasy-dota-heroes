@@ -85,6 +85,9 @@ function cardHtml(p, player, name, team, position){
                             p.push('"><div class="card-content"><span class="card-title"><h6><p><span class="playerName centre"><strong>');
                             p.push(player.name);
                             p.push('</strong></span></p><p><span class="teamName centre">');
+                            p.push('<img class="teamIcon" src="/static/images/dota/teams/');
+                            p.push(player.limitTypes.team.replace(/[\W_]+/g,"").toLowerCase());
+                            p.push('.png"/>');
                             p.push(player.limitTypes.team);
                             p.push('</span></p></h6></span><p><span class="left">');
                             p.push(player.limitTypes.position);

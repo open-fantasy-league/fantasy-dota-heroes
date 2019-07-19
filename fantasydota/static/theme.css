@@ -396,3 +396,14 @@ and (max-width: 900px)
   .predictionRow{
     padding: 0%
   }
+
+  .teamIcon{
+  margin-left: 5px;
+  margin-right: 5px;
+    width: 32px;
+  }
+
+  .vcenterText{
+    display: flex;
+    display-items: center;
+  }

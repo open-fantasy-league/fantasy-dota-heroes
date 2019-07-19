@@ -13,7 +13,7 @@
 </%def>
 
 <%def name="custom_css()">
-    <link href="/static/footballteams.css?v=1.0" rel="stylesheet"/>
+    <link href="/static/dotateams.css?v=1.0" rel="stylesheet"/>
 </%def>
 
 <div class="row">

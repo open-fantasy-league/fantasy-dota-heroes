@@ -44,7 +44,7 @@ function fillMatches(){
                     var r = new Array(), j = -1;
                     $.each(data, function(key, series){
                         var thisSeries = series.series;
-                        var teamOneBasic = thisSeries.teamOne.replace(/[\W_]+/g,"");.toLowerCase();
+                        var teamOneBasic = thisSeries.teamOne.replace(/[\W_]+/g,"").toLowerCase();
                         var teamTwoBasic = thisSeries.teamTwo.replace(/[\W_]+/g,"").toLowerCase();
                         if (series.seriesTeamOneFinalScore != null && series.mseriesTeamOneFinalScore != undefined){
                             seriesIdToScores.set(series.seriesId, [series.seriesTeamOneFinalScore, series.seriesTeamTwoFinalScore])
@@ -56,7 +56,10 @@ function fillMatches(){
                          r[++j] = series.seriesId;
                         r[++j] = '"><span class="teamOne col s4 ';
                         r[++j] = teamOneBasic;
-                        r[++j] = '"><strong>';
+                        r[++j] = '"><strong class="vcenterText">';
+                        r[++j] = '<img class="teamIcon" src="/static/images/dota/teams/';
+                        r[++j] = teamOneBasic;
+                        r[++j] = '.png"/>';
                         r[++j] = thisSeries.teamOne;
                         r[++j] = '</strong></span>';
                         r[++j] = '<div style="width: 180px;background-color: black;" class="card-panel horizontal predictionRow col s4 ';
@@ -76,8 +79,11 @@ function fillMatches(){
                         r[++j] = '</div>';
                         r[++j] = '<span class="teamTwo col s4 right ';
                         r[++j] = teamTwoBasic;
-                        r[++j] = '"><strong>';
+                        r[++j] = '"><strong class="vcenterText">';
                         r[++j] = thisSeries.teamTwo;
+                        r[++j] = '<img class="teamIcon" src="/static/images/dota/teams/';
+                        r[++j] = teamTwoBasic;
+                        r[++j] = '.png"/>';
                         r[++j] = '</strong></span></div></div>';
                     })
                     $("#predictionsTable").html(r.join(''));

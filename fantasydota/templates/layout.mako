@@ -74,7 +74,7 @@
                 })
                 }
             }
-            var posOrders = [['Goalkeeper', 0], ['Defender', 1], ['Midfielder', 2], ['Forward', 3]];
+            var posOrders = [['core', 0], ['offlane', 1], ['support', 2]];
             var positionOrder = new Map(posOrders);
             var positionSort = function positionSort(x, y) {
                         var xval = positionOrder.get(x.limitTypes.position);

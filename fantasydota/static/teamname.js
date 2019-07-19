@@ -30,3 +30,15 @@ function confirmNameOnclick(){
         }
     });
 }
+
+function switchActiveTeam(inp){
+    if (inp.checked){
+        $(".future").addClass('hide');
+        $(".active").removeClass('hide');
+    }
+    else{
+        $(".future").removeClass('hide');
+        $(".active").addClass('hide');
+    }
+
+}

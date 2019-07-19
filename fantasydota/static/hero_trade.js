@@ -88,26 +88,12 @@ function doTrade(event, action, heroId){
 }
 
 function addToTeam(hero, cancel){
-    if (cancel){
-        var oldRow = $("#" + hero + "TeamRow");
-        var btn = oldRow.find("button");
-        var heroEntry = oldRow.find(".heroEntry");
-        heroEntry.find('i').remove();
-        oldRow.removeClass("toTransfer");
-        btn.attr('name', 'sellHero');
-        btn.text('Sell');
-        btn.off('click').click(tradeOnclick);  // otherwise need reload page to resell
-    }
-    else{
         var new_row = $("#" + hero + "Row").clone();
-        new_row.attr('id', hero + "TeamRow");
+        new_row.attr('id', "future" + hero + "TeamRow");
         var heroEntry = new_row.find(".heroEntry");
-        var plannedSale = heroEntry.find('i');
-        heroEntry.prepend('<i class="material-icons">add_circle</i>')
-        new_row.addClass("toTransfer");
         var btn = new_row.find("button");
         btn.attr('name', 'sellHero');
-        btn.text('Cancel');
+        btn.text('Sell');
         var teamRow = $(".teamRow");
         if (teamRow.length != 0) {
             teamRow.last().after(new_row);
@@ -116,22 +102,9 @@ function addToTeam(hero, cancel){
             $("#teamTable").find("tbody").append(new_row);
         }
         btn.off('click').click(tradeOnclick);  // otherwise need reload page to resell
-    }
 }
 
 function removeFromTeam(hero, cancel){
     console.log("removing from team")
-    var oldRow = $("#" + hero + "TeamRow");
-    var heroEntry = oldRow.find(".heroEntry");
-    if (cancel){
-        oldRow.remove();
-    }
-    else{
-        heroEntry.prepend('<i class="material-icons">remove_circle</i>')
-        var btn = oldRow.find("button");
-        oldRow.addClass("toTransfer");
-        btn.attr('name', 'buyHero');
-        btn.text('Buy');
-        btn.off('click').click(tradeOnclick);  // otherwise need reload page to resell
-    }
+    $("#future" + hero + "TeamRow").remove();
 }

@@ -89,6 +89,9 @@ function cardHtml(p, j, player){
                             p[++j] = '"><div class="card-content"><span class="card-title"><h6><p><span class="playerName centre"><strong>';
                             p[++j] = player.name;
                             p[++j] = '</strong></span></p><p><span class="teamName centre">';
+                                                p[++j] = '<img class="teamIcon" src="/static/images/dota/teams/';
+                    p[++j] = player.limitTypes.team.replace(/[\W_]+/g,"").toLowerCase();
+                    p[++j] = '.png"/>';
                             p[++j] = player.limitTypes.team;
                             p[++j] = '</span></p></h6></span><p><span class="left">';
                             p[++j] = capitalizeFirstLetter(player.limitTypes.position);
@@ -109,8 +112,15 @@ function cardHtml(p, j, player){
 }
 
 function getCards(){
-var nextPeriodValue = league.currentPeriod ? league.currentPeriod.value + 1: 1
-teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&stats&period=" + nextPeriodValue;
+var nextPeriodValue = league.currentPeriod ? league.currentPeriod.value + 1: 1;
+teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&stats&periods=";
+if (league.currentPeriod){
+    teamUrl = teamUrl + (nextPeriodValue - 1) + "," + nextPeriodValue;
+}
+else{
+    teamUrl = teamUrl + "1";
+    $("#activeTeamSwitchDiv").addClass('hide');
+    }
     $("#leagueLink").attr('href', league.url);
     $("#leagueLink").text(league.name);
     if (!league.started) $('#confirmTransfers').addClass('hide');
@@ -153,10 +163,15 @@ teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&stats
     }
     }
 
-function addPlayerHtmlArray(player, r, j){
+function addPlayerHtmlArray(player, r, j, isFutureTeam){
+                    var card = playerDataCache.get(player.cardId);
                     r[++j] = '<tr class="teamRow toSell ';
-                    r[++j] = player.limitTypes.position;
+                    r[++j] = card.limitTypes.position;
+                    if (isFutureTeam){
+                        r[++j] = ' future';
+                    } else{r[++j] = ' active hide';}
                     r[++j] = '" id="';
+                     if (isFutureTeam) r[++j] = 'future';
                     r[++j] = player.cardId;
                     r[++j] = 'TeamRow"><td class="tradeEntry">';
                     r[++j] = '<button type="submit" name="sellPlayer" class="btn waves-effect waves-light" disabled="true" data-cardId="';
@@ -164,13 +179,15 @@ function addPlayerHtmlArray(player, r, j){
                     r[++j] = '">Remove</button>';
                     r[++j] = '</td>';
                     r[++j] = '<td class="playerEntry"><strong>';
-                    r[++j] = player.name;
+                    r[++j] = card.name;
                     r[++j] = '</strong></td><td class="positionEntry">';
-                    r[++j] = player.limitTypes.position;
+                    r[++j] = card.limitTypes.position;
                     r[++j] = '</td><td class="teamEntry">';
-                    r[++j] = player.limitTypes.team;
+                    r[++j] = '<img class="teamIcon" src="/static/images/dota/teams/';
+                    r[++j] = card.limitTypes.team.replace(/[\W_]+/g,"").toLowerCase();
+                    r[++j] = '.png"/>';
+                    r[++j] = card.limitTypes.team;
                     r[++j] = '</td><td class="playerPointsEntry">';
-                    var card = playerDataCache.get(player.cardId);
                     r[++j] = card.overallStats.points;
                     if (card.recentPeriodStats && card.recentPeriodStats.length > 0){
                     r[++j] = ' ('
@@ -178,7 +195,7 @@ function addPlayerHtmlArray(player, r, j){
                     r[++j] = ')';
                     }
                     r[++j] = '</td><td class="bonusesEntry">';
-                    j = drawBonus(player.bonuses, r, j, false);
+                    j = drawBonus(card.bonuses, r, j, false);
                     r[++j] = '</tr>';
         return r, j
 }
@@ -188,13 +205,24 @@ function getTeamThenSetup(){
             dataType: "json",
             type: "GET",
             success: function(data){
+                                if (league.currentPeriod){
+                        var futureTeam = data.team.find((t) => t.period == league.currentPeriod.value + 1).team;
+                        var activeTeam = data.team.find((t) => t.period == league.currentPeriod.value).team;
+                        }
+                        else{
+                        var futureTeam = data.team.find((t) => t.period == 1).team;
+                        var activeTeam = futureTeam;
+                        }
                 userCanTransfer = (league.transferOpen);
                 //lateEntry = (league.currentPeriod && league.currentPeriod.start )
                 $(".userCredits").text(data.user.money);
                 $(".userPoints").text(data.stats.points);
                 var r = new Array(), j = -1;
-                $.each(data.team.sort(positionNameSort), function(key, player) {
-                r, j = addPlayerHtmlArray(player, r, j);
+                $.each(futureTeam.sort(positionNameSort), function(key, player) {
+                r, j = addPlayerHtmlArray(player, r, j, true);
+                })
+                $.each(activeTeam.sort(positionNameSort), function(key, player) {
+                r, j = addPlayerHtmlArray(player, r, j, false);
                 })
                 $("#teamTable").find("tbody").html(r.join(''));
             },
@@ -274,6 +302,9 @@ function setup(){
                             p[++j] = '"><div class="card-content"><span class="card-title"><h6><p><span class="centre"><strong>';
                             p[++j] = player.name;
                             p[++j] = '</strong></span></p><p><span class="centre">';
+                            p[++j] = '<img class="teamIcon" src="/static/images/dota/teams/';
+                            p[++j] = player.limitTypes.team.replace(/[\W_]+/g,"").toLowerCase();
+                            p[++j] = '.png"/>';
                             p[++j] = player.limitTypes.team;
                             p[++j] = '</span></p></h6></span><p><span class="left">';
                             p[++j] = capitalizeFirstLetter(player.limitTypes.position);

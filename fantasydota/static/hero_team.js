@@ -1,4 +1,4 @@
-var teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&scheduledTransfers&stats";
+var teamUrl;
 var heroes;
 var tableContainer = $("#tableContainer");
 var gridContainer = $("#gridContainer");
@@ -88,10 +88,26 @@ function getTeamThenSetup(){
         $('#confirmTransfers').click(pleaseLogInClick);
     }
     else{
+        teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&scheduledTransfers&stats&periods=";
+        if (league.currentPeriod){
+            teamUrl = teamUrl + league.currentPeriod.value.toString + "," + (league.currentPeriod.value +1).toString;
+            }
+            else{
+                teamUrl = teamUrl + "1";
+                $("#activeTeamSwitchDiv").addClass('hide');
+            }
         $.ajax({url: teamUrl,
                 dataType: "json",
                 type: "GET",
                 success: function(data){
+                    if (league.currentPeriod){
+                        var futureTeam = data.team.find((t) => t.period == league.currentPeriod.value + 1).team;
+                        var activeTeam = data.team.find((t) => t.period == league.currentPeriod.value).team;
+                        }
+                        else{
+                        var futureTeam = data.team.find((t) => t.period == 1).team;
+                        var activeTeam = futureTeam;
+                        }
                     if (data.user.remainingTransfers != null && league.started){
                         $("#remainingTransfersSection").css('display', 'initial');
                         $("#remainingTransfers").text(data.user.remainingTransfers);
@@ -105,30 +121,13 @@ function getTeamThenSetup(){
                         $("#useWildcard").removeClass('hide');
                     }
                     var r = new Array(), j = -1;
-                    $.each(data.scheduledTransfers, function(key, t){
-                        if (t.isBuy) {
-                            var buying = {'name': t.pickeeName, 'isBuy': true, 'id': t.pickeeId};
-                            data.team.push(buying);
-                        }
-                    });
-                    $.each(data.team, function(key, hero) {
+                    $.each(futureTeam, function(key, hero) {
                         var id = hero.id;
-                        var heroInfo = heroes.find(function(h){return h.id == id})
+                        var heroInfo = heroes.find(function(h){return h.id == id});
                         var imgSrc = "/static/images/dota/" + hero.name.replace(/ /g, "_") + "_icon.png";
-                        var transferSymbol;
-                        var transferClass = '';
-                        if (hero.isBuy){
-                        //if (data.scheduledTransfers.includes(function(t){return t.isBuy && t.id == id})){
-                            transferSymbol = '<i class="material-icons">add_circle</i>'
-                            transferClass = "toTransfer transferIn"
-                        }
-                        else if (data.scheduledTransfers.includes(function(t){return !t.isBuy && t.id == id})){
-                            transferSymbol = '<i class="material-icons">remove_circle</i>'
-                            transferClass = "toTransfer transferOut"
-                        }
                     r[++j] = '<tr class="teamRow ';
-                    r[++j] = transferClass;
-                    r[++j] = '" id="';
+                        r[++j] = ' future';
+                    r[++j] = '" id="future';
                     r[++j] = id;
                     r[++j] = 'TeamRow"><td class="heroImg" sorttable_customkey="';
                     r[++j] = hero.name;
@@ -137,7 +136,6 @@ function getTeamThenSetup(){
                     r[++j] = '" title="';
                     r[++j] = hero.name;
                     r[++j] = '"/></td><td class="heroEntry">';
-                    r[++j] = transferSymbol;
                     r[++j] = hero.name;
                     r[++j] = '</td><td class="heroPointsEntry">';
                     r[++j] = heroInfo.stats.points;
@@ -154,7 +152,38 @@ function getTeamThenSetup(){
                     r[++j] = id;
                     r[++j] = '">Sell</button>';
                     r[++j] = '</td></tr>';
-                    })
+                    });
+                    $.each(activeTeam, function(key, hero) {
+                        var id = hero.id;
+                        var heroInfo = heroes.find(function(h){return h.id == id});
+                        var imgSrc = "/static/images/dota/" + hero.name.replace(/ /g, "_") + "_icon.png";
+                    r[++j] = '<tr class="active hide teamRow ';
+                    r[++j] = '" id="';
+                    r[++j] = id;
+                    r[++j] = 'TeamRow"><td class="heroImg" sorttable_customkey="';
+                    r[++j] = hero.name;
+                    r[++j] = '"><img src="';
+                    r[++j] = imgSrc;
+                    r[++j] = '" title="';
+                    r[++j] = hero.name;
+                    r[++j] = '"/></td><td class="heroEntry">';
+                    r[++j] = hero.name;
+                    r[++j] = '</td><td class="heroPointsEntry">';
+                    r[++j] = heroInfo.stats.points;
+                    r[++j] = '</td><td class="picksEntry extra">';
+                    r[++j] = heroInfo.stats.picks;
+                    r[++j] = '</td><td class="bansEntry extra">';
+                    r[++j] = heroInfo.stats.bans;
+                    r[++j] = '</td><td class="winsEntry extra">';
+                    r[++j] = heroInfo.stats.wins;
+                    r[++j] = '</td><td class="valueEntry">';
+                    r[++j] = hero.price;
+                    r[++j] = '</td><td class="tradeEntry">';
+                    r[++j] = '<button type="submit" name="sellHero" class="btn waves-effect waves-light" disabled="true" data-heroId="';
+                    r[++j] = id;
+                    r[++j] = '">Sell</button>';
+                    r[++j] = '</td></tr>';
+                    });
                     $("#teamTable").find("tbody").html(r.join(''));
                 },
                 error: function(jqxhr, textStatus, errorThrown){

@@ -16,6 +16,14 @@
 </%def>
 
 <div class="row" id="myTeamBlock">
+    <div class="switch" id="activeTeamSwitchDiv">
+    <label>
+      Future
+      <input type="checkbox" id="activeTeamBtn" onchange="switchActiveTeam(this);" autocomplete="off">
+      <span class="lever"></span>
+      Active
+    </label>
+    </div>
     <div class="row">
     <span class="left" style="width: 33%;"><h5><span class="col s3 hide-on-small-only">Team: </span>
         <button id="updateNameButton"><i class="material-icons prefix">edit</i></button>
