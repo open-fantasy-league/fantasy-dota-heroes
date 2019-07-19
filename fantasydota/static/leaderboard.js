@@ -1,9 +1,9 @@
 getLeagueInfo(false, false, false, false).then(makeLeaderboard);
 
 function makeLeaderboard(){
-    var leaderBoardUrl = apiBaseUrl + "leagues/" + leagueId + "/rankings/points" ;
+    var leaderBoardUrl = apiBaseUrl + "leagues/" + leagueId + "/rankings/points?dummy" ;
     if (league.currentPeriod){
-        leaderBoardUrl = leaderBoardUrl + "?team";
+        leaderBoardUrl = leaderBoardUrl + "&team";
     }
     if (period != 0){
         leaderBoardUrl = leaderBoardUrl + "&period=" + period;
