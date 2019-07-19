@@ -2,15 +2,15 @@
 .teamliquid{color: #0e2240;background-color: #FFFFFF;}
 .alliance{color: #cdcbd0;background-color: #08783e;}
 .teamsecret{color: #FFFFFF;background-color: #000000;}
-.ninjasinpyjamas{color: #a88b65;background-color: #FFFFFF;}
+.ninjasinpyjamas{color: #000000;background-color: #a88b65;}
 .navi{color: #000000;background-color: #fff200;}
-.evilgeniuses{color: #202d5a;background-color: #FFFFFF;}
+.evilgeniuses{color: #FFFFFF;background-color: #202d5a;}
 .virtuspro{color: #fc5000;background-color: #111821;}
 .rng{color: #b4926a;background-color: #FFFFFF;}
 .chaos{color: #f8a770;background-color: #000000;}
 .psglgd{color: #cb2026;background-color: #2a8ec1;}
 .og{color: #FFFFFF;background-color: #022554;}
-.tncpredator{color: #FFFFFF;background-color: #f26925;}
+.tncpredator{color: #000000;background-color: #f26925;}
 .forwardgaming{color: #00a6cf;background-color: #d60b66;}
 .mineski{color: #f0f3fa;background-color: #3a3a3c;}
 .vicigaming{color: #000000;background-color: #c5c6c6;}
@@ -20,9 +20,9 @@
 .keengamingteamliquid{background: linear-gradient(135deg,#7b4e94 0%,#7b4e94 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .keengamingalliance{background: linear-gradient(135deg,#7b4e94 0%,#7b4e94 50%,#08783e 50%,#08783e 100%);}
 .keengamingteamsecret{background: linear-gradient(135deg,#7b4e94 0%,#7b4e94 50%,#000000 50%,#000000 100%);}
-.keengamingninjasinpyjamas{background: linear-gradient(135deg,#7b4e94 0%,#7b4e94 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.keengamingninjasinpyjamas{background: linear-gradient(135deg,#7b4e94 0%,#7b4e94 50%,#a88b65 50%,#a88b65 100%);}
 .keengamingnavi{background: linear-gradient(135deg,#7b4e94 0%,#7b4e94 50%,#fff200 50%,#fff200 100%);}
-.keengamingevilgeniuses{background: linear-gradient(135deg,#7b4e94 0%,#7b4e94 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.keengamingevilgeniuses{background: linear-gradient(135deg,#7b4e94 0%,#7b4e94 50%,#202d5a 50%,#202d5a 100%);}
 .keengamingvirtuspro{background: linear-gradient(135deg,#7b4e94 0%,#7b4e94 50%,#111821 50%,#111821 100%);}
 .keengamingrng{background: linear-gradient(135deg,#7b4e94 0%,#7b4e94 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .keengamingchaos{background: linear-gradient(135deg,#7b4e94 0%,#7b4e94 50%,#000000 50%,#000000 100%);}
@@ -38,9 +38,9 @@
 .teamliquidteamliquid{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .teamliquidalliance{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#08783e 50%,#08783e 100%);}
 .teamliquidteamsecret{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#000000 50%,#000000 100%);}
-.teamliquidninjasinpyjamas{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.teamliquidninjasinpyjamas{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#a88b65 50%,#a88b65 100%);}
 .teamliquidnavi{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#fff200 50%,#fff200 100%);}
-.teamliquidevilgeniuses{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.teamliquidevilgeniuses{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#202d5a 50%,#202d5a 100%);}
 .teamliquidvirtuspro{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#111821 50%,#111821 100%);}
 .teamliquidrng{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .teamliquidchaos{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#000000 50%,#000000 100%);}
@@ -56,9 +56,9 @@
 .allianceteamliquid{background: linear-gradient(135deg,#08783e 0%,#08783e 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .alliancealliance{background: linear-gradient(135deg,#08783e 0%,#08783e 50%,#08783e 50%,#08783e 100%);}
 .allianceteamsecret{background: linear-gradient(135deg,#08783e 0%,#08783e 50%,#000000 50%,#000000 100%);}
-.allianceninjasinpyjamas{background: linear-gradient(135deg,#08783e 0%,#08783e 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.allianceninjasinpyjamas{background: linear-gradient(135deg,#08783e 0%,#08783e 50%,#a88b65 50%,#a88b65 100%);}
 .alliancenavi{background: linear-gradient(135deg,#08783e 0%,#08783e 50%,#fff200 50%,#fff200 100%);}
-.allianceevilgeniuses{background: linear-gradient(135deg,#08783e 0%,#08783e 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.allianceevilgeniuses{background: linear-gradient(135deg,#08783e 0%,#08783e 50%,#202d5a 50%,#202d5a 100%);}
 .alliancevirtuspro{background: linear-gradient(135deg,#08783e 0%,#08783e 50%,#111821 50%,#111821 100%);}
 .alliancerng{background: linear-gradient(135deg,#08783e 0%,#08783e 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .alliancechaos{background: linear-gradient(135deg,#08783e 0%,#08783e 50%,#000000 50%,#000000 100%);}
@@ -74,9 +74,9 @@
 .teamsecretteamliquid{background: linear-gradient(135deg,#000000 0%,#000000 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .teamsecretalliance{background: linear-gradient(135deg,#000000 0%,#000000 50%,#08783e 50%,#08783e 100%);}
 .teamsecretteamsecret{background: linear-gradient(135deg,#000000 0%,#000000 50%,#000000 50%,#000000 100%);}
-.teamsecretninjasinpyjamas{background: linear-gradient(135deg,#000000 0%,#000000 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.teamsecretninjasinpyjamas{background: linear-gradient(135deg,#000000 0%,#000000 50%,#a88b65 50%,#a88b65 100%);}
 .teamsecretnavi{background: linear-gradient(135deg,#000000 0%,#000000 50%,#fff200 50%,#fff200 100%);}
-.teamsecretevilgeniuses{background: linear-gradient(135deg,#000000 0%,#000000 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.teamsecretevilgeniuses{background: linear-gradient(135deg,#000000 0%,#000000 50%,#202d5a 50%,#202d5a 100%);}
 .teamsecretvirtuspro{background: linear-gradient(135deg,#000000 0%,#000000 50%,#111821 50%,#111821 100%);}
 .teamsecretrng{background: linear-gradient(135deg,#000000 0%,#000000 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .teamsecretchaos{background: linear-gradient(135deg,#000000 0%,#000000 50%,#000000 50%,#000000 100%);}
@@ -88,31 +88,31 @@
 .teamsecretvicigaming{background: linear-gradient(135deg,#000000 0%,#000000 50%,#c5c6c6 50%,#c5c6c6 100%);}
 .teamsecretfnatic{background: linear-gradient(135deg,#000000 0%,#000000 50%,#000000 50%,#000000 100%);}
 .teamsecretinfamous{background: linear-gradient(135deg,#000000 0%,#000000 50%,#a8120e 50%,#a8120e 100%);}
-.ninjasinpyjamaskeengaming{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#7b4e94 50%,#7b4e94 100%);}
-.ninjasinpyjamasteamliquid{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#FFFFFF 50%,#FFFFFF 100%);}
-.ninjasinpyjamasalliance{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#08783e 50%,#08783e 100%);}
-.ninjasinpyjamasteamsecret{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#000000 50%,#000000 100%);}
-.ninjasinpyjamasninjasinpyjamas{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#FFFFFF 50%,#FFFFFF 100%);}
-.ninjasinpyjamasnavi{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#fff200 50%,#fff200 100%);}
-.ninjasinpyjamasevilgeniuses{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#FFFFFF 50%,#FFFFFF 100%);}
-.ninjasinpyjamasvirtuspro{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#111821 50%,#111821 100%);}
-.ninjasinpyjamasrng{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#FFFFFF 50%,#FFFFFF 100%);}
-.ninjasinpyjamaschaos{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#000000 50%,#000000 100%);}
-.ninjasinpyjamaspsglgd{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#2a8ec1 50%,#2a8ec1 100%);}
-.ninjasinpyjamasog{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#022554 50%,#022554 100%);}
-.ninjasinpyjamastncpredator{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#f26925 50%,#f26925 100%);}
-.ninjasinpyjamasforwardgaming{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#d60b66 50%,#d60b66 100%);}
-.ninjasinpyjamasmineski{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#3a3a3c 50%,#3a3a3c 100%);}
-.ninjasinpyjamasvicigaming{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#c5c6c6 50%,#c5c6c6 100%);}
-.ninjasinpyjamasfnatic{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#000000 50%,#000000 100%);}
-.ninjasinpyjamasinfamous{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#a8120e 50%,#a8120e 100%);}
+.ninjasinpyjamaskeengaming{background: linear-gradient(135deg,#a88b65 0%,#a88b65 50%,#7b4e94 50%,#7b4e94 100%);}
+.ninjasinpyjamasteamliquid{background: linear-gradient(135deg,#a88b65 0%,#a88b65 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.ninjasinpyjamasalliance{background: linear-gradient(135deg,#a88b65 0%,#a88b65 50%,#08783e 50%,#08783e 100%);}
+.ninjasinpyjamasteamsecret{background: linear-gradient(135deg,#a88b65 0%,#a88b65 50%,#000000 50%,#000000 100%);}
+.ninjasinpyjamasninjasinpyjamas{background: linear-gradient(135deg,#a88b65 0%,#a88b65 50%,#a88b65 50%,#a88b65 100%);}
+.ninjasinpyjamasnavi{background: linear-gradient(135deg,#a88b65 0%,#a88b65 50%,#fff200 50%,#fff200 100%);}
+.ninjasinpyjamasevilgeniuses{background: linear-gradient(135deg,#a88b65 0%,#a88b65 50%,#202d5a 50%,#202d5a 100%);}
+.ninjasinpyjamasvirtuspro{background: linear-gradient(135deg,#a88b65 0%,#a88b65 50%,#111821 50%,#111821 100%);}
+.ninjasinpyjamasrng{background: linear-gradient(135deg,#a88b65 0%,#a88b65 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.ninjasinpyjamaschaos{background: linear-gradient(135deg,#a88b65 0%,#a88b65 50%,#000000 50%,#000000 100%);}
+.ninjasinpyjamaspsglgd{background: linear-gradient(135deg,#a88b65 0%,#a88b65 50%,#2a8ec1 50%,#2a8ec1 100%);}
+.ninjasinpyjamasog{background: linear-gradient(135deg,#a88b65 0%,#a88b65 50%,#022554 50%,#022554 100%);}
+.ninjasinpyjamastncpredator{background: linear-gradient(135deg,#a88b65 0%,#a88b65 50%,#f26925 50%,#f26925 100%);}
+.ninjasinpyjamasforwardgaming{background: linear-gradient(135deg,#a88b65 0%,#a88b65 50%,#d60b66 50%,#d60b66 100%);}
+.ninjasinpyjamasmineski{background: linear-gradient(135deg,#a88b65 0%,#a88b65 50%,#3a3a3c 50%,#3a3a3c 100%);}
+.ninjasinpyjamasvicigaming{background: linear-gradient(135deg,#a88b65 0%,#a88b65 50%,#c5c6c6 50%,#c5c6c6 100%);}
+.ninjasinpyjamasfnatic{background: linear-gradient(135deg,#a88b65 0%,#a88b65 50%,#000000 50%,#000000 100%);}
+.ninjasinpyjamasinfamous{background: linear-gradient(135deg,#a88b65 0%,#a88b65 50%,#a8120e 50%,#a8120e 100%);}
 .navikeengaming{background: linear-gradient(135deg,#fff200 0%,#fff200 50%,#7b4e94 50%,#7b4e94 100%);}
 .naviteamliquid{background: linear-gradient(135deg,#fff200 0%,#fff200 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .navialliance{background: linear-gradient(135deg,#fff200 0%,#fff200 50%,#08783e 50%,#08783e 100%);}
 .naviteamsecret{background: linear-gradient(135deg,#fff200 0%,#fff200 50%,#000000 50%,#000000 100%);}
-.navininjasinpyjamas{background: linear-gradient(135deg,#fff200 0%,#fff200 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.navininjasinpyjamas{background: linear-gradient(135deg,#fff200 0%,#fff200 50%,#a88b65 50%,#a88b65 100%);}
 .navinavi{background: linear-gradient(135deg,#fff200 0%,#fff200 50%,#fff200 50%,#fff200 100%);}
-.navievilgeniuses{background: linear-gradient(135deg,#fff200 0%,#fff200 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.navievilgeniuses{background: linear-gradient(135deg,#fff200 0%,#fff200 50%,#202d5a 50%,#202d5a 100%);}
 .navivirtuspro{background: linear-gradient(135deg,#fff200 0%,#fff200 50%,#111821 50%,#111821 100%);}
 .navirng{background: linear-gradient(135deg,#fff200 0%,#fff200 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .navichaos{background: linear-gradient(135deg,#fff200 0%,#fff200 50%,#000000 50%,#000000 100%);}
@@ -124,31 +124,31 @@
 .navivicigaming{background: linear-gradient(135deg,#fff200 0%,#fff200 50%,#c5c6c6 50%,#c5c6c6 100%);}
 .navifnatic{background: linear-gradient(135deg,#fff200 0%,#fff200 50%,#000000 50%,#000000 100%);}
 .naviinfamous{background: linear-gradient(135deg,#fff200 0%,#fff200 50%,#a8120e 50%,#a8120e 100%);}
-.evilgeniuseskeengaming{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#7b4e94 50%,#7b4e94 100%);}
-.evilgeniusesteamliquid{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#FFFFFF 50%,#FFFFFF 100%);}
-.evilgeniusesalliance{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#08783e 50%,#08783e 100%);}
-.evilgeniusesteamsecret{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#000000 50%,#000000 100%);}
-.evilgeniusesninjasinpyjamas{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#FFFFFF 50%,#FFFFFF 100%);}
-.evilgeniusesnavi{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#fff200 50%,#fff200 100%);}
-.evilgeniusesevilgeniuses{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#FFFFFF 50%,#FFFFFF 100%);}
-.evilgeniusesvirtuspro{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#111821 50%,#111821 100%);}
-.evilgeniusesrng{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#FFFFFF 50%,#FFFFFF 100%);}
-.evilgeniuseschaos{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#000000 50%,#000000 100%);}
-.evilgeniusespsglgd{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#2a8ec1 50%,#2a8ec1 100%);}
-.evilgeniusesog{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#022554 50%,#022554 100%);}
-.evilgeniusestncpredator{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#f26925 50%,#f26925 100%);}
-.evilgeniusesforwardgaming{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#d60b66 50%,#d60b66 100%);}
-.evilgeniusesmineski{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#3a3a3c 50%,#3a3a3c 100%);}
-.evilgeniusesvicigaming{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#c5c6c6 50%,#c5c6c6 100%);}
-.evilgeniusesfnatic{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#000000 50%,#000000 100%);}
-.evilgeniusesinfamous{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#a8120e 50%,#a8120e 100%);}
+.evilgeniuseskeengaming{background: linear-gradient(135deg,#202d5a 0%,#202d5a 50%,#7b4e94 50%,#7b4e94 100%);}
+.evilgeniusesteamliquid{background: linear-gradient(135deg,#202d5a 0%,#202d5a 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.evilgeniusesalliance{background: linear-gradient(135deg,#202d5a 0%,#202d5a 50%,#08783e 50%,#08783e 100%);}
+.evilgeniusesteamsecret{background: linear-gradient(135deg,#202d5a 0%,#202d5a 50%,#000000 50%,#000000 100%);}
+.evilgeniusesninjasinpyjamas{background: linear-gradient(135deg,#202d5a 0%,#202d5a 50%,#a88b65 50%,#a88b65 100%);}
+.evilgeniusesnavi{background: linear-gradient(135deg,#202d5a 0%,#202d5a 50%,#fff200 50%,#fff200 100%);}
+.evilgeniusesevilgeniuses{background: linear-gradient(135deg,#202d5a 0%,#202d5a 50%,#202d5a 50%,#202d5a 100%);}
+.evilgeniusesvirtuspro{background: linear-gradient(135deg,#202d5a 0%,#202d5a 50%,#111821 50%,#111821 100%);}
+.evilgeniusesrng{background: linear-gradient(135deg,#202d5a 0%,#202d5a 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.evilgeniuseschaos{background: linear-gradient(135deg,#202d5a 0%,#202d5a 50%,#000000 50%,#000000 100%);}
+.evilgeniusespsglgd{background: linear-gradient(135deg,#202d5a 0%,#202d5a 50%,#2a8ec1 50%,#2a8ec1 100%);}
+.evilgeniusesog{background: linear-gradient(135deg,#202d5a 0%,#202d5a 50%,#022554 50%,#022554 100%);}
+.evilgeniusestncpredator{background: linear-gradient(135deg,#202d5a 0%,#202d5a 50%,#f26925 50%,#f26925 100%);}
+.evilgeniusesforwardgaming{background: linear-gradient(135deg,#202d5a 0%,#202d5a 50%,#d60b66 50%,#d60b66 100%);}
+.evilgeniusesmineski{background: linear-gradient(135deg,#202d5a 0%,#202d5a 50%,#3a3a3c 50%,#3a3a3c 100%);}
+.evilgeniusesvicigaming{background: linear-gradient(135deg,#202d5a 0%,#202d5a 50%,#c5c6c6 50%,#c5c6c6 100%);}
+.evilgeniusesfnatic{background: linear-gradient(135deg,#202d5a 0%,#202d5a 50%,#000000 50%,#000000 100%);}
+.evilgeniusesinfamous{background: linear-gradient(135deg,#202d5a 0%,#202d5a 50%,#a8120e 50%,#a8120e 100%);}
 .virtusprokeengaming{background: linear-gradient(135deg,#111821 0%,#111821 50%,#7b4e94 50%,#7b4e94 100%);}
 .virtusproteamliquid{background: linear-gradient(135deg,#111821 0%,#111821 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .virtusproalliance{background: linear-gradient(135deg,#111821 0%,#111821 50%,#08783e 50%,#08783e 100%);}
 .virtusproteamsecret{background: linear-gradient(135deg,#111821 0%,#111821 50%,#000000 50%,#000000 100%);}
-.virtusproninjasinpyjamas{background: linear-gradient(135deg,#111821 0%,#111821 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.virtusproninjasinpyjamas{background: linear-gradient(135deg,#111821 0%,#111821 50%,#a88b65 50%,#a88b65 100%);}
 .virtuspronavi{background: linear-gradient(135deg,#111821 0%,#111821 50%,#fff200 50%,#fff200 100%);}
-.virtusproevilgeniuses{background: linear-gradient(135deg,#111821 0%,#111821 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.virtusproevilgeniuses{background: linear-gradient(135deg,#111821 0%,#111821 50%,#202d5a 50%,#202d5a 100%);}
 .virtusprovirtuspro{background: linear-gradient(135deg,#111821 0%,#111821 50%,#111821 50%,#111821 100%);}
 .virtusprorng{background: linear-gradient(135deg,#111821 0%,#111821 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .virtusprochaos{background: linear-gradient(135deg,#111821 0%,#111821 50%,#000000 50%,#000000 100%);}
@@ -164,9 +164,9 @@
 .rngteamliquid{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .rngalliance{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#08783e 50%,#08783e 100%);}
 .rngteamsecret{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#000000 50%,#000000 100%);}
-.rngninjasinpyjamas{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.rngninjasinpyjamas{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#a88b65 50%,#a88b65 100%);}
 .rngnavi{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#fff200 50%,#fff200 100%);}
-.rngevilgeniuses{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.rngevilgeniuses{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#202d5a 50%,#202d5a 100%);}
 .rngvirtuspro{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#111821 50%,#111821 100%);}
 .rngrng{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .rngchaos{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#000000 50%,#000000 100%);}
@@ -182,9 +182,9 @@
 .chaosteamliquid{background: linear-gradient(135deg,#000000 0%,#000000 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .chaosalliance{background: linear-gradient(135deg,#000000 0%,#000000 50%,#08783e 50%,#08783e 100%);}
 .chaosteamsecret{background: linear-gradient(135deg,#000000 0%,#000000 50%,#000000 50%,#000000 100%);}
-.chaosninjasinpyjamas{background: linear-gradient(135deg,#000000 0%,#000000 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.chaosninjasinpyjamas{background: linear-gradient(135deg,#000000 0%,#000000 50%,#a88b65 50%,#a88b65 100%);}
 .chaosnavi{background: linear-gradient(135deg,#000000 0%,#000000 50%,#fff200 50%,#fff200 100%);}
-.chaosevilgeniuses{background: linear-gradient(135deg,#000000 0%,#000000 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.chaosevilgeniuses{background: linear-gradient(135deg,#000000 0%,#000000 50%,#202d5a 50%,#202d5a 100%);}
 .chaosvirtuspro{background: linear-gradient(135deg,#000000 0%,#000000 50%,#111821 50%,#111821 100%);}
 .chaosrng{background: linear-gradient(135deg,#000000 0%,#000000 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .chaoschaos{background: linear-gradient(135deg,#000000 0%,#000000 50%,#000000 50%,#000000 100%);}
@@ -200,9 +200,9 @@
 .psglgdteamliquid{background: linear-gradient(135deg,#2a8ec1 0%,#2a8ec1 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .psglgdalliance{background: linear-gradient(135deg,#2a8ec1 0%,#2a8ec1 50%,#08783e 50%,#08783e 100%);}
 .psglgdteamsecret{background: linear-gradient(135deg,#2a8ec1 0%,#2a8ec1 50%,#000000 50%,#000000 100%);}
-.psglgdninjasinpyjamas{background: linear-gradient(135deg,#2a8ec1 0%,#2a8ec1 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.psglgdninjasinpyjamas{background: linear-gradient(135deg,#2a8ec1 0%,#2a8ec1 50%,#a88b65 50%,#a88b65 100%);}
 .psglgdnavi{background: linear-gradient(135deg,#2a8ec1 0%,#2a8ec1 50%,#fff200 50%,#fff200 100%);}
-.psglgdevilgeniuses{background: linear-gradient(135deg,#2a8ec1 0%,#2a8ec1 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.psglgdevilgeniuses{background: linear-gradient(135deg,#2a8ec1 0%,#2a8ec1 50%,#202d5a 50%,#202d5a 100%);}
 .psglgdvirtuspro{background: linear-gradient(135deg,#2a8ec1 0%,#2a8ec1 50%,#111821 50%,#111821 100%);}
 .psglgdrng{background: linear-gradient(135deg,#2a8ec1 0%,#2a8ec1 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .psglgdchaos{background: linear-gradient(135deg,#2a8ec1 0%,#2a8ec1 50%,#000000 50%,#000000 100%);}
@@ -218,9 +218,9 @@
 .ogteamliquid{background: linear-gradient(135deg,#022554 0%,#022554 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .ogalliance{background: linear-gradient(135deg,#022554 0%,#022554 50%,#08783e 50%,#08783e 100%);}
 .ogteamsecret{background: linear-gradient(135deg,#022554 0%,#022554 50%,#000000 50%,#000000 100%);}
-.ogninjasinpyjamas{background: linear-gradient(135deg,#022554 0%,#022554 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.ogninjasinpyjamas{background: linear-gradient(135deg,#022554 0%,#022554 50%,#a88b65 50%,#a88b65 100%);}
 .ognavi{background: linear-gradient(135deg,#022554 0%,#022554 50%,#fff200 50%,#fff200 100%);}
-.ogevilgeniuses{background: linear-gradient(135deg,#022554 0%,#022554 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.ogevilgeniuses{background: linear-gradient(135deg,#022554 0%,#022554 50%,#202d5a 50%,#202d5a 100%);}
 .ogvirtuspro{background: linear-gradient(135deg,#022554 0%,#022554 50%,#111821 50%,#111821 100%);}
 .ogrng{background: linear-gradient(135deg,#022554 0%,#022554 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .ogchaos{background: linear-gradient(135deg,#022554 0%,#022554 50%,#000000 50%,#000000 100%);}
@@ -236,9 +236,9 @@
 .tncpredatorteamliquid{background: linear-gradient(135deg,#f26925 0%,#f26925 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .tncpredatoralliance{background: linear-gradient(135deg,#f26925 0%,#f26925 50%,#08783e 50%,#08783e 100%);}
 .tncpredatorteamsecret{background: linear-gradient(135deg,#f26925 0%,#f26925 50%,#000000 50%,#000000 100%);}
-.tncpredatorninjasinpyjamas{background: linear-gradient(135deg,#f26925 0%,#f26925 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.tncpredatorninjasinpyjamas{background: linear-gradient(135deg,#f26925 0%,#f26925 50%,#a88b65 50%,#a88b65 100%);}
 .tncpredatornavi{background: linear-gradient(135deg,#f26925 0%,#f26925 50%,#fff200 50%,#fff200 100%);}
-.tncpredatorevilgeniuses{background: linear-gradient(135deg,#f26925 0%,#f26925 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.tncpredatorevilgeniuses{background: linear-gradient(135deg,#f26925 0%,#f26925 50%,#202d5a 50%,#202d5a 100%);}
 .tncpredatorvirtuspro{background: linear-gradient(135deg,#f26925 0%,#f26925 50%,#111821 50%,#111821 100%);}
 .tncpredatorrng{background: linear-gradient(135deg,#f26925 0%,#f26925 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .tncpredatorchaos{background: linear-gradient(135deg,#f26925 0%,#f26925 50%,#000000 50%,#000000 100%);}
@@ -254,9 +254,9 @@
 .forwardgamingteamliquid{background: linear-gradient(135deg,#d60b66 0%,#d60b66 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .forwardgamingalliance{background: linear-gradient(135deg,#d60b66 0%,#d60b66 50%,#08783e 50%,#08783e 100%);}
 .forwardgamingteamsecret{background: linear-gradient(135deg,#d60b66 0%,#d60b66 50%,#000000 50%,#000000 100%);}
-.forwardgamingninjasinpyjamas{background: linear-gradient(135deg,#d60b66 0%,#d60b66 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.forwardgamingninjasinpyjamas{background: linear-gradient(135deg,#d60b66 0%,#d60b66 50%,#a88b65 50%,#a88b65 100%);}
 .forwardgamingnavi{background: linear-gradient(135deg,#d60b66 0%,#d60b66 50%,#fff200 50%,#fff200 100%);}
-.forwardgamingevilgeniuses{background: linear-gradient(135deg,#d60b66 0%,#d60b66 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.forwardgamingevilgeniuses{background: linear-gradient(135deg,#d60b66 0%,#d60b66 50%,#202d5a 50%,#202d5a 100%);}
 .forwardgamingvirtuspro{background: linear-gradient(135deg,#d60b66 0%,#d60b66 50%,#111821 50%,#111821 100%);}
 .forwardgamingrng{background: linear-gradient(135deg,#d60b66 0%,#d60b66 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .forwardgamingchaos{background: linear-gradient(135deg,#d60b66 0%,#d60b66 50%,#000000 50%,#000000 100%);}
@@ -272,9 +272,9 @@
 .mineskiteamliquid{background: linear-gradient(135deg,#3a3a3c 0%,#3a3a3c 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .mineskialliance{background: linear-gradient(135deg,#3a3a3c 0%,#3a3a3c 50%,#08783e 50%,#08783e 100%);}
 .mineskiteamsecret{background: linear-gradient(135deg,#3a3a3c 0%,#3a3a3c 50%,#000000 50%,#000000 100%);}
-.mineskininjasinpyjamas{background: linear-gradient(135deg,#3a3a3c 0%,#3a3a3c 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.mineskininjasinpyjamas{background: linear-gradient(135deg,#3a3a3c 0%,#3a3a3c 50%,#a88b65 50%,#a88b65 100%);}
 .mineskinavi{background: linear-gradient(135deg,#3a3a3c 0%,#3a3a3c 50%,#fff200 50%,#fff200 100%);}
-.mineskievilgeniuses{background: linear-gradient(135deg,#3a3a3c 0%,#3a3a3c 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.mineskievilgeniuses{background: linear-gradient(135deg,#3a3a3c 0%,#3a3a3c 50%,#202d5a 50%,#202d5a 100%);}
 .mineskivirtuspro{background: linear-gradient(135deg,#3a3a3c 0%,#3a3a3c 50%,#111821 50%,#111821 100%);}
 .mineskirng{background: linear-gradient(135deg,#3a3a3c 0%,#3a3a3c 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .mineskichaos{background: linear-gradient(135deg,#3a3a3c 0%,#3a3a3c 50%,#000000 50%,#000000 100%);}
@@ -290,9 +290,9 @@
 .vicigamingteamliquid{background: linear-gradient(135deg,#c5c6c6 0%,#c5c6c6 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .vicigamingalliance{background: linear-gradient(135deg,#c5c6c6 0%,#c5c6c6 50%,#08783e 50%,#08783e 100%);}
 .vicigamingteamsecret{background: linear-gradient(135deg,#c5c6c6 0%,#c5c6c6 50%,#000000 50%,#000000 100%);}
-.vicigamingninjasinpyjamas{background: linear-gradient(135deg,#c5c6c6 0%,#c5c6c6 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.vicigamingninjasinpyjamas{background: linear-gradient(135deg,#c5c6c6 0%,#c5c6c6 50%,#a88b65 50%,#a88b65 100%);}
 .vicigamingnavi{background: linear-gradient(135deg,#c5c6c6 0%,#c5c6c6 50%,#fff200 50%,#fff200 100%);}
-.vicigamingevilgeniuses{background: linear-gradient(135deg,#c5c6c6 0%,#c5c6c6 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.vicigamingevilgeniuses{background: linear-gradient(135deg,#c5c6c6 0%,#c5c6c6 50%,#202d5a 50%,#202d5a 100%);}
 .vicigamingvirtuspro{background: linear-gradient(135deg,#c5c6c6 0%,#c5c6c6 50%,#111821 50%,#111821 100%);}
 .vicigamingrng{background: linear-gradient(135deg,#c5c6c6 0%,#c5c6c6 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .vicigamingchaos{background: linear-gradient(135deg,#c5c6c6 0%,#c5c6c6 50%,#000000 50%,#000000 100%);}
@@ -308,9 +308,9 @@
 .fnaticteamliquid{background: linear-gradient(135deg,#000000 0%,#000000 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .fnaticalliance{background: linear-gradient(135deg,#000000 0%,#000000 50%,#08783e 50%,#08783e 100%);}
 .fnaticteamsecret{background: linear-gradient(135deg,#000000 0%,#000000 50%,#000000 50%,#000000 100%);}
-.fnaticninjasinpyjamas{background: linear-gradient(135deg,#000000 0%,#000000 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.fnaticninjasinpyjamas{background: linear-gradient(135deg,#000000 0%,#000000 50%,#a88b65 50%,#a88b65 100%);}
 .fnaticnavi{background: linear-gradient(135deg,#000000 0%,#000000 50%,#fff200 50%,#fff200 100%);}
-.fnaticevilgeniuses{background: linear-gradient(135deg,#000000 0%,#000000 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.fnaticevilgeniuses{background: linear-gradient(135deg,#000000 0%,#000000 50%,#202d5a 50%,#202d5a 100%);}
 .fnaticvirtuspro{background: linear-gradient(135deg,#000000 0%,#000000 50%,#111821 50%,#111821 100%);}
 .fnaticrng{background: linear-gradient(135deg,#000000 0%,#000000 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .fnaticchaos{background: linear-gradient(135deg,#000000 0%,#000000 50%,#000000 50%,#000000 100%);}
@@ -326,9 +326,9 @@
 .infamousteamliquid{background: linear-gradient(135deg,#a8120e 0%,#a8120e 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .infamousalliance{background: linear-gradient(135deg,#a8120e 0%,#a8120e 50%,#08783e 50%,#08783e 100%);}
 .infamousteamsecret{background: linear-gradient(135deg,#a8120e 0%,#a8120e 50%,#000000 50%,#000000 100%);}
-.infamousninjasinpyjamas{background: linear-gradient(135deg,#a8120e 0%,#a8120e 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.infamousninjasinpyjamas{background: linear-gradient(135deg,#a8120e 0%,#a8120e 50%,#a88b65 50%,#a88b65 100%);}
 .infamousnavi{background: linear-gradient(135deg,#a8120e 0%,#a8120e 50%,#fff200 50%,#fff200 100%);}
-.infamousevilgeniuses{background: linear-gradient(135deg,#a8120e 0%,#a8120e 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.infamousevilgeniuses{background: linear-gradient(135deg,#a8120e 0%,#a8120e 50%,#202d5a 50%,#202d5a 100%);}
 .infamousvirtuspro{background: linear-gradient(135deg,#a8120e 0%,#a8120e 50%,#111821 50%,#111821 100%);}
 .infamousrng{background: linear-gradient(135deg,#a8120e 0%,#a8120e 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .infamouschaos{background: linear-gradient(135deg,#a8120e 0%,#a8120e 50%,#000000 50%,#000000 100%);}

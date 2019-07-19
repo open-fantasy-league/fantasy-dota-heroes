@@ -405,5 +405,5 @@ and (max-width: 900px)
 
   .vcenterText{
     display: flex;
-    display-items: center;
+    align-items: center;
   }

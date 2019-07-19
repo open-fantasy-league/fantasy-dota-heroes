@@ -1,7 +1,7 @@
 COLOURS = {
     # text colour, bg-color
     "alliance": ["#cdcbd0", "#08783e"],
-    "evilgeniuses": ["#202d5a", "#FFFFFF"],
+    "evilgeniuses": ["#FFFFFF", "#202d5a"],
     "forwardgaming": ["#00a6cf", "#d60b66"],
     "chaos": ["#f8a770", "#000000"],
     "fnatic": ["#f19e33", "#000000"],
@@ -9,13 +9,13 @@ COLOURS = {
     "keengaming": ["#a3a2a2", "#7b4e94"],
     "mineski": ["#f0f3fa", "#3a3a3c"],
 "navi": ["#000000", "#fff200"],
-"ninjasinpyjamas": ["#a88b65", "#FFFFFF"],
+"ninjasinpyjamas": ["#000000", "#a88b65"],
 "og": ["#FFFFFF", "#022554"],
 "psglgd": ["#cb2026", "#2a8ec1"],
 "rng": ["#b4926a", "#FFFFFF"],
 "teamliquid": ["#0e2240", "#FFFFFF"],
 "teamsecret": ["#FFFFFF", "#000000"],
-"tncpredator": ["#FFFFFF", "#f26925"],
+"tncpredator": ["#000000", "#f26925"],
 "vicigaming": ["#000000", "#c5c6c6"],
     "virtuspro": ["#fc5000", "#111821"],
 }

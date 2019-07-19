@@ -46,14 +46,14 @@ function fillMatches(){
                         var thisSeries = series.series;
                         var teamOneBasic = thisSeries.teamOne.replace(/[\W_]+/g,"").toLowerCase();
                         var teamTwoBasic = thisSeries.teamTwo.replace(/[\W_]+/g,"").toLowerCase();
-                        if (series.seriesTeamOneFinalScore != null && series.mseriesTeamOneFinalScore != undefined){
-                            seriesIdToScores.set(series.seriesId, [series.seriesTeamOneFinalScore, series.seriesTeamTwoFinalScore])
+                        if (thisSeries.seriesTeamOneFinalScore != null && thisSeries.seriesTeamOneFinalScore != undefined){
+                            seriesIdToScores.set(thisSeries.seriesId, [thisSeries.seriesTeamOneFinalScore, thisSeries.seriesTeamTwoFinalScore])
                         }
                         r[++j] = '<div class="row" style="height: 100%">'
                         r[++j] = '<div class="card-panel horizontal matchRow center-align ';
                         r[++j] = teamOneBasic + teamTwoBasic;
                         r[++j] = '" id="match';
-                         r[++j] = series.seriesId;
+                         r[++j] = thisSeries.seriesId;
                         r[++j] = '"><span class="teamOne col s4 ';
                         r[++j] = teamOneBasic;
                         r[++j] = '"><strong class="vcenterText">';
@@ -63,18 +63,18 @@ function fillMatches(){
                         r[++j] = thisSeries.teamOne;
                         r[++j] = '</strong></span>';
                         r[++j] = '<div style="width: 180px;background-color: black;" class="card-panel horizontal predictionRow col s4 ';
-                        r[++j] = series.started ? ' disabled" ' : ' active" ';
+                        r[++j] = thisSeries.started ? ' disabled" ' : ' active" ';
                         r[++j] = 'data-seriesId=';
-                        r[++j] = series.seriesId;
+                        r[++j] = thisSeries.seriesId;
                         r[++j] = '><strong><input class="col s5 center scoreboardfont" style="-moz-appearance: textfield" ';
-                        r[++j] = series.started ? ' disabled=true' : "";
+                        r[++j] = thisSeries.started ? ' disabled=true' : "";
                         r[++j] = '  type="number" id="teamOneScorePredict-';
-                        r[++j] = series.seriesId;
+                        r[++j] = thisSeries.seriesId;
                         r[++j] = '">';
                         r[++j] = '<input style="color:#ff9900" class="col s2 center scoreboardfont" type="text" value=":" disabled><input class="col s5 center scoreboardfont" style="-moz-appearance: textfield" ';
-                        r[++j] = series.started ? ' disabled=true' : "";
+                        r[++j] = thisSeries.started ? ' disabled=true' : "";
                         r[++j] = ' type="number" id="teamTwoScorePredict-';
-                        r[++j] = series.seriesId;
+                        r[++j] = thisSeries.seriesId;
                         r[++j] = '"></strong>';
                         r[++j] = '</div>';
                         r[++j] = '<span class="teamTwo col s4 right ';

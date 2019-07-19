@@ -286,8 +286,7 @@
             <a href="/hallOfFame">Hall of Fame</a>
         </div>
                 <div>
-                     This site is 100% unofficial and has no affiliation with the English Premier League, Fotmob, Al-Qaeda or the impending collapse of civilization as we know it.
-                     <i>P.S. pls dont sue me.</i>
+                     This site is 100% unofficial and has no affiliation with Valve or any other DotA website
                 </div>
             </div>
         </div>
