@@ -89,12 +89,14 @@ function doTrade(event, action, heroId){
 
 function addToTeam(hero, cancel){
         var new_row = $("#" + hero + "Row").clone();
+        new_row.attr("class", "future teamRow");
+        if (showingActive) new_row.addClass("hide");
         new_row.attr('id', "future" + hero + "TeamRow");
         var heroEntry = new_row.find(".heroEntry");
         var btn = new_row.find("button");
         btn.attr('name', 'sellHero');
         btn.text('Sell');
-        var teamRow = $(".teamRow");
+        var teamRow = $(".future.teamRow");
         if (teamRow.length != 0) {
             teamRow.last().after(new_row);
         }

@@ -6,6 +6,7 @@ var currentIndex;
 var tableContainer = $("#tableContainer");
 var gridContainer = $("#gridContainer");
 var playerDataCache = new Map();
+var showingActive = false;
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -169,7 +170,7 @@ function addPlayerHtmlArray(player, r, j, isFutureTeam){
                     r[++j] = card.limitTypes.position;
                     if (isFutureTeam){
                         r[++j] = ' future';
-                    } else{r[++j] = ' active hide';}
+                    } else{r[++j] = ' activex hide';}
                     r[++j] = '" id="';
                      if (isFutureTeam) r[++j] = 'future';
                     r[++j] = player.cardId;
@@ -189,10 +190,13 @@ function addPlayerHtmlArray(player, r, j, isFutureTeam){
                     r[++j] = card.limitTypes.team;
                     r[++j] = '</td><td class="playerPointsEntry">';
                     r[++j] = card.overallStats.points;
-                    if (card.recentPeriodStats && card.recentPeriodStats.length > 0){
-                    r[++j] = ' ('
-                    r[++j] = card.recentPeriodStats.find(function(x){return x.period == (league.currentPeriod.value - 1)}).stats.points;
-                    r[++j] = ')';
+                    if (card.recentPeriodStats){
+                        var lastPeriod = card.recentPeriodStats.find(function(x){return x.period == (league.currentPeriod.value - 1)});
+                        if (lastPeriod){
+                            r[++j] = ' ('
+                            r[++j] = lastPeriod.stats.points;
+                            r[++j] = ')';
+                        }
                     }
                     r[++j] = '</td><td class="bonusesEntry">';
                     j = drawBonus(card.bonuses, r, j, false);

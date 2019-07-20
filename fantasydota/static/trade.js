@@ -133,25 +133,27 @@ r, j = addPlayerHtmlArray(player, r, j, true);
 
 function addToTeam(player){
     var new_row = makeTeamRow(player);
-    var btn = $(new_row).find("button");
+    var jnew_row = $(new_row)
+    if (showingActive) jnew_row.addClass("hide");
+    var btn = jnew_row.find("button");
     var position = player.limitTypes.position;
     var teamRow = $(".teamRow.future." + position);
     var positionRow = $("")
     if (teamRow.length != 0) {
-        teamRow.last().after(new_row);
+        teamRow.last().after(jnew_row);
     }
     else{
         var currentVal = positionOrder.get(position);
         while (currentVal > -1 && teamRow.length == 0){
             currentVal--;
             var nextPosition = reversePositionOrder.get(currentVal)
-            teamRow = $(".teamRow." + nextPosition);
+            teamRow = $(".teamRow.future" + nextPosition);
         }
         if (teamRow.length != 0){
-            teamRow.last().after(new_row);
+            teamRow.last().after(jnew_row);
         }
         else{
-            $("#teamTable").find("tbody").prepend(new_row);
+            $("#teamTable").find("tbody").prepend(jnew_row);
         }
     }
     btn.off('click').click(tradeOnclick);  // otherwise need reload page to resell

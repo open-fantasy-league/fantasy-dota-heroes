@@ -2,6 +2,7 @@ var teamUrl;
 var heroes;
 var tableContainer = $("#tableContainer");
 var gridContainer = $("#gridContainer");
+var showingActive = false;
 signup();
 getLeagueInfo().then(getPickees);
 
@@ -90,12 +91,12 @@ function getTeamThenSetup(){
     else{
         teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&scheduledTransfers&stats&periods=";
         if (league.currentPeriod){
-            teamUrl = teamUrl + league.currentPeriod.value.toString + "," + (league.currentPeriod.value +1).toString;
+            teamUrl = teamUrl + league.currentPeriod.value.toString() + "," + (league.currentPeriod.value +1).toString();
             }
-            else{
-                teamUrl = teamUrl + "1";
-                $("#activeTeamSwitchDiv").addClass('hide');
-            }
+        else{
+            teamUrl = teamUrl + "1";
+            $("#activeTeamSwitchDiv").addClass('hide');
+        }
         $.ajax({url: teamUrl,
                 dataType: "json",
                 type: "GET",
@@ -157,7 +158,7 @@ function getTeamThenSetup(){
                         var id = hero.id;
                         var heroInfo = heroes.find(function(h){return h.id == id});
                         var imgSrc = "/static/images/dota/" + hero.name.replace(/ /g, "_") + "_icon.png";
-                    r[++j] = '<tr class="active hide teamRow ';
+                    r[++j] = '<tr class="activex hide teamRow ';
                     r[++j] = '" id="';
                     r[++j] = id;
                     r[++j] = 'TeamRow"><td class="heroImg" sorttable_customkey="';

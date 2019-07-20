@@ -34,11 +34,14 @@ function confirmNameOnclick(){
 function switchActiveTeam(inp){
     if (inp.checked){
         $(".future").addClass('hide');
-        $(".active").removeClass('hide');
+        // activex as otherwise clashes with materialize active class name
+        $(".activex").removeClass('hide');
+        showingActive = true;
     }
     else{
         $(".future").removeClass('hide');
-        $(".active").addClass('hide');
+        $(".activex").addClass('hide');
+        showingActive = false;
     }
 
 }
