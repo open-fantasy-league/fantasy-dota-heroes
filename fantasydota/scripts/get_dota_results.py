@@ -5,10 +5,12 @@ from collections import namedtuple
 import datetime
 
 import os
-from fantasydota.lib.constants import API_URL, DEFAULT_LEAGUE, HERO_LEAGUE
+from fantasydota.lib.constants import API_URL, DEFAULT_LEAGUE, HERO_LEAGUE, TEAM_IDS_TO_NAMES
 from fantasydota.lib.match import iterate_matches, BANS, STAGE_2_MAX, STAGE_1_MAX, result_to_points
 from fantasydota.lib.valve_requests import get_league_match_list, get_match_details, \
     dont_piss_off_valve_but_account_for_sporadic_failures
+
+valid_pickee_ids = [6922000,10366616,19672354,21289303,25907144,26771994,34505203,41231571,54580962,72312627,73562326,77490514,82262664,84772440,86698277,86700461,86726887,86727555,86738694,86745912,86799300,87012746,87278757,87382579,88271237,89117038,89423756,91443418,92423451,94054712,94155156,94296097,94738847,97590558,98172857,100471531,101356886,101695162,102099826,103735745,105248644,106573901,106863163,107803494,108452107,111030315,111620041,113457795,114619230,116585378,117421467,119576842,121769650,125581247,132851371,134276083,134556694,135878232,137193239,139822354,139876032,139937922,142139318,143693439,145550466,148215639,152545459,152962063,153836240,154715080,155494381,157989498,159020918,164532005,164685175,169025618,171981096,173476224,182331313,184950344,186627166,192914280,221666230,234699894,255219872,292921272,311360822,397462905,401792574,412753955]
 
 FE_APIKEY = os.environ.get("FE_APIKEY")
 if not FE_APIKEY:
@@ -33,13 +35,14 @@ def get_matches(tournament_id, tstamp_from=0, excluded_match_ids=None, highest_s
 
     matches = [(match["match_id"], match["series_id"]) for match in match_list_json["result"]["matches"]
                if match["start_time"] >= tstamp_from and match["match_id"] not in excluded_match_ids]
+    #matches = [(4870161807, 123)]
+    matches = [(4861754075, 123)]
     print "matches", matches
     saved_ap_remade_matches = {}
     saved_m22_matches = {}
 
     for match, series_id in matches:
         result = get_match_details(match)["result"]
-        match_id = result['match_id']
         if check_if_was_allpick_remade(result):
             saved_ap_remade_matches[
                 frozenset([p['hero_id'] for p in result['players']] +
@@ -51,12 +54,13 @@ def get_matches(tournament_id, tstamp_from=0, excluded_match_ids=None, highest_s
                           [result.get('radiant_name', 'rad'), result.get('dire_name', 'dire')])
             ] = result
         else:
-            # saved_matches[
-            #     frozenset([p['hero_id'] for p in result['players']] +
-            #               [result.get('radiant_name', 'rad'), result.get('dire_name', 'dire')])
-            # ] = result
-            add_match_to_api(result)
-            add_heroes_results(result, series_id)
+            radiant_team_id = result.get('radiant_team_id', 0)
+            dire_team_id = result.get('dire_team_id', 0)
+            radiant_team_id, dire_team_id = (7203342, 2672298)
+            radiant_team = TEAM_IDS_TO_NAMES[radiant_team_id]
+            dire_team = TEAM_IDS_TO_NAMES[dire_team_id]
+            add_match_to_api(result, radiant_team, dire_team)
+            #add_heroes_results(result, radiant_team, dire_team, series_id)
             next_series_id += 1
     for pick_ban_tuple in set(saved_ap_remade_matches.keys()).intersection(set(saved_m22_matches.keys())):
         print("match {} was all-pick remade".format(pick_ban_tuple))
@@ -71,7 +75,7 @@ def get_matches(tournament_id, tstamp_from=0, excluded_match_ids=None, highest_s
         print("ERROR: {} did not have 22 pick bans but wasnt remade".format(saved_m22_matches[k]['match_id']))
 
 
-def add_heroes_results(match, series_id):
+def add_heroes_results(match, radiant_team, dire_team, series_id):
     Result = namedtuple('Result', 'hero_id is_team_one points ban win')
 
     match_id = int(match['match_id'])
@@ -114,6 +118,8 @@ def add_heroes_results(match, series_id):
 
     data = json.dumps({
         'seriesId': series_id,
+        'teamOne': radiant_team,
+        'teamTwo': dire_team,
         'matches': [{
             'matchId': match_id,
             'teamOneMatchScore': 1 if match['radiant_win'] else 0,
@@ -132,7 +138,7 @@ def add_heroes_results(match, series_id):
         print(e.read())
 
 
-def add_match_to_api(match):
+def add_match_to_api(match, radiant_team, dire_team):
 
     odota_info = dont_piss_off_valve_but_account_for_sporadic_failures(
         "https://api.opendota.com/api/matches/{}".format(match['match_id'])
@@ -144,26 +150,25 @@ def add_match_to_api(match):
                   'stats': [
                       {'field': 'kills', 'value': player["kills"]},
                       {'field': 'deaths', 'value': player["deaths"]},
-                      {'field': 'last_hits', 'value': player["last_hits"]},
+                      {'field': 'last hits', 'value': player["last_hits"]},
                       {'field': 'denies', 'value': player["denies"]},
                       {'field': 'first blood', 'value': player["firstblood_claimed"]},
-                      {'field': 'stun seconds', 'value': player["stuns"]},
+                      {'field': 'stun', 'value': player["stuns"]},
                       {'field': 'teamfight participation', 'value': player["teamfight_participation"]},
                       {'field': 'GPM', 'value': player["gold_per_min"]},
-                      {'field': 'tower kills', 'value': player["towers_killed"]},
+                      {'field': 'towers', 'value': player["towers_killed"]},
                       {'field': 'observer wards', 'value': player["obs_placed"]},
                       {'field': 'dewards', 'value': player["observer_kills"]},
                       {'field': 'camps stacked', 'value': player["camps_stacked"]},
                       {'field': 'runes', 'value': player["rune_pickups"]},
-                      {'field': 'roshan kills', 'value': player["roshan_kills"]},
+                      {'field': 'roshans', 'value': player["roshan_kills"]},
                   ]
                   }
-        pickees.append(pickee)
+        if player["account_id"] in valid_pickee_ids:
+            pickees.append(pickee)
 
     match_id = int(match['match_id'])
     start_time = datetime.datetime.fromtimestamp(match['start_time']).strftime('%Y-%m-%d %H:%M:%S')
-    radiant_team = match.get('radiant_name', ' ')
-    dire_team = match.get('dire_name', ' ')
     print(match['start_time'])
     print(start_time)
     print('id {}: {} vs {}. radiant win: {}'.format(
@@ -178,13 +183,14 @@ def add_match_to_api(match):
         team_one_series_score += 1
     else:
         team_two_series_score += 1
-    series_finished = (team_one_series_score + team_two_series_score) >= (latest_series['bestOf'] + 1) / 2
+    series_finished = (team_one_series_score + team_two_series_score) >= (latest_series['bestOf'] + 1) / 2.0
     data = {
         'seriesId': latest_series["seriesId"],
         'seriesTeamOneCurrentScore': team_one_series_score,
         'seriesTeamTwoCurrentScore': team_two_series_score,
         'matches': [{
             'matchId': match_id,
+            #'matchId': match_id + 1,
             'teamOneMatchScore': 1 if team_one_win else 0,
             'teamTwoMatchScore': 1 if not team_one_win else 0,
             'startTstamp': start_time,
@@ -194,6 +200,7 @@ def add_match_to_api(match):
     if series_finished:
         data['seriesTeamOneFinalScore'] = team_one_series_score
         data['seriesTeamTwoFinalScore'] = team_two_series_score
+    print(data)
     try:
         req = urllib2.Request(API_LEAGUE_RESULTS_URL, data=json.dumps(data), headers={'apiKey': FE_APIKEY, "Content-Type": "application/json"})
         response = urllib2.urlopen(req)
@@ -217,11 +224,12 @@ def get_already_stored_matches():
 
 def get_latest_series(team_one, team_two):
     series_info = json.load(urllib2.urlopen(urllib2.Request(
-        "http://localhost/api/v1/results/leagues/" + str(HERO_LEAGUE) + "/findByTeams",
+        "http://localhost/api/v1/results/leagues/" + str(DEFAULT_LEAGUE) + "/findByTeams",
         headers={'apiKey': FE_APIKEY, "Content-Type": "application/json"},
         data=json.dumps({'teamOne': team_one, 'teamTwo': team_two, 'includeReversedTeams': True})
-    )))[-1]
-    return series_info
+    )))
+    print(series_info)
+    return series_info[-1]["series"]
 
 
 def main():
@@ -230,7 +238,7 @@ def main():
     # that highest startTstamp finished first
     existing_matches = get_already_stored_matches()
     excluded_matches = [m["match"]["matchId"] for s in existing_matches for m in s["matches"]]
-    highest_series_id = next((s["seriesId"] for s in excluded_matches), 0)
+    highest_series_id = next((s["series"]["seriesId"] for s in existing_matches), 0)
     print("excluded matches: {}".format(excluded_matches))
     # 1551814635
     get_matches(10869, excluded_match_ids=excluded_matches, tstamp_from=1556223758, highest_series_id=highest_series_id)

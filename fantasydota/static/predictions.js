@@ -1,6 +1,6 @@
 var predictionsUrl;
 getLeagueInfo(false, false, false, false).then(makePredictions);
-var matchIdToScores = new Map();
+var seriesIdToScores = new Map();
 
 function makePredictions(){
     $("#leagueLink").attr('href', league.url);
@@ -107,11 +107,15 @@ function fillPredictions(){
                     $.each(data, function(key, entry){
                         var teamOneScorePredict = $("#teamOneScorePredict-" + entry.seriesId);
                         var teamTwoScorePredict = $("#teamTwoScorePredict-" + entry.seriesId);
-                        var scores = matchIdToScores.get(entry.seriesId);
+                        var scores = seriesIdToScores.get(entry.seriesId);
+                        console.log(scores)
+                        console.log(teamOneScorePredict)
                         if (teamOneScorePredict){
                             var out = entry.teamOneScore;
                             if (scores){
-                                out = out + " <" + scores[0] + ">";
+                                teamOneScorePredict.attr('type', 'text');
+                                var symbol = (scores[0] === out) ? "✓" : "✗";
+                                out = out + " " + symbol + " " + scores[0];
                             }
                             teamOneScorePredict.val(out);
 
@@ -119,7 +123,9 @@ function fillPredictions(){
                         if (teamTwoScorePredict){
                             var out = entry.teamTwoScore;
                             if (scores){
-                                out = out + " <" + scores[1] + ">";
+                                var symbol = (scores[1] === out) ? "✓" : "✗";
+                                out = out + " " + symbol + " " + scores[1];
+                                teamTwoScorePredict.attr('type', 'text');
                             }
                             teamTwoScorePredict.val(out);
                             };
