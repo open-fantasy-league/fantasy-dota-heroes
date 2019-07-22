@@ -91,6 +91,8 @@ function cardHtml(p, j, player){
                             p[++j] = player.cardId;
                             p[++j] = '" data-id="';
                             p[++j] = player.id;
+                            p[++j] = '" data-rarity="';
+                            p[++j] = player.colour.toLowerCase();
                             p[++j] = '"><div class="card-content"><span class="card-title"><h6><p><span class="playerName centre"><strong>';
                             p[++j] = player.name;
                             p[++j] = '</strong></span></p><p><span class="teamName centre">';

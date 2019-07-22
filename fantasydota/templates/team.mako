@@ -98,6 +98,8 @@
         </div>
             <span><button type="submit" id="recycleFiltered" title="Recycle all cards under currently selected filters" class="btn waves-effect waves-light">
         Recycle filtered</button></span>
+        <span><button type="submit" id="recycleDupeCommons" title="Recycle all commons that are duplicates of same player" class="btn waves-effect waves-light">
+        Recycle common duplicates</button></span>
     </div>
     <div id="cardsContainer" class="row">
         <ul class = "tabs">
