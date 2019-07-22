@@ -53,6 +53,7 @@
         <div id="teamTableContainer">
         <table class="sortable card-table striped centered" id="teamTable">
             <tr style="cursor: pointer" id="teamTableHeader">
+                <th class="sellHeader">Sell</th>
                 <th class="heroHeader">Hero</th>
                 <th class="dummyHeader" colspan="0"></th>
                 <th class="heroPointsHeader sorttable_numeric">Points</th>
@@ -60,15 +61,14 @@
                 <th class="bansHeader extra sorttable_numeric">Bans</th>
                 <th class="winsHeader extra sorttable_numeric">Wins</th>
                 <th class="valueHeader sorttable_numeric">Value</th>
-                <th class="sellHeader">Sell</th>
             </tr>
         </table>
     </div>
     % endif
     <div class="row">
-    <span class="left"><button type="submit" id="useWildcard" disabled="true" title="Wildcard sells entire team and resets to 50 credits" class="btn waves-effect waves-light hide">
+        <span class="left"><button type="submit" id="confirmTransfers" disabled="true" class="btn waves-effect waves-light">Confirm Team!</button></span>
+        <span class="right"><button type="submit" id="useWildcard" disabled="true" title="Wildcard sells entire team and resets to 50 credits" class="btn waves-effect waves-light hide">
         Use Wildcard</button></span>
-    <span class="right"><button type="submit" id="confirmTransfers" disabled="true" class="btn waves-effect waves-light">Confirm Team!</button></span>
     </div>
 </div>
 <div id="heroesBlock" class="row">

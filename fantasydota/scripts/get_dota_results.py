@@ -17,7 +17,7 @@ if not FE_APIKEY:
     print "Set your fantasy esport APIKEY environment variable"
     exit()
 
-API_LEAGUE_RESULTS_URL = "{}results/leagues/{}".format(API_URL, DEFAULT_LEAGUE)
+API_LEAGUE_RESULTS_URL = "{}results/leagues/".format(API_URL)
 
 
 def check_if_was_allpick_remade(result):
@@ -36,7 +36,7 @@ def get_matches(tournament_id, tstamp_from=0, excluded_match_ids=None, highest_s
     matches = [(match["match_id"], match["series_id"]) for match in match_list_json["result"]["matches"]
                if match["start_time"] >= tstamp_from and match["match_id"] not in excluded_match_ids]
     #matches = [(4870161807, 123)]
-    matches = [(4861754075, 123)]
+    #matches = [(4080856812, 123)]
     print "matches", matches
     saved_ap_remade_matches = {}
     saved_m22_matches = {}
@@ -56,11 +56,11 @@ def get_matches(tournament_id, tstamp_from=0, excluded_match_ids=None, highest_s
         else:
             radiant_team_id = result.get('radiant_team_id', 0)
             dire_team_id = result.get('dire_team_id', 0)
-            radiant_team_id, dire_team_id = (7203342, 2672298)
+            #radiant_team_id, dire_team_id = (7203342, 2672298)
             radiant_team = TEAM_IDS_TO_NAMES[radiant_team_id]
             dire_team = TEAM_IDS_TO_NAMES[dire_team_id]
             add_match_to_api(result, radiant_team, dire_team)
-            #add_heroes_results(result, radiant_team, dire_team, series_id)
+            add_heroes_results(result, radiant_team, dire_team, series_id)
             next_series_id += 1
     for pick_ban_tuple in set(saved_ap_remade_matches.keys()).intersection(set(saved_m22_matches.keys())):
         print("match {} was all-pick remade".format(pick_ban_tuple))
@@ -130,7 +130,7 @@ def add_heroes_results(match, radiant_team, dire_team, series_id):
     })
 
     try:
-        req = urllib2.Request(API_LEAGUE_RESULTS_URL, data=data,
+        req = urllib2.Request(API_LEAGUE_RESULTS_URL + str(HERO_LEAGUE), data=data,
                               headers={'apiKey': FE_APIKEY, "Content-Type": "application/json"})
         response = urllib2.urlopen(req)
         print(response.read())
@@ -202,7 +202,7 @@ def add_match_to_api(match, radiant_team, dire_team):
         data['seriesTeamTwoFinalScore'] = team_two_series_score
     print(data)
     try:
-        req = urllib2.Request(API_LEAGUE_RESULTS_URL, data=json.dumps(data), headers={'apiKey': FE_APIKEY, "Content-Type": "application/json"})
+        req = urllib2.Request(API_LEAGUE_RESULTS_URL + str(DEFAULT_LEAGUE), data=json.dumps(data), headers={'apiKey': FE_APIKEY, "Content-Type": "application/json"})
         response = urllib2.urlopen(req)
         print(response.read())
     except urllib2.HTTPError as e:
@@ -212,7 +212,7 @@ def add_match_to_api(match, radiant_team, dire_team):
 def get_already_stored_matches():
     try:
 
-        req = urllib2.Request(API_LEAGUE_RESULTS_URL,
+        req = urllib2.Request(API_LEAGUE_RESULTS_URL + str(DEFAULT_LEAGUE),
                               headers={"Content-Type": "application/json"})
         response = urllib2.urlopen(req)
         existing_matches = json.loads(response.read())

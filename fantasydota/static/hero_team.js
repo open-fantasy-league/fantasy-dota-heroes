@@ -17,7 +17,7 @@ function getPickees(){
                     var r2 = new Array(), j2 = -1;
                     r2[++j2] = '<tr>';
                     heroes = data;
-                    $.each(data, function(key, hero) {
+                    $.each(data.sort(function(a, b){return b.price - a.price}), function(key, hero) {
                         var id = hero.id;
                         var imgSrc = "/static/images/dota/" + hero.name.replace(/ /g, "_") + "_icon.png";
                         var pickImgSrc = "/static/images/dota/big/" + hero.name.toLowerCase().replace(/ /g, "_") + ".png";
@@ -45,7 +45,10 @@ function getPickees(){
                         r[++j] = 'Row';
                         r[++j] = '" id="';
                         r[++j] = id;
-                        r[++j] = 'Row"><td class="heroImg" sorttable_customkey="';
+                        r[++j] = 'Row"><td class="tradeEntry">';
+                        r[++j] = '<button type="submit" name="buyHero" class="btn waves-effect waves-light tableHeroBtn" disabled="true" data-heroId="';
+                        r[++j] = id;
+                        r[++j] = '">Buy</button></td><td class="heroImg" sorttable_customkey="';
                         r[++j] = hero.name;
                         r[++j] = '"><img src="';
                         r[++j] = imgSrc;
@@ -63,10 +66,6 @@ function getPickees(){
                         r[++j] = hero.stats.wins;
                         r[++j] = '</td><td class="valueEntry">';
                         r[++j] = hero.price;
-                        r[++j] = '</td><td class="tradeEntry">';
-                        r[++j] = '<button type="submit" name="buyHero" class="btn waves-effect waves-light tableHeroBtn" disabled="true" data-heroId="';
-                        r[++j] = id;
-                        r[++j] = '">Buy</button>';
                         r[++j] = '</td></tr>';
                     })
                     r2[++j2] = '</tr>';
@@ -130,7 +129,10 @@ function getTeamThenSetup(){
                         r[++j] = ' future';
                     r[++j] = '" id="future';
                     r[++j] = id;
-                    r[++j] = 'TeamRow"><td class="heroImg" sorttable_customkey="';
+                    r[++j] = 'TeamRow"><td class="tradeEntry">';
+                    r[++j] = '<button type="submit" name="sellHero" class="btn waves-effect waves-light" disabled="true" data-heroId="';
+                    r[++j] = id;
+                    r[++j] = '">Sell</button><td class="heroImg" sorttable_customkey="';
                     r[++j] = hero.name;
                     r[++j] = '"><img src="';
                     r[++j] = imgSrc;
@@ -148,10 +150,6 @@ function getTeamThenSetup(){
                     r[++j] = heroInfo.stats.wins;
                     r[++j] = '</td><td class="valueEntry">';
                     r[++j] = hero.price;
-                    r[++j] = '</td><td class="tradeEntry">';
-                    r[++j] = '<button type="submit" name="sellHero" class="btn waves-effect waves-light" disabled="true" data-heroId="';
-                    r[++j] = id;
-                    r[++j] = '">Sell</button>';
                     r[++j] = '</td></tr>';
                     });
                     $.each(activeTeam, function(key, hero) {
@@ -161,7 +159,10 @@ function getTeamThenSetup(){
                     r[++j] = '<tr class="activex hide teamRow ';
                     r[++j] = '" id="';
                     r[++j] = id;
-                    r[++j] = 'TeamRow"><td class="heroImg" sorttable_customkey="';
+                    r[++j] = 'TeamRow"><td class="tradeEntry">';
+                    r[++j] = '<button type="submit" name="sellHero" class="btn waves-effect waves-light" disabled="true" data-heroId="';
+                    r[++j] = id;
+                    r[++j] = '">Sell</button><td class="heroImg" sorttable_customkey="';
                     r[++j] = hero.name;
                     r[++j] = '"><img src="';
                     r[++j] = imgSrc;
@@ -179,10 +180,6 @@ function getTeamThenSetup(){
                     r[++j] = heroInfo.stats.wins;
                     r[++j] = '</td><td class="valueEntry">';
                     r[++j] = hero.price;
-                    r[++j] = '</td><td class="tradeEntry">';
-                    r[++j] = '<button type="submit" name="sellHero" class="btn waves-effect waves-light" disabled="true" data-heroId="';
-                    r[++j] = id;
-                    r[++j] = '">Sell</button>';
                     r[++j] = '</td></tr>';
                     });
                     $("#teamTable").find("tbody").html(r.join(''));
