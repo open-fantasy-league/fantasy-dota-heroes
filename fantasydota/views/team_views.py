@@ -130,3 +130,25 @@ def recycle_card(request):
         return Response(text, status=e.code, content_type="application/json")
     except Exception as e:
         return Response(e.message, status=500)
+
+
+@view_config(route_name='recycle_cards', renderer='json')
+def recycle_cards(request):
+    user_id = authenticated_userid(request)
+    league_id = get_league_id(request)
+    url = API_URL + "transfers/leagues/" + str(league_id) + "/users/" + str(user_id) + "/recycleCards"
+    try:
+        req = urllib2.Request(
+            url, data=json.dumps(request.json_body), headers={
+                'apiKey': FANTASY_API_KEY,
+                'User-Agent': 'fantasy-dota-frontend',
+                "Content-Type": "application/json"
+            }
+        )
+        response = urllib2.urlopen(req)
+        return json.loads(response.read())
+    except urllib2.HTTPError as e:
+        text = e.read()
+        return Response(text, status=e.code, content_type="application/json")
+    except Exception as e:
+        return Response(e.message, status=500)

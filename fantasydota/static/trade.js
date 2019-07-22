@@ -22,13 +22,14 @@ var tradeOnclick = function tradeOnclick(event){
     disableButtons();
     var button = $(event.currentTarget);
     var action = button.attr('name');
-    var cardId = parseInt(button.attr('data-cardId'));
+    var cardId = parseInt(button.attr('data-cardid'));
     doTrade(event, action, cardId)
 }
 
 var recycleOnClick = function recycleOnClick(event){
+    disableButtons();
     var button = $(event.currentTarget);
-    var cardId = parseInt(button.attr('data-cardId'));
+    var cardId = parseInt(button.attr('data-cardid'));
 
     $.ajax({
         url: '/recycle_card',
@@ -53,7 +54,91 @@ var recycleOnClick = function recycleOnClick(event){
             Swal.fire({'text': jqxhr.responseText, 'type': 'error'});
         }
     })
-}
+};
+
+var recycleFilteredOnClick = function recycleFilteredOnClick(event){
+    disableButtons();
+    var toRecycle = $("#cardsContainer > .active").find(".playerCard").not(".hide");
+    console.log(toRecycle);
+    var toRecycleIds = toRecycle.map(function(){return parseInt(this.dataset.cardid)}).toArray();
+    console.log(toRecycleIds);
+    $.ajax({
+        url: '/recycle_cards',
+        dataType: "json",
+
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({"cardIds": toRecycleIds}),
+        success: function(data){
+            $(".userCredits").each(function(){
+                $(this).text(
+                        Math.round((parseFloat($(this).text()) + league.recycleValue * toRecycle.length)*10) / 10)});
+            toRecycle.each(function(){this.remove()});
+            undisableButtons();
+            Swal.fire({
+             title: "Recycled",
+              type: "success",
+              timer: 400
+            });
+        },
+        error: function(jqxhr, textStatus, errorThrown){
+            undisableButtons();
+            Swal.fire({'text': jqxhr.responseText, 'type': 'error'});
+        }
+    })
+};
+
+var recycleDupeCommonsOnClick = function recycleDupeCommonsOnClick(event){
+    disableButtons();
+    var button = $(event.currentTarget);
+    var allCards = $(".playerCard");
+    var toRecycle = [];
+    var playersToCards = new Map();
+    // javascript group by
+    allCards.each(function(){
+        var card = this;
+        var player = playersToCards.get(card.attr("data-id"));
+        if (player) player.push([card.attr("data-cardid"), card.attr("data-rarity")]);
+        else{
+            playersToCards.set(card.attr("data-id"), [[card.attr("data-cardid"), card.attr("data-rarity")]]);
+        }
+    })
+    var toRecycleIds;
+    for (var [key, value] of playersToCards) {
+        var commons = value.filter(function(a){return a[1] === 'BRONZE'});
+        // If all common slice so as to leave one there
+        if (commons.length === value.length){
+            commons = commons.slice(1);
+        }
+        toRecycleIds = map((x) => x[0]);
+    }
+
+    var toRecycleIds = toRecycle.map((x) => parseInt(x.attr('data-cardid'))).toArray();  // opposite of .hide
+    $.ajax({
+        url: '/recycle_cards',
+        dataType: "json",
+        contentType: "application/json",
+
+        type: "POST",
+        data: JSON.stringify({"cardIds": toRecycleIds}),
+        success: function(data){
+            $(".userCredits").each(function(){
+                $(this).text(
+                        Math.round((parseFloat($(this).text()) + league.recycleValue * toRecycleIds.length)*10) / 10)});
+            $.each(toRecycleIds, function(c){$("div[data-cardid=" + c + "]").remove()});
+            undisableButtons();
+            Swal.fire({
+             title: "Recycled",
+              type: "success",
+              timer: 400
+            });
+        },
+        error: function(jqxhr, textStatus, errorThrown){
+            undisableButtons();
+            Swal.fire({'text': jqxhr.responseText, 'type': 'error'});
+        }
+    })
+};
 
 function doTrade(event, action, playerId){
 console.log(playerId)

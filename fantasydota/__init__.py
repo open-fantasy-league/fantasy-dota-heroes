@@ -102,6 +102,8 @@ def main(global_config, **settings):
     config.add_route('prediction_proxy', '/prediction_proxy')
     config.add_route('new_card_pack', '/new_card_pack')
     config.add_route('recycle_card', '/recycle_card')
+    config.add_route('recycle_cards', '/recycle_cards')
+    config.add_route('recycle_dupe_commons', '/recycle_dupe_commons')
     config.add_route('leaderboard', '/leaderboard')
     config.add_route('predictions', '/predictions')
     config.add_route('collection', '/collection')

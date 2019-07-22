@@ -96,6 +96,8 @@
             <input id="bronzeFilter" type="checkbox" class="filled-in" checked="checked" />
             <label for="bronzeFilter">Bronze</label>
         </div>
+            <span><button type="submit" id="recycleFiltered" title="Recycle all cards under currently selected filters" class="btn waves-effect waves-light">
+        Recycle filtered</button></span>
     </div>
     <div id="cardsContainer" class="row">
         <ul class = "tabs">

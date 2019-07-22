@@ -87,6 +87,10 @@ function cardHtml(p, j, player){
     playerDataCache.set(player.cardId, player);
                             p[++j] = '<div class="card col s12 m3 playerCard rounded bottomRightParent rarity-';
                             p[++j] = player.colour.toLowerCase();
+                            p[++j] = '" data-cardid="';
+                            p[++j] = player.cardId;
+                            p[++j] = '" data-id="';
+                            p[++j] = player.id;
                             p[++j] = '"><div class="card-content"><span class="card-title"><h6><p><span class="playerName centre"><strong>';
                             p[++j] = player.name;
                             p[++j] = '</strong></span></p><p><span class="teamName centre">';
@@ -98,14 +102,14 @@ function cardHtml(p, j, player){
                             p[++j] = capitalizeFirstLetter(player.limitTypes.position);
                             p[++j] = '</span><span class="right"><button name="buyPlayer" id="addTeam-';
                             p[++j] = player.cardId;
-                            p[++j] = '" type="submit" class="btn waves-effect waves-light addTeam" data-cardId="';
+                            p[++j] = '" type="submit" class="btn waves-effect waves-light addTeam" data-cardid="';
                             p[++j] = player.cardId;
                             p[++j] ='">Add</button></span></p>';
                             p[++j] = '</p><div class="card-image"><img src="/static/images/football/placeholder.png"></div><p>';
                             j = drawBonus(player.bonuses, p, j, true);
                             p[++j] = '<button name="recyclePlayer" title="Recycle card for ' + league.recycleValue + ' credits" id="recyclePlayer-';
                             p[++j] = player.cardId;
-                            p[++j] = '" type="submit" class="btn waves-effect waves-light recyclePlayer bottomRight" data-cardId="';
+                            p[++j] = '" type="submit" class="btn waves-effect waves-light recyclePlayer bottomRight" data-cardid="';
                             p[++j] = player.cardId;
                             p[++j] ='">Recycle</button>';
                             p[++j] = '</div></div>';
@@ -175,7 +179,7 @@ function addPlayerHtmlArray(player, r, j, isFutureTeam){
                      if (isFutureTeam) r[++j] = 'future';
                     r[++j] = player.cardId;
                     r[++j] = 'TeamRow"><td class="tradeEntry">';
-                    r[++j] = '<button type="submit" name="sellPlayer" class="btn waves-effect waves-light" disabled="true" data-cardId="';
+                    r[++j] = '<button type="submit" name="sellPlayer" class="btn waves-effect waves-light" disabled="true" data-cardid="';
                     r[++j] = player.cardId;
                     r[++j] = '">Remove</button>';
                     r[++j] = '</td>';
@@ -240,38 +244,7 @@ function setup(){
     console.log("in setup")
     $('ul.tabs').tabs();
     undisableButtons();
-    $('button[name=buyPlayer]').add('button[name=sellPlayer]').each(function (key, btn){
-        $(this).click(tradeOnclick);
-    });
-
-    $('.recyclePlayer').each(function (key, btn){
-        $(this).click(recycleOnClick);
-    });
-
-    $('#confirmTransfers').click(function() {
-        disableButtons()
-        $.ajax({
-            url: "/transfer_proxy",
-            dataType: "json",
-            type: "POST",
-            data: {"sell": toSell, "buy": toBuy, "isCheck": false, "wildcard": wildcard},
-            success: function(data){
-                Swal.fire({
-                 title: "Transfers locked in!",
-                 text: "Note: Your new players will start scoring points starting next game day",
-                  type: "success"
-                }).then(function(){
-                    window.location.reload(false);
-                });
-            },
-            error: function(jqxhr, textStatus, errorThrown){
-                undisableButtons();
-                Swal.fire({'text': jqxhr.responseText, 'type': 'error'});
-            }
-        });
-    });
-
-    $('#newCardPack').click(function() {
+        $('#newCardPack').click(function() {
         $.ajax({
             url: "/new_card_pack",
             dataType: "json",
@@ -336,5 +309,39 @@ function setup(){
                 Swal.fire({'text': jqxhr.responseJSON.msg, 'type': 'error'});
             }
         });
-    })
+    });
+
+    $('button[name=buyPlayer]').add('button[name=sellPlayer]').each(function (key, btn){
+        $(this).click(tradeOnclick);
+    });
+
+    $('.recyclePlayer').each(function (key, btn){
+        $(this).click(recycleOnClick);
+    });
+
+    $('#confirmTransfers').click(function() {
+        disableButtons()
+        $.ajax({
+            url: "/transfer_proxy",
+            dataType: "json",
+            type: "POST",
+            data: {"sell": toSell, "buy": toBuy, "isCheck": false, "wildcard": wildcard},
+            success: function(data){
+                Swal.fire({
+                 title: "Transfers locked in!",
+                 text: "Note: Your new players will start scoring points starting next game day",
+                  type: "success"
+                }).then(function(){
+                    window.location.reload(false);
+                });
+            },
+            error: function(jqxhr, textStatus, errorThrown){
+                undisableButtons();
+                Swal.fire({'text': jqxhr.responseText, 'type': 'error'});
+            }
+        });
+    });
+
+    $("#recycleFiltered").click(recycleFilteredOnClick);
+    $("#recycleDupeCommons").click(recycleDupeCommonsOnClick);
 }
