@@ -91,7 +91,9 @@ function cardHtml(p, player, name, team, position){
                             p.push(player.limitTypes.team);
                             p.push('</span></p></h6></span><p><span class="left">');
                             p.push(player.limitTypes.position);
-                            p.push('</span></p><div class="card-image"><img src="/static/images/football/placeholder.png"></div><p>');
+                            p.push('</span></p><div class="card-image"><img src="/static/images/dota/players/');
+                            p.push(player.id);
+                            p.push('"></div><p>');
                             $.each(player.bonuses, function(bkey, bonus){
                                 p.push('<p><i><span class="bonus-rarity-');
                                 p.push(player.colour.toLowerCase());

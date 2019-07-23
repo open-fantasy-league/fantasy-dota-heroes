@@ -107,7 +107,9 @@ function cardHtml(p, j, player){
                             p[++j] = '" type="submit" class="btn waves-effect waves-light addTeam" data-cardid="';
                             p[++j] = player.cardId;
                             p[++j] ='">Add</button></span></p>';
-                            p[++j] = '</p><div class="card-image"><img src="/static/images/football/placeholder.png"></div><p>';
+                            p[++j] = '</p><div class="card-image"><img src="/static/images/dota/players/';
+                            p[++j] = player.id;
+                            p[++j] = '"></div><p>';
                             j = drawBonus(player.bonuses, p, j, true);
                             p[++j] = '<button name="recyclePlayer" title="Recycle card for ' + league.recycleValue + ' credits" id="recyclePlayer-';
                             p[++j] = player.cardId;
@@ -288,7 +290,9 @@ function setup(){
                             p[++j] = '</span></p></h6></span><p><span class="left">';
                             p[++j] = capitalizeFirstLetter(player.limitTypes.position);
                             p[++j] = '</span>';
-                            p[++j] = '</p><div class="card-image"><img src="/static/images/football/placeholder.png"></div><p>';
+                            p[++j] = '</p><div class="card-image"><img src="/static/images/dota/players/';
+                            p[++j] = player.id;
+                            p[++j] = '"></div><p>';
                             j = drawBonus(player.bonuses, p, j, true);
                             p[++j] = '</div></div>';
                             //newCards.push(p.join(""));
