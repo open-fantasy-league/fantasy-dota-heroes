@@ -70,9 +70,9 @@ teamUrl = apiBaseUrl + "leagues/" + leagueId + "/users/" + userId + "?team&stats
 function cardHtml(p, player, name, team, position){
     if (!player){
     p.push('<div class="card col s6 m3 playerCardSmol rounded bottomRightParent');
-                            p.push('"><div class="card-content"><span class="card-title"><h6><p><span class="playerName centre"><strong>');
+                            p.push('"><div class="card-content"><span class="card-title"><h6><p style="height: 48px;"><span class="playerName left"><strong>');
                             p.push(name);
-                            p.push('</strong></span></p><p><span class="teamName centre">');
+                            p.push('</strong></span><span class="teamName right">');
                             p.push(team);
                             p.push('</span></p></h6></span><p><span class="left">');
                             p.push(position);
@@ -82,9 +82,9 @@ function cardHtml(p, player, name, team, position){
     } else{
                             p.push('<div class="card col s6 m3 playerCardSmol rounded bottomRightParent rarity-');
                             p.push(player.colour.toLowerCase());
-                            p.push('"><div class="card-content"><span class="card-title"><h6><p><span class="playerName centre"><strong>');
+                            p.push('"><div class="card-content"><span class="card-title"><h6><p style="height: 48px;"><span class="playerName left"><strong>');
                             p.push(player.name);
-                            p.push('</strong></span></p><p><span class="teamName centre">');
+                            p.push('</strong></span><span class="teamName right vcenterText">');
                             p.push('<img class="teamIcon" src="/static/images/dota/teams/');
                             p.push(player.limitTypes.team.replace(/[\W_]+/g,"").toLowerCase());
                             p.push('.png"/>');
@@ -93,7 +93,7 @@ function cardHtml(p, player, name, team, position){
                             p.push(player.limitTypes.position);
                             p.push('</span></p><div class="card-image"><img src="/static/images/dota/players/');
                             p.push(player.id);
-                            p.push('"></div><p>');
+                            p.push('.png"></div><p>');
                             $.each(player.bonuses, function(bkey, bonus){
                                 p.push('<p><i><span class="bonus-rarity-');
                                 p.push(player.colour.toLowerCase());

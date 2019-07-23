@@ -32,7 +32,7 @@ var recycleOnClick = function recycleOnClick(event){
     var cardId = parseInt(button.attr('data-cardid'));
 
     $.ajax({
-        url: '/recycle_card',
+        url: '/recycle_cards',
         dataType: "json",
 
         type: "POST",
@@ -192,21 +192,22 @@ console.log(playerId)
             }
             $(".userCredits").each(function(){$(this).text(data.updatedMoney)});
             undisableButtons();
-            if (league.started){
-            Swal.fire({
-             title: "Transfer valid",
-             text: "Confirm Transfers to process changes",
-              type: "success",
-              timer: 800
-            });
+            successClick($(event.currentTarget));
+            /*if (league.started){
+                Swal.fire({
+                 title: "Transfer valid",
+                 text: "Confirm Transfers to process changes",
+                  type: "success",
+                  timer: 800
+                });
             }
             else{
                         Swal.fire({
-             title: "Transfer successful",
-              type: "success",
-              timer: 800
-            });
-            }
+                 title: "Transfer successful",
+                  type: "success",
+                  timer: 800
+                });
+            }*/
         },
         error: function(jqxhr, textStatus, errorThrown){
             toSell = toSellOriginal;
@@ -255,4 +256,17 @@ function removeFromTeam(cardId){
     console.log("removing from team")
     var oldRow = $("#future" + cardId + "TeamRow");
     oldRow.remove();
+}
+
+function successClick(button){
+    var originalText = button.text;
+    button.text('<icon class="tick"/>');
+    button.addClass("tick");
+    button.addClass("green");
+    var interval = setInterval(intervalFunc, 2000);
+    function intervalFunc(){
+        button.text(originalText));
+        button.removeClass("green");
+        clearInterval(interval);
+    }
 }

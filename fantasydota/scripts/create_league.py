@@ -40,7 +40,7 @@ def create_league(name, tournament_id, url):
         'tournamentId': tournament_id,
         'gameId': 1,
         'pickeeDescription': 'Player',
-        'periodDescription': 'Daily',
+        'periodDescription': 'Day',
         'startingMoney': 50.0,
         'teamSize': 5,
         'transferInfo': {

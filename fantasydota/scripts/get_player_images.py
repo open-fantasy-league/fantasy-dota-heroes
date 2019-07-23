@@ -12,7 +12,7 @@ def main():
         teams = json.load(f)
     for team in teams:
         for player in team["players"]:
-            with open("../static/images/dota/players/".format(player["account_id"]), "wb") as f:
+            with open("../static/images/dota/players/{}.png".format(player["account_id"]), "wb") as f:
                 time.sleep(2)
                 f.write(urllib2.urlopen(
                     "https://steamcdn-a.akamaihd.net/apps/dota2/images/players/{}.png".format(player["account_id"])
