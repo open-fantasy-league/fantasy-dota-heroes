@@ -36,7 +36,7 @@ def create_league(name, tournament_id, url):
         'name': name,
         'apiKey': FE_APIKEY,
         'tournamentId': tournament_id,
-        'gameId': 1,
+        'gameId': 2,
         'pickeeDescription': 'Player',
         'periodDescription': 'Day',
         'startingMoney': 50.0,
