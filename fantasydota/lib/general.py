@@ -29,7 +29,6 @@ def all_view_wrapper(request, return_dict, session, user_id=None):
         return_dict['notifications'] = []
         return_dict['username'] = ""
     return_dict['api_base_url'] = API_URL
-    #import remote_pdb; remote_pdb.RemotePdb('127.0.0.1', 4444).set_trace()
     league_id = return_dict.get('league_id', get_league_id(request))
     return_dict['league_id'] = league_id
     return_dict['api_registered'] = return_dict.get('api_registered', False)

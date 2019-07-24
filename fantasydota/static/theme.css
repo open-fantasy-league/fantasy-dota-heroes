@@ -307,7 +307,7 @@ and (max-width: 900px)
 and (max-width: 900px)
 {
  .playerCardSmol {
-    height: 350px !important;
+    height: 365px !important;
  }
  }
 
@@ -316,7 +316,7 @@ and (max-width: 900px)
  }
 
  .playerCardSmol { border-radius : 10px;
-    height: 420px;
+    height: 435px;
  }
 
  .rarity-gold{

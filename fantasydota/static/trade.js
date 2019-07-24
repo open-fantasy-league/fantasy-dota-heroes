@@ -34,9 +34,9 @@ var recycleOnClick = function recycleOnClick(event){
     $.ajax({
         url: '/recycle_cards',
         dataType: "json",
-
+        contentType: "application/json",
         type: "POST",
-        data: {"cardId": cardId},
+        data: JSON.stringify({"cardIds": [cardId]}),
         success: function(data){
             $(".userCredits").each(function(){
                 $(this).text(
@@ -47,7 +47,7 @@ var recycleOnClick = function recycleOnClick(event){
         },
         error: function(jqxhr, textStatus, errorThrown){
             undisableButtons();
-            Swal.fire({'text': jqxhr.responseText, 'type': 'error'});
+            Swal.fire({'text': jqxhr.responseJSON.message, 'type': 'error'});
         }
     })
 };
@@ -75,7 +75,7 @@ var recycleFilteredOnClick = function recycleFilteredOnClick(event){
         },
         error: function(jqxhr, textStatus, errorThrown){
             undisableButtons();
-            Swal.fire({'text': jqxhr.responseText, 'type': 'error'});
+            Swal.fire({'text': jqxhr.responseJSON.message, 'type': 'error'});
         }
     })
 };
@@ -108,7 +108,7 @@ var recycleDupeCommonsOnClick = function recycleDupeCommonsOnClick(event){
         commons.forEach((x) => toRecycleIds.push(x[0]));
     }
     console.log(toRecycleIds)
-    if (toRecycleIds){
+    if (toRecycleIds.length > 0){
         $.ajax({
             url: '/recycle_cards',
             dataType: "json",
@@ -126,7 +126,7 @@ var recycleDupeCommonsOnClick = function recycleDupeCommonsOnClick(event){
             },
             error: function(jqxhr, textStatus, errorThrown){
                 undisableButtons();
-                Swal.fire({'text': jqxhr.responseText, 'type': 'error'});
+                Swal.fire({'text': jqxhr.responseJSON.message, 'type': 'error'});
             }
         })
         }
