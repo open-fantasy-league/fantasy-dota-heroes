@@ -65,7 +65,9 @@
         </table>
     </div>
     % endif
-    <div class="card-panel">
+</div>
+<div id="heroesBlock" class="row">
+<div class="card-panel">
     <div class="card-content">
         %if is_card_system:
             <p><button type="submit" id="newCardPack" title="5 credits" class="btn waves-effect waves-light amber accent-4 grey-text text-darken-3">
@@ -88,8 +90,6 @@
         </div>
     </div>
     </div>
-</div>
-<div id="heroesBlock" class="row">
 % if is_card_system:
     <h2><span class="col s12 m6">Cards (Credits: <strong><span class="userCredits"></span></strong>)</span><span class="col s12 m6 right"></h2>
 </div>
