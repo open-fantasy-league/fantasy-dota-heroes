@@ -16,14 +16,14 @@ from sqlalchemy import and_
 def view_faq(request):
     session = DBSession()
     user_id = authenticated_userid(request)
-    return all_view_wrapper({}, session, user_id)
+    return all_view_wrapper(request, {}, session, user_id)
 
 
 @view_config(route_name='view_privacy', renderer='../templates/privacy.mako')
 def view_privacy(request):
     session = DBSession()
     user_id = authenticated_userid(request)
-    return all_view_wrapper({}, session, user_id)
+    return all_view_wrapper(request, {}, session, user_id)
 
 
 @view_config(route_name='view_rules', renderer='../templates/rules.mako')
