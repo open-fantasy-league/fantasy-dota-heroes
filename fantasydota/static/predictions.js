@@ -50,7 +50,7 @@ function fillMatches(){
                             seriesIdToScores.set(thisSeries.seriesId, [thisSeries.seriesTeamOneFinalScore, thisSeries.seriesTeamTwoFinalScore])
                         }
                         r[++j] = '<div class="row" style="height: 100%">'
-                        r[++j] = '<div class="card-panel horizontal matchRow center-align ';
+                        r[++j] = '<div class="card-panel horizontal predictionsMatchRow center-align ';
                         r[++j] = teamOneBasic + teamTwoBasic;
                         r[++j] = '" id="match';
                          r[++j] = thisSeries.seriesId;
