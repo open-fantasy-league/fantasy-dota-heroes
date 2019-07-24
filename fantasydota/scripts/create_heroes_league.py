@@ -25,15 +25,15 @@ def create_league(name, tournament_id, url):
             multiplier = 3.0
         periods.append({'start': '2019-08-{} 00:00'.format(day), 'end': '2019-08-{} 00:00'.format(day+1), 'multiplier': multiplier})
 
-    # pickees = []
-    # calib_tournaments = [10989, 10826, 10979, 10944, 10616, 10749]
-    # hero_values = squeeze_values_together(calibrate_all_hero_values(calib_tournaments, 1561148316))
-    # for id, name in herodict.items():
-    #     pickees.append({"id": id, "name": name, "value": hero_values[id]})
-    # with open(os.getcwd() + "/../data/pickee_calibration.json", "w+") as f:
-    #     json.dump(pickees, f)
-    with open(os.getcwd() + "/../data/pickee_calibration.json") as f:
-        pickees = json.load(f)
+    pickees = []
+    calib_tournaments = [10989, 10826, 10979, 10944, 10616, 10749, 11109, 11115, 11099]
+    hero_values = squeeze_values_together(calibrate_all_hero_values(calib_tournaments, 1561148316))
+    for id, name in herodict.items():
+        pickees.append({"id": id, "name": name, "value": hero_values[id]})
+    with open(os.getcwd() + "/../data/pickee_calibration.json", "w+") as f:
+        json.dump(pickees, f)
+    # with open(os.getcwd() + "/../data/pickee_calibration.json") as f:
+    #     pickees = json.load(f)
 
     data = {
         'name': name,

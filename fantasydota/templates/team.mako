@@ -74,6 +74,7 @@
     <span class="right"><button type="submit" id="confirmTransfers" disabled="true" class="btn waves-effect waves-light right">Confirm Team!</button></span>
     </p>
         % else:
+         <div class="row"><strong>Transfers for heroes will open 1st August (In order to utilise <i>The Summit</i> results for re-calibrating hero prices)</strong></div>
             <div class="row"><span class="col m4 s12 left"><button type="submit" id="useWildcard" disabled="true" title="Wildcard sells entire team and resets to 50 credits" class="btn waves-effect waves-light hide">
         Use Wildcard</button></span><span class="col m4 s12">50 Credits to pick a team of 5 heroes</span>
         <span class="col m4 s12"><button type="submit" id="confirmTransfers" disabled="true" class="btn waves-effect waves-light right">Confirm Team!</button></span>
