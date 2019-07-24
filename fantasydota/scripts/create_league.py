@@ -26,12 +26,10 @@ def create_league(name, tournament_id, url):
 
     periods = []
     for day in ([15, 16, 17, 18, 20, 21, 22, 23, 24, 25]):
-        if day < 20:
+        if day < 25:
             multiplier = 1.0
-        elif day < 25:
-            multiplier = 2.0
         else:
-            multiplier = 3.0
+            multiplier = 2.0
         periods.append({'start': '2019-08-{} 00:00'.format(day), 'end': '2019-08-{} 00:00'.format(day+1), 'multiplier': multiplier})
 
     data = {

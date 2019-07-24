@@ -112,8 +112,7 @@ $( document ).ready(function() {
     %if is_card_system or not period:
     <div id="friendBlock" class="col s12 m5">
         <div class="card-panel">
-        <p>2x points multiplier for final day</p>
-            <p>Results updated end of match day</p>
+            <p>Results updated ~1 minute after game ends</p>
             <p><a href="https://discord.gg/MAH7EEv" target="_blank">Discord channel for suggestions/improvements</a></p>
         </div>
     % if user_id:

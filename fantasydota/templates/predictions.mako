@@ -16,6 +16,14 @@
     <link href="/static/dotateams.css?v=1.0" rel="stylesheet"/>
 </%def>
 
+<%def name="player_league_id()">
+    % for lid, name in leagues.items():
+        % if name == 'Pros':
+            ${lid}
+        % endif
+    % endfor
+</%def>
+
 <div class="row">
     <span class="left">
     <h2>Predictions: <a id="leagueLink" target="_blank"></a></h2>
@@ -29,6 +37,7 @@
             </ul>
         </ul>
 </div>
+% if is_card_system:
 <div class="row">
 <div id="predictionsBlock" class="col s12">
     <button type="submit" id="predictBtn" class="btn waves-effect waves-light">Update predictions</button>
@@ -52,3 +61,10 @@ $( document ).ready(function() {
 })
 </script>
 <script src="/static/predictions.js?v=1.0"></script>
+% else:
+<div class="row">
+    <div class="card-panel">
+        Predictions only applicable for <a href="/change_league?league_id=${player_league_id()}">Pro league</a>
+    </div>
+</div>
+% endif
