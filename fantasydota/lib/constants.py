@@ -7,9 +7,9 @@ SECONDS_IN_DAY = 86400
 SECONDS_IN_12_HOURS = 43200
 SECONDS_IN_HOUR = 3600
 
-DEFAULT_LEAGUE = 3 if socket.gethostname() == 'fantasyesport' else 6
-OTHER_LEAGUES = [10]
-HERO_LEAGUE = 10
+DEFAULT_LEAGUE = 1 if socket.gethostname() == 'fantasyesport' else 6
+HERO_LEAGUE = 2 if socket.gethostname() == 'fantasyesport' else 10
+OTHER_LEAGUES = [HERO_LEAGUE]
 API_URL = 'https://dota.openfantasyleague.com/api/v1/' if socket.gethostname() == 'fantasyesport' else 'http://localhost/api/v1/'
 
 FESPORT_ACCOUNT = 0
