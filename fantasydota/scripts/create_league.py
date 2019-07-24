@@ -59,20 +59,29 @@ def create_league(name, tournament_id, url):
                    {'name': 'team', 'max': 2, 'types': [{'name': t['name']} for t in teams]}
                    ],
         "stats": [
-            {'name': 'kills', 'allFactionPoints': 0.3},
-            {'name': 'deaths', 'allFactionPoints': -0.3},
+            #{'name': 'kills', 'allFactionPoints': 0.3},separateFactionPoints
+            # {'name': 'deaths', 'allFactionPoints': -0.3},
+            {'name': 'kills', 'separateFactionPoints': [
+                {'name': 'support', 'value': 0.2}, {'name': 'offlane', 'value': 0.3}, {'name': 'core', 'value': 0.4}
+            ]},
+            {'name': 'assists', 'separateFactionPoints': [
+                {'name': 'support', 'value': 0.1}, {'name': 'offlane', 'value': 0.1}, {'name': 'core', 'value': 0.05}
+            ]},
+            {'name': 'deaths', 'separateFactionPoints': [
+                {'name': 'support', 'value': -0.2}, {'name': 'offlane', 'value': -0.2}, {'name': 'core', 'value': -0.5}
+            ]},
             {'name': 'last hits', 'allFactionPoints': 0.003},
             {'name': 'denies', 'allFactionPoints': 0.003},
             {'name': 'GPM', 'description': 'Gold per Minute', 'allFactionPoints': 0.002},
             {'name': 'towers', 'description': 'Last hits on tower', 'allFactionPoints': 1.0},
             {'name': 'roshans', 'description': 'Last hits on roshan', 'allFactionPoints': 1.0},
             {'name': 'teamfight participation', 'allFactionPoints': 3.0},
-            {'name': 'observer wards', 'allFactionPoints': 0.25},
+            {'name': 'observer wards', 'allFactionPoints': 0.2},
             {'name': 'dewards', 'allFactionPoints': 0.25},
             {'name': 'camps stacked', 'allFactionPoints': 0.5},
             {'name': 'runes', 'description': 'Runes picked up', 'allFactionPoints': 0.25},
             {'name': 'first blood', 'allFactionPoints': 4.0},
-            {'name': 'stun', 'description': 'Number of seconds of stun applied to enemies', 'allFactionPoints': 0.05},
+            #{'name': 'stun', 'description': 'Number of seconds of stun applied to enemies', 'allFactionPoints': 0.05},
         ],
         'pickees': get_players(teams)
     }
