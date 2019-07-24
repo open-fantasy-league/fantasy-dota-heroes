@@ -18,7 +18,7 @@ def conceded_whilst_playing(on, off, other_team_goals):
 
 
 def add_game_manually():
-    with open(os.getcwd() + '/../data/football_result_template.json') as f:
+    with open(os.getcwd() + '/../miscdata/football_result_template.json') as f:
         match = json.load(f)
     add_game(match)
 

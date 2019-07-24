@@ -8,7 +8,7 @@ from fantasydota.scripts.create_league import get_players
 
 def main():
     filename = raw_input("filename:")
-    with open(os.getcwd() + "/../data/" + filename) as f:
+    with open(os.getcwd() + "/../miscdata/" + filename) as f:
         players = get_players(json.load(f))
 
     current_players = all_pickees()

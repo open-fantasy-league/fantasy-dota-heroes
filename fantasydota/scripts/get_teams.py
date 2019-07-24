@@ -21,7 +21,7 @@ if __name__ == "__main__":
     data = get_data()
     #import pdb; pdb.set_trace()
     try:
-        with open(os.getcwd() + '/../data/dotaplayers_{}.json'.format(datetime.now().date()), 'w+') as f:
+        with open(os.getcwd() + '/../miscdata/dotaplayers_{}.json'.format(datetime.now().date()), 'w+') as f:
             f.write(json.dumps(data))
     except:
         import pdb;

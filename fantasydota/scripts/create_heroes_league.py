@@ -30,9 +30,9 @@ def create_league(name, tournament_id, url):
     hero_values = squeeze_values_together(calibrate_all_hero_values(calib_tournaments, 1561148316))
     for id, name in herodict.items():
         pickees.append({"id": id, "name": name, "value": hero_values[id]})
-    with open(os.getcwd() + "/../data/pickee_calibration.json", "w+") as f:
+    with open(os.getcwd() + "/../miscdata/pickee_calibration.json", "w+") as f:
         json.dump(pickees, f)
-    # with open(os.getcwd() + "/../data/pickee_calibration.json") as f:
+    # with open(os.getcwd() + "/../miscdata/pickee_calibration.json") as f:
     #     pickees = json.load(f)
 
     data = {

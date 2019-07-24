@@ -11,7 +11,7 @@ if not FE_APIKEY:
 
 
 def get_fixtures():
-    with open(os.getcwd() + "/../data/fixtures.json") as f:
+    with open(os.getcwd() + "/../miscdata/fixtures.json") as f:
         fixtures = json.load(f)
     series = []
     for i, match in enumerate(fixtures):

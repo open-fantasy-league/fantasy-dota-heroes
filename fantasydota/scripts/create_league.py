@@ -21,7 +21,7 @@ def get_players(teams):
 
 def create_league(name, tournament_id, url):
     filename = raw_input("players filename:")
-    with open(os.getcwd() + "/../data/" + filename) as f:
+    with open(os.getcwd() + "/../miscdata/" + filename) as f:
         teams = json.load(f)
 
     periods = []

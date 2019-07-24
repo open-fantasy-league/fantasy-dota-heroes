@@ -8,7 +8,7 @@ import urllib2
 
 def main():
     filename = raw_input("players filename:")
-    with open(os.getcwd() + "/../data/" + filename) as f:
+    with open(os.getcwd() + "/../miscdata/" + filename) as f:
         teams = json.load(f)
     for team in teams:
         for player in team["players"]:
