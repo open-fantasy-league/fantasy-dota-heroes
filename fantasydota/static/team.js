@@ -55,19 +55,11 @@ $("#filterCards").click(function (){
         }
     })
 });
-//$.ajax({url: apiBaseUrl + "leagues/" + leagueId,
-//    dataType: "json",
-//    type: "GET",
-//    success: function(data){
-//        league = data;
-//        console.log(league)
-//    }
-//}).then(getPickees)
 
 function drawBonus(bonuses, p, j, makeWhite){
 
     $.each(bonuses, function(bkey, bonus){
-        p[++j] = '<p><i><span ';
+        p[++j] = '<p class="noMargin"><i><span ';
         if (makeWhite) p[++j] = 'class="bonus-rarity-text" ';
         if (bonus.description){
             p[++j] = 'title="';
@@ -161,7 +153,6 @@ else{
             }).then(getTeamThenSetup);
         }
     else{
-        $("#pleaseLogIn").css('display', 'initial');
         $("#myTeamBlock").addClass('hide');
         undisableButtons();
         $('button[name=buyPlayer]').each(function (key, btn){

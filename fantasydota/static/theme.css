@@ -403,6 +403,13 @@ and (max-width: 900px)
     width: 32px;
   }
 
+/*
+random stuff
+*/
+  .noMargin{
+    margin: 0px;
+  }
+
   .vcenterText{
     display: flex;
     align-items: center;

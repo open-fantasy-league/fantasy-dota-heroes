@@ -65,18 +65,32 @@
         </table>
     </div>
     % endif
-    <div class="row">
-        <span class="left"><button type="submit" id="confirmTransfers" disabled="true" class="btn waves-effect waves-light">Confirm Team!</button></span>
-        <span class="right"><button type="submit" id="useWildcard" disabled="true" title="Wildcard sells entire team and resets to 50 credits" class="btn waves-effect waves-light hide">
-        Use Wildcard</button></span>
+    <div class="card-panel">
+    <div class="card-content">
+        %if is_card_system:
+            <p><button type="submit" id="newCardPack" title="5 credits" class="btn waves-effect waves-light amber accent-4 grey-text text-darken-3">
+    New pack<i class="material-icons right">shopping_cart</i>
+    </button> <span class="center">50 Credits to buy cards and form a team of 5 players (max 2 from each team)</span>
+    <span class="right"><button type="submit" id="confirmTransfers" disabled="true" class="btn waves-effect waves-light right">Confirm Team!</button></span>
+    </p>
+        % else:
+            <div class="row"><span class="col m4 s12 left"><button type="submit" id="useWildcard" disabled="true" title="Wildcard sells entire team and resets to 50 credits" class="btn waves-effect waves-light hide">
+        Use Wildcard</button></span><span class="col m4 s12">50 Credits to pick a team of 5 heroes</span>
+        <span class="col m4 s12"><button type="submit" id="confirmTransfers" disabled="true" class="btn waves-effect waves-light right">Confirm Team!</button></span>
+        </div>
+        %endif
+        <div class="row"><span id="transferDelayMessage" class="hide left">
+            Transfers processed at start of next game day.</span>
+        <span id="remainingTransfersSection" class="hide right"><span id="remainingTransfers"></span> remaining transfers available
+        </span>
+        <span id="infinityTransfersUntilStartMessage" class="hide right">Infinite times before tournament start. 10 available transfers during tournament.</span>
+        </div>
+    </div>
     </div>
 </div>
 <div id="heroesBlock" class="row">
 % if is_card_system:
-    <h2><span class="col s12 m3">Cards (Credits: <strong><span class="userCredits"></span></strong>)</span><span class="col s12 m6 right">
-    <button type="submit" id="newCardPack" title="5 credits" class="btn waves-effect waves-light amber accent-4">
-    New pack<i class="material-icons right">shopping_cart</i>
-    </button></h2>
+    <h2><span class="col s12 m6">Cards (Credits: <strong><span class="userCredits"></span></strong>)</span><span class="col s12 m6 right"></h2>
 </div>
     <div id="cardFilters" class="row">
         <div class="col s1"><button type="button" id="filterCards" class="btn waves-effect waves-light">Filter</button></div>

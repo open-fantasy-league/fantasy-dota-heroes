@@ -109,13 +109,16 @@ function getTeamThenSetup(){
                         var activeTeam = futureTeam;
                         }
                     if (data.user.remainingTransfers != null && league.started){
-                        $("#remainingTransfersSection").css('display', 'initial');
+                        $("#remainingTransfersSection").removeClass('hide');
                         $("#remainingTransfers").text(data.user.remainingTransfers);
                     }
                     $(".userCredits").text(data.user.money);
                     $(".userPoints").text(data.stats.points);
                     if (!league.started){
-                        $("#infinityTransfersUntilStartMessage").css('display', 'initial');
+                        $("#infinityTransfersUntilStartMessage").removeClass('hide');
+                    }
+                    else{
+                        $("#transferDelayMessage").removeClass('hide');
                     }
                     if (!data.user.usedWildcard && league.started){
                         $("#useWildcard").removeClass('hide');
