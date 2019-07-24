@@ -45,3 +45,17 @@ function switchActiveTeam(inp){
     }
 
 }
+
+function successClick(button){
+    var originalText = button.text();
+    console.log(originalText);
+    button.html('<i class="material-icons">check</i>');
+    button.addClass("tick");
+    button.addClass("green");
+    var interval = setInterval(intervalFunc, 2000);
+    function intervalFunc(){
+        button.text(originalText);
+        button.removeClass("green");
+        clearInterval(interval);
+    }
+}

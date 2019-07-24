@@ -71,12 +71,9 @@ function doTrade(event, action, heroId){
             $(".userCredits").each(function(){$(this).text(data.updatedMoney)});
             $("#remainingTransfers").text(data.remainingTransfers);
             undisableButtonsFiltered(data.updatedMoney);
-            Swal.fire({
-             title: "Transfer valid",
-             text: "Confirm Transfers to process changes",
-              type: "success",
-              timer: 1600
-            });
+            if (action !== "sellHero"){
+                successClick($(event.currentTarget));
+            }
         },
         error: function(jqxhr, textStatus, errorThrown){
             toSell = toSellOriginal;

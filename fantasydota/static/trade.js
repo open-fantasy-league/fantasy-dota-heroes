@@ -43,11 +43,7 @@ var recycleOnClick = function recycleOnClick(event){
                         Math.round((parseFloat($(this).text()) + league.recycleValue)*10) / 10)});
             $("#recyclePlayer-" + cardId).parent().parent().parent().remove();
             undisableButtons();
-            Swal.fire({
-             title: "Recycled",
-              type: "success",
-              timer: 400
-            });
+            successClick(button);
         },
         error: function(jqxhr, textStatus, errorThrown){
             undisableButtons();
@@ -75,11 +71,7 @@ var recycleFilteredOnClick = function recycleFilteredOnClick(event){
                         Math.round((parseFloat($(this).text()) + league.recycleValue * toRecycle.length)*10) / 10)});
             toRecycle.each(function(){this.remove()});
             undisableButtons();
-            Swal.fire({
-             title: "Recycled",
-              type: "success",
-              timer: 400
-            });
+            successClick($(event.currentTarget));
         },
         error: function(jqxhr, textStatus, errorThrown){
             undisableButtons();
@@ -130,11 +122,7 @@ var recycleDupeCommonsOnClick = function recycleDupeCommonsOnClick(event){
                             Math.round((parseFloat($(this).text()) + league.recycleValue * toRecycleIds.length)*10) / 10)});
                 toRecycleIds.forEach((c) => $("div[data-cardid=" + c + "]").remove());
                 undisableButtons();
-                Swal.fire({
-                 title: "Recycled",
-                  type: "success",
-                  timer: 400
-                });
+                successClick(button);
             },
             error: function(jqxhr, textStatus, errorThrown){
                 undisableButtons();
@@ -192,22 +180,7 @@ console.log(playerId)
             }
             $(".userCredits").each(function(){$(this).text(data.updatedMoney)});
             undisableButtons();
-            successClick($(event.currentTarget));
-            /*if (league.started){
-                Swal.fire({
-                 title: "Transfer valid",
-                 text: "Confirm Transfers to process changes",
-                  type: "success",
-                  timer: 800
-                });
-            }
-            else{
-                        Swal.fire({
-                 title: "Transfer successful",
-                  type: "success",
-                  timer: 800
-                });
-            }*/
+            if (action !== "sellPlayer") successClick($(event.currentTarget));
         },
         error: function(jqxhr, textStatus, errorThrown){
             toSell = toSellOriginal;
@@ -256,17 +229,4 @@ function removeFromTeam(cardId){
     console.log("removing from team")
     var oldRow = $("#future" + cardId + "TeamRow");
     oldRow.remove();
-}
-
-function successClick(button){
-    var originalText = button.text;
-    button.text('<icon class="tick"/>');
-    button.addClass("tick");
-    button.addClass("green");
-    var interval = setInterval(intervalFunc, 2000);
-    function intervalFunc(){
-        button.text(originalText));
-        button.removeClass("green");
-        clearInterval(interval);
-    }
 }
