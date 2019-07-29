@@ -30,13 +30,13 @@
 
         </div>
         <div class="row">
-                    <div class="col s3">
+                    <div class="col s12 m3">
                             <div class="row"><a id="steam-button" href="/login/steam/">
                 <img src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_01.png" width="180" height="35" border="0"/>
                 </a></div>
                 <div class="row"><a id="google-button" href="/login/google-oauth2/"><img src="/static/thirdparty/google-sign-in.png"/></a></div>
             </div>
-        <div class="col s9">
+        <div class="col m9 s12">
             <form action="${request.route_path('login')}" method="POST" id="loginForm">
                 <div class="input-field col s4">
                     <input type="text" name="username" placeholder="Username">
