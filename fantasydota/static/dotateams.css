@@ -1,3 +1,4 @@
+.newbee{color: #29a6de;background-color: #271818;}
 .keengaming{color: #a3a2a2;background-color: #7b4e94;}
 .teamliquid{color: #0e2240;background-color: #FFFFFF;}
 .alliance{color: #cdcbd0;background-color: #08783e;}
@@ -16,6 +17,26 @@
 .vicigaming{color: #000000;background-color: #c5c6c6;}
 .fnatic{color: #f19e33;background-color: #000000;}
 .infamous{color: #FFFFFF;background-color: #a8120e;}
+.newbeenewbee{background: linear-gradient(135deg,#271818 0%,#271818 50%,#271818 50%,#271818 100%);}
+.newbeekeengaming{background: linear-gradient(135deg,#271818 0%,#271818 50%,#7b4e94 50%,#7b4e94 100%);}
+.newbeeteamliquid{background: linear-gradient(135deg,#271818 0%,#271818 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.newbeealliance{background: linear-gradient(135deg,#271818 0%,#271818 50%,#08783e 50%,#08783e 100%);}
+.newbeeteamsecret{background: linear-gradient(135deg,#271818 0%,#271818 50%,#000000 50%,#000000 100%);}
+.newbeeninjasinpyjamas{background: linear-gradient(135deg,#271818 0%,#271818 50%,#a88b65 50%,#a88b65 100%);}
+.newbeenavi{background: linear-gradient(135deg,#271818 0%,#271818 50%,#fff200 50%,#fff200 100%);}
+.newbeeevilgeniuses{background: linear-gradient(135deg,#271818 0%,#271818 50%,#202d5a 50%,#202d5a 100%);}
+.newbeevirtuspro{background: linear-gradient(135deg,#271818 0%,#271818 50%,#111821 50%,#111821 100%);}
+.newbeerng{background: linear-gradient(135deg,#271818 0%,#271818 50%,#FFFFFF 50%,#FFFFFF 100%);}
+.newbeechaos{background: linear-gradient(135deg,#271818 0%,#271818 50%,#000000 50%,#000000 100%);}
+.newbeepsglgd{background: linear-gradient(135deg,#271818 0%,#271818 50%,#2a8ec1 50%,#2a8ec1 100%);}
+.newbeeog{background: linear-gradient(135deg,#271818 0%,#271818 50%,#022554 50%,#022554 100%);}
+.newbeetncpredator{background: linear-gradient(135deg,#271818 0%,#271818 50%,#f26925 50%,#f26925 100%);}
+.newbeeforwardgaming{background: linear-gradient(135deg,#271818 0%,#271818 50%,#d60b66 50%,#d60b66 100%);}
+.newbeemineski{background: linear-gradient(135deg,#271818 0%,#271818 50%,#3a3a3c 50%,#3a3a3c 100%);}
+.newbeevicigaming{background: linear-gradient(135deg,#271818 0%,#271818 50%,#c5c6c6 50%,#c5c6c6 100%);}
+.newbeefnatic{background: linear-gradient(135deg,#271818 0%,#271818 50%,#000000 50%,#000000 100%);}
+.newbeeinfamous{background: linear-gradient(135deg,#271818 0%,#271818 50%,#a8120e 50%,#a8120e 100%);}
+.keengamingnewbee{background: linear-gradient(135deg,#7b4e94 0%,#7b4e94 50%,#271818 50%,#271818 100%);}
 .keengamingkeengaming{background: linear-gradient(135deg,#7b4e94 0%,#7b4e94 50%,#7b4e94 50%,#7b4e94 100%);}
 .keengamingteamliquid{background: linear-gradient(135deg,#7b4e94 0%,#7b4e94 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .keengamingalliance{background: linear-gradient(135deg,#7b4e94 0%,#7b4e94 50%,#08783e 50%,#08783e 100%);}
@@ -34,6 +55,7 @@
 .keengamingvicigaming{background: linear-gradient(135deg,#7b4e94 0%,#7b4e94 50%,#c5c6c6 50%,#c5c6c6 100%);}
 .keengamingfnatic{background: linear-gradient(135deg,#7b4e94 0%,#7b4e94 50%,#000000 50%,#000000 100%);}
 .keengaminginfamous{background: linear-gradient(135deg,#7b4e94 0%,#7b4e94 50%,#a8120e 50%,#a8120e 100%);}
+.teamliquidnewbee{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#271818 50%,#271818 100%);}
 .teamliquidkeengaming{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#7b4e94 50%,#7b4e94 100%);}
 .teamliquidteamliquid{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .teamliquidalliance{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#08783e 50%,#08783e 100%);}
@@ -52,6 +74,7 @@
 .teamliquidvicigaming{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#c5c6c6 50%,#c5c6c6 100%);}
 .teamliquidfnatic{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#000000 50%,#000000 100%);}
 .teamliquidinfamous{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#a8120e 50%,#a8120e 100%);}
+.alliancenewbee{background: linear-gradient(135deg,#08783e 0%,#08783e 50%,#271818 50%,#271818 100%);}
 .alliancekeengaming{background: linear-gradient(135deg,#08783e 0%,#08783e 50%,#7b4e94 50%,#7b4e94 100%);}
 .allianceteamliquid{background: linear-gradient(135deg,#08783e 0%,#08783e 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .alliancealliance{background: linear-gradient(135deg,#08783e 0%,#08783e 50%,#08783e 50%,#08783e 100%);}
@@ -70,6 +93,7 @@
 .alliancevicigaming{background: linear-gradient(135deg,#08783e 0%,#08783e 50%,#c5c6c6 50%,#c5c6c6 100%);}
 .alliancefnatic{background: linear-gradient(135deg,#08783e 0%,#08783e 50%,#000000 50%,#000000 100%);}
 .allianceinfamous{background: linear-gradient(135deg,#08783e 0%,#08783e 50%,#a8120e 50%,#a8120e 100%);}
+.teamsecretnewbee{background: linear-gradient(135deg,#000000 0%,#000000 50%,#271818 50%,#271818 100%);}
 .teamsecretkeengaming{background: linear-gradient(135deg,#000000 0%,#000000 50%,#7b4e94 50%,#7b4e94 100%);}
 .teamsecretteamliquid{background: linear-gradient(135deg,#000000 0%,#000000 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .teamsecretalliance{background: linear-gradient(135deg,#000000 0%,#000000 50%,#08783e 50%,#08783e 100%);}
@@ -88,6 +112,7 @@
 .teamsecretvicigaming{background: linear-gradient(135deg,#000000 0%,#000000 50%,#c5c6c6 50%,#c5c6c6 100%);}
 .teamsecretfnatic{background: linear-gradient(135deg,#000000 0%,#000000 50%,#000000 50%,#000000 100%);}
 .teamsecretinfamous{background: linear-gradient(135deg,#000000 0%,#000000 50%,#a8120e 50%,#a8120e 100%);}
+.ninjasinpyjamasnewbee{background: linear-gradient(135deg,#a88b65 0%,#a88b65 50%,#271818 50%,#271818 100%);}
 .ninjasinpyjamaskeengaming{background: linear-gradient(135deg,#a88b65 0%,#a88b65 50%,#7b4e94 50%,#7b4e94 100%);}
 .ninjasinpyjamasteamliquid{background: linear-gradient(135deg,#a88b65 0%,#a88b65 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .ninjasinpyjamasalliance{background: linear-gradient(135deg,#a88b65 0%,#a88b65 50%,#08783e 50%,#08783e 100%);}
@@ -106,6 +131,7 @@
 .ninjasinpyjamasvicigaming{background: linear-gradient(135deg,#a88b65 0%,#a88b65 50%,#c5c6c6 50%,#c5c6c6 100%);}
 .ninjasinpyjamasfnatic{background: linear-gradient(135deg,#a88b65 0%,#a88b65 50%,#000000 50%,#000000 100%);}
 .ninjasinpyjamasinfamous{background: linear-gradient(135deg,#a88b65 0%,#a88b65 50%,#a8120e 50%,#a8120e 100%);}
+.navinewbee{background: linear-gradient(135deg,#fff200 0%,#fff200 50%,#271818 50%,#271818 100%);}
 .navikeengaming{background: linear-gradient(135deg,#fff200 0%,#fff200 50%,#7b4e94 50%,#7b4e94 100%);}
 .naviteamliquid{background: linear-gradient(135deg,#fff200 0%,#fff200 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .navialliance{background: linear-gradient(135deg,#fff200 0%,#fff200 50%,#08783e 50%,#08783e 100%);}
@@ -124,6 +150,7 @@
 .navivicigaming{background: linear-gradient(135deg,#fff200 0%,#fff200 50%,#c5c6c6 50%,#c5c6c6 100%);}
 .navifnatic{background: linear-gradient(135deg,#fff200 0%,#fff200 50%,#000000 50%,#000000 100%);}
 .naviinfamous{background: linear-gradient(135deg,#fff200 0%,#fff200 50%,#a8120e 50%,#a8120e 100%);}
+.evilgeniusesnewbee{background: linear-gradient(135deg,#202d5a 0%,#202d5a 50%,#271818 50%,#271818 100%);}
 .evilgeniuseskeengaming{background: linear-gradient(135deg,#202d5a 0%,#202d5a 50%,#7b4e94 50%,#7b4e94 100%);}
 .evilgeniusesteamliquid{background: linear-gradient(135deg,#202d5a 0%,#202d5a 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .evilgeniusesalliance{background: linear-gradient(135deg,#202d5a 0%,#202d5a 50%,#08783e 50%,#08783e 100%);}
@@ -142,6 +169,7 @@
 .evilgeniusesvicigaming{background: linear-gradient(135deg,#202d5a 0%,#202d5a 50%,#c5c6c6 50%,#c5c6c6 100%);}
 .evilgeniusesfnatic{background: linear-gradient(135deg,#202d5a 0%,#202d5a 50%,#000000 50%,#000000 100%);}
 .evilgeniusesinfamous{background: linear-gradient(135deg,#202d5a 0%,#202d5a 50%,#a8120e 50%,#a8120e 100%);}
+.virtuspronewbee{background: linear-gradient(135deg,#111821 0%,#111821 50%,#271818 50%,#271818 100%);}
 .virtusprokeengaming{background: linear-gradient(135deg,#111821 0%,#111821 50%,#7b4e94 50%,#7b4e94 100%);}
 .virtusproteamliquid{background: linear-gradient(135deg,#111821 0%,#111821 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .virtusproalliance{background: linear-gradient(135deg,#111821 0%,#111821 50%,#08783e 50%,#08783e 100%);}
@@ -160,6 +188,7 @@
 .virtusprovicigaming{background: linear-gradient(135deg,#111821 0%,#111821 50%,#c5c6c6 50%,#c5c6c6 100%);}
 .virtusprofnatic{background: linear-gradient(135deg,#111821 0%,#111821 50%,#000000 50%,#000000 100%);}
 .virtusproinfamous{background: linear-gradient(135deg,#111821 0%,#111821 50%,#a8120e 50%,#a8120e 100%);}
+.rngnewbee{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#271818 50%,#271818 100%);}
 .rngkeengaming{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#7b4e94 50%,#7b4e94 100%);}
 .rngteamliquid{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .rngalliance{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#08783e 50%,#08783e 100%);}
@@ -178,6 +207,7 @@
 .rngvicigaming{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#c5c6c6 50%,#c5c6c6 100%);}
 .rngfnatic{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#000000 50%,#000000 100%);}
 .rnginfamous{background: linear-gradient(135deg,#FFFFFF 0%,#FFFFFF 50%,#a8120e 50%,#a8120e 100%);}
+.chaosnewbee{background: linear-gradient(135deg,#000000 0%,#000000 50%,#271818 50%,#271818 100%);}
 .chaoskeengaming{background: linear-gradient(135deg,#000000 0%,#000000 50%,#7b4e94 50%,#7b4e94 100%);}
 .chaosteamliquid{background: linear-gradient(135deg,#000000 0%,#000000 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .chaosalliance{background: linear-gradient(135deg,#000000 0%,#000000 50%,#08783e 50%,#08783e 100%);}
@@ -196,6 +226,7 @@
 .chaosvicigaming{background: linear-gradient(135deg,#000000 0%,#000000 50%,#c5c6c6 50%,#c5c6c6 100%);}
 .chaosfnatic{background: linear-gradient(135deg,#000000 0%,#000000 50%,#000000 50%,#000000 100%);}
 .chaosinfamous{background: linear-gradient(135deg,#000000 0%,#000000 50%,#a8120e 50%,#a8120e 100%);}
+.psglgdnewbee{background: linear-gradient(135deg,#2a8ec1 0%,#2a8ec1 50%,#271818 50%,#271818 100%);}
 .psglgdkeengaming{background: linear-gradient(135deg,#2a8ec1 0%,#2a8ec1 50%,#7b4e94 50%,#7b4e94 100%);}
 .psglgdteamliquid{background: linear-gradient(135deg,#2a8ec1 0%,#2a8ec1 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .psglgdalliance{background: linear-gradient(135deg,#2a8ec1 0%,#2a8ec1 50%,#08783e 50%,#08783e 100%);}
@@ -214,6 +245,7 @@
 .psglgdvicigaming{background: linear-gradient(135deg,#2a8ec1 0%,#2a8ec1 50%,#c5c6c6 50%,#c5c6c6 100%);}
 .psglgdfnatic{background: linear-gradient(135deg,#2a8ec1 0%,#2a8ec1 50%,#000000 50%,#000000 100%);}
 .psglgdinfamous{background: linear-gradient(135deg,#2a8ec1 0%,#2a8ec1 50%,#a8120e 50%,#a8120e 100%);}
+.ognewbee{background: linear-gradient(135deg,#022554 0%,#022554 50%,#271818 50%,#271818 100%);}
 .ogkeengaming{background: linear-gradient(135deg,#022554 0%,#022554 50%,#7b4e94 50%,#7b4e94 100%);}
 .ogteamliquid{background: linear-gradient(135deg,#022554 0%,#022554 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .ogalliance{background: linear-gradient(135deg,#022554 0%,#022554 50%,#08783e 50%,#08783e 100%);}
@@ -232,6 +264,7 @@
 .ogvicigaming{background: linear-gradient(135deg,#022554 0%,#022554 50%,#c5c6c6 50%,#c5c6c6 100%);}
 .ogfnatic{background: linear-gradient(135deg,#022554 0%,#022554 50%,#000000 50%,#000000 100%);}
 .oginfamous{background: linear-gradient(135deg,#022554 0%,#022554 50%,#a8120e 50%,#a8120e 100%);}
+.tncpredatornewbee{background: linear-gradient(135deg,#f26925 0%,#f26925 50%,#271818 50%,#271818 100%);}
 .tncpredatorkeengaming{background: linear-gradient(135deg,#f26925 0%,#f26925 50%,#7b4e94 50%,#7b4e94 100%);}
 .tncpredatorteamliquid{background: linear-gradient(135deg,#f26925 0%,#f26925 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .tncpredatoralliance{background: linear-gradient(135deg,#f26925 0%,#f26925 50%,#08783e 50%,#08783e 100%);}
@@ -250,6 +283,7 @@
 .tncpredatorvicigaming{background: linear-gradient(135deg,#f26925 0%,#f26925 50%,#c5c6c6 50%,#c5c6c6 100%);}
 .tncpredatorfnatic{background: linear-gradient(135deg,#f26925 0%,#f26925 50%,#000000 50%,#000000 100%);}
 .tncpredatorinfamous{background: linear-gradient(135deg,#f26925 0%,#f26925 50%,#a8120e 50%,#a8120e 100%);}
+.forwardgamingnewbee{background: linear-gradient(135deg,#d60b66 0%,#d60b66 50%,#271818 50%,#271818 100%);}
 .forwardgamingkeengaming{background: linear-gradient(135deg,#d60b66 0%,#d60b66 50%,#7b4e94 50%,#7b4e94 100%);}
 .forwardgamingteamliquid{background: linear-gradient(135deg,#d60b66 0%,#d60b66 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .forwardgamingalliance{background: linear-gradient(135deg,#d60b66 0%,#d60b66 50%,#08783e 50%,#08783e 100%);}
@@ -268,6 +302,7 @@
 .forwardgamingvicigaming{background: linear-gradient(135deg,#d60b66 0%,#d60b66 50%,#c5c6c6 50%,#c5c6c6 100%);}
 .forwardgamingfnatic{background: linear-gradient(135deg,#d60b66 0%,#d60b66 50%,#000000 50%,#000000 100%);}
 .forwardgaminginfamous{background: linear-gradient(135deg,#d60b66 0%,#d60b66 50%,#a8120e 50%,#a8120e 100%);}
+.mineskinewbee{background: linear-gradient(135deg,#3a3a3c 0%,#3a3a3c 50%,#271818 50%,#271818 100%);}
 .mineskikeengaming{background: linear-gradient(135deg,#3a3a3c 0%,#3a3a3c 50%,#7b4e94 50%,#7b4e94 100%);}
 .mineskiteamliquid{background: linear-gradient(135deg,#3a3a3c 0%,#3a3a3c 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .mineskialliance{background: linear-gradient(135deg,#3a3a3c 0%,#3a3a3c 50%,#08783e 50%,#08783e 100%);}
@@ -286,6 +321,7 @@
 .mineskivicigaming{background: linear-gradient(135deg,#3a3a3c 0%,#3a3a3c 50%,#c5c6c6 50%,#c5c6c6 100%);}
 .mineskifnatic{background: linear-gradient(135deg,#3a3a3c 0%,#3a3a3c 50%,#000000 50%,#000000 100%);}
 .mineskiinfamous{background: linear-gradient(135deg,#3a3a3c 0%,#3a3a3c 50%,#a8120e 50%,#a8120e 100%);}
+.vicigamingnewbee{background: linear-gradient(135deg,#c5c6c6 0%,#c5c6c6 50%,#271818 50%,#271818 100%);}
 .vicigamingkeengaming{background: linear-gradient(135deg,#c5c6c6 0%,#c5c6c6 50%,#7b4e94 50%,#7b4e94 100%);}
 .vicigamingteamliquid{background: linear-gradient(135deg,#c5c6c6 0%,#c5c6c6 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .vicigamingalliance{background: linear-gradient(135deg,#c5c6c6 0%,#c5c6c6 50%,#08783e 50%,#08783e 100%);}
@@ -304,6 +340,7 @@
 .vicigamingvicigaming{background: linear-gradient(135deg,#c5c6c6 0%,#c5c6c6 50%,#c5c6c6 50%,#c5c6c6 100%);}
 .vicigamingfnatic{background: linear-gradient(135deg,#c5c6c6 0%,#c5c6c6 50%,#000000 50%,#000000 100%);}
 .vicigaminginfamous{background: linear-gradient(135deg,#c5c6c6 0%,#c5c6c6 50%,#a8120e 50%,#a8120e 100%);}
+.fnaticnewbee{background: linear-gradient(135deg,#000000 0%,#000000 50%,#271818 50%,#271818 100%);}
 .fnatickeengaming{background: linear-gradient(135deg,#000000 0%,#000000 50%,#7b4e94 50%,#7b4e94 100%);}
 .fnaticteamliquid{background: linear-gradient(135deg,#000000 0%,#000000 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .fnaticalliance{background: linear-gradient(135deg,#000000 0%,#000000 50%,#08783e 50%,#08783e 100%);}
@@ -322,6 +359,7 @@
 .fnaticvicigaming{background: linear-gradient(135deg,#000000 0%,#000000 50%,#c5c6c6 50%,#c5c6c6 100%);}
 .fnaticfnatic{background: linear-gradient(135deg,#000000 0%,#000000 50%,#000000 50%,#000000 100%);}
 .fnaticinfamous{background: linear-gradient(135deg,#000000 0%,#000000 50%,#a8120e 50%,#a8120e 100%);}
+.infamousnewbee{background: linear-gradient(135deg,#a8120e 0%,#a8120e 50%,#271818 50%,#271818 100%);}
 .infamouskeengaming{background: linear-gradient(135deg,#a8120e 0%,#a8120e 50%,#7b4e94 50%,#7b4e94 100%);}
 .infamousteamliquid{background: linear-gradient(135deg,#a8120e 0%,#a8120e 50%,#FFFFFF 50%,#FFFFFF 100%);}
 .infamousalliance{background: linear-gradient(135deg,#a8120e 0%,#a8120e 50%,#08783e 50%,#08783e 100%);}

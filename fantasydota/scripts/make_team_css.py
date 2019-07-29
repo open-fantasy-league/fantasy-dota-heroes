@@ -3,6 +3,7 @@ COLOURS = {
     "alliance": ["#cdcbd0", "#08783e"],
     "evilgeniuses": ["#FFFFFF", "#202d5a"],
     "forwardgaming": ["#00a6cf", "#d60b66"],
+    "newbee": ["#29a6de", "#271818"],
     "chaos": ["#f8a770", "#000000"],
     "fnatic": ["#f19e33", "#000000"],
     "infamous": ["#FFFFFF", "#a8120e"],
