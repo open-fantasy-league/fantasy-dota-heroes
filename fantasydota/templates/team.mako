@@ -126,7 +126,7 @@
         <div id="cores" class="col s12"></div>
         <div id="offlanes" class="col s12"></div>
     </div>
-    <script src="/static/trade.js?v=1.0"></script>
+    <script src="/static/trade.js?v=1.1"></script>
 <script src="/static/team.js?v=1.1"></script>
 %else:
     <h2>Heroes (Credits Available: <strong><span class="userCredits"></span></strong>)</h2>

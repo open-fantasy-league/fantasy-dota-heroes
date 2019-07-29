@@ -63,7 +63,7 @@
                 })
             };
             var signup = function signup(){
-                if (!apiRegistered){
+                if (!apiRegistered && userId){
                 $.ajax({url: apiBaseUrl + "users/" + userId + "/join/" + leagueId + "?username=" + username,
                     dataType: "json",
                     type: "POST",

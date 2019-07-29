@@ -58,6 +58,8 @@ var recycleFilteredOnClick = function recycleFilteredOnClick(event){
     console.log(toRecycle);
     var toRecycleIds = toRecycle.map(function(){return parseInt(this.dataset.cardid)}).toArray();
     console.log(toRecycleIds);
+    Swal.fire({'text': toRecycleIds.length + ' cards will be recycled. Please confirm', showCancelButton: true, 'type': 'info'}).then(function(result){
+    if (result.value){
     $.ajax({
         url: '/recycle_cards',
         dataType: "json",
@@ -70,13 +72,14 @@ var recycleFilteredOnClick = function recycleFilteredOnClick(event){
                 $(this).text(
                         Math.round((parseFloat($(this).text()) + league.recycleValue * toRecycle.length)*10) / 10)});
             toRecycle.each(function(){this.remove()});
-            undisableButtons();
             successClick($(event.currentTarget));
         },
         error: function(jqxhr, textStatus, errorThrown){
-            undisableButtons();
             Swal.fire({'text': jqxhr.responseJSON.message, 'type': 'error'});
         }
+    })
+    }
+    undisableButtons();
     })
 };
 

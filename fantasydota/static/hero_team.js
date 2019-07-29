@@ -242,7 +242,7 @@ function setup(){
                  showCancelButton: true,
                  text: "(only available once)",
                 }).then(function(result){
-                    if (result){
+                    if (result.value){
                         wildcard = true;
                         $(".userCredits").each(function(){$(this).text(data.updatedMoney)});
                         $("[id$=TeamRow]").remove();
