@@ -1,3 +1,4 @@
+import argparse
 import os
 import urllib2
 
@@ -6,6 +7,7 @@ from fantasydota.lib.calibration import combine_calibrations, calibrate_value, c
     squeeze_values_together
 from fantasydota.lib.constants import API_URL, DEFAULT_LEAGUE, HERO_LEAGUE, TI9
 
+OFFSET = 0.2
 
 def recalibrate():
     FE_APIKEY = os.environ.get("FE_APIKEY")
@@ -21,13 +23,20 @@ def recalibrate():
     response = urllib2.urlopen(req)
     heroes = json.loads(response.read())
     print(response)
-    data = {"pickees": []}
-    new_calibration = squeeze_values_together(calibrate_all_hero_values([TI9], 1551814635))
-    for hero in heroes:
-        id_ = hero['id']
-        new_value = round(combine_calibrations(hero['cost'], new_calibration[id_]), 1)
-        print "new calbration %s: %s, from %s" % (id_, new_value, hero['cost'])
-        data["pickees"].append({'id': id_, 'cost': new_value})
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-f', nargs='?', help='already calculated filename')
+    args = parser.parse_args()
+    if args.f:
+        with open(os.getcwd() + "/../miscdata/{}".format(args.f), "w+") as f:
+            data = {"pickees": [{'id': h['id'], 'price': h['value'] + OFFSET} for h in json.load(f)]}
+    else:
+        data = {"pickees": []}
+        new_calibration = squeeze_values_together(calibrate_all_hero_values([TI9], 1551814635))
+        for hero in heroes:
+            id_ = hero['id']
+            new_value = round(combine_calibrations(hero['value'], new_calibration[id_]), 1)
+            print "new calbration %s: %s, from %s" % (id_, new_value, hero['value'])
+            data["pickees"].append({'id': id_, 'price': new_value})
     try:
         req = urllib2.Request(
             update_url, data=json.dumps(data), headers={

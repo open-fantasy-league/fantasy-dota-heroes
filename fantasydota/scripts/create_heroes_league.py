@@ -26,64 +26,64 @@ def create_league(name, tournament_id, url):
         periods.append({'start': '2019-08-{} 00:00'.format(day), 'end': '2019-08-{} 00:00'.format(day+1), 'multiplier': multiplier})
 
     pickees = []
-    calib_tournaments = [10989, 10826, 10979, 10944, 10616, 10749, 11109, 11115, 11099]
+    calib_tournaments = [10989, 10826, 10979, 10944, 10616, 10749, 11109, 11115, 11099, 11162]
     hero_values = squeeze_values_together(calibrate_all_hero_values(calib_tournaments, 1561148316))
     for id, name in herodict.items():
         pickees.append({"id": id, "name": name, "value": hero_values[id]})
-    with open(os.getcwd() + "/../miscdata/pickee_calibration.json", "w+") as f:
+    with open(os.getcwd() + "/../miscdata/pickee_calibration2.json", "w+") as f:
         json.dump(pickees, f)
-    # with open(os.getcwd() + "/../miscdata/pickee_calibration.json") as f:
+    # with open(os.getcwd() + "/../miscdata/pickee_calibration_post_summit.json") as f:
     #     pickees = json.load(f)
 
-    data = {
-        'name': name,
-        'apiKey': FE_APIKEY,
-        'tournamentId': tournament_id,
-        'gameId': 1,
-        'pickeeDescription': 'Hero',
-        'periodDescription': 'Day',
-        'startingMoney': 50.0,
-        'teamSize': 5,
-        'transferInfo': {
-            'isCardSystem': False,
-            'transferWildcard': True,
-            "transferBlockedDuringPeriod": True,
-            'transferLimit': 10,
-            'noWildcardForLateRegister': True,
-        },
-        "periods": periods,
-        "url": url,
-        "applyPointsAtStartTime": True,
-        "manuallyCalculatePoints": True,
-        "stats": [
-            {'name': 'picks'},
-            {'name': 'bans'},
-            {'name': 'wins'},
-        ],
-        'pickees': pickees
-    }
-
-    try:
-        req = urllib2.Request(
-            API_URL + "leagues/", data=json.dumps(data), headers={
-                "Content-Type": "application/json"
-            }
-        )
-        response = urllib2.urlopen(req)
-        print(response.read())
-    except urllib2.HTTPError as e:
-        print(e.read())
+    # data = {
+    #     'name': name,
+    #     'apiKey': FE_APIKEY,
+    #     'tournamentId': tournament_id,
+    #     'gameId': 1,
+    #     'pickeeDescription': 'Hero',
+    #     'periodDescription': 'Day',
+    #     'startingMoney': 50.0,
+    #     'teamSize': 5,
+    #     'transferInfo': {
+    #         'isCardSystem': False,
+    #         'transferWildcard': True,
+    #         "transferBlockedDuringPeriod": True,
+    #         'transferLimit': 10,
+    #         'noWildcardForLateRegister': True,
+    #     },
+    #     "periods": periods,
+    #     "url": url,
+    #     "applyPointsAtStartTime": True,
+    #     "manuallyCalculatePoints": True,
+    #     "stats": [
+    #         {'name': 'picks'},
+    #         {'name': 'bans'},
+    #         {'name': 'wins'},
+    #     ],
+    #     'pickees': pickees
+    # }
+    #
     # try:
     #     req = urllib2.Request(
-    #         API_URL + "leagues/" + str(DEFAULT_LEAGUE), data=json.dumps({'transferOpen': True}), headers={
-    #             "Content-Type": "application/json",
-    #             "apiKey": FE_APIKEY
+    #         API_URL + "leagues/", data=json.dumps(data), headers={
+    #             "Content-Type": "application/json"
     #         }
     #     )
     #     response = urllib2.urlopen(req)
     #     print(response.read())
     # except urllib2.HTTPError as e:
     #     print(e.read())
+    # # try:
+    # #     req = urllib2.Request(
+    # #         API_URL + "leagues/" + str(DEFAULT_LEAGUE), data=json.dumps({'transferOpen': True}), headers={
+    # #             "Content-Type": "application/json",
+    # #             "apiKey": FE_APIKEY
+    # #         }
+    # #     )
+    # #     response = urllib2.urlopen(req)
+    # #     print(response.read())
+    # # except urllib2.HTTPError as e:
+    # #     print(e.read())
 
 
 if __name__ == "__main__":

@@ -15,21 +15,21 @@ def manual_overrides(hero_list):
     # underlord["value"] = 14.0
     return hero_list
 
-
+# now actually crop extreme values
 def squeeze_values_together(hero_values):
     # this is for if unsure and would rather have things have averagish values rather than exremes
     average_value = sum(hero_values.values()) / len(hero_values)
     for key, value in hero_values.items():
-        tmp = value - ((value - average_value) / 2.0)
+        #tmp = value - ((value - average_value) / 1.4)
         new_value = round(min(
             max(
-                2.9 + random.randint(0, 5) / 10,
-                tmp
+                3.0 + random.randint(0, 5) / 10,
+                value
             ),
-            23.5 + random.randint(0, 6) / 10
+            21.5 + random.randint(0, 6) / 10
         ), 1)
         hero_values[key] = new_value
-        print "New squeezed %s: %s" % (key, new_value)
+        print "New cropped %s: %s" % (key, new_value)
     return hero_values
 
 
@@ -58,7 +58,7 @@ def calibrate_all_hero_values(tournament_ids, tstamp_from):
 
 
 def calibrate_value(average_points, our_points):
-    output = ((float(our_points) / float(average_points)) * 9.8 * 3 + 9.8) / 4.
+    output = ((float(our_points) / float(average_points)) * 10 + 10 * 3) / 4.
     return output
 
 

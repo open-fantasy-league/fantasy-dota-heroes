@@ -54,7 +54,10 @@ def update_hero_calibration_dict(match, hero_calibration_dict=None, **kwargs):
         else:
             stage = 1
         try:
-            hero_calibration_dict[value["hero_id"]] += result_to_points(stage, ban, win)
+            if match["start_time"] > 1563609841:
+                hero_calibration_dict[value["hero_id"]] += 2 * result_to_points(stage, ban, win)
+            else:
+                hero_calibration_dict[value["hero_id"]] += result_to_points(stage, ban, win)
         except KeyError:
             pass
 
