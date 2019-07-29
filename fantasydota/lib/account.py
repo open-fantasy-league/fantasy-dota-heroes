@@ -4,6 +4,7 @@ from social_core.pipeline.user import USER_FIELDS
 from social_core.utils import module_member, slugify
 
 from fantasydota.lib.constants import OTHER_ACCOUNT, SOCIAL_CODES
+from fantasydota.views.account_views import logout
 
 
 def check_invalid_password(password, confirm_password):
@@ -91,3 +92,22 @@ def create_user(strategy, details, backend, user=None, *args, **kwargs):
         'is_new': True,
         'user': strategy.create_user(**fields)
 }
+
+def social_user(backend, uid, user=None, *args, **kwargs):
+    '''OVERRIDED: It will logout the current user
+    instead of raise an exception '''
+
+    provider = backend.name
+    social = backend.strategy.storage.user.get_social_auth(provider, uid)
+    if social:
+        if user and social.user != user:
+            print('This {0} account is already in use.'.format(provider))
+            logout(backend.strategy.request)
+            #msg = 'This {0} account is already in use.'.format(provider)
+            #raise AuthAlreadyAssociated(backend, msg)
+        elif not user:
+            user = social.user
+    return {'social': social,
+            'user': user,
+            'is_new': user is None,
+            'new_association': False}
