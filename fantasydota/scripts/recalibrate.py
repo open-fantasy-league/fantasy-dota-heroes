@@ -27,7 +27,7 @@ def recalibrate():
     parser.add_argument('-f', nargs='?', help='already calculated filename')
     args = parser.parse_args()
     if args.f:
-        with open(os.getcwd() + "/../miscdata/{}".format(args.f), "w+") as f:
+        with open(os.getcwd() + "/../miscdata/{}".format(args.f)) as f:
             data = {"pickees": [{'id': h['id'], 'price': h['price'] + OFFSET} for h in json.load(f)]}
     else:
         data = {"pickees": []}

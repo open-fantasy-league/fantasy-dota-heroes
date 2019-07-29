@@ -13,7 +13,7 @@
 </%def>
 
 <%def name="custom_css()">
-    <link href="/static/dotateams.css?v=1.0" rel="stylesheet"/>
+    <link href="/static/dotateams.css?v=1.1" rel="stylesheet"/>
 </%def>
 
 <%def name="player_league_id()">
