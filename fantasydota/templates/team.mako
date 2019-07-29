@@ -146,6 +146,7 @@
     <div id="tableContainer" style="display:none">
         <table class="sortable card-table striped centered" id="heroesTable">
             <tr style="cursor: pointer" id="heroesTableHeader">
+                <th class="sellHeader">Buy</th>
                 <th class="heroHeader">Hero</th>
                 <th class="dummyHeader" colspan="0"></th>
                 <th class="heroPointsHeader sorttable_numeric">Points</th>
@@ -153,7 +154,6 @@
                 <th class="bansHeader extra sorttable_numeric">Bans</th>
                 <th class="winsHeader extra sorttable_numeric">Wins</th>
                 <th class="valueHeader sorttable_numeric">Value</th>
-                <th class="sellHeader">Buy</th>
             </tr>
         </table>
     </div>

@@ -28,7 +28,7 @@ def recalibrate():
     args = parser.parse_args()
     if args.f:
         with open(os.getcwd() + "/../miscdata/{}".format(args.f), "w+") as f:
-            data = {"pickees": [{'id': h['id'], 'price': h['value'] + OFFSET} for h in json.load(f)]}
+            data = {"pickees": [{'id': h['id'], 'price': h['price'] + OFFSET} for h in json.load(f)]}
     else:
         data = {"pickees": []}
         new_calibration = squeeze_values_together(calibrate_all_hero_values([TI9], 1551814635))
