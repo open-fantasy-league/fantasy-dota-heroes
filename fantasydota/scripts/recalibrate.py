@@ -7,7 +7,7 @@ from fantasydota.lib.calibration import combine_calibrations, calibrate_value, c
     squeeze_values_together
 from fantasydota.lib.constants import API_URL, DEFAULT_LEAGUE, HERO_LEAGUE, TI9
 
-OFFSET = 0.2
+OFFSET = 0.0
 
 def recalibrate():
     FE_APIKEY = os.environ.get("FE_APIKEY")
@@ -15,7 +15,7 @@ def recalibrate():
         print "Set your fantasy esport APIKEY environment variable"
         exit()
 
-    url = "{}pickees/{}".format(API_URL, DEFAULT_LEAGUE)
+    url = "{}pickees/{}".format(API_URL, HERO_LEAGUE)
     update_url = "{}pickees/leagues/{}/updatePrices".format(API_URL, HERO_LEAGUE)
     req = urllib2.Request(
         url,
