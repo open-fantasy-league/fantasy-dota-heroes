@@ -84,6 +84,6 @@ def collection(request):
 @view_config(route_name='change_league', renderer='../templates/collection.mako')
 def change_league(request):
     league_id = get_league_id(request)
-    response = HTTPFound(location=re.sub("[?&]league_id=\d+", "", request.environ['HTTP_REFERER']))
+    response = HTTPFound(location=re.sub("[?&]league_id=\d+", "", request.environ.get('HTTP_REFERER', '/team')))
     response.set_cookie('league_id', value=str(league_id), max_age=31536000)  # one year
     return response
