@@ -3,7 +3,6 @@ from urllib import quote_plus
 
 from fantasydota import DBSession
 from fantasydota.auth import get_user
-from fantasydota.lib.account import check_invalid_password
 from fantasydota.lib.constants import FESPORT_ACCOUNT
 from fantasydota.lib.general import all_view_wrapper
 from fantasydota.models import User, PasswordReset, Notification
@@ -13,6 +12,15 @@ from pyramid.security import remember, forget, authenticated_userid
 from pyramid.view import view_config
 from pyramid_mailer import get_mailer
 from pyramid_mailer.message import Message
+def check_invalid_password(password, confirm_password):
+    if len(password) < 6:
+        return {"message": "Password too short. 6 characters minimum please"}
+    elif len(password) > 20:
+        return {"message": "Password too long. 20 characters maximum please"}
+    elif confirm_password != password:
+        return{"message": "Passwords did not match"}
+    else:
+        return False
 
 
 @view_config(route_name='login', renderer='../templates/login.mako')
