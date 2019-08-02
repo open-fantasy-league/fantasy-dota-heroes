@@ -13,7 +13,6 @@ from pyramid.view import view_config
 from pyramid_mailer import get_mailer
 from pyramid_mailer.message import Message
 
-
 def check_invalid_password(password, confirm_password):
     if len(password) < 6:
         return {"message": "Password too short. 6 characters minimum please"}

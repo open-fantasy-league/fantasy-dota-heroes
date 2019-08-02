@@ -11,6 +11,7 @@
 <%def name="meta_description()">
     FAQ page for fantasy dota
 </%def>
+<%def name="custom_css()"></%def>
 
 <div>
 <h2>What is this site?</h2>

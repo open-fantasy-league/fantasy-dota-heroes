@@ -414,3 +414,10 @@ random stuff
     display: flex;
     align-items: center;
   }
+
+.floatBottomLeft{
+    position: fixed;
+    bottom: 15px;
+    left: 15px;
+    z-index: 20;
+}
