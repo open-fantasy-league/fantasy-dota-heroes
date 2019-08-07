@@ -29,12 +29,13 @@ def check_22_picks(result):
 
 
 def get_matches(tournament_id, tstamp_from=0, excluded_match_ids=None, highest_series_id=0):
+    tstamp_from = 0
     next_series_id = highest_series_id + 1
     excluded_match_ids = excluded_match_ids or []
     match_list_json = get_league_match_list(tournament_id)
 
     matches = [(match["match_id"], match["series_id"]) for match in match_list_json["result"]["matches"]
-               if match["start_time"] >= tstamp_from and match["match_id"] not in excluded_match_ids]
+               if match["start_time"] >= tstamp_from and match["match_id"] not in excluded_match_ids][:10]
     #matches = [(4870161807, 123)]
     #matches = [(4080856812, 123)]
     print "matches", matches
@@ -56,11 +57,11 @@ def get_matches(tournament_id, tstamp_from=0, excluded_match_ids=None, highest_s
         else:
             radiant_team_id = result.get('radiant_team_id', 0)
             dire_team_id = result.get('dire_team_id', 0)
-            #radiant_team_id, dire_team_id = (7203342, 2672298)
+            radiant_team_id, dire_team_id = (7203342, 2672298)
             radiant_team = TEAM_IDS_TO_NAMES[radiant_team_id]
             dire_team = TEAM_IDS_TO_NAMES[dire_team_id]
             add_match_to_api(result, radiant_team, dire_team)
-            add_heroes_results(result, radiant_team, dire_team, series_id)
+            #add_heroes_results(result, radiant_team, dire_team, series_id)
             next_series_id += 1
     for pick_ban_tuple in set(saved_ap_remade_matches.keys()).intersection(set(saved_m22_matches.keys())):
         print("match {} was all-pick remade".format(pick_ban_tuple))
@@ -149,11 +150,12 @@ def add_match_to_api(match, radiant_team, dire_team):
         pickee = {"id": player["account_id"], "isTeamOne": player["isRadiant"],
                   'stats': [
                       {'field': 'kills', 'value': player["kills"]},
+                      {'field': 'assists', 'value': player["assists"]},
                       {'field': 'deaths', 'value': player["deaths"]},
                       {'field': 'last hits', 'value': player["last_hits"]},
                       {'field': 'denies', 'value': player["denies"]},
                       {'field': 'first blood', 'value': player["firstblood_claimed"]},
-                      {'field': 'stun', 'value': player["stuns"]},
+                      #{'field': 'stun', 'value': player["stuns"]},
                       {'field': 'teamfight participation', 'value': player["teamfight_participation"]},
                       {'field': 'GPM', 'value': player["gold_per_min"]},
                       {'field': 'towers', 'value': player["towers_killed"]},

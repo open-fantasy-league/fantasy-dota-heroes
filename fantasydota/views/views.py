@@ -54,10 +54,10 @@ def add_friend(request):
 
     new_friend = request.POST["newFriend"].lower()
     new_friend_id = session.query(User.id).filter(User.username == new_friend).first()
-    if session.query(Friend).filter(and_(Friend.user_id == user_id, Friend.friend == new_friend)).first():
-        return {"success": False, "message": "You have already added that friend"}
-    elif not new_friend_id:
+    if not new_friend_id:
         return {"success": False, "message": "Sorry. That person does not exist"}
+    elif session.query(Friend).filter(and_(Friend.user_id == user_id, Friend.friend == new_friend_id[0])).first():
+        return {"success": False, "message": "You have already added that friend"}
     else:
         session.add(Friend(user_id, new_friend_id[0]))
         return {"success": True, "message": "Friend successfully added"}
