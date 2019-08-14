@@ -86,6 +86,16 @@ def update_team_name(request):
                 team = Team(user_id, league_id, new_name)
                 session.add(team)
             data = {"success": True, "team_name": new_name}
+            url = API_URL + "users/" + str(user_id) + "/leagues/" + str(league_id) + "/update"
+            req = urllib2.Request(
+                url,  data=json.dumps({'username': new_name}), headers={
+                    'apiKey': FANTASY_API_KEY,
+                    'User-Agent': 'fantasy-dota-frontend',
+                    "Content-Type": "application/json"
+                }
+            )
+
+            response = urllib2.urlopen(req)
             return Response(json_body=data, status=200, content_type="application/json")
 
 
