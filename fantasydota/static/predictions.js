@@ -1,5 +1,5 @@
 var predictionsUrl;
-getLeagueInfo(false, false, false, false).then(makePredictions);
+getLeagueInfo(true, false, false, false).then(makePredictions);
 var seriesIdToScores = new Map();
 
 function makePredictions(){
