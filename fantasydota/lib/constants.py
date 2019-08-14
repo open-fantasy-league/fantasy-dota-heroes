@@ -41,9 +41,10 @@ TEAM_IDS_TO_NAMES = {
 2108395: 'TNC Predator',
 2163: 'Team Liquid',
 2672298: 'Infamous',
-6214538: 'Forward Gaming',
+6214538: 'Newbee',
 7203342: 'Chaos',
-6209804: 'RNG'
+6209804: 'RNG',
+    1375614    : 'Newbee'
 
 
 

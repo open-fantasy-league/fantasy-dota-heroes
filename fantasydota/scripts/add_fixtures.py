@@ -17,7 +17,7 @@ def get_fixtures():
     for i, match in enumerate(fixtures):
         series.append({
             'seriesId': i, 'tournamentId': TI9, 'teamOne': match[0], 'teamTwo': match[1], "startTstamp": match[2],
-            "matches": []
+            "matches": [], "bestOf": match[3]
         })
     return series
 
