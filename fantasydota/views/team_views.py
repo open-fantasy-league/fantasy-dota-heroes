@@ -86,7 +86,7 @@ def update_team_name(request):
                 team = Team(user_id, league_id, new_name)
                 session.add(team)
             data = {"success": True, "team_name": new_name}
-            url = API_URL + "users/" + str(user_id) + "/leagues/" + str(league_id) + "/update"
+            url = API_URL + "users/" + str(user_id) + "/leagues/" + str(league_id)
             req = urllib2.Request(
                 url,  data=json.dumps({'username': new_name}), headers={
                     'apiKey': FANTASY_API_KEY,
@@ -95,7 +95,8 @@ def update_team_name(request):
                 }
             )
 
-            response = urllib2.urlopen(req)
+            response = urllib2.urlopen(req).read()
+            print(response)
             return Response(json_body=data, status=200, content_type="application/json")
 
 

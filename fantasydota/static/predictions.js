@@ -7,7 +7,7 @@ function makePredictions(){
     $("#leagueLink").text(league.name);
     var r = new Array(), j = -1;
     console.log(league)
-    if (league.currentPeriod){
+    if (true || league.currentPeriod){
         for(var i=1; i<=league.numPeriods; i++){
             r[++j] = '<li><a href="/predictions?period=';
             r[++j] = i;

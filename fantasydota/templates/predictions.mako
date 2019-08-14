@@ -60,7 +60,7 @@ $( document ).ready(function() {
     });
 })
 </script>
-<script src="/static/predictions.js?v=1.0"></script>
+<script src="/static/predictions.js?v=1.1"></script>
 % else:
 <div class="row">
     <div class="card-panel">
