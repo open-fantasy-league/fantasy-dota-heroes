@@ -31,11 +31,11 @@ def recalibrate():
             data = {"pickees": [{'id': h['id'], 'price': h['price'] + OFFSET} for h in json.load(f)]}
     else:
         data = {"pickees": []}
-        new_calibration = squeeze_values_together(calibrate_all_hero_values([TI9], 1551814635))
+        new_calibration = squeeze_values_together(calibrate_all_hero_values([TI9], 1565750963))
         for hero in heroes:
             id_ = hero['id']
-            new_value = round(combine_calibrations(hero['value'], new_calibration[id_]), 1)
-            print "new calbration %s: %s, from %s" % (id_, new_value, hero['value'])
+            new_value = round(combine_calibrations(hero['price'], new_calibration[id_]), 1)
+            print "new calbration %s: %s, from %s" % (id_, new_value, hero['price'])
             data["pickees"].append({'id': id_, 'price': new_value})
     try:
         req = urllib2.Request(

@@ -101,7 +101,7 @@ function cardHtml(p, j, player){
                             p[++j] ='">Add</button></span>';
                             p[++j] = '</p><div class="card-image"><img src="/static/images/dota/players/';
                             p[++j] = player.id;
-                            p[++j] = '.png"></div><p>';
+                            p[++j] = '.png"></div>';
                             j = drawBonus(player.bonuses, p, j, true);
                             p[++j] = '<button name="recyclePlayer" title="Recycle card for ' + league.recycleValue + ' credits" id="recyclePlayer-';
                             p[++j] = player.cardId;

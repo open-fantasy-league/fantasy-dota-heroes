@@ -105,9 +105,9 @@ $( document ).ready(function() {
 })
 </script>
     %if is_card_system:
-    <script src="/static/leaderboard.js?v=1.1"></script>
+    <script src="/static/leaderboard.js?v=1.2"></script>
     %else:
-    <script src="/static/hero_leaderboard.js?v=1.1"></script>
+    <script src="/static/hero_leaderboard.js?v=1.3"></script>
     <script src="/static/fillMatches.js?v=1.0"></script>
     %endif
     %if is_card_system or not period:

@@ -31,7 +31,6 @@ def login(request):
     username = request.params.get('username')
     if request.method == 'POST':
         if username:
-            username = username.lower()
             # Think now have steam accounts. can have different accounts but same name
             userq = session.query(User).filter(User.username == username).\
                 filter(User.account_type == FESPORT_ACCOUNT).all()

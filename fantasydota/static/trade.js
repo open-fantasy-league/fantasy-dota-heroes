@@ -41,7 +41,7 @@ var recycleOnClick = function recycleOnClick(event){
             $(".userCredits").each(function(){
                 $(this).text(
                         Math.round((parseFloat($(this).text()) + league.recycleValue)*10) / 10)});
-            $("#recyclePlayer-" + cardId).parent().parent().parent().remove();
+            $("#recyclePlayer-" + cardId).parent().parent().remove();
             undisableButtons();
             successClick(button);
         },

@@ -9,6 +9,7 @@ FE_APIKEY = os.environ.get("FE_APIKEY")
 if not FE_APIKEY:
     print "Set your fantasy esport APIKEY environment variable"
 
+OFFSET = 92
 
 def get_fixtures():
     with open(os.getcwd() + "/../miscdata/fixtures.json") as f:
@@ -16,7 +17,7 @@ def get_fixtures():
     series = []
     for i, match in enumerate(fixtures):
         series.append({
-            'seriesId': i, 'tournamentId': TI9, 'teamOne': match[0], 'teamTwo': match[1], "startTstamp": match[2],
+            'seriesId': i + OFFSET, 'tournamentId': TI9, 'teamOne': match[0], 'teamTwo': match[1], "startTstamp": match[2],
             "matches": [], "bestOf": match[3]
         })
     return series
