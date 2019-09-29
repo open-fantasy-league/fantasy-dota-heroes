@@ -107,9 +107,13 @@ def main(global_config, **settings):
     config.add_route('leaderboard', '/leaderboard')
     config.add_route('predictions', '/predictions')
     config.add_route('collection', '/collection')
+    config.add_route('draft', '/draft')
     config.add_route('account_settings', '/accountSettings')
     config.add_route('profile', '/profile')
     config.add_route('change_league', '/change_league')
+    config.add_route('join_league', '/join_league/{invite_link}')
+
+    config.add_route('draft_proxy', '/draft_proxy')
 
     config.scan()
     return config.make_wsgi_app()

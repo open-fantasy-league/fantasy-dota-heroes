@@ -3,7 +3,9 @@ import urllib2
 import json
 
 import os
-from fantasydota.lib.constants import API_URL, DEFAULT_LEAGUE, TI9
+from fantasydota.lib.constants import API_URL, TI9
+from fantasydota.lib.session_utils import make_session
+from fantasydota.models import League
 
 FE_APIKEY = os.environ.get("FE_APIKEY")
 if not FE_APIKEY:
@@ -20,7 +22,7 @@ def get_players(teams):
 
 
 def create_league(name, tournament_id, url):
-    filename = raw_input("players filename:")
+    filename = 'players_2019-07-15.json'#raw_input("players filename:")
     with open(os.getcwd() + "/../miscdata/" + filename) as f:
         teams = json.load(f)
 
@@ -30,7 +32,7 @@ def create_league(name, tournament_id, url):
             multiplier = 1.0
         else:
             multiplier = 2.0
-        periods.append({'start': '2019-08-{} 00:00'.format(day), 'end': '2019-08-{} 00:00'.format(day+1), 'multiplier': multiplier})
+        periods.append({'start': '2019-10-{} 00:00'.format(day), 'end': '2019-10-{} 00:00'.format(day+1), 'multiplier': multiplier})
 
     data = {
         'name': name,
@@ -41,20 +43,24 @@ def create_league(name, tournament_id, url):
         'periodDescription': 'Day',
         'startingMoney': 50.0,
         'teamSize': 5,
+        'benchSize': 5,
         'transferInfo': {
-            'isCardSystem': True,
-            'cardPackSize': 6,
-            'cardPackCost': 5,
-            'recycleValue': 0.2,
-            'predictionWinMoney': 2.0
+            'system': 'draft',
+            'draftStart': '2019-10-10 00:00:00',
+            'draftChoiceSecs': 60,
+            #'cardPackSize': 6,
+            #'cardPackCost': 5,
+            #'recycleValue': 0.2,
+            #'predictionWinMoney': 2.0
         },
         "periods": periods,
         "url": url,
         "applyPointsAtStartTime": True,
         "limits": [{'name': 'position', 'types': [
-            {'name': 'core', 'max': 2}, {'name': 'support', 'max': 2}, {'name': 'offlane', 'max': 1},
+            {'name': 'core', 'max': 2, 'benchMax': 2}, {'name': 'support', 'max': 2, 'benchMax': 2},
+            {'name': 'offlane', 'max': 1, 'benchMax': 1},
         ]},
-                   {'name': 'team', 'max': 2, 'types': [{'name': t['name']} for t in teams]}
+                   {'name': 'team', 'max': 2, 'types': [{'name': t['name']} for t in teams], 'benchMax': 2}
                    ],
         "stats": [
             #{'name': 'kills', 'allFactionPoints': 0.3},separateFactionPoints
@@ -90,8 +96,12 @@ def create_league(name, tournament_id, url):
                 "Content-Type": "application/json"
             }
         )
-        response = urllib2.urlopen(req)
-        print(response.read())
+        response = urllib2.urlopen(req).read()
+        print(response)
+
+        session = make_session(transaction=False)
+        session.add(League(id=json.loads(response)["id"], name=name, invite_link="aaaa"))
+        session.commit()
     except urllib2.HTTPError as e:
         print(e.read())
     # try:
@@ -118,4 +128,4 @@ def create_league(name, tournament_id, url):
 
 
 if __name__ == "__main__":
-    create_league("The International 2019", TI9, "https://liquipedia.net/dota2/The_International/2019")
+    create_league("Test draft", TI9, "https://liquipedia.net/dota2/The_International/2019")

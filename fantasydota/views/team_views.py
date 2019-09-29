@@ -58,6 +58,41 @@ def transfer_proxy(request):
         return Response(text, status=e.code)
 
 
+@view_config(route_name='draft_proxy', renderer='json')
+def draft_proxy(request):
+    user_id = authenticated_userid(request)
+    league_id = get_league_id(request)
+    in_ = request.json_body
+    method = in_.get('method')
+    print(in_)
+    if method == 'get':
+        url = API_URL + "transfers/leagues/" + str(league_id) + "/draftQueue/" + str(user_id)
+    elif method == 'append':
+        url = API_URL + "transfers/leagues/" + str(league_id) + "/users/" + str(user_id) + "/appendQueue/" + str(in_.get('pickeeId'))
+    elif method == 'remove':
+        url = API_URL + "transfers/leagues/" + str(league_id) + "/users/" + str(user_id) + "/removeQueue/" + str(in_.get('pickeeId'))
+    elif method == 'draft':
+        url = API_URL + "transfers/leagues/" + str(league_id) + "/users/" + str(user_id) + "/draft/" + str(in_.get('pickeeId'))
+    elif method == 'autopick':
+        url = API_URL + "transfers/leagues/" + str(league_id) + "/users/" + str(user_id) + "/draftQueueAutopick/" + in_.get('set')
+    else:
+        raise Exception("Unexpected draft proxy method %s" % method)
+    try:
+        req = urllib2.Request(
+            url, data="{}" if method != 'get' else None, headers={
+                'apiKey': FANTASY_API_KEY,
+                'User-Agent': 'fantasy-dota-frontend',
+                "Content-Type": "application/json"
+            }
+        )
+        print(url)
+        response = urllib2.urlopen(req)
+        return json.loads(response.read())
+    except urllib2.HTTPError as e:
+        text = e.read()
+        return Response(text, status=e.code)
+
+
 @view_config(route_name='update_team_name', renderer='json')
 def update_team_name(request):
     session = DBSession()
@@ -163,3 +198,13 @@ def recycle_cards(request):
         return Response(text, status=e.code, content_type="application/json")
     except Exception as e:
         return Response(e.message, status=500)
+
+
+@view_config(route_name='draft', renderer='../templates/draft.mako')
+def draft(request):
+    session = DBSession()
+    user_id = authenticated_userid(request)
+    return_dict = {}
+
+    return_dict = all_view_wrapper(request, return_dict, session, user_id)
+    return return_dict

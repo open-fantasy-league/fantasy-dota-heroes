@@ -59,6 +59,7 @@ class League(Base):
     __tablename__ = "league"
     id = Column(Integer, Sequence('id'), primary_key=True)
     name = Column(String(20), nullable=False, index=True)
+    invite_link = Column(String)
 
 
 class Team(Base):
