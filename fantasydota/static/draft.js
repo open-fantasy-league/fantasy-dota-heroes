@@ -177,6 +177,7 @@ function getDraftQueue(){
                 })
                 $("#draftQueue").html(segments.join(''));
                 $(".removeBtn").click(removeDraftQueueOnclick);
+                console.log("data.autopick" + data.autopick)
                 if (data.autopick){
                     $("#autopickBtn").attr('checked', 'true');
                 }
@@ -228,12 +229,12 @@ function appendDraftQueueOnclick(event){
                 contentType: "application/json",
                 success: function(data){
                     var segments = [];
-                    segments.push('"<div class="row draftQueueEntry" data-id="');
-                    segments.push(pickeeId);
-                    segments.push('"><span>');
+                    segments.push('<div class="row draftQueueEntry"><span>');
                     segments.push(pickeeMap.get(parseInt(pickeeId)).name);
-                    segments.push('</span><button type="submit" class="removeBtn">Remove</button></div>');
-                    $("#draftQueueCol").appendChild(segments.join(''));
+                    segments.push('</span><button type="submit" class="removeBtn" data-id="');
+                    segments.push(pickeeId);
+                    segments.push('">Remove</button></div>');
+                    $("#draftQueue").append(segments.join(''));
                     $(".removeBtn").click(removeDraftQueueOnclick);
                 },
                 error: function(jqxhr, textStatus, errorThrown){
