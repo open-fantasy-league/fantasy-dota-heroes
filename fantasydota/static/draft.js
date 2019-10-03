@@ -143,15 +143,17 @@ function getPickees(){
                     segments.push(ourTurn ? 'Draft' : 'Queue');
                     segments.push('</button></td><td>');
                     segments.push(p.name);
-                    segments.push('</strong></td><td><td class="positionEntry">');
+                    segments.push('</strong></td><td class="positionEntry">');
                     segments.push(p.limitTypes.position);
                     segments.push('</td><td class="teamEntry"><img class="teamIcon" src="/static/images/dota/teams/');
                     segments.push(p.limitTypes.team.replace(/[\W_]+/g,"").toLowerCase());
                     segments.push('.png"/>');
                     segments.push(p.limitTypes.team);
+                    segments.push('</td></tr>');
                 }
             })
-            $("#draftPickeeBlock").find("tbody").html(segments.join(''));
+            console.log(segments)
+            $("#pickeeTable").find("tbody").html(segments.join(''));
             $("[name=draftPlayer]").click(ourTurn ? draftOnclick : appendDraftQueueOnclick);
         },
         error: function(jqxhr, textStatus, errorThrown){
@@ -272,9 +274,9 @@ console.log("draftclick")
 }
 
 function removeTakenPickees(){
-    for (const p of takenPickees){
+    for (const pid of takenPickees){
     //$.each(takenPickees, function(i, p){
-        $("[@name='draftPlayer'][@data-id='" + p.id + "']").parent().remove();
+        $("[name='draftPlayer'][data-id='" + pid + "']").parent().remove();
         }
     //})
 }

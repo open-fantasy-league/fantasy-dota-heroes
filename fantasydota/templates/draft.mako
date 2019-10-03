@@ -43,10 +43,9 @@ Constriants for user_ids arrays-->
                 <tr style="cursor: pointer" id="teamTableHeader">
                     <th class="draftHeader">Draft</th>
                     <th class="heroHeader">Player</th>
-                    <th class="positionHeader sorttable_numeric">Position</th>
-                    <th class="clubHeader sorttable_numeric">Team</th>
+                    <th class="positionHeader">Position</th>
+                    <th class="clubHeader">Team</th>
                 </tr>
-                <tbody></tbody>
             </table>
         </div>
     </div>
