@@ -1,6 +1,7 @@
 var teams = new Map();
 var pickeeMap = new Map();
 var pickees = [];
+var ourTeam = [];
 var takenPickees = new Set();
 var remainingDrafts;
 var ourTurn = false;
@@ -56,15 +57,26 @@ function getDraftOrder(){
         success: function(data){
             var segments = [];
             // only show next 12
-            $.each(data.slice(0, 12), function(i, d){
+            $.each(data.order.slice(0, 12), function(i, d){
                 segments.push('<div class="draftOrderEntry col s4 m3 l2">');
-                segments.push(d.username);
+                if (i == 0){
+                    var secondsLeft = Math.floor((new Date(data.nextDraftDeadline) - new Date()) / 1000);
+                    segments.push(secondsLeft);
+                    segments.push("s ");
+                }
+                if (userId == d.id){
+                    segments.push('<strong>');
+                    segments.push(d.username);
+                    segments.push('</strong>');
+                } else{
+                    segments.push(d.username);
+                }
                 segments.push('</div>');
             })
             remainingDrafts = data.length;
             console.log("ouruser " + userId)
-            console.log("data[0].userId " + data[0].id)
-            ourTurn = data[0].id === userId;
+            console.log("data[0].userId " + data.order[0].id)
+            ourTurn = data.order[0].id === userId;
             var draftBtns = $(".draftBtn")
             if (ourTurn){
                 draftBtns.click(draftOnclick);
@@ -95,7 +107,7 @@ function getTeams(){
         dataType: "json",
         success: function(data){
             teams = new Map();
-            var ourTeam = [];
+            ourTeam = [];
             $.each(data, function(i, d){
                 if (teams.get(d.userId)){
                     teams.get(d.userId).push(d);
@@ -134,14 +146,13 @@ function getPickees(){
             var segments = [];
             $.each(pickees, function(i, p){
                 pickeeMap.set(p.id, p);
-            // TODO list lookup prob slow. maybe set?
                 if (!takenPickees.has(p.id)){
                     segments.push('<tr style="cursor: pointer" id="heroesTableHeader"><td class="draftBtn">');
                     segments.push('<button type="submit" name="draftPlayer" class="btn waves-effect waves-light" data-id="');
                     segments.push(p.id);
                     segments.push('">');
                     segments.push(ourTurn ? 'Draft' : 'Queue');
-                    segments.push('</button></td><td>');
+                    segments.push('</button></td><td><strong>');
                     segments.push(p.name);
                     segments.push('</strong></td><td class="positionEntry">');
                     segments.push(p.limitTypes.position);
@@ -153,7 +164,9 @@ function getPickees(){
                 }
             })
             console.log(segments)
-            $("#pickeeTable").find("tbody").html(segments.join(''));
+            var html = segments.join('');
+            console.log(html)
+            $("#pickeeTable").find("tbody").html(html);
             $("[name=draftPlayer]").click(ourTurn ? draftOnclick : appendDraftQueueOnclick);
         },
         error: function(jqxhr, textStatus, errorThrown){
@@ -171,11 +184,13 @@ function getDraftQueue(){
             success: function(data){
                 var segments = [];
                 $.each(data.queue, function(i, d){
-                    segments.push('<div class="row draftQueueEntry"><span>');
-                    segments.push(d.name);
-                    segments.push('</span><button type="submit" class="removeBtn" data-id="');
-                    segments.push(d.id);
-                    segments.push('">Remove</button></div>');
+                    if (!ourTeam.find((t) => t.id == d.id)){
+                        segments.push('<div class="row draftQueueEntry"><span>');
+                        segments.push(d.name);
+                        segments.push('</span><button type="submit" class="removeBtn" data-id="');
+                        segments.push(d.id);
+                        segments.push('">Remove</button></div>');
+                    }
                 })
                 $("#draftQueue").html(segments.join(''));
                 $(".removeBtn").click(removeDraftQueueOnclick);
