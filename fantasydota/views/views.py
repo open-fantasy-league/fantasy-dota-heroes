@@ -6,8 +6,9 @@ import urllib2
 from pyramid.response import Response
 
 from fantasydota.auth import get_user
+from fantasydota.lib.commissioner import create_draft_league
 from fantasydota.lib.constants import API_URL
-from fantasydota.lib.general import all_view_wrapper, get_league_id
+from fantasydota.lib.general import all_view_wrapper, get_league_id, api_request
 from fantasydota.models import (
     DBSession,
     Friend, User, League, Team)
@@ -87,6 +88,35 @@ def collection(request):
     user_id = authenticated_userid(request)
     return_dict = {'league_id': league_id}
     return all_view_wrapper(request, return_dict, session, user_id)
+
+
+@view_config(route_name='commissioner_menu', renderer='../templates/commissioner_menu.mako')
+def commissioner_menu(request):
+    session = DBSession()
+    user_id = authenticated_userid(request)
+    leagues = session.query(League).filter(League.commissioner == user_id).all()
+    api_key = session.query(User).filter(User.id == user_id).first().api_key
+    if api_key is None:
+        raise HTTPForbidden("Contact on discord/email to request an API key for running private leagues")
+    print(leagues)
+    return_dict = {'commissioned_leagues': leagues, 'api_key': api_key}
+    return all_view_wrapper(request, return_dict, session, user_id)
+
+
+@view_config(route_name='create_league_proxy', renderer='json')
+def create_league_proxy(request):
+    session = DBSession()
+    user_id = authenticated_userid(request)
+    api_key = session.query(User).filter(User.id == user_id).first().api_key
+    if api_key is None:
+        raise HTTPForbidden("Contact on discord/email to request an API key for running private leagues")
+    tournament_id = 5401
+    tournament_url = "liquipedia.net"
+    name = request.json_body["name"]
+    draft_start = request.json_body["draftStart"]
+    choice_timer = int(request.json_body["choiceTimer"])
+    new_league = create_draft_league(session, user_id, name, tournament_id, tournament_url, draft_start, choice_timer)
+    return json.dumps({'id': new_league.id, 'name': new_league.name, 'inviteLink': new_league.full_invite_link})
 
 
 @view_config(route_name='change_league', renderer='../templates/collection.mako')

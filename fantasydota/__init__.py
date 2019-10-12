@@ -114,6 +114,8 @@ def main(global_config, **settings):
     config.add_route('join_league', '/join_league/{invite_link}')
 
     config.add_route('draft_proxy', '/draft_proxy')
+    config.add_route('commissioner_menu', '/commissioner')
+    config.add_route('create_league_proxy', '/create_league_proxy')
 
     config.scan()
     return config.make_wsgi_app()

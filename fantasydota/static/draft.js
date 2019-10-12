@@ -5,7 +5,8 @@ var ourTeam = [];
 var takenPickees = new Set();
 var remainingDrafts;
 var ourTurn = false;
-//signup();
+var now = Date.now();
+var nextDraftDeadline;
 getLeagueInfo(false, false, false, false).then(setup);
 
 
@@ -13,15 +14,14 @@ function setup(){
     console.log("in setup")
     if (league.system === 'draft'){
         var draftStart = new Date(league.draftStart);
-        if (Date.now() < new Date(league.draftStart)){
+        if (now < new Date(league.draftStart)){
             $("#draftUnstartedBlock").removeClass('hide');
             $(".draftStartTime").text(draftStart.toISOString());
         }
 
         getDraftOrder();
+        getPickees().then(getDraftQueue);
         getTeams();
-        getDraftQueue();
-        getPickees();
         setInterval(updateLoop, 20000);
     }
 }
@@ -32,6 +32,8 @@ function updateLoop(){
 }
 
 function checkIfUpdated(){
+    now = new Date();
+    $(".draftTimer").text(Math.floor((nextDraftDeadline - now) / 1000) + "s ");
     $.ajax({url: apiBaseUrl + "transfers/leagues/" + leagueId + "/draftOrderCount",
             type: "GET",
             dataType: "json",
@@ -42,6 +44,8 @@ function checkIfUpdated(){
                             getDraftOrder();
                             getTeams();
                             removeTakenPickees();
+                            //getDraftQueue(); theres a race condition where can add queded pickee just after reloading
+                            // downside with not updating this is different tabs/browsers get out of sync
                 }
             },
             error: function(jqxhr, textStatus, errorThrown){
@@ -60,9 +64,11 @@ function getDraftOrder(){
             $.each(data.order.slice(0, 12), function(i, d){
                 segments.push('<div class="draftOrderEntry col s4 m3 l2">');
                 if (i == 0){
-                    var secondsLeft = Math.floor((new Date(data.nextDraftDeadline) - new Date()) / 1000);
+                    nextDraftDeadline = new Date(data.nextDraftDeadline);
+                    var secondsLeft = Math.floor((nextDraftDeadline - now) / 1000);
+                    segments.push('<span class="draftTimer">');
                     segments.push(secondsLeft);
-                    segments.push("s ");
+                    segments.push("s </span>");
                 }
                 if (userId == d.id){
                     segments.push('<strong>');
@@ -123,13 +129,16 @@ function getTeams(){
             console.log(teams)
             var segments = [];
             $.each(ourTeam, function(i, t){
-                segments.push('<div class="row">');
+                segments.push('<tr><td><strong>');
                 segments.push(t.name);
-                segments.push(' (');
+                segments.push('</strong></td><td>');
                 segments.push(t.limitTypes.position);
-                segments.push(')</div>');
+                segments.push('<img class="teamIcon" src="/static/images/dota/teams/');
+                segments.push(t.limitTypes.team.replace(/[\W_]+/g,"").toLowerCase());
+                segments.push('.png"/>');
+                segments.push('</td></tr>');
             })
-            $("#draftTeamCol").html(segments.join(''));
+            $("#teamTable > tbody").html(segments.join(''));
         },
         error: function(jqxhr, textStatus, errorThrown){
             Swal.fire("Something went wrong. oops!", '', 'error');
@@ -138,7 +147,7 @@ function getTeams(){
 }
 
 function getPickees(){
-    $.ajax({url: apiBaseUrl + "pickees/" + leagueId,
+    return $.ajax({url: apiBaseUrl + "pickees/" + leagueId,
         type: "GET",
         dataType: "json",
         success: function(data){
@@ -175,6 +184,25 @@ function getPickees(){
     })
 }
 
+function queueHtml(segments, pickeeId){
+    var pickee = pickeeMap.get(pickeeId);
+    if (pickee && !ourTeam.find((t) => t.id == pickeeId)){
+        console.log("queuing " + pickee.name)
+        segments.push('<tr><td><button type="submit" class="removeBtn btn waves-effect waves-light" data-id="');
+        segments.push(pickeeId);
+        segments.push('">Remove</button>');
+        segments.push('</td><td><strong>')
+        segments.push(pickee.name);
+        segments.push('</strong></td><td>');
+        segments.push(pickee.limitTypes.position);
+        segments.push('<img class="teamIcon" src="/static/images/dota/teams/');
+        segments.push(pickee.limitTypes.team.replace(/[\W_]+/g,"").toLowerCase());
+        segments.push('.png"/>');
+        segments.push('</td></tr>');
+    }
+    return segments
+}
+
 function getDraftQueue(){
     $.ajax({url: "/draft_proxy?league_id=" + leagueId,
             type: "POST",
@@ -184,15 +212,10 @@ function getDraftQueue(){
             success: function(data){
                 var segments = [];
                 $.each(data.queue, function(i, d){
-                    if (!ourTeam.find((t) => t.id == d.id)){
-                        segments.push('<div class="row draftQueueEntry"><span>');
-                        segments.push(d.name);
-                        segments.push('</span><button type="submit" class="removeBtn" data-id="');
-                        segments.push(d.id);
-                        segments.push('">Remove</button></div>');
-                    }
+                    queueHtml(segments, d.id);
                 })
-                $("#draftQueue").html(segments.join(''));
+                var html = segments.join('');
+                $("#queueTable > tbody").html(html);
                 $(".removeBtn").click(removeDraftQueueOnclick);
                 console.log("data.autopick" + data.autopick)
                 if (data.autopick){
@@ -222,7 +245,7 @@ function removeDraftQueueOnclick(event){
                 dataType: "json",
                 contentType: "application/json",
                 success: function(data){
-                    button.parent().remove();
+                    button.parent().parent().remove();
                 },
                 error: function(jqxhr, textStatus, errorThrown){
                     if (jqxhr.responseText.startsWith("Invalid User ID")){
@@ -237,7 +260,7 @@ function removeDraftQueueOnclick(event){
 
 function appendDraftQueueOnclick(event){
         var button = $(event.currentTarget);
-        var pickeeId = button.attr('data-id');
+        var pickeeId = parseInt(button.attr('data-id'));
         console.log("pickeeId " + pickeeId)
         $.ajax({url: "/draft_proxy?league_id=" + leagueId,
                 type: "POST",
@@ -246,12 +269,10 @@ function appendDraftQueueOnclick(event){
                 contentType: "application/json",
                 success: function(data){
                     var segments = [];
-                    segments.push('<div class="row draftQueueEntry"><span>');
-                    segments.push(pickeeMap.get(parseInt(pickeeId)).name);
-                    segments.push('</span><button type="submit" class="removeBtn" data-id="');
-                    segments.push(pickeeId);
-                    segments.push('">Remove</button></div>');
-                    $("#draftQueue").append(segments.join(''));
+                    queueHtml(segments, pickeeId);
+                    var html = segments.join("");
+                    console.log(html)
+                    $("#queueTable > tbody").append(html);
                     $(".removeBtn").click(removeDraftQueueOnclick);
                 },
                 error: function(jqxhr, textStatus, errorThrown){

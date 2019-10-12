@@ -1,4 +1,6 @@
-from fantasydota.lib.constants import FESPORT_ACCOUNT
+import uuid
+
+from fantasydota.lib.constants import FESPORT_ACCOUNT, DOMAIN
 from passlib.handlers.bcrypt import bcrypt
 from sqlalchemy import BigInteger
 from sqlalchemy import (
@@ -41,6 +43,7 @@ class User(Base):
     contactable = Column(Boolean, default=False)
     account_type = Column(Integer, default=FESPORT_ACCOUNT, index=True)
     ip_address = Column(String(30))
+    api_key = Column(String)
     # 0 is regular. 1 steam, 2 reddit
     # unique on account_type 0 and username
 
@@ -60,6 +63,17 @@ class League(Base):
     id = Column(Integer, Sequence('id'), primary_key=True)
     name = Column(String(20), nullable=False, index=True)
     invite_link = Column(String)
+    commissioner = Column(Integer, ForeignKey(User.id), index=True)
+
+    def __init__(self, id, name, commissioner):
+        self.id = id
+        self.name = name
+        self.commissioner = commissioner
+        self.invite_link = uuid.uuid4()[:8]
+
+    @property
+    def full_invite_link(self):
+        return "{}/join_league/{}".format(DOMAIN, self.invite_link)
 
 
 class Team(Base):

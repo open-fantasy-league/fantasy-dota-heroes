@@ -32,6 +32,9 @@ Constriants for user_ids arrays-->
 <div id="draftOrderBlock" class="hide row card-panel"></div>
 <div class="row">
     <div id="draftTeamCol" class="col s12 m3">
+           <table class="card-table striped centered responsive-table" id="teamTable">
+                      <thead><tr><th>Team</th></tr></thead><tbody></tbody>
+           </table>
     </div>
     <div id="draftInfoCol" class="col s12 m6">
         <div id="draftUnstartedBlock" class="hide">
@@ -51,17 +54,20 @@ Constriants for user_ids arrays-->
     </div>
     <div id="draftQueueCol" class="col s12 m3">
         <div class="row">
-        <div class="switch">
+        </div>
+
+        <div id="draftQueue" class="row">
+           <table class="card-table striped centered responsive-table" id="queueTable">
+           <thead><tr><th>Queue</th><th colspan="2">        <div class="switch">
             <label>
             Autopick Off
             <input type="checkbox" id="autopickBtn" onchange="switchAutopick(this);" autocomplete="off">
             <span class="lever"></span>
             On
             </label>
-        </div>
-        </div>
-
-        <div id="draftQueue" class="row">
+        </div></th></tr></thead>
+           <tbody></tbody>
+           </table>
         </div>
     </div>
 </div>

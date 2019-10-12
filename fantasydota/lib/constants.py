@@ -11,7 +11,8 @@ DEFAULT_LEAGUE = 26#1 if socket.gethostname() == 'fantasyesport' else 1
 HERO_LEAGUE = 2 if socket.gethostname() == 'fantasyesport' else 2
 DRAFT_LEAGUES = [26]
 OTHER_LEAGUES = [HERO_LEAGUE] + DRAFT_LEAGUES
-API_URL = 'https://dota.openfantasyleague.com/api/v1/' if socket.gethostname() == 'fantasyesport' else 'http://localhost/api/v1/'
+DOMAIN = 'https://dota.openfantasyleague.com' if socket.gethostname() == 'fantasyesport' else 'http://localhost'
+API_URL = '{}/api/v1/'.format(DOMAIN)
 
 FESPORT_ACCOUNT = 0
 STEAM_ACCOUNT = 1

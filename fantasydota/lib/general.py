@@ -3,6 +3,8 @@ import datetime
 import urllib2
 
 import json
+from pyramid.response import Response
+
 from fantasydota.lib.constants import DEFAULT_LEAGUE, API_URL, HERO_LEAGUE
 from fantasydota.models import Notification, User
 from pyramid.security import authenticated_userid
@@ -46,6 +48,24 @@ def post_api_json(url, data, fe_api_key=None):
         print(response.read())
     except urllib2.HTTPError as e:
         print(e.read())
+
+
+def api_request(url, data, api_key):
+    try:
+        req = urllib2.Request(
+            url, data=json.dumps(data), headers={
+                'apiKey': api_key,
+                'User-Agent': 'fantasy-dota-frontend',
+                "Content-Type": "application/json"
+            }
+        )
+        response = urllib2.urlopen(req)
+        return json.loads(response.read())
+    except urllib2.HTTPError as e:
+        text = e.read()
+        return Response(text, status=e.code, content_type="application/json")
+    except Exception as e:
+        return Response(e.message, status=500)
 
 
 def format_time(time_):
