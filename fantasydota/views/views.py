@@ -5,15 +5,14 @@ import re
 import urllib2
 from pyramid.response import Response
 
-from fantasydota.auth import get_user
 from fantasydota.lib.commissioner import create_draft_league
-from fantasydota.lib.constants import API_URL
+from fantasydota.lib.constants import API_URL, TI9
 from fantasydota.lib.general import all_view_wrapper, get_league_id, api_request
 from fantasydota.models import (
     DBSession,
     Friend, User, League, Team)
 from pyramid.httpexceptions import (
-    HTTPForbidden, HTTPFound, HTTPNotFound)
+    HTTPForbidden, HTTPFound, HTTPNotFound, HTTPClientError)
 from pyramid.security import (
     authenticated_userid)
 from pyramid.view import (
@@ -103,6 +102,32 @@ def commissioner_menu(request):
     return all_view_wrapper(request, return_dict, session, user_id)
 
 
+# @view_config(route_name='override_draft_order_proxy', renderer='json')
+# def override_draft_order_proxy(request):
+#     session = DBSession()
+#     user_id = authenticated_userid(request)
+#     user = session.query(User).filter(User.id == user_id).first()
+#     api_key = user.api_key
+#     if api_key is None:
+#         raise HTTPForbidden("Contact on discord/email to request an API key for running private leagues")
+#     league_id = request.json_body["leagueId"]
+#     league = session.query(League).filter(League.id == league_id).first()
+#     if user_id != league.commissioner:
+#         raise HTTPForbidden("This aint your league buddy")
+#     league_id = get_league_id(request)
+#     teams = session.query(Team).filter(Team.league_id == league_id).all()
+#     team_name_to_id = {t.name: t.user_id for t in teams}
+#     new_team_order = [t.strip() for t in request.json_body["order"].split(",")]
+#     new_user_ids_order = []
+#     for t in new_team_order:
+#         t_id = team_name_to_id.get(t)
+#         if not t_id:
+#             raise HTTPClientError("Team name: {} could not be found. Available teams: {}".format(t, team_name_to_id.keys()))
+#         new_user_ids_order.append(t_id)
+#     url = "{}/leagues/{}".format(API_URL, league_id)
+#     return api_request(url, {'draft': {'order': new_user_ids_order}}, api_key=api_key)
+
+
 @view_config(route_name='create_league_proxy', renderer='json')
 def create_league_proxy(request):
     session = DBSession()
@@ -110,7 +135,7 @@ def create_league_proxy(request):
     api_key = session.query(User).filter(User.id == user_id).first().api_key
     if api_key is None:
         raise HTTPForbidden("Contact on discord/email to request an API key for running private leagues")
-    tournament_id = 5401
+    tournament_id = TI9
     tournament_url = "liquipedia.net"
     name = request.json_body["name"]
     draft_start = request.json_body["draftStart"]

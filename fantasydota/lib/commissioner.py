@@ -124,3 +124,7 @@ def create_draft_league(session, commissioner_id, name, tournament_id, url, draf
     # )
     # response = urllib2.urlopen(req)
     # print(response.read())
+
+    # 16 * 5 = 80
+    # 12 * 5 = 60
+    # 8 * 5 = 40

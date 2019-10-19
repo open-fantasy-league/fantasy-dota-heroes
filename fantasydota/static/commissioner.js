@@ -1,3 +1,4 @@
+var leaguesToUsers = new Map();
 $(".leagueLink").click(openLeagueSection);
 
 function openLeagueSection(event){
@@ -15,12 +16,23 @@ document.querySelectorAll('.updateForm').forEach(function(form) {
         dataType: "json",
         type: "GET",
         success: function(data){
-        if (data.system == "draft"){
-           form.querySelector("input[name='name']").value = data.name;
-           form.querySelector("input[name='start']").value = data.draftStart.replace("T", " ").split(".", 1)[0];
-           form.querySelector("input[name='nextDeadline']").value = data.nextDraftDeadline.replace("T", " ").split(".", 1)[0];
-           form.querySelector("input[name='timer']").value = data.choiceTimer;
-           }
+            if (data.system == "draft"){
+               form.querySelector("input[name='name']").value = data.name;
+               form.querySelector("input[name='start']").value = data.draftStart.replace("T", " ").split(".", 1)[0];
+               form.querySelector("input[name='nextDeadline']").value = data.nextDraftDeadline.replace("T", " ").split(".", 1)[0];
+               form.querySelector("input[name='timer']").value = data.choiceTimer;
+               form.querySelector("input[id=manualDraftBtn]").checked = data.manualDraft;
+               form.querySelector("input[id=pauseDraftBtn]").checked = data.draftPaused;
+            }
+        }
+    })
+    $.ajax({url: apiBaseUrl + "leagues/" + leagueId + "/users",
+        dataType: "json",
+        type: "GET",
+        success: function(data){
+            var userNamesToIds = new Map();
+            data.forEach((u) => userNamesToIds.set(u.username, u.id));
+            leaguesToUsers.set(leagueId, userNamesToIds);
         }
     })
 });
@@ -31,13 +43,23 @@ function updateForm(event){
     console.log(event)
     event.preventDefault();
     var form = event.currentTarget;
-    var url = apiBaseUrl + "leagues/" + form.querySelector("input[name='league_id']").value + "?apiKey=" + apiKey;
-    var data = {'league': {'leagueName': form.querySelector("input[name='name']").value},
-                'draft': {'draftStart': form.querySelector("input[name='start']").value,
+    var leagueId = form.querySelector("input[name='league_id']").value
+    var url = apiBaseUrl + "leagues/" + leagueId + "?apiKey=" + apiKey;
+    var draft = {'draftStart': form.querySelector("input[name='start']").value,
                  'nextDraftDeadline': form.querySelector("input[name='nextDeadline']").value,
-                 'choiceTimer': parseInt(form.querySelector("input[name='timer']").value)
-                 }
+                 'choiceTimer': parseInt(form.querySelector("input[name='timer']").value),
+                 'manualDraft': form.querySelector("input[id=manualDraftBtn]").checked
+                 };
+    var draftOrderUpdates = form.querySelector("input[name=order]").value;
+    if (draftOrderUpdates){
+        var split = draftOrderUpdates.split(",");
+        draft.order = split.map((name) => leaguesToUsers.get(leagueId).get(name));
+    }
+    var data = {'league': {'leagueName': form.querySelector("input[name='name']").value},
+                'draft': draft
         };
+    console.log(data)
+    console.log(JSON.stringify(data))
     $.ajax({
         url: url,
         dataType: "json",
@@ -66,7 +88,8 @@ function newForm(event){
     var url = "/create_league_proxy";
     var data = {'name': form.querySelector("input[name='name']").value,
                 'draftStart': form.querySelector("input[name='start']").value,
-                 'choiceTimer': parseInt(form.querySelector("input[name='timer']").value)
+                 'choiceTimer': parseInt(form.querySelector("input[name='timer']").value),
+                 'manualDraft': form.querySelector("input[id=manualDraftBtn]").checked
         };
     $.ajax({
         url: url,
@@ -76,7 +99,30 @@ function newForm(event){
         data: JSON.stringify(data),
         success: function(data){
             Swal.fire({
-             title: "Yea boi!",
+             title: "Success!",
+              type: "success"
+            }).then(function(){window.location.reload(false);})
+            // Easier to just reload page, than redraw forms
+        },
+        error: function(jqxhr, textStatus, errorThrown){
+            Swal.fire(jqxhr.responseText, '', 'error');
+        }
+    });
+}
+
+function togglePaused(event){
+     var leagueId = event.dataset.id;
+     var url = apiBaseUrl + "leagues/" + leagueId + "?apiKey=" + apiKey;
+     var data = {'draft': {'paused': event.checked}};
+     $.ajax({
+        url: url,
+        dataType: "json",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(data),
+        success: function(data){
+            Swal.fire({
+             title: "Success!",
               type: "success"
             }).then(function(){window.location.reload(false);})
             // Easier to just reload page, than redraw forms

@@ -22,7 +22,7 @@ function setup(){
         getDraftOrder();
         getPickees().then(getDraftQueue);
         getTeams();
-        setInterval(updateLoop, 20000);
+        setInterval(updateLoop, 9000);
     }
 }
 
@@ -39,6 +39,7 @@ function checkIfUpdated(){
             dataType: "json",
             success: function(data){
                 console.log(data)
+                console.log(remainingDrafts)
                 if (data < remainingDrafts){
                     remainingDrafts = data;
                             getDraftOrder();
@@ -61,25 +62,30 @@ function getDraftOrder(){
         success: function(data){
             var segments = [];
             // only show next 12
-            $.each(data.order.slice(0, 12), function(i, d){
-                segments.push('<div class="draftOrderEntry col s4 m3 l2">');
-                if (i == 0){
-                    nextDraftDeadline = new Date(data.nextDraftDeadline);
-                    var secondsLeft = Math.floor((nextDraftDeadline - now) / 1000);
-                    segments.push('<span class="draftTimer">');
-                    segments.push(secondsLeft);
-                    segments.push("s </span>");
-                }
-                if (userId == d.id){
+            nextDraftDeadline = new Date(data.nextDraftDeadline);
+            var secondsLeft = Math.floor((nextDraftDeadline - now) / 1000);
+            segments.push('<div class="col s2"><div class="row"><h5>Draft Order</h5></div><div style="background-color: black;width:100px" class="card-panel horizontal col s1"><span class="draftTimer scoreboardfont">');
+            segments.push(secondsLeft);
+            segments.push('s </span></div></div><div class="col s10">');
+            $.each(data.order.slice(0, 15), function(i, d){
+                var isUs = (userId == d.id);
+                segments.push('<div class="draftOrderEntry col s4 m3 l2 chip ');
+                if (isUs) segments.push(' green lighten-1');
+                 segments.push('">');
+                var prefix = i == 0 ? 'now: ' : (i + 1) + ': ';
+                if (isUs){
                     segments.push('<strong>');
+                    segments.push(prefix);
                     segments.push(d.username);
                     segments.push('</strong>');
                 } else{
+                    segments.push(prefix);
                     segments.push(d.username);
                 }
                 segments.push('</div>');
             })
-            remainingDrafts = data.length;
+            segments.push('</div>');
+            remainingDrafts = data.order.length;
             console.log("ouruser " + userId)
             console.log("data[0].userId " + data.order[0].id)
             ourTurn = data.order[0].id === userId;
@@ -127,18 +133,21 @@ function getTeams(){
                 }
             })
             console.log(teams)
-            var segments = [];
-            $.each(ourTeam, function(i, t){
-                segments.push('<tr><td><strong>');
-                segments.push(t.name);
-                segments.push('</strong></td><td>');
-                segments.push(t.limitTypes.position);
-                segments.push('<img class="teamIcon" src="/static/images/dota/teams/');
-                segments.push(t.limitTypes.team.replace(/[\W_]+/g,"").toLowerCase());
-                segments.push('.png"/>');
-                segments.push('</td></tr>');
+            teams.forEach(function(team, key){
+                            var segments = [];
+                    team.forEach((t) =>{
+                        segments.push('<tr><td><strong>');
+                        segments.push(t.name);
+                        segments.push('</strong></td><td>');
+                        segments.push(t.limitTypes.position);
+                        segments.push('<img class="teamIcon" src="/static/images/dota/teams/');
+                        segments.push(t.limitTypes.team.replace(/[\W_]+/g,"").toLowerCase());
+                        segments.push('.png"/>');
+                        segments.push('</td></tr>');
+                    });
+                    $("table[data-userId = " + key + "] > tbody").html(segments.join(''));
+
             })
-            $("#teamTable > tbody").html(segments.join(''));
         },
         error: function(jqxhr, textStatus, errorThrown){
             Swal.fire("Something went wrong. oops!", '', 'error');
@@ -156,8 +165,8 @@ function getPickees(){
             $.each(pickees, function(i, p){
                 pickeeMap.set(p.id, p);
                 if (!takenPickees.has(p.id)){
-                    segments.push('<tr style="cursor: pointer" id="heroesTableHeader"><td class="draftBtn">');
-                    segments.push('<button type="submit" name="draftPlayer" class="btn waves-effect waves-light" data-id="');
+                    segments.push('<tr style="cursor: pointer" id="heroesTableHeader"><td class="draftColumn">');
+                    segments.push('<button type="submit" name="draftPlayer" class="draftBtn btn waves-effect waves-light" data-id="');
                     segments.push(p.id);
                     segments.push('">');
                     segments.push(ourTurn ? 'Draft' : 'Queue');
@@ -332,4 +341,9 @@ function switchAutopick(event){
             }
         }
     })
+}
+
+function fillTeamCollapsibles(){
+    var holder = $("#teamsCollapsible");
+
 }

@@ -32,9 +32,29 @@ Constriants for user_ids arrays-->
 <div id="draftOrderBlock" class="hide row card-panel"></div>
 <div class="row">
     <div id="draftTeamCol" class="col s12 m3">
-           <table class="card-table striped centered responsive-table" id="teamTable">
-                      <thead><tr><th>Team</th></tr></thead><tbody></tbody>
-           </table>
+        <!--<ul id="teamDropdown" class="dropdown-content">
+            <li><a>Me</a></li>
+            <li class="divider"></li>
+        </ul>-->
+  <h2>Teams</h2>
+  <ul class="collapsible" id="teamsCollapsible">
+    <li>
+      <div class="collapsible-header"><strong>${username}</strong></div>
+      <div class="collapsible-body">
+             <table class="card-table striped centered responsive-table" id="teamTable" data-userId="${user_id}"><tbody></tbody>
+       </table>
+      </div>
+    </li>
+    % for otherTeam in other_teams:
+    <li>
+      <div class="collapsible-header">${otherTeam.name}</div>
+      <div class="collapsible-body">
+             <table class="card-table striped centered responsive-table" class="teamTable" data-userId="${otherTeam.user_id}"><tbody></tbody>
+       </table>
+      </div>
+    </li>
+    % endfor
+    </ul>
     </div>
     <div id="draftInfoCol" class="col s12 m6">
         <div id="draftUnstartedBlock" class="hide">

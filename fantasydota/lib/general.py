@@ -22,11 +22,13 @@ def get_league_id(request):
     return int(request.params.get('league_id', request.cookies.get('league_id', DEFAULT_LEAGUE)))
 
 
-def all_view_wrapper(request, return_dict, session, user_id=None):
+def all_view_wrapper(request, return_dict, session, user_id=None, user=None):
     return_dict['user_id'] = user_id
-    return_dict['user'] = session.query(User).filter(User.id == user_id).first()
-    if user_id:
+    user = user or session.query(User).filter(User.id == user_id).first()
+    return_dict['user'] = user
+    if user:
         return_dict = add_notifications(return_dict, session, user_id)
+        return_dict['username'] = user.username
     else:
         return_dict['notifications'] = []
         return_dict['username'] = ""

@@ -204,7 +204,9 @@ def recycle_cards(request):
 def draft(request):
     session = DBSession()
     user_id = authenticated_userid(request)
-    return_dict = {}
-
-    return_dict = all_view_wrapper(request, return_dict, session, user_id)
+    user = session.query(User).filter(User.id == user_id).first()
+    league_id = get_league_id(request)
+    other_teams = session.query(Team).filter(Team.league_id == league_id).filter(Team.user_id != user_id).all()
+    return_dict = {'league_id': league_id, 'other_teams': other_teams}
+    return_dict = all_view_wrapper(request, return_dict, session, user_id, user=user)
     return return_dict
