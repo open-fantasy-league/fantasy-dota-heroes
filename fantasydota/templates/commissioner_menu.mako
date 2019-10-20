@@ -47,7 +47,7 @@
                         title="Draft yourself, i.e. in discord, and submit resulting draft later">help</i>:
                         <label>
                             Off
-                            <input type="checkbox" id="manualDraftBtn" autocomplete="off">
+                            <input type="checkbox" class="manualDraftBtn" name="manualDraftBtn" autocomplete="off">
                             <span class="lever"></span>
                             On
                         </label>
@@ -74,7 +74,7 @@
                     Pause Draft:
                     <label>
                         Unpaused
-                        <input type="checkbox" id="pauseDraftBtn" autocomplete="off" onchange="togglePaused(this);" data-id="${league.id}">
+                        <input type="checkbox" class="pauseDraftBtn" name="pauseDraftBtn" autocomplete="off" onchange="togglePaused(this);" data-id="${league.id}">
                         <span class="lever"></span>
                         Paused
                     </label>
@@ -99,7 +99,7 @@
                         title="Draft yourself, i.e. in discord, and submit resulting draft later">help</i>:
                         <label>
                             Off
-                            <input type="checkbox" id="manualDraftBtn" autocomplete="off">
+                            <input type="checkbox" class="manualDraftBtn" name="manualDraftBtn" autocomplete="off">
                             <span class="lever"></span>
                             On
                         </label>

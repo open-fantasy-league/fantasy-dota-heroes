@@ -21,8 +21,9 @@ document.querySelectorAll('.updateForm').forEach(function(form) {
                form.querySelector("input[name='start']").value = data.draftStart.replace("T", " ").split(".", 1)[0];
                form.querySelector("input[name='nextDeadline']").value = data.nextDraftDeadline.replace("T", " ").split(".", 1)[0];
                form.querySelector("input[name='timer']").value = data.choiceTimer;
-               form.querySelector("input[id=manualDraftBtn]").checked = data.manualDraft;
-               form.querySelector("input[id=pauseDraftBtn]").checked = data.draftPaused;
+               form.querySelector("input[name=manualDraftBtn]").checked = data.manualDraft;
+               // pause button isnt in the form itself
+               form.parentElement.querySelector("input[name=pauseDraftBtn]").checked = data.draftPaused;
             }
         }
     })
@@ -31,8 +32,10 @@ document.querySelectorAll('.updateForm').forEach(function(form) {
         type: "GET",
         success: function(data){
             var userNamesToIds = new Map();
-            data.forEach((u) => userNamesToIds.set(u.username, u.id));
+            data.forEach((u) => userNamesToIds.set(u.username, u.userId));
             leaguesToUsers.set(leagueId, userNamesToIds);
+            console.log("leaguesToUsers:")
+            console.log(leaguesToUsers)
         }
     })
 });
@@ -48,12 +51,12 @@ function updateForm(event){
     var draft = {'draftStart': form.querySelector("input[name='start']").value,
                  'nextDraftDeadline': form.querySelector("input[name='nextDeadline']").value,
                  'choiceTimer': parseInt(form.querySelector("input[name='timer']").value),
-                 'manualDraft': form.querySelector("input[id=manualDraftBtn]").checked
+                 'manualDraft': form.querySelector("input[name=manualDraftBtn]").checked
                  };
     var draftOrderUpdates = form.querySelector("input[name=order]").value;
     if (draftOrderUpdates){
         var split = draftOrderUpdates.split(",");
-        draft.order = split.map((name) => leaguesToUsers.get(leagueId).get(name));
+        draft.order = split.map((name) => parseInt(leaguesToUsers.get(leagueId).get(name)));
     }
     var data = {'league': {'leagueName': form.querySelector("input[name='name']").value},
                 'draft': draft
@@ -89,7 +92,7 @@ function newForm(event){
     var data = {'name': form.querySelector("input[name='name']").value,
                 'draftStart': form.querySelector("input[name='start']").value,
                  'choiceTimer': parseInt(form.querySelector("input[name='timer']").value),
-                 'manualDraft': form.querySelector("input[id=manualDraftBtn]").checked
+                 'manualDraft': form.querySelector("input[name=manualDraftBtn]").checked
         };
     $.ajax({
         url: url,
@@ -126,6 +129,28 @@ function togglePaused(event){
               type: "success"
             }).then(function(){window.location.reload(false);})
             // Easier to just reload page, than redraw forms
+        },
+        error: function(jqxhr, textStatus, errorThrown){
+            Swal.fire(jqxhr.responseText, '', 'error');
+        }
+    });
+}
+
+$(".generateDraftOrderBtn").click(generateDraftOrderOnclick);
+
+function generateDraftOrderOnclick(event){
+    console.log(event)
+    var leagueId = event.currentTarget.dataset.id;
+    $.ajax({
+        url: apiBaseUrl + "leagues/" + leagueId + "/generateDraftOrder?apiKey=" + apiKey,
+        dataType: "json",
+        type: "POST",
+        contentType: "application/json",
+        success: function(data){
+            Swal.fire({
+             title: "Success!",
+              type: "success"
+            })
         },
         error: function(jqxhr, textStatus, errorThrown){
             Swal.fire(jqxhr.responseText, '', 'error');
