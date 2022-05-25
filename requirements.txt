@@ -19,7 +19,7 @@ plaster==1.0
 plaster-pastedeploy==0.4.1
 pycparser==2.18
 Pygments==2.2.0
-PyJWT==1.5.3
+PyJWT==2.4.0
 pyramid==1.9.1
 pyramid-beaker==0.8
 pyramid-chameleon==0.3
